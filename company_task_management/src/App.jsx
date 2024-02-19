@@ -7,6 +7,7 @@ import './App.css'
 import Header from './Components1/Header'
 import About from './Components1/About'
 import AddTask from './Components1/AddTask'
+import Department from './Components1/Department'
 // import Footer from './Components1/Footer'
 // import Header from './Components1/Header'
 
@@ -17,7 +18,7 @@ import AddTask from './Components1/AddTask'
 //   }
 // ])
 
-function App() {
+function App( ) {
   // const [count, setCount] = useState(0)
 
 
@@ -36,6 +37,10 @@ function App() {
     {
       path:"/AddTask",
       element:<AddTask/>
+    },
+    {
+      path:"/Department",
+      element:<Department/>
     }
 
 

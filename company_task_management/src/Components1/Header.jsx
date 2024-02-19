@@ -19,6 +19,10 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link, Outlet } from 'react-router-dom';
+import dashboard from '@mui/icons-material/GridView';
+import AddTask from '@mui/icons-material/AddTask';
+import Department from '@mui/icons-material/AddBox';
+import SubDepartment from '@mui/icons-material/NoteAdd';
 
 const drawerWidth = 240;
 
@@ -87,6 +91,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+
 function Header() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -98,6 +103,10 @@ function Header() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  
+const iconArray = [dashboard, AddTask,Department,SubDepartment];
+ 
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -131,8 +140,7 @@ function Header() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['dashboard', 'AddTask', 'Send email', 'Drafts'].map((text, index) => (
-           
+          {['dashboard', 'AddTask', 'Department', 'SubDepartment'].map((text, index) => (   
            <ListItem   key={text} disablePadding sx={{ display: 'block' }}>
            <ListItemButton  component={Link} to={text}
              sx={{
@@ -148,7 +156,7 @@ function Header() {
                  justifyContent: 'center',
                }}
              >
-               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+               {React.createElement(iconArray[index % iconArray.length])}
              </ListItemIcon>
              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
            </ListItemButton>
