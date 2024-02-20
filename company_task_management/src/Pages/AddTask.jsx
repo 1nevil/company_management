@@ -1,5 +1,7 @@
-import { Box, Button, Container, FormControlLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@mui/material'
+import { Box, Button, Chip, Container, Divider, FormControlLabel, MenuItem, Paper, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 const AddTask = () => {
     // State variables to hold form data
@@ -8,6 +10,8 @@ const AddTask = () => {
     const [showClosedForm, setShowClosedForm] = useState(false);
     const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
   const [additionalInputCount, setAdditionalInputCount] = useState(0);
+const [addictionInputValues,setaddictionInputValues] = useState({})
+
     const [formData, setFormData] = useState({
       taskName: '',
       rate: '',
@@ -25,7 +29,8 @@ const AddTask = () => {
       duration:'',
       start_date : '',
       checklist:'',
-      end_date_increase_time : ''
+      end_date_increase_time : '',
+      set_Reminder:""
     });
   
     // Handle form submission
@@ -39,6 +44,14 @@ const AddTask = () => {
     const handleInputChange = (event) => {
       const { name, value } = event.target;
       setFormData({ ...formData, [name]: value });
+      console.log(name);
+    };
+
+    const handlechecklistInputChange = (event) => {
+      const { name, value } = event.target;
+      console.log(`${name} ${value}`);
+      setaddictionInputValues({ ...addictionInputValues, [name]: value });
+      console.log(name);
     };
 
     const handleRadioChange = (event) => {
@@ -60,9 +73,10 @@ const AddTask = () => {
     
   
   return (
-    <div style={{  backgroundColor:"lightgray", padding:"20px", borderRadius:"20px" }}>
-<Container sx={{backgroundColor:"white",padding:"20px",borderRadius:"20px" , width:"110vh",boxShadow:"-10px -10px 10px gray"}}>
+    <Paper elevation={10} style={{ margin:"0 auto", padding:"20px", borderRadius:"20px",padding:"20px",borderRadius:"20px" , width:"110vh" }}>
 <form onSubmit={handleSubmit} style={{width:"100vh" }}>
+<Typography variant='h6' component='h6' color="#7986cb" textAlign='center'>Add Task</Typography>
+<Divider  width="100%" sx={{marginBottom:".5rem"}} />
       <Box sx={{ '& .MuiTextField-root': { m: 1, width: '100vh' } }}>
         <TextField
           required
@@ -101,7 +115,7 @@ const AddTask = () => {
           size='small'
         >
           <MenuItem value="">
-            <em>Sub Department</em>
+            <>Sub Department</>
           </MenuItem>
           <MenuItem value={"comedy"}>comedy</MenuItem>
   <MenuItem value={"politics"}>politics</MenuItem>
@@ -134,13 +148,25 @@ const AddTask = () => {
           onChange={handleInputChange}
           size='small'
         />
-      
+      {/* <TextField
+          required
+          id="Set Reminder"
+          name="set_Reminder"
+          label="Set Reminder"
+          value={formData.set_Reminder}
+          onChange={handleInputChange}
+          size='small'
+        /> */}
+
+<Typography variant='h6' component='h6' color="#7986cb" textAlign='center'>Set Reminder</Typography>
+<Divider  width="100%" sx={{marginBottom:".5rem"}} />
 
       <RadioGroup name="formStatus" value={showOpenForm ? 'open' : 'closed'} onChange={handleRadioChange} >
-        <div>
-        <FormControlLabel value="open" control={<Radio />} label="Use Time" />
-        <FormControlLabel value="closed" control={<Radio />} label="Use Date" />
-        </div>
+        
+        <Box marginLeft="10px">
+        <FormControlLabel value="open" control={<Radio />} label="Time" />
+        <FormControlLabel value="closed" control={<Radio />} label="Date" />
+        </Box>
       </RadioGroup>
       
       {showOpenForm && (
@@ -152,8 +178,9 @@ const AddTask = () => {
           name='duration'
           displayEmpty
           inputProps={{ 'aria-label': 'Without label' }}
-          sx={{width:"46%" , marginLeft:"34px"}}
+          sx={{width:"97.5%" }}
           size='small'
+            
         >
           <MenuItem value="">
             <div>Select Duration</div>
@@ -174,7 +201,6 @@ const AddTask = () => {
           required
           id="start_date"
           name="start_date"
-          //label="Description"
           type='date'
           value={formData.start_date}
           onChange={handleInputChange}
@@ -184,7 +210,6 @@ const AddTask = () => {
           required
           id="end_date_increase_time"
           name="end_date_increase_time"
-          //label="Description"
           type='date'
           value={formData.end_date_increase_time}
           onChange={handleInputChange}
@@ -192,7 +217,6 @@ const AddTask = () => {
         />
         </form>
         )}
-
         <TextField
           required
           id="description "
@@ -203,39 +227,42 @@ const AddTask = () => {
           size='small'
         />
 
+<Typography variant='h6' component='h6' color="#7986cb" textAlign='center'>Checklist</Typography>
+<Divider  width="100%" sx={{marginBottom:".5rem"}} />
 {showAdditionalInputs && (
               <div>
-                {/* Render additional input fields */}
                 {[...Array(additionalInputCount)].map((_, index) => (
                   <div key={index}>
                     <TextField
                       label={`check list ${index + 1}`}
                       variant="outlined"
                       fullWidth
-                      value={formData.checklist}
-                      name='checklist'
+                      name={`checkList ${index + 1}`}
                       onChange={handleInputChange}
                       size='small'
                     />
-                    <Button type="button" variant="outlined" color="secondary" onClick={handleDeleteInput}>
-                      Delete
-                    </Button>
+
+                    
+                    
+                    <Button variant="outlined" sx={{marginLeft:"0.5rem"}} startIcon={<DeleteIcon />}  color="error" onClick={handleDeleteInput} >
+  Delete checklist
+</Button>
                   </div>
                 ))}
               </div>
             )}
 
             {/* Render button to add input */}
-            <Button type="button" variant="contained" color="secondary" onClick={handleAddInput}>
-              Add Input
+            
+            <Button variant="outlined" sx={{width:"97%" , margin:"0.5rem 0 0 0.5rem"}} onClick={handleAddInput} startIcon={<AddIcon />} >
+              Add Checklist 
             </Button>
 
         
       </Box>
       <Button type="submit" variant="outlined" sx={{marginTop:"10px", marginLeft:"7px"}}>Submit</Button>
     </form>
-    </Container>
-    </div>
+    </Paper>
   )
 }
 

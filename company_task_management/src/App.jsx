@@ -6,8 +6,9 @@ import { Route, RouterProvider, Routes, createBrowserRouter} from 'react-router-
 import './App.css'
 import Header from './Components1/Header'
 import About from './Components1/About'
-import AddTask from './Components1/AddTask'
-import Department from './Components1/Department'
+import AddTask from './Pages/AddTask'
+import Department from './Pages/Department'
+
 // import Footer from './Components1/Footer'
 // import Header from './Components1/Header'
 
@@ -41,7 +42,8 @@ function App( ) {
     {
       path:"/Department",
       element:<Department/>
-    }
+    },
+    
 
 
     ]
