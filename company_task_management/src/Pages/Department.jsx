@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
-import { Box, Button, Container, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const Department = () => {
   const [formData, setFormData] = useState({
-    departmentName: '',
-    subdepartmentName:'',
-    rate:"",
-    unit:"",
-    companyId: '',
+    departmentName: "",
+    subdepartmentName: "",
+    rate: "",
+    unit: "",
+    companyId: "",
   });
 
   const handleInputChange = (event) => {
@@ -22,13 +31,30 @@ const Department = () => {
   };
 
   return (
-    <Stack gap={5}  direction={["column","row"]}  style={{ padding: "20px", borderRadius: "20px" , display:{sm:"block",md:"flex",lg:"flex"}   ,justifyContent:"space-around" }}>
-      <Paper  elevation={20} sx={{   textAlign:"center" ,padding: "20px", borderRadius: "20px", width: "fit-content"}}>
+    <Stack
+      gap={5}
+      direction={["column", "row"]}
+      style={{
+        padding: "20px",
+        borderRadius: "20px",
+        display: { sm: "block", md: "flex", lg: "flex" },
+        justifyContent: "space-around",
+      }}
+    >
+      <Paper
+        elevation={20}
+        sx={{
+          textAlign: "center",
+          padding: "20px",
+          borderRadius: "20px",
+          width: "fit-content",
+        }}
+      >
         <form onSubmit={handleSubmit}>
-        <Typography variant="h5" color="#7986cb" component="h5">
-  Enter Department
-</Typography>
-          <Box  sx={{ '& .MuiTextField-root': { m:3, width: '25ch' } }}>
+          <Typography variant="h5" color="#7986cb" component="h5">
+            Enter Department
+          </Typography>
+          <Box sx={{ "& .MuiTextField-root": { m: 3, width: "25ch" } }}>
             <TextField
               required
               id="departmentName"
@@ -36,21 +62,35 @@ const Department = () => {
               label="Department Name"
               value={formData.departmentName}
               onChange={handleInputChange}
-              size='small'
-              
+              size="small"
             />
-          
+
             <br></br>
-            <Button type="submit" variant="contained" sx={{marginTop:"20px"}} color="primary">Submit</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ marginTop: "20px" }}
+              color="primary"
+            >
+              Submit
+            </Button>
           </Box>
         </form>
       </Paper>
-<Paper elevation={20} sx={{ textAlign:"center" ,padding: "20px", borderRadius: "20px", width: "fit-content" }}>
+      <Paper
+        elevation={20}
+        sx={{
+          textAlign: "center",
+          padding: "20px",
+          borderRadius: "20px",
+          width: "fit-content",
+        }}
+      >
         <form onSubmit={handleSubmit}>
-          <Box sx={{ '& .MuiTextField-root': { m: 3, width: '25ch' } }}>
-          <Typography color="#7986cb" variant="h5" component="h5">
-  Enter  Subdepartment
-</Typography>
+          <Box sx={{ "& .MuiTextField-root": { m: 3, width: "25ch" } }}>
+            <Typography color="#7986cb" variant="h5" component="h5">
+              Enter Subdepartment
+            </Typography>
             <TextField
               required
               id="subdepartmentName"
@@ -58,21 +98,21 @@ const Department = () => {
               label="subDepartment Name"
               value={formData.subdepartmentName}
               onChange={handleInputChange}
-              size='small'
+              size="small"
             />
             <br></br>
             <Select
               required
-              sx={{width:"14rem"}}
+              sx={{ width: "14rem" }}
               value={formData.departmentName}
               onChange={handleInputChange}
               name="Department"
               displayEmpty
-              inputProps={{ 'aria-label': 'Department' }}
-            size='small'
-        >
-              <MenuItem value="" disabled > 
-                select department 
+              inputProps={{ "aria-label": "Department" }}
+              size="small"
+            >
+              <MenuItem value="" disabled>
+                select department
               </MenuItem>
               <MenuItem value={1}>Department 1</MenuItem>
               <MenuItem value={2}>Department 2</MenuItem>
@@ -86,8 +126,7 @@ const Department = () => {
               label="rate"
               value={formData.rate}
               onChange={handleInputChange}
-              size='small'
-
+              size="small"
             />
             <br></br>
             <TextField
@@ -97,17 +136,18 @@ const Department = () => {
               label="unit"
               value={formData.unit}
               onChange={handleInputChange}
-              size='small'
+              size="small"
             />
 
-           
             <br></br>
-            <Button type="submit" variant="contained"  color="primary">Submit</Button>
+            <Button type="submit" variant="contained" color="primary">
+              Submit
+            </Button>
           </Box>
         </form>
       </Paper>
     </Stack>
-  )
-}
+  );
+};
 
 export default Department;

@@ -1,0 +1,244 @@
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import { DataGrid, } from '@mui/x-data-grid';
+import { GridToolbar } from '@mui/x-data-grid';
+import { IconButton, Stack, Typography, Button, Paper } from '@mui/material';
+import { Add, AddBox, Delete, Edit } from '@mui/icons-material';
+import {AddCategory} from './AddCategory';
+import AddSubCategory from './AddCategory';
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 90 },
+  {
+    field: 'Category',
+    headerName: 'Category',
+    width: 150,
+    editable: true,
+  },
+
+  {
+    field: 'Action',
+    headerName: 'Action',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 160,
+    renderCell: (params) => (
+      <>
+        <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton onClick={() => handleDelete(params.row.id)} title="Delete">
+          <Delete sx={{ color: "red" }} />
+        </IconButton>
+      </>
+    )
+
+
+  },
+];
+const columns2 = [
+  { field: 'id', headerName: 'ID', width: 90 },
+  {
+    field: 'SubCategory',
+    headerName: 'Sub-Category',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'Category',
+    headerName: 'Category',
+    width: 150,
+    editable: true,
+  },
+
+  {
+    field: 'Action',
+    headerName: 'Action',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 160,
+    renderCell: (params) => (
+      <>
+        <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+          <Edit />
+        </IconButton>
+        <IconButton onClick={() => handleDelete(params.row.id)} title="Delete">
+          <Delete sx={{ color: "red" }} />
+        </IconButton>
+      </>
+    )
+
+
+  },
+];
+const handleDelete = (id) => {
+  alert(id)
+}
+
+
+const ViewCategory = () => {
+  const columns = [
+    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "Category",
+      headerName: "Category",
+      width: 150,
+      editable: true,
+    },
+
+    {
+      field: "Action",
+      headerName: "Action",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <>
+          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => handleDelete(params.row.id)}
+            title="Delete"
+          >
+            <Delete sx={{ color: "red" }} />
+          </IconButton>
+        </>
+      ),
+    },
+  ];
+  const columns2 = [
+    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "SubCategory",
+      headerName: "Sub-Category",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "Category",
+      headerName: "Category",
+      width: 150,
+      editable: true,
+    },
+
+    {
+      field: "Action",
+      headerName: "Action",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <>
+          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => handleDelete(params.row.id)}
+            title="Delete"
+          >
+            <Delete sx={{ color: "red" }} />
+          </IconButton>
+        </>
+      ),
+    },
+  ];
+  const handleDelete = (id) => {
+    alert(id);
+  };
+
+  const handleEdit = (id) => {
+    alert(id);
+  };
+  const SubCategoriesRows = [
+    { id: 1, Category: "Snow", SubCategory: "XYZ" },
+    { id: 2, Category: "Lannister", SubCategory: "XYZ" },
+    { id: 4, Category: "Lannister", SubCategory: "XYZ" },
+    { id: 5, Category: "Lannister", SubCategory: "XYZ" },
+    { id: 6, Category: "Lannister", SubCategory: "XYZ" },
+    { id: 7, Category: "Lannister", SubCategory: "XYZ" },
+    { id: 8, Category: "Lannister", SubCategory: "XYZ" },
+    { id: 9, Category: "Lannister", SubCategory: "XYZ" },
+  ];
+  const CategoriesRows = [
+    { id: 1, Category: "Snow" },
+    { id: 2, Category: "Lannister" },
+    { id: 3, Category: "Lannister" },
+  ];
+
+  // useEffect(() => {
+  //   axios
+  //     .get("dummy.json")
+  //     .then((response) => {
+  //       console.log("Data received:", response.data);
+  //       // Set the data to state if needed
+  //       //  setCategoriesRows(response.data.categories);
+  //       //  setSubCategoriesRows(response.data.subCategories);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // }, []);
+  return (
+    <Stack direction={{ md: "row", sm: "column" }} spacing={5}>
+      <Box sx={{ height: 400, width: "100%" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography variant="h4" my={2} color="#565656">
+            Category
+          </Typography>
+
+          <AddCategory />
+        </Box>
+        <Paper elevation={4}>
+          <DataGrid
+            sx={{ height: "450px" }}
+            rows={CategoriesRows}
+            columns={columns}
+            slots={{ toolbar: GridToolbar }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10, 25, 50, 100, 200]}
+          />
+        </Paper>
+      </Box>
+      <Box sx={{ height: 400, width: '100%' }}>
+
+        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+
+          <Typography variant="h4" my={2} color="#565656">Sub-Category</Typography>
+          <AddSubCategory/>
+        </Box>
+        <Paper elevation={4}>
+          <DataGrid
+            sx={{ height: "450px " }}
+            rows={SubCategoriesRows}
+            columns={columns2}
+            slots={{ toolbar: GridToolbar }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10, 25, 50, 100, 200 ,500]}
+          />
+        </Paper>
+      </Box>
+    </Stack>
+  );
+};
+
+export default ViewCategory;

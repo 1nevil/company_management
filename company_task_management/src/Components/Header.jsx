@@ -140,7 +140,7 @@ const iconArray = [dashboard, AddTask,Department,SubDepartment];
         </DrawerHeader>
         <Divider />
         <List>
-          {['dashboard', 'AddTask', 'Department', 'SubDepartment'].map((text, index) => (   
+          {['dashboard', 'Task', 'Department', 'SubDepartment'].map((text, index) => (   
            <ListItem   key={text} disablePadding sx={{ display: 'block' }}>
            <ListItemButton  component={Link} to={text}
              sx={{

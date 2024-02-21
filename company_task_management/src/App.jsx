@@ -1,68 +1,50 @@
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import { Route, RouterProvider, Routes, createBrowserRouter} from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import "./App.css";
+import Header from "./Components/Header";
+import About from "./Components/About";
+import Department from "./Pages/Department";
+import Task from "./Pages/Task";
+import Register from "./Components/Register";
 
-import './App.css'
-import Header from './Components1/Header'
-import About from './Components1/About'
-import AddTask from './Pages/AddTask'
-import Department from './Pages/Department'
-
-// import Footer from './Components1/Footer'
-// import Header from './Components1/Header'
-
-// const route = createBrowserRouter([
-//   {
-//     path: "/",
-//     element:<Task/>
-//   }
-// ])
-
-function App( ) {
+function App() {
   // const [count, setCount] = useState(0)
 
-
-  const router = createBrowserRouter([{
-    path:"/",
-    element:<Header/>,
-    children:[
-      {
-        index:true,
-        element: <h1> this is home page </h1>
-      },
+  const router = createBrowserRouter([
     {
-      path:"/about",
-      element:<About/>
+      path: "/",
+      element: <Header />,
+      children: [
+        {
+          index: true,
+          element: <h1> this is home page </h1>,
+        },
+        {
+          path: "/about",
+          element: <About />,
+        },
+        {
+          path: "/task",
+          element: <Task />,
+        },
+        {
+          path: "/Department",
+          element: <Department />,
+        },
+      ],
     },
     {
-      path:"/AddTask",
-      element:<AddTask/>
+      path: "/Register",
+      element: <Register />,
     },
-    {
-      path:"/Department",
-      element:<Department/>
-    },
-    
-
-
-    ]
-
-
-  }])
+  ]);
   return (
     <>
-    <RouterProvider router={router} />
-    
-   {/* <Routes>
-  <Route path='/Header' element={<Header/>}>
-      
-    </Route>
-  </Routes> */}
-  {/* <RouterProvider router={route}/> */}
-  
+      <RouterProvider router={router} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
