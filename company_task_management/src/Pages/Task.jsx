@@ -154,7 +154,7 @@ function Task() {
               },
             },
           }}
-          pageSizeOptions={[5, 10, 25, 50, 100, 200]}
+          pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
         />
       </div>
     </>

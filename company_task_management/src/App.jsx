@@ -8,6 +8,7 @@ import About from "./Components/About";
 import Department from "./Pages/Department";
 import Task from "./Pages/Task";
 import Register from "./Components/Register";
+import BucketTest from "./Components/BucketTest";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -32,6 +33,10 @@ function App() {
         {
           path: "/Department",
           element: <Department />,
+        },
+        {
+          path: "/BucketTest",
+          element: <BucketTest />,
         },
       ],
     },
