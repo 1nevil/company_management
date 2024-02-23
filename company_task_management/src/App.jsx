@@ -8,6 +8,7 @@ import About from "./Components/About"
 import Department from "./Pages/Department"
 import Task from "./Pages/Task"
 import Register from "./Components/Register"
+import BucketTest from "./Components/BucketTest"
 import Employee from "./Pages/Employee"
 
 function App() {
@@ -37,6 +38,10 @@ function App() {
         {
           path: "/Employee",
           element: <Employee />,
+        },
+        {
+          path: "/BucketTest",
+          element: <BucketTest />,
         },
       ],
     },

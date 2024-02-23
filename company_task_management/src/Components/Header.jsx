@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ListItem from "@mui/material/ListItem"
+import PeopleIcon from "@mui/icons-material/People"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
@@ -23,9 +24,8 @@ import dashboard from "@mui/icons-material/GridView"
 import AddTask from "@mui/icons-material/AddTask"
 import Department from "@mui/icons-material/AddBox"
 import SubDepartment from "@mui/icons-material/NoteAdd"
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt"
 import { Container } from "@mui/material"
-import BusinessIcon from "@mui/icons-material/Business"
+import ListAltIcon from "@mui/icons-material/ListAlt"
 
 const drawerWidth = 240
 
@@ -44,7 +44,7 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: ` calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
@@ -106,13 +106,7 @@ function Header() {
     setOpen(false)
   }
 
-  const iconArray = [
-    dashboard,
-    AddTask,
-    Department,
-    SubDepartment,
-    PeopleAltIcon,
-  ]
+  const iconArray = [dashboard, AddTask, Department, ListAltIcon, PeopleIcon]
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -134,7 +128,7 @@ function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            <BusinessIcon /> Company Management
+            Mini variant drawer
           </Typography>
         </Toolbar>
       </AppBar>
@@ -150,7 +144,7 @@ function Header() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["dashboard", "Task", "Department", "SubDepartment", "Employee"].map(
+          {["dashboard", "Task", "Department", "BucketTest", "Employee"].map(
             (text, index) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
@@ -203,10 +197,12 @@ function Header() {
           ))}
         </List>
       </Drawer>
-      <DrawerHeader />
-      <Container component="main" sx={{ pt: 10 }}>
-        <Outlet />
-      </Container>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
+        <Container>
+          <Outlet />
+        </Container>
+      </Box>
     </Box>
   )
 }
