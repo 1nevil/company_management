@@ -1,6 +1,5 @@
 import React from "react"
-import { DataGrid } from "@mui/x-data-grid"
-import { GridToolbar } from "@mui/x-data-grid"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Delete, Edit } from "@mui/icons-material"
 import { Button, IconButton } from "@mui/material"
 import Dialog from "@mui/material/Dialog"
@@ -11,6 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle"
 import AddTask from "../Components/AddTask"
 import AddIcon from "@mui/icons-material/Add"
 import MyButton from "../Components/MyButton"
+
 function Task() {
   const [open, setOpen] = React.useState(false)
   const [scroll, setScroll] = React.useState("paper")
@@ -57,6 +57,30 @@ function Task() {
     {
       field: "Instruction",
       headerName: "Instruction",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "Team",
+      headerName: "Team",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "Team",
+      headerName: "Team",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "Team",
+      headerName: "Team",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "Team",
+      headerName: "Team",
       width: 150,
       editable: true,
     },

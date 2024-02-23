@@ -1,13 +1,14 @@
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./App.css";
-import Header from "./Components/Header";
-import About from "./Components/About";
-import Department from "./Pages/Department";
-import Task from "./Pages/Task";
-import Register from "./Components/Register";
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import "./App.css"
+import Header from "./Components/Header"
+import About from "./Components/About"
+import Department from "./Pages/Department"
+import Task from "./Pages/Task"
+import Register from "./Components/Register"
+import Employee from "./Pages/Employee"
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -33,18 +34,22 @@ function App() {
           path: "/Department",
           element: <Department />,
         },
+        {
+          path: "/Employee",
+          element: <Employee />,
+        },
       ],
     },
     {
       path: "/Register",
       element: <Register />,
     },
-  ]);
+  ])
   return (
     <>
       <RouterProvider router={router} />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

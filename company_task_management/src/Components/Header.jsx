@@ -23,6 +23,9 @@ import dashboard from "@mui/icons-material/GridView"
 import AddTask from "@mui/icons-material/AddTask"
 import Department from "@mui/icons-material/AddBox"
 import SubDepartment from "@mui/icons-material/NoteAdd"
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt"
+import { Container } from "@mui/material"
+import BusinessIcon from "@mui/icons-material/Business"
 
 const drawerWidth = 240
 
@@ -103,7 +106,13 @@ function Header() {
     setOpen(false)
   }
 
-  const iconArray = [dashboard, AddTask, Department, SubDepartment]
+  const iconArray = [
+    dashboard,
+    AddTask,
+    Department,
+    SubDepartment,
+    PeopleAltIcon,
+  ]
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -125,7 +134,7 @@ function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            <BusinessIcon /> Company Management
           </Typography>
         </Toolbar>
       </AppBar>
@@ -141,7 +150,7 @@ function Header() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["dashboard", "Task", "Department", "SubDepartment"].map(
+          {["dashboard", "Task", "Department", "SubDepartment", "Employee"].map(
             (text, index) => (
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
@@ -194,10 +203,10 @@ function Header() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+      <DrawerHeader />
+      <Container component="main" sx={{ pt: 10 }}>
         <Outlet />
-      </Box>
+      </Container>
     </Box>
   )
 }
