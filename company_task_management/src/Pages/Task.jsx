@@ -1,37 +1,38 @@
-import React from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { GridToolbar } from "@mui/x-data-grid";
-import { Delete, Edit } from "@mui/icons-material";
-import { Button, IconButton } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import AddTask from "../Components/AddTask";
-import AddIcon from "@mui/icons-material/Add";
+import React from "react"
+import { DataGrid } from "@mui/x-data-grid"
+import { GridToolbar } from "@mui/x-data-grid"
+import { Delete, Edit } from "@mui/icons-material"
+import { Button, IconButton } from "@mui/material"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogContentText from "@mui/material/DialogContentText"
+import DialogTitle from "@mui/material/DialogTitle"
+import AddTask from "../Components/AddTask"
+import AddIcon from "@mui/icons-material/Add"
+import MyButton from "../Components/MyButton"
 function Task() {
-  const [open, setOpen] = React.useState(false);
-  const [scroll, setScroll] = React.useState("paper");
+  const [open, setOpen] = React.useState(false)
+  const [scroll, setScroll] = React.useState("paper")
 
   const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-    setScroll(scrollType);
-  };
+    setOpen(true)
+    setScroll(scrollType)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const descriptionElementRef = React.useRef(null);
+  const descriptionElementRef = React.useRef(null)
   React.useEffect(() => {
     if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
+      const { current: descriptionElement } = descriptionElementRef
       if (descriptionElement !== null) {
-        descriptionElement.focus();
+        descriptionElement.focus()
       }
     }
-  }, [open]);
+  }, [open])
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -85,32 +86,33 @@ function Task() {
         </>
       ),
     },
-  ];
+  ]
 
   const handleDelete = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   const Tasks = [
     { id: 1, Category: "Snow" },
     { id: 2, Category: "Lannister" },
     { id: 3, Category: "Lannister" },
-  ];
+  ]
 
   return (
     <>
-      <Button
+      <MyButton
         sx={{ margin: "1rem 0" }}
         variant="contained"
-        onClick={handleClickOpen("body")}
+        fullWidth={false}
+        onSmash={handleClickOpen("body")}
       >
         <AddIcon />
         Add Task
-      </Button>
+      </MyButton>
       <Dialog
         maxWidth="md"
         open={open}
@@ -158,7 +160,7 @@ function Task() {
         />
       </div>
     </>
-  );
+  )
 }
 
-export default Task;
+export default Task

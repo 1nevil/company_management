@@ -24,7 +24,6 @@ import AddTask from "@mui/icons-material/AddTask";
 import Department from "@mui/icons-material/AddBox";
 import SubDepartment from "@mui/icons-material/NoteAdd";
 import { Container } from "@mui/material";
-import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const drawerWidth = 240;
 
@@ -105,7 +104,7 @@ function Header() {
     setOpen(false);
   };
 
-  const iconArray = [dashboard, AddTask, Department, ListAltIcon];
+  const iconArray = [dashboard, AddTask, Department, SubDepartment];
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -143,32 +142,36 @@ function Header() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["dashboard", "Task", "Department", "BucketTest"].map(
-            (text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  component={Link}
-                  to={text}
+          {[
+            "dashboard",
+            "Task",
+            "Department",
+            "SubDepartment",
+            "bucketList",
+          ].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                component={Link}
+                to={text}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
                   sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
                   }}
                 >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {React.createElement(iconArray[index % iconArray.length])}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            )
-          )}
+                  {React.createElement(iconArray[index % iconArray.length])}
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
         <Divider />
         <List>
