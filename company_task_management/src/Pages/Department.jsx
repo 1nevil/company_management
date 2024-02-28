@@ -1,39 +1,34 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-import DepartmentForm from "../Components/DepartmentForm";
-import { Box, IconButton, Stack } from "@mui/material";
-import SubDepartmentForm from "../Components/SubDepartmentForm";
-import { Delete, Edit } from "@mui/icons-material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import ViewDepartment from "../Components/ViewDepartment";
-import ViewSubDepartment from "../Components/ViewSubDepartment";
-import AddIcon from "@mui/icons-material/Add";
+import * as React from "react"
+import Button from "@mui/material/Button"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import { useTheme } from "@mui/material/styles"
+import DepartmentForm from "../Components/DepartmentForm"
+import { Box, Stack } from "@mui/material"
+import SubDepartmentForm from "../Components/SubDepartmentForm"
+import ViewDepartment from "../Components/ViewDepartment"
+import ViewSubDepartment from "../Components/ViewSubDepartment"
+import AddIcon from "@mui/icons-material/Add"
 
 export default function Department() {
-  const [openDepartment, setOpenDepartment] = React.useState(false);
-  const [openSubDepartment, setOpenSubDepartment] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [openDepartment, setOpenDepartment] = React.useState(false)
+  const [openSubDepartment, setOpenSubDepartment] = React.useState(false)
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
 
   const handleClickOpenDepartment = () => {
-    setOpenDepartment(true);
-  };
+    setOpenDepartment(true)
+  }
 
   const handleClickOpenSubDepartment = () => {
-    setOpenSubDepartment(true);
-  };
+    setOpenSubDepartment(true)
+  }
 
   const handleClose = () => {
-    setOpenDepartment(false);
-    setOpenSubDepartment(false);
-  };
+    setOpenDepartment(false)
+    setOpenSubDepartment(false)
+  }
 
   return (
     <Stack sx={{ mt: 3 }}>
@@ -98,5 +93,5 @@ export default function Department() {
     // <Stack direction={["column", "row"]} sx={{ width: "20rem" }} gap={4}>
 
     // </Stack>
-  );
+  )
 }

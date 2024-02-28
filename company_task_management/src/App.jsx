@@ -10,7 +10,9 @@ import Task from "./Pages/Task"
 import Register from "./Components/Register"
 import BucketTest from "./Components/BucketTest"
 import Employee from "./Pages/Employee"
-
+import Team from "./Pages/Team"
+import TeamDetails from "./Pages/TeamDetails"
+import EmployeeForm from "./Pages/EmployeeForm"
 function App() {
   // const [count, setCount] = useState(0)
 
@@ -42,6 +44,18 @@ function App() {
         {
           path: "/BucketTest",
           element: <BucketTest />,
+        },
+        {
+          path: "/Team",
+          element: <Team />,
+        },
+        {
+          path: "/teamdetails/:chainid",
+          element: <TeamDetails />,
+        },
+        {
+          path: "/EmployeeForm",
+          element: <EmployeeForm />,
         },
       ],
     },
