@@ -38,9 +38,7 @@ const AddTask = () => {
     subdepartment_id: "",
     task_status: "",
     duration: "",
-    start_date: "",
     checklist: "",
-    end_date_increase_time: "",
     set_Reminder: " ",
     teamname: "",
   });

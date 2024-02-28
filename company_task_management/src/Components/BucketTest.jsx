@@ -1,7 +1,7 @@
-import { Delete, Edit } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React from "react";
+import { Delete, Edit } from "@mui/icons-material"
+import { IconButton } from "@mui/material"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import React from "react"
 
 function BucketTest() {
   const columns = [
@@ -33,21 +33,21 @@ function BucketTest() {
         </>
       ),
     },
-  ];
+  ]
 
   const handleDelete = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   const Tasks = [
     { id: 1, Category: "Snow" },
     { id: 2, Category: "Lannister" },
     { id: 3, Category: "Lannister" },
-  ];
+  ]
 
   return (
     <div>
@@ -71,7 +71,7 @@ function BucketTest() {
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default BucketTest;
+export default BucketTest

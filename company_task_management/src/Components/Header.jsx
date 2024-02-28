@@ -15,6 +15,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ListItem from "@mui/material/ListItem"
 import PeopleIcon from "@mui/icons-material/People"
 import ListItemButton from "@mui/material/ListItemButton"
+import Diversity3Icon from "@mui/icons-material/Diversity3"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import InboxIcon from "@mui/icons-material/MoveToInbox"
@@ -23,7 +24,6 @@ import { Link, Outlet } from "react-router-dom"
 import dashboard from "@mui/icons-material/GridView"
 import AddTask from "@mui/icons-material/AddTask"
 import Department from "@mui/icons-material/AddBox"
-import SubDepartment from "@mui/icons-material/NoteAdd"
 import { Container } from "@mui/material"
 import ListAltIcon from "@mui/icons-material/ListAlt"
 
@@ -106,8 +106,14 @@ function Header() {
     setOpen(false)
   }
 
-  const iconArray = [dashboard, AddTask, Department, ListAltIcon, PeopleIcon]
-
+  const iconArray = [
+    dashboard,
+    AddTask,
+    Department,
+    ListAltIcon,
+    PeopleIcon,
+    Diversity3Icon,
+  ]
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -144,32 +150,37 @@ function Header() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["dashboard", "Task", "Department", "BucketTest", "Employee"].map(
-            (text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  component={Link}
-                  to={text}
+          {[
+            "dashboard",
+            "Task",
+            "Department",
+            "BucketTest",
+            "Employee",
+            "Team",
+          ].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                component={Link}
+                to={text}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
                   sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
                   }}
                 >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {React.createElement(iconArray[index % iconArray.length])}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            )
-          )}
+                  {React.createElement(iconArray[index % iconArray.length])}
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
         <Divider />
         <List>

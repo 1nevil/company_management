@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Box,
   Button,
@@ -8,7 +8,7 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
+} from "@mui/material"
 
 const SubDepartmentForm = () => {
   const [formData, setFormData] = useState({
@@ -17,18 +17,18 @@ const SubDepartmentForm = () => {
     rate: "",
     unit: "",
     companyId: "",
-  });
+  })
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(formData);
+    event.preventDefault()
+    console.log(formData)
     // Here you can add logic to submit the form data
-  };
+  }
 
   return (
     <Stack
@@ -46,16 +46,7 @@ const SubDepartmentForm = () => {
           <Typography color="#7986cb" variant="h5" component="h5">
             Enter Subdepartment
           </Typography>
-          <TextField
-            required
-            id="subdepartmentName"
-            name="subdepartmentName"
-            label="subDepartment Name"
-            value={formData.subdepartmentName}
-            onChange={handleInputChange}
-            size="small"
-          />
-          <br></br>
+
           <Select
             required
             sx={{ width: "14rem" }}
@@ -73,6 +64,16 @@ const SubDepartmentForm = () => {
             <MenuItem value={2}>Department 2</MenuItem>
             <MenuItem value={3}>Department 3</MenuItem>
           </Select>
+          <br />
+          <TextField
+            required
+            id="subdepartmentName"
+            name="subdepartmentName"
+            label="subDepartment Name"
+            value={formData.subdepartmentName}
+            onChange={handleInputChange}
+            size="small"
+          />
           <br></br>
           <TextField
             required
@@ -101,7 +102,7 @@ const SubDepartmentForm = () => {
         </Box>
       </form>
     </Stack>
-  );
-};
+  )
+}
 
-export default SubDepartmentForm;
+export default SubDepartmentForm
