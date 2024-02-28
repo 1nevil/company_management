@@ -31,6 +31,10 @@ function Copyright(props) {
   );
 }
 
+const movetopage = () => {
+  window.location = "Task";
+};
+
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
@@ -114,6 +118,7 @@ export default function Register() {
                 label="Remember me"
               />
               <Button
+                onClick={movetopage}
                 type="submit"
                 fullWidth
                 variant="contained"

@@ -61,9 +61,27 @@ function ViewSubDepartment() {
   };
 
   const Tasks = [
-    { id: 1, Category: "Snow" },
-    { id: 2, Category: "Lannister" },
-    { id: 3, Category: "Lannister" },
+    {
+      id: 1,
+      Department: "Snow",
+      SubDepartment: "test1",
+      Rate: "100",
+      Unit: "10",
+    },
+    {
+      id: 2,
+      Department: "Lannister",
+      SubDepartment: "test1",
+      Rate: "100",
+      Unit: "10",
+    },
+    {
+      id: 3,
+      Department: "Lannister",
+      SubDepartment: "test1",
+      Rate: "100",
+      Unit: "10",
+    },
   ];
 
   return (

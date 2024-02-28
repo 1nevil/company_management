@@ -44,9 +44,9 @@ function ViewDepartment() {
   };
 
   const Tasks = [
-    { id: 1, Category: "Snow" },
-    { id: 2, Category: "Lannister" },
-    { id: 3, Category: "Lannister" },
+    { id: 1, Department: "Snow" },
+    { id: 2, Department: "Lannister" },
+    { id: 3, Department: "Lannister" },
   ];
 
   return (

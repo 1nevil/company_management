@@ -56,3 +56,53 @@
 /* .DescriptionField {
   width: 100%;
 } */
+
+.App {
+  text-align: center;
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.carousel-items {
+  display: flex;
+  align-items: center;
+}
+
+.carousel-item {
+  margin: 0 5px;
+  transition: transform 0.3s;
+  flex: 0 0 20%;
+}
+
+img {
+  max-width: 150px;
+  max-height: 150px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.center {
+  transform: scale(1.5);
+  margin: 3.2rem;
+  opacity: none;
+}
+
+.opacity {
+  opacity: 0.7;
+}
+
+.end {
+  transform: scale(0.6);
+  margin: -15px;
+}
+
+button {
+  font-size: 24px;
+  padding: 5px 10px;
+  margin: 10px;
+}
