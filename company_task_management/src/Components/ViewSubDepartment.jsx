@@ -1,7 +1,7 @@
-import { Delete, Edit } from "@mui/icons-material"
-import { Box, IconButton } from "@mui/material"
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import React from "react"
+import { Delete, Edit } from "@mui/icons-material";
+import { Box, IconButton } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React from "react";
 
 function ViewSubDepartment() {
   const columns = [
@@ -50,15 +50,15 @@ function ViewSubDepartment() {
         </>
       ),
     },
-  ]
+  ];
 
   const handleDelete = (id) => {
-    alert(id)
-  }
+    alert(id);
+  };
 
   const handleEdit = (id) => {
-    alert(id)
-  }
+    alert(id);
+  };
 
   const Tasks = [
     {
@@ -83,10 +83,6 @@ function ViewSubDepartment() {
       Unit: "10",
     },
   ];
-    { id: 1, Category: "Snow" },
-    { id: 2, Category: "Lannister" },
-    { id: 3, Category: "Lannister" },
-  ]
 
   return (
     <Box xs={12} sm={6} md={3}>
@@ -107,7 +103,7 @@ function ViewSubDepartment() {
         />
       </div>
     </Box>
-  )
+  );
 }
 
-export default ViewSubDepartment
+export default ViewSubDepartment;
