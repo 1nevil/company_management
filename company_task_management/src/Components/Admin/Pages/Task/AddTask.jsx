@@ -9,19 +9,19 @@ import {
   Select,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import MyButton from "./MyButton";
+} from "@mui/material"
+import React, { useState } from "react"
+import DeleteIcon from "@mui/icons-material/Delete"
+import AddIcon from "@mui/icons-material/Add"
+import MyButton from "../../../Layout/MyButton"
 
 const AddTask = () => {
   // State variables to hold form data
-  const [showOpenForm, setshowOpenForm] = useState(false);
-  const [showClosedForm, setShowClosedForm] = useState(false);
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
-  const [addictionInputValues, setaddictionInputValues] = useState({});
+  const [showOpenForm, setshowOpenForm] = useState(false)
+  const [showClosedForm, setShowClosedForm] = useState(false)
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
+  // const [addictionInputValues, setaddictionInputValues] = useState({})
 
   const [formData, setFormData] = useState({
     taskName: "",
@@ -41,45 +41,45 @@ const AddTask = () => {
     checklist: "",
     set_Reminder: " ",
     teamname: "",
-  });
+  })
 
-  const handleAddTask = () => {};
+  const handleAddTask = () => {}
 
   // Handle form submission
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     // Do something with the form data, e.g., send it to a server
-    console.log(formData);
-  };
+    console.log(formData)
+  }
 
   // Handle input changes
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(name);
-  };
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+    console.log(name)
+  }
 
-  const handlechecklistInputChange = (event) => {
-    const { name, value } = event.target;
-    console.log(`${name} ${value}`);
-    setaddictionInputValues({ ...addictionInputValues, [name]: value });
-    console.log(name);
-  };
+  // const handlechecklistInputChange = (event) => {
+  //   const { name, value } = event.target
+  //   console.log(`${name} ${value}`)
+  //   setaddictionInputValues({ ...addictionInputValues, [name]: value })
+  //   console.log(name)
+  // }
 
   const handleRadioChange = (event) => {
-    const value = event.target.value;
-    setshowOpenForm(value === "open");
-    setShowClosedForm(value === "closed");
-  };
+    const value = event.target.value
+    setshowOpenForm(value === "open")
+    setShowClosedForm(value === "closed")
+  }
 
   const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1);
-    setShowAdditionalInputs(true);
-  };
+    setAdditionalInputCount((prevCount) => prevCount + 1)
+    setShowAdditionalInputs(true)
+  }
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1);
-  };
+    setAdditionalInputCount((prevCount) => prevCount - 1)
+  }
 
   return (
     <>
@@ -321,7 +321,7 @@ const AddTask = () => {
         </MyButton>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default AddTask;
+export default AddTask

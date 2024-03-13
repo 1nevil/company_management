@@ -1,14 +1,5 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  //MenuItem,
-  Paper,
-  //Select,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import React, { useState } from "react"
+import { Box, Button, Stack, TextField, Typography } from "@mui/material"
 
 const DepartmentForm = () => {
   const [formData, setFormData] = useState({
@@ -17,18 +8,18 @@ const DepartmentForm = () => {
     rate: "",
     unit: "",
     companyId: "",
-  });
+  })
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(formData);
+    event.preventDefault()
+    console.log(formData)
     // Here you can add logic to submit the form data
-  };
+  }
 
   return (
     <Stack
@@ -68,7 +59,7 @@ const DepartmentForm = () => {
         </Box>
       </form>
     </Stack>
-  );
-};
+  )
+}
 
-export default DepartmentForm;
+export default DepartmentForm

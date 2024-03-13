@@ -1,40 +1,40 @@
-import React from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Delete, Edit } from "@mui/icons-material";
-import { Button, IconButton } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import AddTask from "../Components/AddTask";
-import AddIcon from "@mui/icons-material/Add";
-import MyButton from "../Components/MyButton";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link } from "react-router-dom";
+import React from "react"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { Delete, Edit } from "@mui/icons-material"
+import { Button, IconButton } from "@mui/material"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import DialogContent from "@mui/material/DialogContent"
+import DialogContentText from "@mui/material/DialogContentText"
+import DialogTitle from "@mui/material/DialogTitle"
+import AddTask from "./AddTask"
+import AddIcon from "@mui/icons-material/Add"
+import MyButton from "../../../Layout/MyButton"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import { Link } from "react-router-dom"
 
 function Task() {
-  const [open, setOpen] = React.useState(false);
-  const [scroll, setScroll] = React.useState("paper");
+  const [open, setOpen] = React.useState(false)
+  const [scroll, setScroll] = React.useState("paper")
 
   const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-    setScroll(scrollType);
-  };
+    setOpen(true)
+    setScroll(scrollType)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const descriptionElementRef = React.useRef(null);
+  const descriptionElementRef = React.useRef(null)
   React.useEffect(() => {
     if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
+      const { current: descriptionElement } = descriptionElementRef
       if (descriptionElement !== null) {
-        descriptionElement.focus();
+        descriptionElement.focus()
       }
     }
-  }, [open]);
+  }, [open])
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -166,7 +166,7 @@ function Task() {
         </>
       ),
     },
-  ];
+  ]
 
   const Tasks = [
     {
@@ -210,15 +210,15 @@ function Task() {
       teamname: "Team Y",
     },
     // Add more rows as needed
-  ];
+  ]
 
   const handleDelete = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   // const Tasks = [
   //   { id: 1, Category: "Snow" },
@@ -284,7 +284,7 @@ function Task() {
         />
       </div>
     </>
-  );
+  )
 }
 
-export default Task;
+export default Task

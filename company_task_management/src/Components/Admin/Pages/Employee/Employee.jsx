@@ -1,19 +1,19 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React from "react";
-import Box from "@mui/material/Box";
-import { IconButton } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-import { Typography } from "@mui/material";
-import EmployeeForm from "./EmployeeForm";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import React from "react"
+import Box from "@mui/material/Box"
+import { IconButton } from "@mui/material"
+import { Delete, Edit } from "@mui/icons-material"
+import { Typography } from "@mui/material"
+import EmployeeForm from "./EmployeeForm"
 
 function Employee() {
   const handleDelete = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -153,7 +153,7 @@ function Employee() {
         </>
       ),
     },
-  ];
+  ]
 
   const rows = [
     { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
@@ -165,7 +165,7 @@ function Employee() {
     { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
     { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
     { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  ];
+  ]
   return (
     <>
       <EmployeeForm></EmployeeForm>
@@ -195,7 +195,7 @@ function Employee() {
         />
       </Box>
     </>
-  );
+  )
 }
 
-export default Employee;
+export default Employee

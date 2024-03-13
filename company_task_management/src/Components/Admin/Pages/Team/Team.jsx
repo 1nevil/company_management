@@ -3,18 +3,16 @@ import Box from "@mui/material/Box"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Link } from "react-router-dom"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import MyButton from "../Components/MyButton"
 import AddIcon from "@mui/icons-material/Add"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
-import DepartmentForm from "../Components/DepartmentForm"
 import Button from "@mui/material/Button"
-import AddTeam from "../Components/AddTeam"
+import AddTeam from "./AddTeam"
 
 function Team() {
   const [openTeam, setopenTeam] = React.useState(false)
 
-  const handleDelete = () => {}
+  // const handleDelete = () => {}
 
   const handleClickOpenDepartment = () => {
     setopenTeam(true)
@@ -38,7 +36,10 @@ function Team() {
       sortable: false,
       width: 160,
       renderCell: (params) => (
-        <Link to={`/teamdetails/${params.row.id}`}>
+        <Link
+          style={{ color: "gray" }}
+          to={`/admin/teamdetails/${params.row.id}`}
+        >
           <VisibilityIcon />
         </Link>
       ),
