@@ -18,7 +18,6 @@ const DepartmentForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log(formData)
-    // Here you can add logic to submit the form data
   }
 
   return (
