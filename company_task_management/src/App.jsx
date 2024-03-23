@@ -163,7 +163,7 @@ function App() {
     },
     {
       path: "/",
-      element: <a href="/admin">admin</a>,
+      element: <Header icons={admin.icons} sidebarNames={admin.sidebar} />,
     },
   ])
   return (
