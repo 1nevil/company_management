@@ -116,8 +116,8 @@ function App() {
           element: <TaskChecker />,
         },
         {
-          Path: "EmployeeDetails",
-          element:</>
+          path: "TaskChecker",
+          element: <TaskChecker />,
         },
       ],
     },
@@ -160,6 +160,10 @@ function App() {
           element: <CheckSuperViser />,
         },
       ],
+    },
+    {
+      path: "/",
+      element: <a href="/admin">admin</a>,
     },
   ])
   return (
