@@ -18,7 +18,7 @@ import DashBord from "./Components/Admin/DashBord";
 import BucketTest from "./Components/Admin/BucketTest";
 import { Dashboard } from "@mui/icons-material";
 import CheckSuperViser from "./Components/Superviser/CheckSuperViser";
-import Register from "./Register";
+import Register from "./Components/Register";
 
 function App() {
   const iconSiderbar = {
