@@ -1,41 +1,69 @@
-import React, { useState } from "react"
-import { Box, Button, Stack, TextField, Typography } from "@mui/material"
-import AddIcon from "@mui/icons-material/Add"
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete"
+import React, { useState } from "react";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import { useFormik } from "formik";
+import { TeamSchema } from "../../../Validation/validationSchema";
 
 const AddTeam = () => {
   const [formData, setFormData] = useState({
+    TeamName: " ",
+    Employees: [],
+  });
+
+  const initValue = {
     TeamName: "",
-  })
+  };
 
-  const filter = createFilterOptions()
+  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
+    {
+      initialValues: initValue,
+      validationSchema: TeamSchema,
+      onSubmit: (data) => {
+        alert("hello world");
+        console.log(data);
+      },
+    }
+  );
 
-  const [value, setValue] = React.useState(null)
+  const filter = createFilterOptions();
 
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
 
-  const [additionalInputCount, setAdditionalInputCount] = useState(0)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setFormData({ ...formData, [name]: value })
-  }
+  const handleInputChange = (event, index) => {
+    const { name, value } = event.target;
+    const updatedEmployees = [...formData.Employees];
+    updatedEmployees[index] = value;
+    setFormData({ ...formData, Employees: updatedEmployees });
+  };
 
   const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1)
-    setShowAdditionalInputs(true)
-  }
+    setAdditionalInputCount((prevCount) => prevCount + 1);
+    setShowAdditionalInputs(true);
+    setFormData({
+      ...formData,
+      Employees: [...formData.Employees, ""],
+    });
+  };
 
-  const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1)
-  }
+  const handleDeleteInput = (index) => {
+    const updatedEmployees = [...formData.Employees];
+    updatedEmployees.splice(index, 1);
+    setFormData({
+      ...formData,
+      Employees: updatedEmployees,
+    });
+    setAdditionalInputCount((prevCount) => prevCount - 1);
+  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log(formData)
-    // Here you can add logic to submit the form data
-  }
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   console.log(formData);
+  //   // Here you can add logic to submit the form data
+  // };
 
   return (
     <Stack
@@ -55,133 +83,130 @@ const AddTeam = () => {
         <Box sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}>
           <TextField
             required
-            id="TemaName"
+            id="TeamName"
             name="TeamName"
             label="Team Name"
-            value={formData.TeamName}
-            onChange={handleInputChange}
+            // onChange={(event, handleChange) =>
+            //   setFormData({ ...formData, TeamName: event.target.value })
+            // }
+            onChange={handleChange}
+            onBlur={handleBlur}
             size="small"
           />
-
-          <br></br>
-          {showAdditionalInputs && (
-            <Box>
-              {[...Array(additionalInputCount)].map((_, index) => (
-                <div key={index}>
-                  {/* <TextField
-                    label={`check list ${index + 1}`}
-                    variant="outlined"
-                    fullWidth
-                    name={`checkList ${index + 1}`}
-                    onChange={handleInputChange}
-                    size="small"
-                  /> */}
-
-                  <Autocomplete
-                    value={value}
-                    onChange={(event, newValue) => {
-                      if (typeof newValue === "string") {
-                        setValue({
-                          title: newValue,
-                        })
-                      } else if (newValue && newValue.inputValue) {
-                        // Create a new value from the user input
-                        setValue({
-                          title: newValue.inputValue,
-                        })
-                      } else {
-                        setValue(newValue)
-                      }
-                    }}
-                    filterOptions={(options, params) => {
-                      const filtered = filter(options, params)
-
-                      const { inputValue } = params
-                      // Suggest the creation of a new value
-                      const isExisting = options.some(
-                        (option) => inputValue === option.title
-                      )
-                      if (inputValue !== "" && !isExisting) {
-                        filtered.push({
-                          inputValue,
-                          title: `Add "${inputValue}"`,
-                        })
-                      }
-
-                      return filtered
-                    }}
-                    selectOnFocus
-                    clearOnBlur
-                    handleHomeEndKeys
-                    id="free-solo-with-text-demo"
-                    options={top100Films}
-                    getOptionLabel={(option) => {
-                      // Value selected with enter, right from the input
-                      if (typeof option === "string") {
-                        return option
-                      }
-                      // Add "xxx" option created dynamically
-                      if (option.inputValue) {
-                        return option.inputValue
-                      }
-                      // Regular option
-                      return option.title
-                    }}
-                    renderOption={(props, option) => (
-                      <li {...props}>{option.title}</li>
-                    )}
-                    sx={{ width: 300 }}
-                    freeSolo
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={`Add Employee ${index + 1}`}
-                        name={`Employee ${index + 1}`}
-                        onChange={handleInputChange}
-                      />
-                    )}
-                  />
-
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      height: "2.3rem",
-                      margin: "0.5rem 0 0 0.3rem",
-                    }}
-                    color="error"
-                    onClick={handleDeleteInput}
-                  >
-                    <DeleteForeverIcon />
-                  </Button>
-                </div>
-              ))}
-            </Box>
-          )}
-
-          <Button
-            variant="outlined"
-            sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
-            onClick={handleAddInput}
-            startIcon={<AddIcon />}
-          >
-            Add Employee to chain
-          </Button>
-
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ marginTop: "20px" }}
-            color="primary"
-          >
-            Submit
-          </Button>
         </Box>
+        {errors.TeamName && touched.TeamName ? (
+          <Typography variant="caption" color="error">
+            {errors.TeamName}
+          </Typography>
+        ) : null}
+
+        <br></br>
+
+        {showAdditionalInputs && (
+          <Box>
+            {[...Array(additionalInputCount)].map((_, index) => (
+              <div key={index}>
+                <Autocomplete
+                  value={formData.Employees[index]}
+                  onChange={(event, newValue) => {
+                    const updatedEmployees = [...formData.Employees];
+                    updatedEmployees[index] = newValue;
+                    setFormData({ ...formData, Employees: updatedEmployees });
+                  }}
+                  filterOptions={(options, params) => {
+                    const filtered = filter(options, params);
+
+                    const { inputValue } = params;
+                    const isExisting = options.some(
+                      (option) => inputValue === option.title
+                    );
+                    if (inputValue !== "" && !isExisting) {
+                      filtered.push({
+                        inputValue,
+                        title: `Add "${inputValue}"`,
+                      });
+                    }
+
+                    return filtered;
+                  }}
+                  selectOnFocus
+                  clearOnBlur
+                  handleHomeEndKeys
+                  id={`free-solo-with-text-demo-${index}`}
+                  options={top100Films}
+                  getOptionLabel={(option) => {
+                    if (typeof option === "string") {
+                      return option;
+                    }
+                    if (option.inputValue) {
+                      return option.inputValue;
+                    }
+                    return option.title;
+                  }}
+                  renderOption={(props, option) => (
+                    <li {...props}>{option.title}</li>
+                  )}
+                  sx={{ width: 300 }}
+                  freeSolo
+                  renderInput={(params) => (
+                    <div style={{ display: "flex" }}>
+                      <Box>
+                        <TextField
+                          {...params}
+                          label={`Add Employee ${index + 1}`}
+                          onChange={(event) => handleChange(event, index)}
+                          name="Employee"
+                          variant="outlined"
+                          fullWidth
+                          size="small"
+                          onBlur={handleBlur}
+                        />
+                        {errors.Employee && touched.Employee ? (
+                          <Typography variant="caption" color="error">
+                            {errors.Employee}
+                          </Typography>
+                        ) : null}
+                      </Box>
+                      <Button
+                        variant="outlined"
+                        sx={{
+                          height: "2.3rem",
+                          margin: "0.0rem 0 0 0.3rem",
+                        }}
+                        color="error"
+                        onClick={() => handleDeleteInput(index)}
+                      >
+                        <DeleteForeverIcon />
+                      </Button>
+                    </div>
+                  )}
+                />
+              </div>
+            ))}
+          </Box>
+        )}
+        <Button
+          variant="outlined"
+          sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
+          onClick={handleAddInput}
+          startIcon={<AddIcon />}
+        >
+          Add Employee to Team
+        </Button>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ marginTop: "20px" }}
+          color="primary"
+        >
+          Submit
+        </Button>
       </form>
     </Stack>
-  )
-}
+  );
+};
 
-export default AddTeam
+export default AddTeam;
 
 const top100Films = [
   { title: "The Shawshank Redemption", year: 1994 },
@@ -309,4 +334,4 @@ const top100Films = [
   { title: "Snatch", year: 2000 },
   { title: "3 Idiots", year: 2009 },
   { title: "Monty Python and the Holy Grail", year: 1975 },
-]
+];

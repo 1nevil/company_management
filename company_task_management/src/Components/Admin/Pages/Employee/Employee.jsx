@@ -1,138 +1,50 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import React from "react"
-import Box from "@mui/material/Box"
-import { IconButton } from "@mui/material"
-import { Delete, Edit } from "@mui/icons-material"
-import { Typography } from "@mui/material"
-import EmployeeForm from "./EmployeeForm"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import { IconButton } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import EmployeeForm from "./EmployeeForm";
+import axios from "axios";
 
 function Employee() {
+  const [key, setKeys] = useState([]);
+  const [employees, setEmployees] = useState([]);
+
+  const fetchEmployee = async () => {
+    try {
+      const res = await axios.get("http://localhost:5036/api/Employees");
+      const data = await res.data;
+      if (res.data.length === 0) {
+        console.log("Response data is empty");
+        return;
+      }
+      setEmployees(data);
+      console.log(data);
+      const test = res.data[0];
+      setKeys(Object.keys(test));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+  };
+  useEffect(() => {
+    fetchEmployee();
+  }, []);
   const handleDelete = (id) => {
-    alert(id)
-  }
+    alert(id);
+  };
 
   const handleEdit = (id) => {
-    alert(id)
-  }
+    alert(id);
+  };
+
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    {
-      field: "firstName",
-      headerName: "First name",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "lastName",
-      headerName: "Last name",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 50,
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 50,
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 50,
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      editable: true,
-    },
+    ...key.map((k) => ({
+      field: k,
+      headerName: k,
+      width: 140,
+    })),
     {
       field: "Action",
       headerName: "Action",
@@ -141,11 +53,14 @@ function Employee() {
       width: 160,
       renderCell: (params) => (
         <>
-          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+          <IconButton
+            onClick={() => handleEdit(params.row.employeeId)}
+            title="Edit"
+          >
             <Edit />
           </IconButton>
           <IconButton
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => handleDelete(params.row.employeeId)}
             title="Delete"
           >
             <Delete sx={{ color: "red" }} />
@@ -153,19 +68,8 @@ function Employee() {
         </>
       ),
     },
-  ]
+  ];
 
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 11 },
-    { id: 6, lastName: "Melisandre", firstName: "Arya", age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  ]
   return (
     <>
       <EmployeeForm></EmployeeForm>
@@ -181,7 +85,8 @@ function Employee() {
       <Box sx={{ height: 400, width: "auto" }}>
         <DataGrid
           slots={{ toolbar: GridToolbar }}
-          rows={rows}
+          rows={employees}
+          getRowId={(row) => row.employeeId}
           columns={columns}
           initialState={{
             pagination: {
@@ -195,7 +100,7 @@ function Employee() {
         />
       </Box>
     </>
-  )
+  );
 }
 
-export default Employee
+export default Employee;

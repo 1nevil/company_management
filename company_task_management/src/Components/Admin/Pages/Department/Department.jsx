@@ -1,34 +1,35 @@
-import * as React from "react"
-import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useTheme } from "@mui/material/styles"
-import DepartmentForm from "./DepartmentForm"
-import { Box, Stack } from "@mui/material"
-import SubDepartmentForm from "./SubDepartmentForm"
-import ViewDepartment from "./ViewDepartment"
-import ViewSubDepartment from "./ViewSubDepartment"
-import AddIcon from "@mui/icons-material/Add"
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import DepartmentForm from "./DepartmentForm";
+import { Box, Stack } from "@mui/material";
+import ViewDepartment from "./ViewDepartment";
+import ViewSubDepartment from "./ViewSubDepartment";
+import AddIcon from "@mui/icons-material/Add";
+import { SubdepartmentSchema } from "../../../Validation/validationSchema";
+import SubDepartmentForm from "./SubDepartmentForm";
 
 export default function Department() {
-  const [openDepartment, setOpenDepartment] = React.useState(false)
-  const [openSubDepartment, setOpenSubDepartment] = React.useState(false)
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"))
+  const [openDepartment, setOpenDepartment] = React.useState(false);
+  const [openSubDepartment, setOpenSubDepartment] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClickOpenDepartment = () => {
-    setOpenDepartment(true)
-  }
+    setOpenDepartment(true);
+  };
 
   const handleClickOpenSubDepartment = () => {
-    setOpenSubDepartment(true)
-  }
+    setOpenSubDepartment(true);
+  };
 
   const handleClose = () => {
-    setOpenDepartment(false)
-    setOpenSubDepartment(false)
-  }
+    setOpenDepartment(false);
+    setOpenSubDepartment(false);
+  };
 
   return (
     <Stack sx={{ mt: 3 }}>
@@ -77,6 +78,7 @@ export default function Department() {
           onClose={handleClose}
           aria-labelledby="responsive-dialog-title"
         >
+          {/* <SubDepartmentForm></SubDepartmentForm> */}
           <SubDepartmentForm></SubDepartmentForm>
           <DialogActions>
             <Button autoFocus onClick={handleClose}>
@@ -93,5 +95,5 @@ export default function Department() {
     // <Stack direction={["column", "row"]} sx={{ width: "20rem" }} gap={4}>
 
     // </Stack>
-  )
+  );
 }

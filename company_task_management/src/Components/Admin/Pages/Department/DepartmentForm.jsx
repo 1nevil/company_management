@@ -1,25 +1,28 @@
-import React, { useState } from "react"
-import { Box, Button, Stack, TextField, Typography } from "@mui/material"
+import React from "react";
+import { Box, Button, Stack, Typography, TextField, Grid } from "@mui/material";
+import { useFormik } from "formik";
+import { DepartmentSchema } from "../../../Validation/validationSchema";
 
 const DepartmentForm = () => {
-  const [formData, setFormData] = useState({
+  // const handleSubmit = (values) => {
+  //   console.log(values);
+  //   // Here you can add logic to submit the form data
+  // };
+
+  const initValue = {
     departmentName: "",
-    subdepartmentName: "",
-    rate: "",
-    unit: "",
-    companyId: "",
-  })
+  };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setFormData({ ...formData, [name]: value })
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log(formData)
-    // Here you can add logic to submit the form data
-  }
+  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
+    {
+      initialValues: initValue,
+      validationSchema: DepartmentSchema,
+      onSubmit: (data) => {
+        alert("hello world");
+        console.log(data);
+      },
+    }
+  );
 
   return (
     <Stack
@@ -37,17 +40,25 @@ const DepartmentForm = () => {
           Enter Department
         </Typography>
         <Box sx={{ "& .MuiTextField-root": { m: 3, width: "25ch" } }}>
-          <TextField
-            required
-            id="departmentName"
-            name="departmentName"
-            label="Department Name"
-            value={formData.departmentName}
-            onChange={handleInputChange}
-            size="small"
-          />
-
-          <br></br>
+          <div>
+            <TextField
+              required
+              id="departmentName"
+              name="departmentName"
+              label="Department Name"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              size="small"
+            />
+          </div>
+          <div>
+            {errors.departmentName && touched.departmentName ? (
+              <Typography variant="caption" color="error">
+                {errors.departmentName}
+              </Typography>
+            ) : null}
+          </div>
+          {/* <br></br> */}
           <Button
             type="submit"
             variant="contained"
@@ -59,7 +70,7 @@ const DepartmentForm = () => {
         </Box>
       </form>
     </Stack>
-  )
-}
+  );
+};
 
-export default DepartmentForm
+export default DepartmentForm;

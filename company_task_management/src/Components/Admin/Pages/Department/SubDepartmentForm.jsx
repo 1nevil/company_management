@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react";
 import {
   Box,
   Button,
@@ -7,27 +7,34 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material"
+} from "@mui/material";
+import { Form, Field, useFormik } from "formik";
+import { SubdepartmentSchema } from "../../../Validation/validationSchema";
+
+const autoMargin = {
+  margin: "0.5rem 0rem 0.5rem 0rem",
+};
 
 const SubDepartmentForm = () => {
-  const [formData, setFormData] = useState({
+  const initValue = {
     departmentName: "",
     subdepartmentName: "",
     rate: "",
     unit: "",
     companyId: "",
-  })
+    time: "",
+  };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target
-    setFormData({ ...formData, [name]: value })
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log(formData)
-    // Here you can add logic to submit the form data
-  }
+  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
+    {
+      initialValues: initValue,
+      validationSchema: SubdepartmentSchema,
+      onSubmit: (data) => {
+        alert("hello world");
+        console.log(data);
+      },
+    }
+  );
 
   return (
     <Stack
@@ -41,67 +48,118 @@ const SubDepartmentForm = () => {
       }}
     >
       <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-        <Box sx={{ "& .MuiTextField-root": { m: 3, width: "25ch" } }}>
+        <div style={{ textAlign: "center" }}>
           <Typography color="#7986cb" variant="h5" component="h5">
-            Enter Subdepartment
+            Add Subdepartment
           </Typography>
 
-          <Select
-            required
-            sx={{ width: "14rem" }}
-            value={formData.departmentName}
-            onChange={handleInputChange}
-            name="Department"
-            displayEmpty
-            inputProps={{ "aria-label": "Department" }}
-            size="small"
-          >
-            <MenuItem value="" disabled>
-              select department
-            </MenuItem>
-            <MenuItem value={1}>Department 1</MenuItem>
-            <MenuItem value={2}>Department 2</MenuItem>
-            <MenuItem value={3}>Department 3</MenuItem>
-          </Select>
-          <br />
-          <TextField
-            required
-            id="subdepartmentName"
-            name="subdepartmentName"
-            label="subDepartment Name"
-            value={formData.subdepartmentName}
-            onChange={handleInputChange}
-            size="small"
-          />
-          <br></br>
-          <TextField
-            required
-            id="rate"
-            name="rate"
-            label="rate"
-            value={formData.rate}
-            onChange={handleInputChange}
-            size="small"
-          />
-          <br></br>
-          <TextField
-            required
-            id="unit"
-            name="unit"
-            label="unit"
-            value={formData.unit}
-            onChange={handleInputChange}
-            size="small"
-          />
+          <Box sx={autoMargin}>
+            <Select
+              as={Select}
+              required
+              sx={{ width: "14rem" }}
+              name="departmentName"
+              displayEmpty
+              inputProps={{ "aria-label": "Department" }}
+              size="small"
+              onChange={handleChange}
+              onBlur={handleBlur}
+            >
+              <MenuItem value="" disabled>
+                Select department
+              </MenuItem>
+              <MenuItem value={1}>Department 1</MenuItem>
+              <MenuItem value={2}>Department 2</MenuItem>
+              <MenuItem value={3}>Department 3</MenuItem>
+            </Select>
+          </Box>
+          {errors.departmentName && touched.departmentName ? (
+            <Typography variant="caption" color="error">
+              {errors.departmentName}
+            </Typography>
+          ) : null}
 
-          <br></br>
-          <Button type="submit" variant="contained" color="primary">
-            Submit
-          </Button>
-        </Box>
+          <Box sx={autoMargin}>
+            <TextField
+              required
+              id="subdepartmentName"
+              name="subdepartmentName"
+              label="Subdepartment Name"
+              size="small"
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </Box>
+          {errors.subdepartmentName && touched.subdepartmentName ? (
+            <Typography variant="caption" color="error">
+              {errors.subdepartmentName}
+            </Typography>
+          ) : null}
+
+          <Box sx={autoMargin}>
+            <TextField
+              required
+              id="rate"
+              name="rate"
+              label="Rate"
+              size="small"
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </Box>
+          {errors.rate && touched.rate ? (
+            <Typography variant="caption" color="error">
+              {errors.rate}
+            </Typography>
+          ) : null}
+          <Box>
+            <TextField
+              required
+              id="unit"
+              name="unit"
+              label="Unit"
+              size="small"
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </Box>
+          {errors.unit && touched.unit ? (
+            <Typography variant="caption" color="error">
+              {errors.unit}
+            </Typography>
+          ) : null}
+
+          <Box>
+            <TextField
+              required
+              id="time"
+              name="time"
+              label="time"
+              size="small"
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </Box>
+          {errors.time && touched.time ? (
+            <Typography variant="caption" color="error">
+              {errors.time}
+            </Typography>
+          ) : null}
+
+          <div>
+            <Button
+              sx={autoMargin}
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              Submit
+            </Button>
+          </div>
+        </div>
       </form>
     </Stack>
-  )
-}
+  );
+};
 
-export default SubDepartmentForm
+export default SubDepartmentForm;

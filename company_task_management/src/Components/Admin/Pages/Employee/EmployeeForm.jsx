@@ -11,9 +11,12 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Typography,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import styled from "@emotion/styled";
+import { EmployeeSchema } from "../../../Validation/validationSchema";
+import { useFormik } from "formik";
 
 const departments = ["Engineering", "Marketing", "Finance", "HR"];
 const subDepartments = {
@@ -64,7 +67,81 @@ const EmployeeForm = () => {
     employeeResume: "",
   });
 
-  const [errors, setErrors] = useState({
+  // const [errors, setErrors] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   dob: "",
+  //   address: "",
+  //   gender: "",
+  //   dateOfJoining: "",
+  //   department: "",
+  //   subDepartment: "",
+  //   adharNo: "",
+  //   email: "",
+  //   mobileNo: "",
+  //   alternateMobileNo: "",
+  //   employeeImage: "",
+  //   employeeResume: "",
+  // });
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setEmployeeData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  //   // Perform validation for each field
+  //   validateField(name, value);
+  // };
+
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "firstName":
+  //     case "lastName":
+  //     case "dob":
+  //     case "address":
+  //     case "gender":
+  //     case "dateOfJoining":
+  //     case "department":
+  //     case "subDepartment":
+  //     case "adharNo":
+  //     case "email":
+  //     case "mobileNo":
+  //     case "alternateMobileNo":
+  //     case "employeeImage":
+  //     case "employeeResume":
+  //       if (!value) {
+  //         setErrors((prevErrors) => ({
+  //           ...prevErrors,
+  //           [name]: "This field is required",
+  //         }));
+  //       } else {
+  //         setErrors((prevErrors) => ({
+  //           ...prevErrors,
+  //           [name]: "",
+  //         }));
+  //       }
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Check if there are any errors before submission
+  //   const hasErrors = Object.values(errors).some((error) => error);
+  //   if (!hasErrors) {
+  //     // Handle form submission here
+  //     console.log("Employee data submitted:", employeeData);
+  //     // Close the dialog
+  //     handleClose();
+  //   } else {
+  //     console.log("Form has errors. Please correct them.");
+  //   }
+  // };
+
+  const initValue = {
     firstName: "",
     lastName: "",
     dob: "",
@@ -79,64 +156,17 @@ const EmployeeForm = () => {
     alternateMobileNo: "",
     employeeImage: "",
     employeeResume: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEmployeeData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    // Perform validation for each field
-    validateField(name, value);
   };
-
-  const validateField = (name, value) => {
-    switch (name) {
-      case "firstName":
-      case "lastName":
-      case "dob":
-      case "address":
-      case "gender":
-      case "dateOfJoining":
-      case "department":
-      case "subDepartment":
-      case "adharNo":
-      case "email":
-      case "mobileNo":
-      case "alternateMobileNo":
-      case "employeeImage":
-      case "employeeResume":
-        if (!value) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            [name]: "This field is required",
-          }));
-        } else {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            [name]: "",
-          }));
-        }
-        break;
-      default:
-        break;
+  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
+    {
+      initialValues: initValue,
+      validationSchema: EmployeeSchema,
+      onSubmit: (data) => {
+        alert("hello world");
+        console.log(data);
+      },
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Check if there are any errors before submission
-    const hasErrors = Object.values(errors).some((error) => error);
-    if (!hasErrors) {
-      // Handle form submission here
-      console.log("Employee data submitted:", employeeData);
-      // Close the dialog
-      handleClose();
-    } else {
-      console.log("Form has errors. Please correct them.");
-    }
-  };
+  );
 
   return (
     <div>
@@ -146,7 +176,7 @@ const EmployeeForm = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Employee</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmit}>
+          <form style={{ paddingTop: "10px" }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
@@ -155,7 +185,13 @@ const EmployeeForm = () => {
                   name="firstName"
                   value={employeeData.firstName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.firstName && touched.firstName ? (
+                  <Typography variant="caption" color="error">
+                    {errors.firstName}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -164,26 +200,44 @@ const EmployeeForm = () => {
                   name="lastName"
                   value={employeeData.lastName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.lastName && touched.lastName ? (
+                  <Typography variant="caption" color="error">
+                    {errors.lastName}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
                   label="Surname"
                   name="surname"
-                  value={employeeData.surname}
+                  // value={employeeData.surname}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.surname && touched.surname ? (
+                  <Typography variant="caption" color="error">
+                    {errors.surname}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
                   type="date"
                   name="dob"
-                  value={employeeData.dob}
+                  //value={employeeData.dob}
                   onChange={handleChange}
+                  onBlur={handleBlur}
+                  label="Date of Birth"
                 />
-                <InputLabel>Date of Birth</InputLabel>
+                {errors.dob && touched.dob ? (
+                  <Typography variant="caption" color="error">
+                    {errors.dob}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -192,7 +246,13 @@ const EmployeeForm = () => {
                   name="address"
                   value={employeeData.address}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.address && touched.address ? (
+                  <Typography variant="caption" color="error">
+                    {errors.address}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <FormControl fullWidth>
@@ -201,12 +261,18 @@ const EmployeeForm = () => {
                     name="gender"
                     value={employeeData.gender}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   >
                     <MenuItem value="male">Male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
                     <MenuItem value="other">Other</MenuItem>
                   </Select>
                 </FormControl>
+                {errors.gender && touched.gender ? (
+                  <Typography variant="caption" color="error">
+                    {errors.gender}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -216,10 +282,16 @@ const EmployeeForm = () => {
                   name="dateOfJoining"
                   value={employeeData.dateOfJoining}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <InputLabel htmlFor="employee-image-file">
                   Date of Joining
                 </InputLabel>
+                {errors.dateOfJoining && touched.dateOfJoining ? (
+                  <Typography variant="caption" color="error">
+                    {errors.dateOfJoining}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -228,7 +300,13 @@ const EmployeeForm = () => {
                   name="adharNo"
                   value={employeeData.adharNo}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.adharNo && touched.adharNo ? (
+                  <Typography variant="caption" color="error">
+                    {errors.adharNo}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -237,7 +315,13 @@ const EmployeeForm = () => {
                   name="email"
                   value={employeeData.email}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.email && touched.email ? (
+                  <Typography variant="caption" color="error">
+                    {errors.email}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -246,7 +330,13 @@ const EmployeeForm = () => {
                   name="mobileNo"
                   value={employeeData.mobileNo}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.mobileNo && touched.mobileNo ? (
+                  <Typography variant="caption" color="error">
+                    {errors.mobileNo}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -255,7 +345,13 @@ const EmployeeForm = () => {
                   name="alternateMobileNo"
                   value={employeeData.alternateMobileNo}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
+                {errors.alternateMobileNo && touched.alternateMobileNo ? (
+                  <Typography variant="caption" color="error">
+                    {errors.alternateMobileNo}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -264,6 +360,7 @@ const EmployeeForm = () => {
                   name="employeeImage"
                   value={employeeData.employeeImage}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <VisuallyHiddenInput
                   id="employee-image-file"
@@ -276,10 +373,17 @@ const EmployeeForm = () => {
                       },
                     })
                   }
+                  name="employeeImage"
+                  onBlur={handleBlur}
                 />
                 <InputLabel htmlFor="employee-image-file">
                   Upload Employee Image
                 </InputLabel>
+                {errors.employeeImage && touched.employeeImage ? (
+                  <Typography variant="caption" color="error">
+                    {errors.employeeImage}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -288,6 +392,7 @@ const EmployeeForm = () => {
                   name="employeeResume"
                   value={employeeData.employeeResume}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 <VisuallyHiddenInput
                   id="employee-resume-file"
@@ -312,6 +417,7 @@ const EmployeeForm = () => {
                     name="department"
                     value={employeeData.department}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   >
                     {departments.map((department) => (
                       <MenuItem key={department} value={department}>
@@ -328,6 +434,7 @@ const EmployeeForm = () => {
                     name="subDepartment"
                     value={employeeData.subDepartment}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   >
                     {subDepartments[employeeData.department]?.map(
                       (subDepartment) => (
