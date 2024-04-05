@@ -1,23 +1,8 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
-// import About from "./Components/About"
-// import Task from "./Pages/Task"
-// import Register from "./Components/Register"
-// import BucketTest from "./Components/BucketTest"
-// import Employee from "./Pages/Employee"
-// import Team from "./Pages/Team"
-// import TeamDetails from "./Pages/TeamDetails"
-// import EmployeeForm from "./Pages/EmployeeForm"
-import CheckChecker from "./Components/Checker/CheckChecker";
+import TaskChecker from "./Components/Checker/Task/TaskChecker";
 import dashboard from "@mui/icons-material/GridView";
 import AddTask from "@mui/icons-material/AddTask";
-// import DashBordChecker from "./Components/Checker/DashBord"
-// import DashBordEmployee from "./Components/Employee/DashBord"
-// import DashBordSuperviser from "./Components/Superviser/DashBord"
-import CheckSuperViser from "./Components/Superviser/CheckSuperViser";
 import CheckEmployee from "./Components/Employee/CheckEmployee";
 import Header from "./Components/Layout/Header";
 import ListAltIcon from "@mui/icons-material/ListAlt";
@@ -32,7 +17,9 @@ import TeamDetails from "./Components/Admin/Pages/Team/TeamDetails";
 import DashBord from "./Components/Admin/DashBord";
 import BucketTest from "./Components/Admin/BucketTest";
 import { Dashboard } from "@mui/icons-material";
-import Register from "./Components/Register";
+import CheckSuperViser from "./Components/Superviser/CheckSuperViser";
+import Register from "./Register";
+
 function App() {
   const iconSiderbar = {
     admin: {
@@ -54,8 +41,8 @@ function App() {
       ],
     },
     checker: {
-      icons: [dashboard],
-      sidebar: ["dashboard"],
+      icons: [AddTask],
+      sidebar: ["Task"],
     },
     employee: {
       icons: [dashboard],
@@ -126,8 +113,12 @@ function App() {
           element: <h1>Hello</h1>,
         },
         {
-          path: "checkr",
-          element: <CheckChecker />,
+          path: "TaskChecker",
+          element: <TaskChecker />,
+        },
+        {
+          path: "TaskChecker",
+          element: <TaskChecker />,
         },
       ],
     },
@@ -171,10 +162,14 @@ function App() {
           element: <h1>Hello</h1>,
         },
         {
-          path: "checkr",
+          path: "checker",
           element: <CheckSuperViser />,
         },
       ],
+    },
+    {
+      path: "/",
+      element: <Header icons={admin.icons} sidebarNames={admin.sidebar} />,
     },
   ]);
   return (
