@@ -19,9 +19,16 @@ import BucketTest from "./Components/Admin/BucketTest";
 import { Dashboard } from "@mui/icons-material";
 import CheckSuperViser from "./Components/Superviser/CheckSuperViser";
 import Register from "./Components/Register";
+import PositionFrom from "./Components/Admin/Pages/Department/PositionForm";
+import Superadmin from "./Components/Superadmin/Superadmin";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import ApprovedAdmins from "./Components/Superadmin/ApprovedAdmins";
+import DisapprovedAdmins from "./Components/Superadmin/DisapprovedAdmins";
 
 function App() {
   const iconSiderbar = {
+    // admin started
     admin: {
       icons: [
         Dashboard,
@@ -52,10 +59,14 @@ function App() {
       icons: [dashboard],
       sidebar: ["dashboard"],
     },
+    superadmin: {
+      icons: [dashboard, CheckCircleOutlinedIcon, CancelOutlinedIcon],
+      sidebar: ["dashboard", "Approved", "Disapproved"],
+    },
   };
 
   //distructure for easyly accesss
-  const { admin, checker, employee, superviser } = iconSiderbar;
+  const { admin, checker, employee, superviser, superadmin } = iconSiderbar;
 
   const router = createBrowserRouter([
     {
@@ -75,6 +86,10 @@ function App() {
         {
           path: "department",
           element: <DepartmentCom />,
+        },
+        {
+          path: "Position",
+          element: <PositionFrom />,
         },
         {
           path: "employee",
@@ -167,6 +182,36 @@ function App() {
         },
       ],
     },
+    // superadmin start
+    {
+      path: "/superadmin",
+      element: (
+        <Header
+          link="superadmin"
+          icons={superadmin.icons}
+          sidebarNames={superadmin.sidebar}
+        />
+      ),
+      children: [
+        {
+          index: true,
+          element: <Superadmin />,
+        },
+        {
+          path: "dashboard",
+          element: <Superadmin />,
+        },
+        {
+          path: "approved",
+          element: <ApprovedAdmins />,
+        },
+        {
+          path: "disapproved",
+          element: <DisapprovedAdmins />,
+        },
+      ],
+    },
+    // superadmin end
     {
       path: "/",
       element: <Header icons={admin.icons} sidebarNames={admin.sidebar} />,
