@@ -42,7 +42,6 @@ const EmployeeForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
   const initValue = {
     firstName: "",
     lastName: "",
@@ -50,8 +49,6 @@ const EmployeeForm = () => {
     address: "",
     gender: "",
     dateOfJoining: "",
-    department: "",
-    subDepartment: "",
     adharNo: "",
     email: "",
     mobileNo: "",
@@ -66,7 +63,7 @@ const EmployeeForm = () => {
       initialValues: initValue,
       validationSchema: EmployeeSchema,
       onSubmit: (data) => {
-        alert("hello world");
+        alert("Form Submitted!");
         console.log(data);
       },
     }
@@ -261,7 +258,7 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Rate"
-                  name="Rate"
+                  name="rate"
                   // value={employeeData.alternateMobileNo}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -284,16 +281,7 @@ const EmployeeForm = () => {
                 <VisuallyHiddenInput
                   id="employee-image-file"
                   type="file"
-                  onChange={(e) =>
-                    handleChange({
-                      target: {
-                        name: "employeeImage",
-                        value: e.target.files[0],
-                      },
-                    })
-                  }
                   name="employeeImage"
-                  onBlur={handleBlur}
                 />
                 <InputLabel htmlFor="employee-image-file">
                   Upload Employee Image
@@ -313,18 +301,7 @@ const EmployeeForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <VisuallyHiddenInput
-                  id="employee-resume-file"
-                  type="file"
-                  onChange={(e) =>
-                    handleChange({
-                      target: {
-                        name: "employeeResume",
-                        value: e.target.files[0],
-                      },
-                    })
-                  }
-                />
+                <VisuallyHiddenInput id="employee-resume-file" type="file" />
                 <InputLabel htmlFor="employee-resume-file">
                   Upload Employee Resume
                 </InputLabel>
@@ -333,10 +310,8 @@ const EmployeeForm = () => {
                 <FormControl fullWidth>
                   <InputLabel>Positions</InputLabel>
                   <Select
-                    name="Positions"
-                    // value={employeeData.Positions}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    name="position"
+                    //value={initValue.position}
                   >
                     {Positions.map((department) => (
                       <MenuItem key={department} value={department}>
