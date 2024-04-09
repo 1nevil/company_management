@@ -19,7 +19,7 @@ const DepartmentForm = () => {
       validationSchema: DepartmentSchema,
       onSubmit: (data) => {
         alert("hello world");
-        console.log(data);
+        console(data);
       },
     }
   );

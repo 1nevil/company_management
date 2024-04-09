@@ -1,24 +1,24 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./App.css";
-import TaskChecker from "./Components/Checker/Task/TaskChecker";
-import dashboard from "@mui/icons-material/GridView";
-import AddTask from "@mui/icons-material/AddTask";
-import CheckEmployee from "./Components/Employee/CheckEmployee";
-import Header from "./Components/Layout/Header";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import PeopleIcon from "@mui/icons-material/People";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import DepartmentIcon from "@mui/icons-material/AddBox";
-import DepartmentCom from "./Components/Admin/Pages/Department/Department";
-import Employee from "./Components/Admin/Pages/Employee/Employee";
-import Task from "./Components/Admin/Pages/Task/Task";
-import Team from "./Components/Admin/Pages/Team/Team";
-import TeamDetails from "./Components/Admin/Pages/Team/TeamDetails";
-import DashBord from "./Components/Admin/DashBord";
-import BucketTest from "./Components/Admin/BucketTest";
-import { Dashboard } from "@mui/icons-material";
-import CheckSuperViser from "./Components/Superviser/CheckSuperViser";
-import Register from "./Components/Register";
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import "./App.css"
+import TaskChecker from "./Components/Checker/Task/TaskChecker"
+import dashboard from "@mui/icons-material/GridView"
+import AddTask from "@mui/icons-material/AddTask"
+import CheckEmployee from "./Components/Employee/CheckEmployee"
+import Header from "./Components/Layout/Header"
+import ListAltIcon from "@mui/icons-material/ListAlt"
+import PeopleIcon from "@mui/icons-material/People"
+import Diversity3Icon from "@mui/icons-material/Diversity3"
+import DepartmentIcon from "@mui/icons-material/AddBox"
+import DepartmentCom from "./Components/Admin/Pages/Department/Department"
+import Employee from "./Components/Admin/Pages/Employee/Employee"
+import Task from "./Components/Admin/Pages/Task/Task"
+import Team from "./Components/Admin/Pages/Team/Team"
+import TeamDetails from "./Components/Admin/Pages/Team/TeamDetails"
+import DashBord from "./Components/Admin/DashBord"
+import BucketTest from "./Components/Admin/BucketTest"
+import { Dashboard } from "@mui/icons-material"
+import CheckSuperViser from "./Components/Superviser/CheckSuperViser"
+import Register from "./Components/Register"
 
 function App() {
   const iconSiderbar = {
@@ -52,10 +52,10 @@ function App() {
       icons: [dashboard],
       sidebar: ["dashboard"],
     },
-  };
+  }
 
   //distructure for easyly accesss
-  const { admin, checker, employee, superviser } = iconSiderbar;
+  const { admin, checker, employee, superviser } = iconSiderbar
 
   const router = createBrowserRouter([
     {
@@ -171,12 +171,12 @@ function App() {
       path: "/",
       element: <Header icons={admin.icons} sidebarNames={admin.sidebar} />,
     },
-  ]);
+  ])
   return (
     <>
       <RouterProvider router={router} />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
