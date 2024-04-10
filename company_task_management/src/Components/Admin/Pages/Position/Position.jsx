@@ -1,59 +1,60 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-// import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import { IconButton } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-import { Typography } from "@mui/material";
-// import { useDispatch, useSelector } from "react-redux";
-// import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import PositionForm from "./PositionForm";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import React, { useEffect } from "react"
+import Box from "@mui/material/Box"
+import { IconButton } from "@mui/material"
+import { Delete, Edit } from "@mui/icons-material"
+import { Typography } from "@mui/material"
+import { useDispatch, useSelector } from "react-redux"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import PositionForm from "./PositionForm"
+import { deletePosition, fetchPosition } from "../../../../Slices/PositionSlice"
 
 function Position() {
-  //   const dispatch = useDispatch();
-  //   const employeess = useSelector((state) => state.Employee.employees);
+  const dispatch = useDispatch()
+  const Positions = useSelector((state) => state.Position.positions)
 
-  //   const handleDelete = (id, name) => {
-  //     dispatch(deleteEmp(id));
-  //     notify(name);
-  //   };
+  const handleDelete = (id, position) => {
+    dispatch(deletePosition(id))
+    notify(position)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
-  //   useEffect(() => {
-  //     dispatch(fetchEmp());
-  //   }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchPosition())
+  }, [dispatch])
 
-  //   const notify = (name) => toast(name + "is deleted !");
+  const notify = (position) => toast(position + " is deleted !")
 
   const columns = [
     {
-      field: "PositionName",
-      headerName: "PositionName",
+      field: "positionName",
+      headerName: "Position Name",
       width: 140,
     },
     {
-      field: "Duration",
+      field: "duration",
       headerName: "Duration",
       width: 140,
     },
     {
-      field: "Unit",
+      field: "unit",
       headerName: "Unit",
       width: 140,
     },
     {
-      field: "Unitname",
-      headerName: "Unitname",
+      field: "unitName",
+      headerName: "Unit Name",
       width: 140,
     },
     {
-      field: "Rate",
+      field: "rate",
       headerName: "Rate",
       width: 140,
+      valueFormatter: (params) => `${params.value} Rs`,
     },
     {
       field: "Action",
@@ -64,15 +65,15 @@ function Position() {
       renderCell: (params) => (
         <>
           <IconButton
-            onClick={() => handleEdit(params.row.Positionid)}
+            onClick={() => handleEdit(params.row.positionId)}
             title="Edit"
           >
             <Edit />
           </IconButton>
           <IconButton
-            // onClick={() =>
-            //   handleDelete(params.row.employeeId, params.row.employeeName)
-            // }
+            onClick={() =>
+              handleDelete(params.row.positionId, params.row.positionName)
+            }
             title="Delete"
           >
             <Delete sx={{ color: "red" }} />
@@ -80,7 +81,7 @@ function Position() {
         </>
       ),
     },
-  ];
+  ]
 
   return (
     <>
@@ -97,8 +98,8 @@ function Position() {
           Position
         </Typography>
         <DataGrid
-          rows={""}
-          getRowId={(row) => row.Positionid}
+          rows={Positions}
+          getRowId={(row) => row.positionId}
           columns={columns}
           slots={{ toolbar: GridToolbar }}
           initialState={{
@@ -112,7 +113,7 @@ function Position() {
         />
       </Box>
     </>
-  );
+  )
 }
 
-export default Position;
+export default Position

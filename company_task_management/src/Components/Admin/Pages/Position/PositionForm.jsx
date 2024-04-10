@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   TextField,
   Button,
@@ -12,11 +12,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from "@mui/material";
+} from "@mui/material"
 // import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import styled from "@emotion/styled";
-import { useFormik } from "formik";
-import { PositionSchema } from "../../../Validation/validationSchema";
+import styled from "@emotion/styled"
+import { useFormik } from "formik"
+import { PositionSchema } from "../../../Validation/validationSchema"
+import { insertPosition, fetchPosition } from "../../../../Slices/PositionSlice"
+import { useDispatch } from "react-redux"
 
 // const Positions = ["Engineering", "Marketing", "Finance", "HR"];
 
@@ -30,35 +32,38 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
 const PositionForm = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
+  const dispatch = useDispatch()
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   const initValue = {
     PositionName: "",
     Duration: "",
     Unit: "",
     Unitname: "",
     Rate: "",
-  };
+  }
+
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: PositionSchema,
       onSubmit: (data) => {
-        alert("Form Submitted!");
-        console.log(data);
+        dispatch(insertPosition(data))
+        dispatch(fetchPosition())
+        setOpen(false)
       },
     }
-  );
+  )
 
   return (
     <div>
@@ -163,7 +168,7 @@ const PositionForm = () => {
         </DialogActions>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default PositionForm;
+export default PositionForm

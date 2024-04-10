@@ -27,7 +27,7 @@ export const deletePosition = createAsyncThunk(
   }
 )
 
-export const updatePosition = createAsyncThunk(
+export const insertPosition = createAsyncThunk(
   "position/insertPosition",
   async (position) => {
     await insertPositionData(position)
@@ -48,6 +48,29 @@ export const PositionSlice = createSlice({
         state.positions = action.payload
       })
       .addCase(fetchPosition.rejected, (state, action) => {
+        state.error = action.payload
+      })
+      .addCase(deletePosition.pending, (state) => {
+        state.pendding = true
+      })
+      .addCase(deletePosition.fulfilled, (state, action) => {
+        state.pendding = false
+        state.positions = state.positions.filter(
+          (position) => position.positionId !== action.payload
+        )
+      })
+      .addCase(deletePosition.rejected, (state, action) => {
+        state.error = action.payload
+      })
+      .addCase(insertPosition.pending, (state) => {
+        state.pendding = true
+      })
+      .addCase(insertPosition.fulfilled, (state, action) => {
+        state.pendding = false
+        // state.positions.push(action.payload)
+        // state.positions
+      })
+      .addCase(insertPosition.rejected, (state, action) => {
         state.error = action.payload
       })
   },
