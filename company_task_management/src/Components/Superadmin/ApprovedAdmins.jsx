@@ -1,22 +1,26 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React from "react";
-import { Link } from "react-router-dom";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import React, { useEffect } from "react"
+import { IconButton } from "@mui/material"
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  allApproveEmps,
+  approveDisapproveEmp,
+} from "../../Slices/EmployeeSlice"
 
 function ApprovedAdmins() {
-  const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch()
+  const employeess = useSelector((state) => state.Employee.employees)
 
-  const handleClickOpenModel = () => {
-    setOpen(true);
-  };
-  const handleCloseModel = () => {
-    setOpen(false);
-  };
+  useEffect(() => {
+    dispatch(allApproveEmps())
+  }, [dispatch])
+
+  const handleClick = (id) => {
+    dispatch(approveDisapproveEmp(id))
+  }
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "AdminName", headerName: "Admin Name", width: 120 },
-    { field: "Email", headerName: "Email", width: 250 },
     {
       field: "Reject",
       headerName: "Reject",
@@ -24,39 +28,67 @@ function ApprovedAdmins() {
       sortable: false,
       width: 160,
       renderCell: (params) => (
-        <Link
-          style={{ color: "gray" }}
-          to={`/admin/teamdetails/${params.row.id}`}
+        <IconButton
+          onClick={() => handleClick(params.row.employeeId)}
+          title="Edit"
         >
-          <CancelOutlinedIcon />
-        </Link>
+          <CancelOutlinedIcon sx={{ color: "red" }} />
+        </IconButton>
       ),
     },
-  ];
-
-  const teams = [
     {
-      id: 1,
-      AdminName: "vikram",
-      Email: "Nevil@gmail.com",
+      field: "employeeName",
+      headerName: "Name",
+      width: 140,
     },
     {
-      id: 2,
-      AdminName: "nevil",
-      Email: "Nevil@gmail.com",
+      field: "employeeEmail",
+      headerName: "Email",
+      width: 180,
     },
     {
-      id: 3,
-      AdminName: "nevil",
-      Email: "Nevil@gmail.com",
+      field: "employeeAge",
+      headerName: "Age",
+      width: 140,
     },
-  ];
+    {
+      field: "mobileNumber",
+      headerName: "MobileNumber",
+      width: 140,
+    },
+    {
+      field: "altmobileNumber",
+      headerName: "Birth date",
+      width: 140,
+    },
+    {
+      field: "dob",
+      headerName: "AdharNumber",
+      width: 140,
+    },
+    {
+      field: "adharNumber",
+      headerName: "Image",
+      width: 140,
+    },
+    {
+      field: "employeeImage",
+      headerName: "Resume",
+      width: 140,
+    },
+    {
+      field: "employeeResume",
+      headerName: "Resume",
+      width: 140,
+    },
+  ]
 
   return (
     <div>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
-        rows={teams}
+        rows={employeess}
+        getRowId={(row) => row.employeeId}
         columns={columns}
         initialState={{
           pagination: {
@@ -69,7 +101,7 @@ function ApprovedAdmins() {
         disableRowSelectionOnClick
       />
     </div>
-  );
+  )
 }
 
-export default ApprovedAdmins;
+export default ApprovedAdmins
