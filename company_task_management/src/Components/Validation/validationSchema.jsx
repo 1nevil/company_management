@@ -58,3 +58,11 @@ export const TaskSchema = Yup.object({
   set_Reminder: Yup.string().required("set_Reminder is required"),
   teamname: Yup.string().required("teamname is required"),
 });
+
+export const PositionSchema = Yup.object({
+  PositionName: Yup.string().required("**PositionName name is required"),
+  Duration: Yup.number().required("**only number are allow "),
+  Unit: Yup.string().required("**unit is required"),
+  Unitname: Yup.string().required("**Unitname name is required"),
+  Rate: Yup.number().required("**Rate name is required"),
+});

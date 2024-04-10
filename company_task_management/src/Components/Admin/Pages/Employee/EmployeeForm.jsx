@@ -132,13 +132,16 @@ const EmployeeForm = () => {
                   //value={employeeData.dob}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  label="Date of Birth"
+                  //label="Date of Birth"
                 />
-                {errors.dob && touched.dob ? (
-                  <Typography variant="caption" color="error">
-                    {errors.dob}
-                  </Typography>
-                ) : null}
+                <InputLabel htmlFor="employee-image-file">
+                  Date of Joining
+                  {errors.dob && touched.dob ? (
+                    <Typography variant="caption" color="error">
+                      {errors.dob}
+                    </Typography>
+                  ) : null}
+                </InputLabel>
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -187,12 +190,12 @@ const EmployeeForm = () => {
                 />
                 <InputLabel htmlFor="employee-image-file">
                   Date of Joining
+                  {errors.dateOfJoining && touched.dateOfJoining ? (
+                    <Typography variant="caption" color="error">
+                      {errors.dateOfJoining}
+                    </Typography>
+                  ) : null}
                 </InputLabel>
-                {errors.dateOfJoining && touched.dateOfJoining ? (
-                  <Typography variant="caption" color="error">
-                    {errors.dateOfJoining}
-                  </Typography>
-                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -283,7 +286,10 @@ const EmployeeForm = () => {
                   type="file"
                   name="employeeImage"
                 />
-                <InputLabel htmlFor="employee-image-file">
+                <InputLabel
+                  htmlFor="employee-image-file"
+                  style={{ marginTop: "5px" }}
+                >
                   Upload Employee Image
                 </InputLabel>
                 {errors.employeeImage && touched.employeeImage ? (
@@ -302,7 +308,10 @@ const EmployeeForm = () => {
                   onBlur={handleBlur}
                 />
                 <VisuallyHiddenInput id="employee-resume-file" type="file" />
-                <InputLabel htmlFor="employee-resume-file">
+                <InputLabel
+                  htmlFor="employee-resume-file"
+                  style={{ marginTop: "5px" }}
+                >
                   Upload Employee Resume
                 </InputLabel>
               </Grid>

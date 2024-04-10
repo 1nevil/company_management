@@ -19,12 +19,14 @@ import BucketTest from "./Components/Admin/BucketTest";
 import { Dashboard } from "@mui/icons-material";
 import CheckSuperViser from "./Components/Superviser/CheckSuperViser";
 import Register from "./Components/Register";
-import PositionFrom from "./Components/Admin/Pages/Department/PositionForm";
 import Superadmin from "./Components/Superadmin/Superadmin";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import ApprovedAdmins from "./Components/Superadmin/ApprovedAdmins";
 import DisapprovedAdmins from "./Components/Superadmin/DisapprovedAdmins";
+import PositionForm from "./Components/Admin/Pages/Position/PositionForm";
+import Position from "./Components/Admin/Pages/Position/Position";
+import StreetviewIcon from "@mui/icons-material/Streetview";
 
 function App() {
   const iconSiderbar = {
@@ -37,6 +39,7 @@ function App() {
         ListAltIcon,
         PeopleIcon,
         Diversity3Icon,
+        StreetviewIcon,
       ],
       sidebar: [
         "dashbord",
@@ -45,6 +48,7 @@ function App() {
         "BucketTest",
         "Employee",
         "Team",
+        "Position",
       ],
     },
     checker: {
@@ -89,7 +93,7 @@ function App() {
         },
         {
           path: "Position",
-          element: <PositionFrom />,
+          element: <Position />,
         },
         {
           path: "employee",
@@ -216,12 +220,12 @@ function App() {
       path: "/",
       element: <Header icons={admin.icons} sidebarNames={admin.sidebar} />,
     },
-  ])
+  ]);
   return (
     <>
       <RouterProvider router={router} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
