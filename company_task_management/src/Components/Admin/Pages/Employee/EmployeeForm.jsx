@@ -42,7 +42,6 @@ const EmployeeForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
   const initValue = {
     firstName: "",
     lastName: "",
@@ -50,8 +49,6 @@ const EmployeeForm = () => {
     address: "",
     gender: "",
     dateOfJoining: "",
-    department: "",
-    subDepartment: "",
     adharNo: "",
     email: "",
     mobileNo: "",
@@ -66,7 +63,7 @@ const EmployeeForm = () => {
       initialValues: initValue,
       validationSchema: EmployeeSchema,
       onSubmit: (data) => {
-        alert("hello world");
+        alert("Form Submitted!");
         console.log(data);
       },
     }
@@ -135,13 +132,16 @@ const EmployeeForm = () => {
                   //value={employeeData.dob}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  label="Date of Birth"
+                  //label="Date of Birth"
                 />
-                {errors.dob && touched.dob ? (
-                  <Typography variant="caption" color="error">
-                    {errors.dob}
-                  </Typography>
-                ) : null}
+                <InputLabel htmlFor="employee-image-file">
+                  Date of Joining
+                  {errors.dob && touched.dob ? (
+                    <Typography variant="caption" color="error">
+                      {errors.dob}
+                    </Typography>
+                  ) : null}
+                </InputLabel>
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -190,12 +190,12 @@ const EmployeeForm = () => {
                 />
                 <InputLabel htmlFor="employee-image-file">
                   Date of Joining
+                  {errors.dateOfJoining && touched.dateOfJoining ? (
+                    <Typography variant="caption" color="error">
+                      {errors.dateOfJoining}
+                    </Typography>
+                  ) : null}
                 </InputLabel>
-                {errors.dateOfJoining && touched.dateOfJoining ? (
-                  <Typography variant="caption" color="error">
-                    {errors.dateOfJoining}
-                  </Typography>
-                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -261,7 +261,7 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Rate"
-                  name="Rate"
+                  name="rate"
                   // value={employeeData.alternateMobileNo}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -284,18 +284,12 @@ const EmployeeForm = () => {
                 <VisuallyHiddenInput
                   id="employee-image-file"
                   type="file"
-                  onChange={(e) =>
-                    handleChange({
-                      target: {
-                        name: "employeeImage",
-                        value: e.target.files[0],
-                      },
-                    })
-                  }
                   name="employeeImage"
-                  onBlur={handleBlur}
                 />
-                <InputLabel htmlFor="employee-image-file">
+                <InputLabel
+                  htmlFor="employee-image-file"
+                  style={{ marginTop: "5px" }}
+                >
                   Upload Employee Image
                 </InputLabel>
                 {errors.employeeImage && touched.employeeImage ? (
@@ -313,19 +307,11 @@ const EmployeeForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <VisuallyHiddenInput
-                  id="employee-resume-file"
-                  type="file"
-                  onChange={(e) =>
-                    handleChange({
-                      target: {
-                        name: "employeeResume",
-                        value: e.target.files[0],
-                      },
-                    })
-                  }
-                />
-                <InputLabel htmlFor="employee-resume-file">
+                <VisuallyHiddenInput id="employee-resume-file" type="file" />
+                <InputLabel
+                  htmlFor="employee-resume-file"
+                  style={{ marginTop: "5px" }}
+                >
                   Upload Employee Resume
                 </InputLabel>
               </Grid>
@@ -333,10 +319,8 @@ const EmployeeForm = () => {
                 <FormControl fullWidth>
                   <InputLabel>Positions</InputLabel>
                   <Select
-                    name="Positions"
-                    // value={employeeData.Positions}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    name="position"
+                    //value={initValue.position}
                   >
                     {Positions.map((department) => (
                       <MenuItem key={department} value={department}>
