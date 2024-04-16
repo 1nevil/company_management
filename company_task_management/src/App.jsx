@@ -12,8 +12,6 @@ import DepartmentIcon from "@mui/icons-material/AddBox";
 import DepartmentCom from "./Components/Admin/Pages/Department/Department";
 import Employee from "./Components/Admin/Pages/Employee/Employee";
 import Task from "./Components/Admin/Pages/Task/Task";
-import Team from "./Components/Admin/Pages/Team/Team";
-import TeamDetails from "./Components/Admin/Pages/Team/TeamDetails";
 import DashBord from "./Components/Admin/DashBord";
 import BucketTest from "./Components/Admin/BucketTest";
 import { Dashboard } from "@mui/icons-material";
@@ -27,6 +25,9 @@ import DisapprovedAdmins from "./Components/Superadmin/DisapprovedAdmins";
 import PositionForm from "./Components/Admin/Pages/Position/PositionForm";
 import Position from "./Components/Admin/Pages/Position/Position";
 import StreetviewIcon from "@mui/icons-material/Streetview";
+//import Chain from "./Components/Admin/Pages/Chain/Chain";
+import ChainDetails from "./Components/Admin/Pages/Chain/ChainDetails";
+import Chain from "./Components/Admin/Pages/Chain/Chain";
 
 function App() {
   const iconSiderbar = {
@@ -47,7 +48,7 @@ function App() {
         "Department",
         "BucketTest",
         "Employee",
-        "Team",
+        "Chain",
         "Position",
       ],
     },
@@ -104,16 +105,20 @@ function App() {
           element: <Task />,
         },
         {
-          path: "team",
-          element: <Team />,
+          path: "chain",
+          element: <Chain />,
         },
         {
-          path: "teamdetails/:chainid",
-          element: <TeamDetails />,
+          path: "chaindetails/:chainid",
+          element: <ChainDetails />,
         },
         {
           path: "BucketTest",
           element: <BucketTest />,
+        },
+        {
+          path: "AddChain",
+          element: <Chain />,
         },
       ],
     },
