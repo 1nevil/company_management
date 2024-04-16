@@ -44,23 +44,15 @@ export const EmployeeSchema = Yup.object({
 export const TaskSchema = Yup.object({
   taskName: Yup.string().required("**Task Name is required"),
   rate: Yup.number().required("number is required"),
-  role_id: Yup.string(),
-  task_dependency: Yup.string().required("task_dependency is required"),
   unit: Yup.string().required("unit is required"),
   instructions: Yup.string().required("instructions is required"),
-  start_date: Yup.date().required("start_date is required"),
-  end_date_increase_time: Yup.date().required(
-    "end_date_increase_time is required"
-  ),
-  employee_id: Yup.string().required("employee_id is required"),
+  //start_date: Yup.date().required("start_date is required"),
+  // end_date_increase_time: Yup.date().required(
+  //   "end_date_increase_time is required"
+  // ),
   description: Yup.string().required("description is required"),
-  department: Yup.string().required("department is required"),
-  subdepartment_id: Yup.string().required("subdepartment_id is required"),
-  task_status: Yup.string().required("task_status is required"),
-  duration: Yup.string().required("duration is required"),
-  checklist: Yup.string().required("checklist is required"),
-  set_Reminder: Yup.string().required("set_Reminder is required"),
-  teamname: Yup.string().required("teamname is required"),
+  //checklist: Yup.string().required("checklist is required"),
+  // //teamname: Yup.string().required("teamname is required"),
 })
 
 export const PositionSchema = Yup.object({
@@ -69,4 +61,11 @@ export const PositionSchema = Yup.object({
   Unit: Yup.string().required("**unit is required"),
   Unitname: Yup.string().required("**Unitname name is required"),
   Rate: Yup.number().required("**Rate name is required"),
+})
+
+export const ChainSchema = Yup.object({
+  ChainName: Yup.string().required("**Chainname name is required"),
+})
+export const ChainDetailSchema = Yup.object({
+  chainId: Yup.string().required("**chainId name is required"),
 })
