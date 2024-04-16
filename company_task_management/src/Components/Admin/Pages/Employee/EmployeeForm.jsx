@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   TextField,
   Button,
@@ -12,13 +12,14 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-} from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import styled from "@emotion/styled";
-import { EmployeeSchema } from "../../../Validation/validationSchema";
-import { useFormik } from "formik";
-
-const Positions = ["Engineering", "Marketing", "Finance", "HR"];
+  OutlinedInput,
+} from "@mui/material"
+import styled from "@emotion/styled"
+import { EmployeeSchema } from "../../../Validation/validationSchema"
+import { useFormik } from "formik"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { insertEmp } from "../../../../Slices/EmployeeSlice"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -30,44 +31,59 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
 const EmployeeForm = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
+  const positions = useSelector((state) => state.Position.positions)
+  const dispatch = useDispatch()
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   const initValue = {
-    firstName: "",
-    lastName: "",
+    employeeName: "",
     dob: "",
-    address: "",
+    addressEmployee: "",
     gender: "",
     dateOfJoining: "",
-    adharNo: "",
-    email: "",
-    mobileNo: "",
-    alternateMobileNo: "",
+    adharNumber: "",
+    employeeAge: 0,
+    employeeEmail: "",
+    mobileNumber: "",
+    altmobileNumber: "",
     employeeImage: "",
     employeeResume: "",
-    rate: "",
-    position: "",
-  };
+    // rate: "",
+    positionId: "",
+  }
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: EmployeeSchema,
-      onSubmit: (data) => {
-        alert("Form Submitted!");
-        console.log(data);
+      onSubmit: async (data) => {
+        alert(data)
+        const employeeData = {
+          ...data,
+          roleId: 4,
+          isActive: "1",
+          employeePassword: "xyzABC",
+          position: null,
+          role: null,
+        }
+        dispatch(insertEmp(employeeData))
+        handleClose()
       },
     }
-  );
+  )
+
+  useEffect(() => {
+    dispatch(fetchPosition())
+  }, [dispatch])
 
   return (
     <div>
@@ -79,48 +95,34 @@ const EmployeeForm = () => {
         <DialogContent>
           <form style={{ paddingTop: "10px" }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="First Name"
-                  name="firstName"
+                  label="Full name"
+                  name="employeeName"
                   //value={employeeData.firstName}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.firstName && touched.firstName ? (
+                {errors.employeeName && touched.employeeName ? (
                   <Typography variant="caption" color="error">
-                    {errors.firstName}
+                    {errors.employeeName}
                   </Typography>
                 ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  label="Last Name"
-                  name="lastName"
-                  // value={employeeData.lastName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.lastName && touched.lastName ? (
-                  <Typography variant="caption" color="error">
-                    {errors.lastName}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Surname"
-                  name="surname"
+                  label="age"
+                  name="employeeAge"
                   //value={employeeData.surname}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  type="number"
                 />
-                {errors.surname && touched.surname ? (
+                {errors.employeeAge && touched.employeeAge ? (
                   <Typography variant="caption" color="error">
-                    {errors.surname}
+                    {errors.employeeAge}
                   </Typography>
                 ) : null}
               </Grid>
@@ -135,7 +137,7 @@ const EmployeeForm = () => {
                   //label="Date of Birth"
                 />
                 <InputLabel htmlFor="employee-image-file">
-                  Date of Joining
+                  Date of Birth
                   {errors.dob && touched.dob ? (
                     <Typography variant="caption" color="error">
                       {errors.dob}
@@ -143,18 +145,20 @@ const EmployeeForm = () => {
                   ) : null}
                 </InputLabel>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label="Address"
-                  name="address"
+                  name="addressEmployee"
+                  multiline
+                  rows={3}
                   // value={employeeData.address}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.address && touched.address ? (
+                {errors.addressEmployee && touched.addressEmployee ? (
                   <Typography variant="caption" color="error">
-                    {errors.address}
+                    {errors.addressEmployee}
                   </Typography>
                 ) : null}
               </Grid>
@@ -162,8 +166,9 @@ const EmployeeForm = () => {
                 <FormControl fullWidth>
                   <InputLabel>Gender</InputLabel>
                   <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
                     name="gender"
-                    // value={employeeData.gender}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   >
@@ -172,6 +177,7 @@ const EmployeeForm = () => {
                     <MenuItem value="other">Other</MenuItem>
                   </Select>
                 </FormControl>
+
                 {errors.gender && touched.gender ? (
                   <Typography variant="caption" color="error">
                     {errors.gender}
@@ -201,14 +207,14 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Adhar No"
-                  name="adharNo"
+                  name="adharNumber"
                   // value={employeeData.adharNo}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.adharNo && touched.adharNo ? (
+                {errors.adharNumber && touched.adharNumber ? (
                   <Typography variant="caption" color="error">
-                    {errors.adharNo}
+                    {errors.adharNumber}
                   </Typography>
                 ) : null}
               </Grid>
@@ -216,14 +222,14 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Email"
-                  name="email"
+                  name="employeeEmail"
                   // value={employeeData.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.email && touched.email ? (
+                {errors.employeeEmail && touched.employeeEmail ? (
                   <Typography variant="caption" color="error">
-                    {errors.email}
+                    {errors.employeeEmail}
                   </Typography>
                 ) : null}
               </Grid>
@@ -231,14 +237,14 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Mobile No"
-                  name="mobileNo"
+                  name="mobileNumber"
                   // value={employeeData.mobileNo}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.mobileNo && touched.mobileNo ? (
+                {errors.mobileNumber && touched.mobileNumber ? (
                   <Typography variant="caption" color="error">
-                    {errors.mobileNo}
+                    {errors.mobileNumber}
                   </Typography>
                 ) : null}
               </Grid>
@@ -246,18 +252,18 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Alternate Mobile No"
-                  name="alternateMobileNo"
+                  name="altmobileNumber"
                   // value={employeeData.alternateMobileNo}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.alternateMobileNo && touched.alternateMobileNo ? (
+                {errors.altmobileNumber && touched.altmobileNumber ? (
                   <Typography variant="caption" color="error">
-                    {errors.alternateMobileNo}
+                    {errors.altmobileNumber}
                   </Typography>
                 ) : null}
               </Grid>
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <TextField
                   fullWidth
                   label="Rate"
@@ -271,7 +277,7 @@ const EmployeeForm = () => {
                     {errors.rate}
                   </Typography>
                 ) : null}
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   type="file"
@@ -319,19 +325,26 @@ const EmployeeForm = () => {
                 <FormControl fullWidth>
                   <InputLabel>Positions</InputLabel>
                   <Select
-                    name="position"
-                    //value={initValue.position}
+                    name="positionId"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   >
-                    {Positions.map((department) => (
-                      <MenuItem key={department} value={department}>
-                        {department}
+                    {positions.map((position, index) => (
+                      <MenuItem key={index} value={position.positionId}>
+                        {position.positionName}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
             </Grid>
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              sx={{ mt: "1rem" }}
+              type="submit"
+              variant="contained"
+              fullWidth
+              color="primary"
+            >
               Add Employee
             </Button>
           </form>
@@ -343,7 +356,7 @@ const EmployeeForm = () => {
         </DialogActions>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default EmployeeForm;
+export default EmployeeForm

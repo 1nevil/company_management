@@ -13,20 +13,20 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import MyButton from "../../../Layout/MyButton";
-import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
-import { TaskSchema } from "../../../Validation/validationSchema";
+} from "@mui/material"
+import React, { useState } from "react"
+import DeleteIcon from "@mui/icons-material/Delete"
+import AddIcon from "@mui/icons-material/Add"
+import MyButton from "../../../Layout/MyButton"
+import { ErrorMessage, Field, Form, Formik, useFormik } from "formik"
+import { TaskSchema } from "../../../Validation/validationSchema"
 
 const AddTask = () => {
   // State variables to hold form data
-  const [showOpenForm, setshowOpenForm] = useState(false);
-  const [showClosedForm, setShowClosedForm] = useState(false);
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+  const [showOpenForm, setshowOpenForm] = useState(false)
+  const [showClosedForm, setShowClosedForm] = useState(false)
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
   // const [addictionInputValues, setaddictionInputValues] = useState({})
 
   const [formData, setFormData] = useState({
@@ -47,7 +47,7 @@ const AddTask = () => {
     checklist: "",
     set_Reminder: " ",
     teamname: "",
-  });
+  })
 
   const initValue = {
     taskName: "",
@@ -67,20 +67,20 @@ const AddTask = () => {
     checklist: "",
     set_Reminder: " ",
     teamname: "",
-  };
+  }
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: TaskSchema,
       onSubmit: (data) => {
-        alert("hello world");
-        console.log(data);
+        alert("hello world")
+        console.log(data)
       },
     }
-  );
+  )
 
-  const handleAddTask = () => {};
+  const handleAddTask = () => {}
 
   // Handle form submission
   // const handleSubmit = (event) => {
@@ -91,10 +91,10 @@ const AddTask = () => {
 
   // Handle input changes
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(name);
-  };
+    const { name, value } = event.target
+    setFormData({ ...formData, [name]: value })
+    console.log(name)
+  }
 
   // const handlechecklistInputChange = (event) => {
   //   const { name, value } = event.target
@@ -104,25 +104,25 @@ const AddTask = () => {
   // }
 
   const handleRadioChange = (event) => {
-    const value = event.target.value;
-    setshowOpenForm(value === "open");
-    setShowClosedForm(value === "closed");
-  };
+    const value = event.target.value
+    setshowOpenForm(value === "open")
+    setShowClosedForm(value === "closed")
+  }
 
   const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1);
-    setShowAdditionalInputs(true);
-  };
+    setAdditionalInputCount((prevCount) => prevCount + 1)
+    setShowAdditionalInputs(true)
+  }
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1);
-  };
+    setAdditionalInputCount((prevCount) => prevCount - 1)
+  }
 
   return (
     <>
       <Formik onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
-          <form onSubmit={handleSubmit} style={{ width: "100vh" }}>
+          <Form item xs={12} onSubmit={handleSubmit} style={{ width: "100vh" }}>
             {/* <Stack
               gap={5}
               direction={["column", "row"]}
@@ -150,7 +150,7 @@ const AddTask = () => {
                     as={TextField}
                   /> */}
                 <TextField
-                  fullWidth
+                  size="small"
                   label="task Name"
                   name="taskName"
                   value={formData.taskName}
@@ -477,11 +477,11 @@ const AddTask = () => {
             <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
               Submit
             </MyButton>
-          </form>
+          </Form>
         )}
       </Formik>
     </>
-  );
-};
+  )
+}
 
-export default AddTask;
+export default AddTask

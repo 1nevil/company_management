@@ -1,32 +1,30 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./App.css";
-import TaskChecker from "./Components/Checker/Task/TaskChecker";
-import dashboard from "@mui/icons-material/GridView";
-import AddTask from "@mui/icons-material/AddTask";
-import CheckEmployee from "./Components/Employee/CheckEmployee";
-import Header from "./Components/Layout/Header";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import PeopleIcon from "@mui/icons-material/People";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import DepartmentIcon from "@mui/icons-material/AddBox";
-import DepartmentCom from "./Components/Admin/Pages/Department/Department";
-import Employee from "./Components/Admin/Pages/Employee/Employee";
-import Task from "./Components/Admin/Pages/Task/Task";
-import Team from "./Components/Admin/Pages/Team/Team";
-import TeamDetails from "./Components/Admin/Pages/Team/TeamDetails";
-import DashBord from "./Components/Admin/DashBord";
-import BucketTest from "./Components/Admin/BucketTest";
-import { Dashboard } from "@mui/icons-material";
-import CheckSuperViser from "./Components/Superviser/CheckSuperViser";
-import Register from "./Components/Register";
-import Superadmin from "./Components/Superadmin/Superadmin";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import ApprovedAdmins from "./Components/Superadmin/ApprovedAdmins";
-import DisapprovedAdmins from "./Components/Superadmin/DisapprovedAdmins";
-import PositionForm from "./Components/Admin/Pages/Position/PositionForm";
-import Position from "./Components/Admin/Pages/Position/Position";
-import StreetviewIcon from "@mui/icons-material/Streetview";
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import "./App.css"
+import TaskChecker from "./Components/Checker/Task/TaskChecker"
+import dashboard from "@mui/icons-material/GridView"
+import AddTask from "@mui/icons-material/AddTask"
+import CheckEmployee from "./Components/Employee/CheckEmployee"
+import Header from "./Components/Layout/Header"
+import PeopleIcon from "@mui/icons-material/People"
+import Diversity3Icon from "@mui/icons-material/Diversity3"
+import DepartmentIcon from "@mui/icons-material/AddBox"
+import DepartmentCom from "./Components/Admin/Pages/Department/Department"
+import Employee from "./Components/Admin/Pages/Employee/Employee"
+import Task from "./Components/Admin/Pages/Task/Task"
+import TeamDetails from "./Components/Admin/Pages/Team/TeamDetails"
+import DashBord from "./Components/Admin/DashBord"
+import BucketTest from "./Components/Admin/BucketTest"
+import { Dashboard } from "@mui/icons-material"
+import CheckSuperViser from "./Components/Superviser/CheckSuperViser"
+import Register from "./Components/Register"
+import Superadmin from "./Components/Superadmin/Superadmin"
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined"
+import ApprovedAdmins from "./Components/Superadmin/ApprovedAdmins"
+import DisapprovedAdmins from "./Components/Superadmin/DisapprovedAdmins"
+import Position from "./Components/Admin/Pages/Position/Position"
+import StreetviewIcon from "@mui/icons-material/Streetview"
+import LinkIcon from "@mui/icons-material/Link"
 
 function App() {
   const iconSiderbar = {
@@ -36,7 +34,7 @@ function App() {
         Dashboard,
         AddTask,
         DepartmentIcon,
-        ListAltIcon,
+        // LinkIcon,
         PeopleIcon,
         Diversity3Icon,
         StreetviewIcon,
@@ -45,7 +43,7 @@ function App() {
         "dashbord",
         "Task",
         "Department",
-        "BucketTest",
+        // "chain",
         "Employee",
         "Team",
         "Position",
@@ -103,10 +101,10 @@ function App() {
           path: "task",
           element: <Task />,
         },
-        {
-          path: "team",
-          element: <Team />,
-        },
+        // {
+        //   path: "chain",
+        //   element: <Chain />,
+        // },
         {
           path: "teamdetails/:chainid",
           element: <TeamDetails />,
@@ -220,12 +218,12 @@ function App() {
       path: "/",
       element: <Header icons={admin.icons} sidebarNames={admin.sidebar} />,
     },
-  ]);
+  ])
   return (
     <>
       <RouterProvider router={router} />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

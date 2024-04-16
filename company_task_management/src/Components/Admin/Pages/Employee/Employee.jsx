@@ -52,28 +52,33 @@ function Employee() {
     },
     {
       field: "altmobileNumber",
-      headerName: "Birth date",
+      headerName: "Alt Mobile No",
       width: 140,
     },
 
     {
       field: "dob",
-      headerName: "AdharNumber",
+      headerName: "Date Of Birth",
       width: 140,
     },
     {
       field: "adharNumber",
-      headerName: "Image",
+      headerName: "Adhar Number",
       width: 140,
     },
     {
       field: "employeeImage",
-      headerName: "Resume",
+      headerName: "Image",
       width: 140,
     },
     {
       field: "employeeResume",
-      headerName: "Role",
+      headerName: "Resume",
+      width: 140,
+    },
+    {
+      field: "positionName",
+      headerName: "Position",
       width: 140,
     },
     {

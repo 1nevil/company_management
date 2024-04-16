@@ -1,9 +1,9 @@
 // validationSchema.js
-import * as Yup from "yup";
+import * as Yup from "yup"
 
 export const DepartmentSchema = Yup.object({
   //departmentName: Yup.string().min(3, "**At least 3 characters").required("**Department name is required"),
-});
+})
 
 export const SubdepartmentSchema = Yup.object({
   //departmentName: Yup.string().required("**select any one Department"),
@@ -11,31 +11,35 @@ export const SubdepartmentSchema = Yup.object({
   rate: Yup.number().required("**Rate name is required"),
   unit: Yup.string().required("**Unit name is required"),
   time: Yup.number().required("date is required"),
-});
+})
 
 export const TeamSchema = Yup.object({
   TeamName: Yup.string().required("**TeamName name is required"),
   Employee: Yup.string()
     .required("**Employee name is required")
     .min(2, "TeamName is greater Then 2"),
-});
+})
 
 export const EmployeeSchema = Yup.object({
-  firstName: Yup.string().required("**First Name is required"),
-  lastName: Yup.string().required("**Last Name is required"),
-  surname: Yup.string().required("**surname Name is required"),
+  employeeName: Yup.string().required("**Full Name Name is required"),
   dob: Yup.string().required("**Date of Birth is required"),
-  address: Yup.string().required("**Address is required"),
+  addressEmployee: Yup.string().required("**Address is required"),
   //gender: Yup.string().required("**Gender is required"),
   dateOfJoining: Yup.string().required("**Date of Joining is required"),
 
-  adharNo: Yup.string().required("**Adhar Number is required"),
-  email: Yup.string().email("Invalid email").required("**Email is required"),
-  mobileNo: Yup.string().required("**Mobile Number is required"),
-  alternateMobileNo: Yup.string().required("only number is required"),
-
+  adharNumber: Yup.number("**Only number is valid")
+    .required("**Adhar Number is required")
+    .typeError("**Only enter number"),
+  employeeEmail: Yup.string()
+    .email("Invalid email")
+    .required("**Email is required"),
+  mobileNumber: Yup.string().required("**Mobile Number is required"),
+  altmobileNumber: Yup.string().required("only number is required"),
+  employeeAge: Yup.number()
+    .required("**Age is Required")
+    .typeError("**Only enter number"),
   //position: Yup.string().required("position is required"),
-});
+})
 
 export const TaskSchema = Yup.object({
   taskName: Yup.string().required("**Task Name is required"),
@@ -57,12 +61,12 @@ export const TaskSchema = Yup.object({
   checklist: Yup.string().required("checklist is required"),
   set_Reminder: Yup.string().required("set_Reminder is required"),
   teamname: Yup.string().required("teamname is required"),
-});
+})
 
 export const PositionSchema = Yup.object({
   PositionName: Yup.string().required("**PositionName name is required"),
-  Duration: Yup.number().required("**only number are allow "),
+  Duration: Yup.string().required("**only number are allow "),
   Unit: Yup.string().required("**unit is required"),
   Unitname: Yup.string().required("**Unitname name is required"),
   Rate: Yup.number().required("**Rate name is required"),
-});
+})
