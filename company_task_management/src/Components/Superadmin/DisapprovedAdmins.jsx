@@ -1,22 +1,27 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React from "react";
-import { Link } from "react-router-dom";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import React, { useEffect } from "react"
+import { Link } from "react-router-dom"
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  allDisapproveEmps,
+  approveDisapproveEmp,
+} from "../../Slices/EmployeeSlice"
+import { IconButton } from "@mui/material"
 
 function DisapprovedAdmins() {
-  const [open, setOpen] = React.useState(false);
+  const employeess = useSelector((state) => state.Employee.employees)
+  const dispatch = useDispatch()
 
-  const handleClickOpenModel = () => {
-    setOpen(true);
-  };
-  const handleCloseModel = () => {
-    setOpen(false);
-  };
+  useEffect(() => {
+    dispatch(allDisapproveEmps())
+  }, [dispatch])
+
+  const handleClick = (id) => {
+    dispatch(approveDisapproveEmp(id))
+  }
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "AdminName", headerName: "Admin Name", width: 120 },
-    { field: "Email", headerName: "Email", width: 250 },
     {
       field: "Approve",
       headerName: "Approve",
@@ -24,40 +29,69 @@ function DisapprovedAdmins() {
       sortable: false,
       width: 160,
       renderCell: (params) => (
-        <Link
-          style={{ color: "gray" }}
-          to={`/Checker/EmployeeDetails/${params.row.id}`}
+        <IconButton
+          onClick={() => handleClick(params.row.employeeId)}
+          title="Edit"
         >
-          <CheckCircleOutlinedIcon />
-        </Link>
+          <CheckCircleOutlinedIcon sx={{ color: "green" }} />
+        </IconButton>
       ),
     },
-  ];
+    {
+      field: "employeeName",
+      headerName: "Name",
+      width: 140,
+    },
+    {
+      field: "employeeEmail",
+      headerName: "Email",
+      width: 180,
+    },
+    {
+      field: "employeeAge",
+      headerName: "Age",
+      width: 140,
+    },
+    {
+      field: "mobileNumber",
+      headerName: "MobileNumber",
+      width: 140,
+    },
+    {
+      field: "altmobileNumber",
+      headerName: "Birth date",
+      width: 140,
+    },
 
-  const teams = [
     {
-      id: 1,
-      AdminName: "vikram",
-      Email: "Nevil@gmail.com",
+      field: "dob",
+      headerName: "AdharNumber",
+      width: 140,
     },
     {
-      id: 2,
-      AdminName: "nevil",
-      Email: "Nevil@gmail.com",
+      field: "adharNumber",
+      headerName: "Image",
+      width: 140,
     },
     {
-      id: 3,
-      AdminName: "nevil",
-      Email: "Nevil@gmail.com",
+      field: "employeeImage",
+      headerName: "Resume",
+      width: 140,
     },
-  ];
+    {
+      field: "employeeResume",
+      headerName: "Resume",
+      width: 140,
+    },
+  ]
 
   return (
     <div>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
-        rows={teams}
+        rows={employeess}
         columns={columns}
+        getRowId={(row) => row.employeeId}
         initialState={{
           pagination: {
             paginationModel: {
@@ -69,7 +103,7 @@ function DisapprovedAdmins() {
         disableRowSelectionOnClick
       />
     </div>
-  );
+  )
 }
 
-export default DisapprovedAdmins;
+export default DisapprovedAdmins

@@ -13,3 +13,16 @@ export function deleteEmpById(id) {
 export function createEmp(emp) {
   return axiosInstance.post(`api/Employees`, emp)
 }
+
+//localhost:5036/api/Employees/approveDisapprove
+export function approveNotApprove(id) {
+  return axiosInstance.patch(`api/Employees/approveDisapprove/${id}`)
+}
+
+export function approvedEmps() {
+  return axiosInstance.get(`api/Employees/approvedEmps/`)
+}
+
+export function disapprovedEmps() {
+  return axiosInstance.get(`api/Employees/notApprovedEmps/`)
+}

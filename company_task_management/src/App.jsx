@@ -68,10 +68,10 @@ function App() {
       icons: [dashboard, CheckCircleOutlinedIcon, CancelOutlinedIcon],
       sidebar: ["dashboard", "Approved", "Disapproved"],
     },
-  };
+  }
 
   //distructure for easyly accesss
-  const { admin, checker, employee, superviser, superadmin } = iconSiderbar;
+  const { admin, checker, employee, superviser, superadmin } = iconSiderbar
 
   const router = createBrowserRouter([
     {
