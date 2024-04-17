@@ -28,6 +28,7 @@ import StreetviewIcon from "@mui/icons-material/Streetview";
 //import Chain from "./Components/Admin/Pages/Chain/Chain";
 import ChainDetails from "./Components/Admin/Pages/Chain/ChainDetails";
 import Chain from "./Components/Admin/Pages/Chain/Chain";
+import CheckTaskList from "./Components/Checker/CheckTasklist";
 
 function App() {
   const iconSiderbar = {
@@ -68,10 +69,10 @@ function App() {
       icons: [dashboard, CheckCircleOutlinedIcon, CancelOutlinedIcon],
       sidebar: ["dashboard", "Approved", "Disapproved"],
     },
-  }
+  };
 
   //distructure for easyly accesss
-  const { admin, checker, employee, superviser, superadmin } = iconSiderbar
+  const { admin, checker, employee, superviser, superadmin } = iconSiderbar;
 
   const router = createBrowserRouter([
     {
@@ -141,8 +142,8 @@ function App() {
           element: <TaskChecker />,
         },
         {
-          path: "TaskChecker",
-          element: <TaskChecker />,
+          path: "CheckTaskList",
+          element: <CheckTaskList />,
         },
       ],
     },
@@ -225,12 +226,12 @@ function App() {
       path: "/",
       element: <Header icons={admin.icons} sidebarNames={admin.sidebar} />,
     },
-  ])
+  ]);
   return (
     <>
       <RouterProvider router={router} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
