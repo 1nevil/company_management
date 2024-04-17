@@ -13,20 +13,20 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material"
-import React, { useState } from "react"
-import DeleteIcon from "@mui/icons-material/Delete"
-import AddIcon from "@mui/icons-material/Add"
-import MyButton from "../../../Layout/MyButton"
-import { ErrorMessage, Field, Form, Formik, useFormik } from "formik"
-import { TaskSchema } from "../../../Validation/validationSchema"
+} from "@mui/material";
+import React, { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import MyButton from "../../../Layout/MyButton";
+import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
+import { TaskSchema } from "../../../Validation/validationSchema";
 
 const AddTask = () => {
   // State variables to hold form data
-  const [showOpenForm, setshowOpenForm] = useState(false)
-  const [showClosedForm, setShowClosedForm] = useState(false)
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
-  const [additionalInputCount, setAdditionalInputCount] = useState(0)
+  const [showOpenForm, setshowOpenForm] = useState(false);
+  const [showClosedForm, setShowClosedForm] = useState(false);
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [additionalInputCount, setAdditionalInputCount] = useState(0);
   // const [addictionInputValues, setaddictionInputValues] = useState({})
 
   const initValue = {
@@ -39,7 +39,7 @@ const AddTask = () => {
     description: "",
     duration: "",
     checklist: "",
-    teamname: "",
+    chainid: "",
     Position: "",
   };
 
@@ -48,28 +48,28 @@ const AddTask = () => {
       initialValues: initValue,
       validationSchema: TaskSchema,
       onSubmit: (data) => {
-        alert("hello world")
-        console.log(data)
+        alert("hello world");
+        console.log(data);
       },
     }
-  )
+  );
 
-  const handleAddTask = () => {}
+  const handleAddTask = () => {};
 
   const handleRadioChange = (event) => {
-    const value = event.target.value
-    setshowOpenForm(value === "open")
-    setShowClosedForm(value === "closed")
-  }
+    const value = event.target.value;
+    setshowOpenForm(value === "open");
+    setShowClosedForm(value === "closed");
+  };
 
   const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1)
-    setShowAdditionalInputs(true)
-  }
+    setAdditionalInputCount((prevCount) => prevCount + 1);
+    setShowAdditionalInputs(true);
+  };
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1)
-  }
+    setAdditionalInputCount((prevCount) => prevCount - 1);
+  };
 
   return (
     <div>
@@ -86,17 +86,17 @@ const AddTask = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {errors.taskName && touched.taskName ? (
+            {/* {errors.taskName && touched.taskName ? (
               <Typography variant="caption" color="error">
                 {errors.taskName}
               </Typography>
-            ) : null}
+            ) : null} */}
 
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel>Position </InputLabel>
               <Select
                 size="small"
-                // name="Position"
+                name="Position"
                 // value={employeeData.Position}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -116,11 +116,11 @@ const AddTask = () => {
               size="small"
             />
 
-            {errors.rate && touched.rate ? (
+            {/* {errors.rate && touched.rate ? (
               <Typography variant="caption" color="error">
                 {errors.rate}
               </Typography>
-            ) : null}
+            ) : null} */}
 
             <TextField
               id="unit"
@@ -131,11 +131,11 @@ const AddTask = () => {
               onBlur={handleBlur}
               size="small"
             />
-            {errors.unit && touched.unit ? (
+            {/* {errors.unit && touched.unit ? (
               <Typography variant="caption" color="error">
                 {errors.unit}
               </Typography>
-            ) : null}
+            ) : null} */}
             <TextField
               id="instructions"
               name="instructions"
@@ -145,11 +145,11 @@ const AddTask = () => {
               onBlur={handleBlur}
               size="small"
             />
-            {errors.instructions && touched.instructions ? (
+            {/* {errors.instructions && touched.instructions ? (
               <Typography variant="caption" color="error">
                 {errors.instructions}
               </Typography>
-            ) : null}
+            ) : null} */}
 
             <Typography
               variant="h6"
@@ -193,17 +193,17 @@ const AddTask = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.duration && touched.duration ? (
+                {/* {errors.duration && touched.duration ? (
                   <Typography variant="caption" color="error">
                     {errors.duration}
                   </Typography>
-                ) : null}
+                ) : null} */}
 
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <InputLabel>duration </InputLabel>
                   <Select
                     size="small"
-                    // name="duration"
+                    name="duration"
                     // value={employeeData.duration}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -231,11 +231,11 @@ const AddTask = () => {
                   onBlur={handleBlur}
                   size="small"
                 />
-                {errors.start_date && touched.start_date ? (
+                {/* {errors.start_date && touched.start_date ? (
                   <Typography variant="caption" color="error">
                     {errors.start_date}
                   </Typography>
-                ) : null}
+                ) : null} */}
                 <TextField
                   id="end_date_increase_time"
                   name="end_date_increase_time"
@@ -245,12 +245,12 @@ const AddTask = () => {
                   onBlur={handleBlur}
                   size="small"
                 />
-                {errors.end_date_increase_time &&
-                touched.end_date_increase_time ? (
-                  <Typography variant="caption" color="error">
-                    {errors.end_date_increase_time}
-                  </Typography>
-                ) : null}
+                {/* {errors.end_date_increase_time &&
+                 touched.end_date_increase_time ? (
+                   <Typography variant="caption" color="error">
+                     {errors.end_date_increase_time}
+                   </Typography>
+                 ) : null} */}
               </form>
             )}
             <TextField
@@ -261,28 +261,28 @@ const AddTask = () => {
               onBlur={handleBlur}
               size="small"
             />
-            {errors.description && touched.description ? (
+            {/* {errors.description && touched.description ? (
               <Typography variant="caption" color="error">
                 {errors.description}
               </Typography>
-            ) : null}
+            ) : null} */}
             <FormControl fullWidth sx={{ m: 1 }}>
-              <InputLabel>Team </InputLabel>
+              <InputLabel>chain </InputLabel>
               <Select
                 //value={formData.teamname}
                 onChange={handleChange}
-                label="teamname"
-                // name="teamname"
+                label="chain"
+                name="chainid"
                 size="small"
               >
                 <MenuItem value="">
-                  <div>Select team</div>
+                  <div>Select chain</div>
                 </MenuItem>
-                <MenuItem value={"team1"}>team1</MenuItem>
-                <MenuItem value={"team2"}>team2</MenuItem>
-                <MenuItem value={"team3"}>team3</MenuItem>
-                <MenuItem value={"team4"}>team4</MenuItem>
-                <MenuItem value={"team5"}>team5</MenuItem>
+                <MenuItem value={"chain1"}>chain1</MenuItem>
+                <MenuItem value={"chain2"}>chain2</MenuItem>
+                <MenuItem value={"chain3"}>chain3</MenuItem>
+                <MenuItem value={"chain4"}>chain4</MenuItem>
+                <MenuItem value={"chain5"}>chain5</MenuItem>
               </Select>
             </FormControl>
 
@@ -308,11 +308,11 @@ const AddTask = () => {
                       onBlur={handleBlur}
                       size="small"
                     />
-                    {errors.checklist && touched.checklist ? (
+                    {/* {errors.checklist && touched.checklist ? (
                       <Typography variant="caption" color="error">
                         {errors.checklist}
                       </Typography>
-                    ) : null}
+                    ) : null} */}
 
                     <Button
                       variant="outlined"
@@ -351,4 +351,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask
+export default AddTask;

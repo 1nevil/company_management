@@ -18,6 +18,7 @@ import { EmployeeSchema } from "../../../Validation/validationSchema";
 
 function Task() {
   const [open, setOpen] = React.useState(false);
+  const [openchecklist, setopenchecklist] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
 
   const handleClickOpen = (scrollType) => () => {
@@ -49,9 +50,50 @@ function Task() {
       },
     }
   );
+  const handleopenchecklist = () => {
+    setopenchecklist(true);
+  };
+
+  const handleClosechecklist = () => {
+    setopenchecklist(false);
+  };
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "Action",
+      headerName: "Action",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <>
+          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+            <Edit />
+          </IconButton>
+          <IconButton
+            onClick={() => handleDelete(params.row.id)}
+            title="Delete"
+          >
+            <Delete sx={{ color: "red" }} />
+          </IconButton>
+        </>
+      ),
+    },
+    {
+      field: "checklist",
+      headerName: "CheckList",
+      description: "Team details",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        // <Link to={`CheckList/${params.row.id}`}>
+        <IconButton onClick={handleopenchecklist} title="Check List">
+          <VisibilityIcon></VisibilityIcon>
+        </IconButton>
+        // </Link>
+      ),
+    },
     {
       field: "taskName",
       headerName: "Task Name",
@@ -136,25 +178,7 @@ function Task() {
       width: 120,
       editable: true,
     },
-    {
-      field: "checklist",
-      headerName: "CheckList",
-      description: "Team details",
-      sortable: false,
-      width: 160,
-      renderCell: (params) => (
-        <Link to={`CheckList/${params.row.id}`}>
-          <VisibilityIcon>
-            {/* <Dialog open={open} onClose={handleClose}>
-              <DialogTitle>Add Employee</DialogTitle>
-              <DialogContent>
-                <CheckList></CheckList>
-              </DialogContent>
-            </Dialog> */}
-          </VisibilityIcon>
-        </Link>
-      ),
-    },
+
     {
       field: "set_Reminder",
       headerName: "Set Reminder",
@@ -166,26 +190,6 @@ function Task() {
       headerName: "Team Name",
       width: 150,
       editable: true,
-    },
-    {
-      field: "Action",
-      headerName: "Action",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
-      renderCell: (params) => (
-        <>
-          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
-            <Edit />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDelete(params.row.id)}
-            title="Delete"
-          >
-            <Delete sx={{ color: "red" }} />
-          </IconButton>
-        </>
-      ),
     },
   ];
 
@@ -304,6 +308,21 @@ function Task() {
           pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
         />
       </div>
+      <Dialog open={openchecklist} onClose={handleClosechecklist}>
+        <DialogTitle>Add CheckList</DialogTitle>
+        <DialogContent>
+          <CheckList></CheckList>
+          <Button
+            onClick={handleClosechecklist}
+            sx={{
+              color: "red",
+            }}
+            color="primary"
+          >
+            Cancel
+          </Button>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

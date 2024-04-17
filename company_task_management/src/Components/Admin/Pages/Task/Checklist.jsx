@@ -1,10 +1,12 @@
 import {
   Box,
   Button,
+  DialogActions,
   Divider,
   FormControl,
   FormControlLabel,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Radio,
@@ -53,9 +55,9 @@ const CheckList = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ width: "100vh" }}>
+      <form onSubmit={handleSubmit} style={{ width: "500px" }}>
         <div style={{ textAlign: "center" }}>
-          <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vh" } }}>
+          <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
             <Typography
               variant="h6"
               component="h6"
@@ -68,15 +70,20 @@ const CheckList = () => {
             {showAdditionalInputs && (
               <div>
                 {[...Array(additionalInputCount)].map((_, index) => (
-                  <div key={index}>
+                  <div
+                    key={index}
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
                     <TextField
                       label={`check list ${index + 1}`}
-                      //variant="outlined"
+                      multiline
+                      rows={2}
+                      // variant="outlined"
                       fullWidth
                       name={`checkList ${index + 1}`}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      size="small"
+                      // size="small"
                     />
                     {errors.checklist && touched.checklist ? (
                       <Typography variant="caption" color="error">
@@ -84,15 +91,13 @@ const CheckList = () => {
                       </Typography>
                     ) : null}
 
-                    <Button
-                      variant="outlined"
-                      sx={{ marginLeft: "0.5rem" }}
-                      startIcon={<DeleteIcon />}
+                    <IconButton
+                      aria-label="delete"
                       color="error"
                       onClick={handleDeleteInput}
                     >
-                      Delete checklist
-                    </Button>
+                      <DeleteIcon />
+                    </IconButton>
                   </div>
                 ))}
               </div>
@@ -109,11 +114,11 @@ const CheckList = () => {
               Add Checklist
             </Button>
           </Grid>
+          <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
+            Submit
+          </MyButton>
         </div>
         {/* </Stack> */}
-        <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
-          Submit
-        </MyButton>
       </form>
     </div>
   );
