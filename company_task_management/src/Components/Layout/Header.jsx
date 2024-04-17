@@ -122,7 +122,7 @@ function Header({ link, icons, sidebarNames }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            Task Mangement
           </Typography>
         </Toolbar>
       </AppBar>

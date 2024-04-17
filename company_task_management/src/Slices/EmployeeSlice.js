@@ -6,6 +6,7 @@ import {
   approvedEmps,
   disapprovedEmps,
   approveNotApprove,
+  checkersEmps,
 } from "./EmployeeApi"
 
 const initialState = {
@@ -49,6 +50,11 @@ export const approveDisapproveEmp = createAsyncThunk(
     return id
   }
 )
+
+export const checkersEmp = createAsyncThunk("emps/checkers", async () => {
+  const res = await checkersEmps()
+  return res.data
+})
 
 export const EmployeeSlice = createSlice({
   name: "EmployeeSlice",
@@ -119,6 +125,16 @@ export const EmployeeSlice = createSlice({
         )
       })
       .addCase(approveDisapproveEmp.rejected, (state, action) => {
+        state.error = action.payload
+      })
+      .addCase(checkersEmp.pending, (state, action) => {
+        state.pendding = action.payload
+      })
+      .addCase(checkersEmp.fulfilled, (state, action) => {
+        state.pendding = false
+        state.employees = action.payload
+      })
+      .addCase(checkersEmp.rejected, (state, action) => {
         state.error = action.payload
       })
   },

@@ -1,39 +1,41 @@
-import React, { useState } from "react";
-import { Form, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
-import Stack from "@mui/material/Stack";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Check from "@mui/icons-material/Check";
-import SettingsIcon from "@mui/icons-material/Settings";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import VideoLabelIcon from "@mui/icons-material/VideoLabel";
+import React, { useEffect, useState } from "react"
+import { Form, useParams } from "react-router-dom"
+import PropTypes from "prop-types"
+import { styled } from "@mui/material/styles"
+import Stack from "@mui/material/Stack"
+import Stepper from "@mui/material/Stepper"
+import Step from "@mui/material/Step"
+import StepLabel from "@mui/material/StepLabel"
+import Check from "@mui/icons-material/Check"
+import SettingsIcon from "@mui/icons-material/Settings"
+import GroupAddIcon from "@mui/icons-material/GroupAdd"
+import VideoLabelIcon from "@mui/icons-material/VideoLabel"
 import StepConnector, {
   stepConnectorClasses,
-} from "@mui/material/StepConnector";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import DeleteIcon from "@mui/icons-material/Delete";
+} from "@mui/material/StepConnector"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import EditIcon from "@mui/icons-material/Edit"
+import Select from "@mui/material/Select"
+import MenuItem from "@mui/material/MenuItem"
+import DeleteIcon from "@mui/icons-material/Delete"
 
 import {
-  Autocomplete,
   Dialog,
   DialogActions,
   Divider,
   FormControl,
   Grid,
   InputLabel,
-  TextField,
   Typography,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { ChainDetailSchema } from "../../../Validation/validationSchema";
-import { useFormik } from "formik";
+} from "@mui/material"
+import AddIcon from "@mui/icons-material/Add"
+import { ChainDetailSchema } from "../../../Validation/validationSchema"
+import { useFormik } from "formik"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchChainMater } from "../../../../Slices/ChainSliceMaster"
+import { checkersEmp, fetchEmp } from "../../../../Slices/EmployeeSlice"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
 
 // "chainId": 8,
 // "checkerId": 5,
@@ -58,10 +60,10 @@ const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     borderRadius: "50%",
     backgroundColor: "currentColor",
   },
-}));
+}))
 
 function QontoStepIcon(props) {
-  const { active, completed, className } = props;
+  const { active, completed, className } = props
 
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
@@ -71,14 +73,14 @@ function QontoStepIcon(props) {
         <div className="QontoStepIcon-circle" />
       )}
     </QontoStepIconRoot>
-  );
+  )
 }
 
 QontoStepIcon.propTypes = {
   active: PropTypes.bool,
   className: PropTypes.string,
   completed: PropTypes.bool,
-};
+}
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -103,7 +105,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
       theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
     borderRadius: 1,
   },
-}));
+}))
 
 const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   backgroundColor:
@@ -125,16 +127,16 @@ const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     backgroundImage:
       "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
   }),
-}));
+}))
 
 function ColorlibStepIcon(props) {
-  const { active, completed, className } = props;
+  const { active, completed, className } = props
 
   const icons = {
     1: <SettingsIcon />,
     2: <GroupAddIcon />,
     3: <VideoLabelIcon />,
-  };
+  }
 
   return (
     <ColorlibStepIconRoot
@@ -143,7 +145,7 @@ function ColorlibStepIcon(props) {
     >
       {icons[String(props.icon)]}
     </ColorlibStepIconRoot>
-  );
+  )
 }
 
 ColorlibStepIcon.propTypes = {
@@ -151,69 +153,80 @@ ColorlibStepIcon.propTypes = {
   className: PropTypes.string,
   completed: PropTypes.bool,
   icon: PropTypes.node,
-};
+}
 
-const steps = ["Writer", "anchor", "video editor", "boss"];
+const steps = ["Writer", "anchor", "video editor", "boss"]
 
 function ChainDetails() {
-  const [openTeam, setopenTeam] = React.useState(false);
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
-  const [checklistItems, setChecklistItems] = useState([]);
+  const [openTeam, setopenTeam] = React.useState(false)
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
 
-  const [checker, setChecker] = useState();
+  const [checklistItems, setChecklistItems] = useState([])
+  const dispatch = useDispatch()
+
+  const checkers = useSelector((state) => state.Employee.employees)
+  const Positions = useSelector((state) => state.Position.positions)
+
+  useEffect(() => {
+    dispatch(fetchPosition())
+    dispatch(checkersEmp())
+  }, [dispatch])
+
+  const [checker, setChecker] = useState()
 
   const handleChange = (index) => (event) => {
-    const newChecklistItems = [...checklistItems];
-    newChecklistItems[index] = event.target.value;
-    setChecklistItems(newChecklistItems);
-  };
+    const newChecklistItems = [...checklistItems]
+    newChecklistItems[index] = event.target.value
+    setChecklistItems(newChecklistItems)
+  }
 
   const handleChangeChecker = (event) => {
-    setChecker(event.target.value);
-  };
+    setChecker(event.target.value)
+  }
 
   const handleAddInput = () => {
-    setAdditionalInputCount(additionalInputCount + 1);
-    setShowAdditionalInputs(true);
-    setChecklistItems([...checklistItems, null]);
-  };
+    setAdditionalInputCount(additionalInputCount + 1)
+    setShowAdditionalInputs(true)
+    setChecklistItems([...checklistItems, null])
+  }
 
   const handleDeleteInput = (index) => () => {
-    const newChecklistItems = [...checklistItems];
-    newChecklistItems.splice(index, 1);
-    setChecklistItems(newChecklistItems);
-    setAdditionalInputCount(additionalInputCount - 1);
+    const newChecklistItems = [...checklistItems]
+    newChecklistItems.splice(index, 1)
+    setChecklistItems(newChecklistItems)
+    setAdditionalInputCount(additionalInputCount - 1)
     if (additionalInputCount === 1) {
-      setShowAdditionalInputs(false);
+      setShowAdditionalInputs(false)
     }
-  };
+  }
 
-  let { chainid } = useParams();
+  let { chainid } = useParams()
   const handleClickChainDetail = () => {
-    setopenTeam(true);
-  };
+    setopenTeam(true)
+  }
 
   const handleClose = () => {
-    setopenTeam(false);
-  };
+    setopenTeam(false)
+  }
 
   const handleSubmit = () => {
-    console.log(chainid);
-    console.log(checker);
-    console.log(checklistItems);
-  };
+    console.log(chainid)
+    console.log(checker)
+    console.log(checklistItems)
+  }
+
   const initValue = {
     ChainName: "",
-  };
+  }
   const { errors, touched, handleBlur } = useFormik({
     initialValues: initValue,
     validationSchema: ChainDetailSchema,
     onSubmit: (data) => {
-      alert("hello world");
-      console.log(data);
+      alert("hello world")
+      console.log(data)
     },
-  });
+  })
 
   return (
     <Form>
@@ -251,9 +264,12 @@ function ChainDetails() {
                     onBlur={handleBlur}
                     name="chainId"
                   >
-                    <MenuItem value="1">Nevil</MenuItem>
-                    <MenuItem value="2">Sanjeev</MenuItem>
-                    <MenuItem value="3">Sujeet</MenuItem>
+                    {checkers?.map((c) => (
+                      // eslint-disable-next-line react/jsx-key
+                      <MenuItem key={c.employeeId} value={c.employeeId}>
+                        {c.employeeName}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
                 {errors.chainId && touched.chainId ? (
@@ -290,9 +306,12 @@ function ChainDetails() {
                           <MenuItem value="" disabled>
                             Select Position
                           </MenuItem>
-                          <MenuItem value="1">Nevil</MenuItem>
-                          <MenuItem value="2">Sanjeev</MenuItem>
-                          <MenuItem value="3">Sujeet</MenuItem>
+                          {Positions.map((position) => (
+                            // eslint-disable-next-line react/jsx-key
+                            <MenuItem value={position.positionId}>
+                              {position.positionName}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                       <Button
@@ -347,7 +366,7 @@ function ChainDetails() {
         </Stack>
       </Grid>
     </Form>
-  );
+  )
 }
 
-export default ChainDetails;
+export default ChainDetails

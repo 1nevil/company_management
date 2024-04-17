@@ -1,34 +1,35 @@
-import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import AddIcon from "@mui/icons-material/Add";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import AddChain from "./AddChain";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchEmp } from "../../../../Slices/ChainSlice";
+import React, { useEffect } from "react"
+import Box from "@mui/material/Box"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { Link } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import AddIcon from "@mui/icons-material/Add"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import Button from "@mui/material/Button"
+import AddChain from "./AddChain"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchChainMater } from "../../../../Slices/ChainSliceMaster"
 
 function Chain() {
-  const [openTeam, setopenTeam] = React.useState(false);
-  const dispatch = useDispatch();
-  const chains = useSelector((state) => state.Chain.chains);
+  const [openTeam, setopenTeam] = React.useState(false)
+  const dispatch = useDispatch()
+
+  const chainMaster = useSelector((state) => state.Chain.chainMaster)
 
   useEffect(() => {
-    dispatch(fetchEmp());
-  }, []);
+    dispatch(fetchChainMater())
+  }, [dispatch])
 
   // const handleDelete = () => {}
 
   const handleClickOpenDepartment = () => {
-    setopenTeam(true);
-  };
+    setopenTeam(true)
+  }
 
   const handleClose = () => {
-    setopenTeam(false);
-  };
+    setopenTeam(false)
+  }
   const columns = [
     { field: "chainId", headerName: "Chain ID", width: 90 },
     {
@@ -52,14 +53,7 @@ function Chain() {
         </Link>
       ),
     },
-  ];
-
-  const Tasks = [
-    {
-      chainId: 1,
-      chainName: "Chain 1",
-    },
-  ];
+  ]
 
   return (
     <Box>
@@ -86,8 +80,8 @@ function Chain() {
       </Dialog>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
-        rows={Tasks}
         columns={columns}
+        rows={chainMaster}
         getRowId={(row) => row.chainId}
         initialState={{
           pagination: {
@@ -100,7 +94,7 @@ function Chain() {
         disableRowSelectionOnClick
       />
     </Box>
-  );
+  )
 }
 
-export default Chain;
+export default Chain
