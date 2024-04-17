@@ -25,8 +25,8 @@ export const deleteEmp = createAsyncThunk("emps/deleteEmp", async (id) => {
 })
 
 export const insertEmp = createAsyncThunk("emps/insertEmp", async (emp) => {
-  await createEmp(emp)
-  return emp
+  const res = await createEmp(emp)
+  return res.data
 })
 
 export const allApproveEmps = createAsyncThunk("emps/approvedEmp", async () => {

@@ -30,8 +30,8 @@ export const deletePosition = createAsyncThunk(
 export const insertPosition = createAsyncThunk(
   "position/insertPosition",
   async (position) => {
-    await insertPositionData(position)
-    return position
+    let response = await insertPositionData(position)
+    return response.data
   }
 )
 
@@ -67,8 +67,7 @@ export const PositionSlice = createSlice({
       })
       .addCase(insertPosition.fulfilled, (state, action) => {
         state.pendding = false
-        // state.positions.push(action.payload)
-        // state.positions
+        state.positions.push(action.payload)
       })
       .addCase(insertPosition.rejected, (state, action) => {
         state.error = action.payload

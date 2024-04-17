@@ -58,9 +58,8 @@ const PositionForm = () => {
       initialValues: initValue,
       validationSchema: PositionSchema,
       onSubmit: (data) => {
+        handleClose()
         dispatch(insertPosition(data))
-        dispatch(fetchPosition())
-        setOpen(false)
       },
     }
   )
