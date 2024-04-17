@@ -289,7 +289,6 @@ function Task() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
         </DialogActions>
       </Dialog>
       <div style={{ height: 400, width: "100%" }}>

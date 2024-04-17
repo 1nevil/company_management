@@ -1,12 +1,23 @@
 import { Delete, Edit } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Button, Dialog, DialogContent, DialogTitle, IconButton, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React from "react";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import CheckList from "../Admin/Pages/Task/Checklist";
+import MyButton from "../Layout/MyButton";
 
 function CheckTaskList() {
+  const [open , setOpen] = React.useState(false);
+  const [openchecklist, setopenchecklist] = React.useState(false);
+
+  const handleopenchecklist = () => {
+    setopenchecklist(true);
+  };
+  const handleDisapprove = () =>{
+    setOpen(true);
+  }
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
 
@@ -16,6 +27,7 @@ function CheckTaskList() {
       width: 590,
       editable: true,
     },
+  
     {
       field: "checklist",
       headerName: "CheckList",
@@ -24,7 +36,7 @@ function CheckTaskList() {
       width: 160,
       renderCell: (params) => (
         // <Link to={`CheckList/${params.row.id}`}>
-        <IconButton title="Check List">
+        <IconButton onClick={handleopenchecklist} title="Check List">
           <VisibilityIcon></VisibilityIcon>
         </IconButton>
         // </Link>
@@ -38,7 +50,7 @@ function CheckTaskList() {
       width: 160,
       renderCell: (params) => (
         <>
-          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+          <IconButton onClick={() => handleDisapprove(params.row.id)} title="Edit">
             <CancelOutlinedIcon sx={{ color: "red" }} />
           </IconButton>
           <IconButton
@@ -87,6 +99,27 @@ function CheckTaskList() {
           pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
         />
       </div>
+      <Dialog open={open}>
+        <DialogTitle>Remarks</DialogTitle>
+        <DialogContent>
+        <TextField
+              size="small"
+              label="Remarks"
+              name="taskName"
+              multiline 
+              fullWidth
+              rows={3}
+              //value={formData.taskName}
+              // onChange={handleChange}
+              // onBlur={handleBlur}
+            />
+
+        <MyButton type="submit" fullWidth={true} >
+          Submit
+        </MyButton>
+        
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
