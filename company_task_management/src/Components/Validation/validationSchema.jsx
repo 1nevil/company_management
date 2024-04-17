@@ -29,7 +29,9 @@ export const EmployeeSchema = Yup.object({
   //gender: Yup.string().required("**Gender is required"),
   dateOfJoining: Yup.string().required("**Date of Joining is required"),
 
-  adharNo: Yup.string().required("**Adhar Number is required"),
+  adharNo: Yup.string()
+  .matches(/^\d{12}$/, "Adhar No must be 12 digits")
+  .required("Adhar No is required"),
   email: Yup.string().email("Invalid email").required("**Email is required"),
   mobileNo: Yup.string().required("**Mobile Number is required"),
   alternateMobileNo: Yup.string().required("only number is required"),

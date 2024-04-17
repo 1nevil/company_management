@@ -135,7 +135,7 @@ const EmployeeForm = () => {
                   //label="Date of Birth"
                 />
                 <InputLabel htmlFor="employee-image-file">
-                  Date of Joining
+                  Date of Birth
                   {errors.dob && touched.dob ? (
                     <Typography variant="caption" color="error">
                       {errors.dob}
