@@ -114,11 +114,11 @@ const CheckList = () => {
               Add Checklist
             </Button>
           </Grid>
-          <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
-            Submit
-          </MyButton>
         </div>
         {/* </Stack> */}
+        <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
+          Submit
+        </MyButton>
       </form>
     </div>
   );
