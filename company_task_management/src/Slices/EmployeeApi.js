@@ -26,3 +26,7 @@ export function approvedEmps() {
 export function disapprovedEmps() {
   return axiosInstance.get(`api/Employees/notApprovedEmps/`)
 }
+
+export function checkersEmps() {
+  return axiosInstance.get(`api/Employees/getCheckers`)
+}

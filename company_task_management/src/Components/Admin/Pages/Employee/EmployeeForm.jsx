@@ -32,18 +32,15 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  NativeSelect,
-  IconButton,
-  Divider,
-  Box,
-} from "@mui/material";
-import styled from "@emotion/styled";
-import { EmployeeSchema } from "../../../Validation/validationSchema";
-import { useFormik } from "formik";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosition } from "../../../../Slices/PositionSlice";
-import { insertEmp } from "../../../../Slices/EmployeeSlice";
-const Positions = ["Engineering", "Marketing", "Finance", "HR"];
+  OutlinedInput,
+} from "@mui/material"
+import styled from "@emotion/styled"
+import { EmployeeSchema } from "../../../Validation/validationSchema"
+import { useFormik } from "formik"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { insertEmp } from "../../../../Slices/EmployeeSlice"
+
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -54,24 +51,20 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
-export default function EmployeeForm() {
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+const EmployeeForm = () => {
+  const [open, setOpen] = useState(false)
+  const positions = useSelector((state) => state.Position.positions)
+  const dispatch = useDispatch()
 
-  const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1);
-    setShowAdditionalInputs(true);
-  };
+  const handleOpen = () => {
+    setOpen(true)
+  }
 
-  const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1);
-  };
-
-  const dispatch = useDispatch();
-  const positions = useSelector((state) => state.Position.positions);
-
+  const handleClose = () => {
+    setOpen(false)
+  }
   const initValue = {
     firstName: "",
     lastName: "",
@@ -86,45 +79,28 @@ export default function EmployeeForm() {
     alternateMobileNo: "",
     employeeImage: "",
     employeeResume: "",
-    rate: "",
-    position: "",
-    bankName: "",
-    accHolderName: "",
-    accNumber: "",
-    ifsc: "",
-    branchName: "",
-    upiId: "",
-    PhoneNumber: "",
-    ClientCompanyName: "",
-    ServiceCategoryName: "",
-    employeeSign: "",
-    employeeAdharImage: "",
-  };
-  const [open , setOpen] = React.useState(false);
-  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik({
-    initialValues: initValue,
-    validationSchema: EmployeeSchema,
-    onSubmit: async (data) => {
-      const employeeData = {
-        ...data,
-        roleId: 4,
-        isActive: "1",
-        employeePassword: "xyzABC",
-        position: null,
-        role: null,
-      };
-      dispatch(insertEmp(employeeData));
-      handleClose();
-    },
-  });
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+    // rate: "",
+    positionId: "",
+  }
+  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
+    {
+      initialValues: initValue,
+      validationSchema: EmployeeSchema,
+      onSubmit: async (data) => {
+        alert(data)
+        const employeeData = {
+          ...data,
+          roleId: 4,
+          isActive: "1",
+          employeePassword: "xyzABC",
+          position: null,
+          role: null,
+        }
+        dispatch(insertEmp(employeeData))
+        handleClose()
+      },
+    }
+  )
 
   useEffect(() => {
     dispatch(fetchPosition());
@@ -721,5 +697,7 @@ export default function EmployeeForm() {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
+
+export default EmployeeForm

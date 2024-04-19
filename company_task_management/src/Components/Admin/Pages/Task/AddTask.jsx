@@ -86,11 +86,11 @@ const AddTask = () => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {/* {errors.taskName && touched.taskName ? (
+            {errors.taskName && touched.taskName ? (
               <Typography variant="caption" color="error">
                 {errors.taskName}
               </Typography>
-            ) : null} */}
+            ) : null}
 
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel>Position </InputLabel>
@@ -116,11 +116,11 @@ const AddTask = () => {
               size="small"
             />
 
-            {/* {errors.rate && touched.rate ? (
+            {errors.rate && touched.rate ? (
               <Typography variant="caption" color="error">
                 {errors.rate}
               </Typography>
-            ) : null} */}
+            ) : null}
 
             <TextField
               id="unit"
@@ -131,11 +131,11 @@ const AddTask = () => {
               onBlur={handleBlur}
               size="small"
             />
-            {/* {errors.unit && touched.unit ? (
+            {errors.unit && touched.unit ? (
               <Typography variant="caption" color="error">
                 {errors.unit}
               </Typography>
-            ) : null} */}
+            ) : null}
             <TextField
               id="instructions"
               name="instructions"
@@ -145,11 +145,11 @@ const AddTask = () => {
               onBlur={handleBlur}
               size="small"
             />
-            {/* {errors.instructions && touched.instructions ? (
+            {errors.instructions && touched.instructions ? (
               <Typography variant="caption" color="error">
                 {errors.instructions}
               </Typography>
-            ) : null} */}
+            ) : null}
 
             <Typography
               variant="h6"
@@ -193,11 +193,11 @@ const AddTask = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {/* {errors.duration && touched.duration ? (
+                {errors.duration && touched.duration ? (
                   <Typography variant="caption" color="error">
                     {errors.duration}
                   </Typography>
-                ) : null} */}
+                ) : null}
 
                 <FormControl fullWidth sx={{ m: 1 }}>
                   <InputLabel>duration </InputLabel>
@@ -231,11 +231,11 @@ const AddTask = () => {
                   onBlur={handleBlur}
                   size="small"
                 />
-                {/* {errors.start_date && touched.start_date ? (
+                {errors.start_date && touched.start_date ? (
                   <Typography variant="caption" color="error">
                     {errors.start_date}
                   </Typography>
-                ) : null} */}
+                ) : null}
                 <TextField
                   id="end_date_increase_time"
                   name="end_date_increase_time"
@@ -246,11 +246,11 @@ const AddTask = () => {
                   size="small"
                 />
                 {/* {errors.end_date_increase_time &&
-                 touched.end_date_increase_time ? (
-                   <Typography variant="caption" color="error">
-                     {errors.end_date_increase_time}
-                   </Typography>
-                 ) : null} */}
+                //  touched.end_date_increase_time ? (
+                //    <Typography variant="caption" color="error">
+                //      {errors.end_date_increase_time}
+                //    </Typography>
+                //  ) : null} */}
               </form>
             )}
             <TextField
@@ -261,11 +261,11 @@ const AddTask = () => {
               onBlur={handleBlur}
               size="small"
             />
-            {/* {errors.description && touched.description ? (
+            {errors.description && touched.description ? (
               <Typography variant="caption" color="error">
                 {errors.description}
               </Typography>
-            ) : null} */}
+            ) : null}
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel>chain </InputLabel>
               <Select
@@ -286,7 +286,7 @@ const AddTask = () => {
               </Select>
             </FormControl>
 
-            <Typography
+            {/* <Typography
               variant="h6"
               component="h6"
               color="#7986cb"
@@ -308,11 +308,11 @@ const AddTask = () => {
                       onBlur={handleBlur}
                       size="small"
                     />
-                    {/* {errors.checklist && touched.checklist ? (
-                      <Typography variant="caption" color="error">
-                        {errors.checklist}
-                      </Typography>
-                    ) : null} */}
+                     {errors.checklist && touched.checklist ? (
+                       <Typography variant="caption" color="error">
+                         {errors.checklist}
+                       </Typography>
+                     ) : null}
 
                     <Button
                       variant="outlined"
@@ -328,7 +328,7 @@ const AddTask = () => {
               </div>
             )}
 
-            {/* Render button to add input */}
+            Render button to add input
 
             <Button
               variant="outlined"
@@ -337,7 +337,7 @@ const AddTask = () => {
               startIcon={<AddIcon />}
             >
               Add Checklist
-            </Button>
+            </Button> */}
           </Grid>
         </div>
         {/* </Stack> */}

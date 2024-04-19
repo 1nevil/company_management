@@ -1,34 +1,48 @@
-import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import AddIcon from "@mui/icons-material/Add";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import AddChain from "./AddChain";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchEmp } from "../../../../Slices/ChainSlice";
+import React, { useEffect, useState } from "react"
+import Box from "@mui/material/Box"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { Link } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import AddIcon from "@mui/icons-material/Add"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import Button from "@mui/material/Button"
+import AddChain from "./AddChain"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchChainMater } from "../../../../Slices/ChainSliceMaster"
+import ChainDetailsForm from "./ChainDetailsForm"
+import { IconButton } from "@mui/material"
 
 function Chain() {
-  const [openTeam, setopenTeam] = React.useState(false);
-  const dispatch = useDispatch();
-  const chains = useSelector((state) => state.Chain.chains);
+  const [chain, setChain] = useState(false)
+  const [chainDetails, setChainDetails] = useState(false)
+  const [selectedRow, setSelectedRow] = useState(null)
 
+  const dispatch = useDispatch()
+
+  const chainMaster = useSelector((state) => state.Chain.chainMaster)
+
+  const handleOpenChainDetail = () => {
+    setChainDetails(true)
+  }
+
+  const handleCloseChainDetail = () => {
+    setChainDetails(false)
+  }
+
+  const handleCloseChain = () => {
+    setChain(false)
+  }
+
+  const handleOpenChain = () => {
+    setChain(true)
+  }
   useEffect(() => {
-    dispatch(fetchEmp());
-  }, []);
+    dispatch(fetchChainMater())
+  }, [dispatch])
 
   // const handleDelete = () => {}
 
-  const handleClickOpenDepartment = () => {
-    setopenTeam(true);
-  };
-
-  const handleClose = () => {
-    setopenTeam(false);
-  };
   const columns = [
     { field: "chainId", headerName: "Chain ID", width: 90 },
     {
@@ -52,42 +66,51 @@ function Chain() {
         </Link>
       ),
     },
-  ];
-
-  const Tasks = [
     {
-      chainId: 1,
-      chainName: "Chain 1",
+      field: "Add Chain Details",
+      headerName: "Add Chain Details",
+      description: "Add Chain Details",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <IconButton aria-label="add Details">
+          <AddIcon
+            onClick={() => {
+              handleOpenChainDetail()
+              setSelectedRow(params.row.chainId)
+            }}
+          />
+        </IconButton>
+      ),
     },
-  ];
-
+  ]
   return (
     <Box>
       <Button
         sx={{ margin: "1rem 0" }}
         variant="contained"
-        onClick={handleClickOpenDepartment}
+        onClick={handleOpenChain}
       >
         <AddIcon />
         Add Chain
       </Button>
 
       <Dialog
-        open={openTeam}
-        onClose={handleClose}
+        open={chain}
+        onClose={handleCloseChain}
         aria-labelledby="responsive-dialog-title"
       >
         <AddChain></AddChain>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus onClick={handleCloseChain}>
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
-        rows={Tasks}
         columns={columns}
+        rows={chainMaster}
         getRowId={(row) => row.chainId}
         initialState={{
           pagination: {
@@ -99,8 +122,13 @@ function Chain() {
         pageSizeOptions={[5]}
         disableRowSelectionOnClick
       />
+      <ChainDetailsForm
+        handleCloseDetails={handleCloseChainDetail}
+        chainDetails={chainDetails}
+        chainId={selectedRow}
+      />
     </Box>
-  );
+  )
 }
 
-export default Chain;
+export default Chain
