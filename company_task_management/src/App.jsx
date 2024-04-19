@@ -29,6 +29,7 @@ import StreetviewIcon from "@mui/icons-material/Streetview";
 import ChainDetails from "./Components/Admin/Pages/Chain/ChainDetails";
 import Chain from "./Components/Admin/Pages/Chain/Chain";
 import CheckTaskList from "./Components/Checker/CheckTasklist";
+import CheckerTaskDetails from "./Components/Checker/CheckTaskDetails";
 
 function App() {
   const iconSiderbar = {
@@ -141,9 +142,14 @@ function App() {
           path: "TaskChecker",
           element: <TaskChecker />,
         },
+
         {
           path: "CheckTaskList",
           element: <CheckTaskList />,
+        },
+        {
+          path: "CheckerTaskDetails/:id",
+          element: <CheckerTaskDetails />,
         },
       ],
     },

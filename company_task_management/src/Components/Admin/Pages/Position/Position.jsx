@@ -52,7 +52,7 @@ function Position() {
     },
     {
       field: "rate",
-      headerName: "Rate",
+      headerName: "Rate Per Unit",
       width: 140,
       valueFormatter: (params) => `${params.value} Rs`,
     },
