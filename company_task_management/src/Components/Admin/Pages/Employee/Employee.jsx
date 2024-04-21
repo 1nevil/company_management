@@ -1,33 +1,33 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import React, { useEffect } from "react"
-import Box from "@mui/material/Box"
-import { IconButton } from "@mui/material"
-import { Delete, Edit } from "@mui/icons-material"
-import { Typography } from "@mui/material"
-import EmployeeForm from "./EmployeeForm"
-import { useDispatch, useSelector } from "react-redux"
-import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice"
-import { ToastContainer, toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, { useEffect } from "react";
+import Box from "@mui/material/Box";
+import { IconButton } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import EmployeeForm from "./EmployeeForm";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Employee() {
-  const dispatch = useDispatch()
-  const employeess = useSelector((state) => state.Employee.employees)
+  const dispatch = useDispatch();
+  const employeess = useSelector((state) => state.Employee.employees);
 
   const handleDelete = (id, name) => {
-    dispatch(deleteEmp(id))
-    notify(name)
-  }
+    dispatch(deleteEmp(id));
+    notify(name);
+  };
 
   const handleEdit = (id) => {
-    alert(id)
-  }
+    alert(id);
+  };
 
   useEffect(() => {
-    dispatch(fetchEmp())
-  }, [dispatch])
+    dispatch(fetchEmp());
+  }, [dispatch]);
 
-  const notify = (name) => toast(name + "is deleted !")
+  const notify = (name) => toast(name + "is deleted !");
 
   const columns = [
     {
@@ -111,7 +111,7 @@ function Employee() {
         </>
       ),
     },
-  ]
+  ];
 
   return (
     <>
@@ -143,7 +143,7 @@ function Employee() {
         />
       </Box>
     </>
-  )
+  );
 }
 
-export default Employee
+export default Employee;

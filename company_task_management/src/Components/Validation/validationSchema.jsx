@@ -21,10 +21,26 @@ export const TeamSchema = Yup.object({
 })
 
 export const EmployeeSchema = Yup.object({
-  employeeName: Yup.string().required("**Full Name Name is required"),
+  firstName: Yup.string().required("**First Name is required"),
+  lastName: Yup.string().required("**Last Name is required"),
+  surname: Yup.string().required("**SurName is required"),
+  address: Yup.string().required("**Address is required"),
   dob: Yup.string().required("**Date of Birth is required"),
   addressEmployee: Yup.string().required("**Address is required"),
   //gender: Yup.string().required("**Gender is required"),
+  bankName: Yup.string().required("**Bank Name is required"),
+  accHolderName: Yup.string().required("**Account  Holder Name is required"),
+  accNumber: Yup.string().required("**Account Number  is required"),
+  ifsc: Yup.string().required("**IFSC is required"),
+  branchName: Yup.string().required("**Branch Name is required"),
+  upiId : Yup.string().required("**UPI ID  is required"),
+  //client details
+  PhoneNumber: Yup.string()
+  .matches(/^[0-9]{10}$/, "Mobile No must be 10 digits")
+  .required("**Mobile Number is required"),
+    ClientCompanyName: Yup.string().required("**Name is required"),
+    ServiceCategoryName: Yup.string().required("**Service Name is required"),
+
   dateOfJoining: Yup.string().required("**Date of Joining is required"),
 
   adharNo: Yup.string()

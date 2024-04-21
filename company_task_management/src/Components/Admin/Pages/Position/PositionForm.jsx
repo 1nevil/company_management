@@ -123,29 +123,24 @@ const PositionForm = () => {
                 ) : null}
               </Grid>
               <Grid item xs={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Unitname</InputLabel>
-                  <Select
-                    name="Unitname"
-                    // value={employeeData.Unitname}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  >
-                    <MenuItem value="word">word</MenuItem>
-                    <MenuItem value="Paragraph">Paragraph</MenuItem>
-                    <MenuItem value="Pages">Pages</MenuItem>
-                  </Select>
-                </FormControl>
-                {errors.Unitname && touched.Unitname ? (
+                <TextField
+                  fullWidth
+                  label="Unit Name"
+                  name="UnitName"
+                  //value={employeeData.Unit}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.Unit && touched.Unit ? (
                   <Typography variant="caption" color="error">
-                    {errors.Unitname}
+                    {errors.Unit}
                   </Typography>
                 ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  label="Rate"
+                  label="Rate Per Unit"
                   name="Rate"
                   // value={employeeData.Rate}
                   onChange={handleChange}

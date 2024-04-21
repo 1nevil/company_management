@@ -26,9 +26,13 @@ import PositionForm from "./Components/Admin/Pages/Position/PositionForm"
 import Position from "./Components/Admin/Pages/Position/Position"
 import StreetviewIcon from "@mui/icons-material/Streetview"
 //import Chain from "./Components/Admin/Pages/Chain/Chain";
-import ChainDetails from "./Components/Admin/Pages/Chain/ChainDetails"
-import Chain from "./Components/Admin/Pages/Chain/Chain"
-import CheckTaskList from "./Components/Checker/CheckTasklist"
+import ChainDetails from "./Components/Admin/Pages/Chain/ChainDetails";
+import Chain from "./Components/Admin/Pages/Chain/Chain";
+import CheckTaskList from "./Components/Checker/CheckTasklist";
+import EmployeeDashboard from "./Components/Employee/DashBord";
+import EmpTaskDeatil from "./Components/Employee/EmpTaskDetail";
+import EmployeeProfile from "./Components/Employee/EmployeeProfile";
+import CheckerTaskDetails from "./Components/Checker/CheckTaskDetails";
 
 function App() {
   const iconSiderbar = {
@@ -141,9 +145,14 @@ function App() {
           path: "TaskChecker",
           element: <TaskChecker />,
         },
+
         {
           path: "CheckTaskList",
           element: <CheckTaskList />,
+        },
+        {
+          path: "CheckerTaskDetails/:id",
+          element: <CheckerTaskDetails />,
         },
       ],
     },
@@ -162,8 +171,16 @@ function App() {
           element: <h1>Hello</h1>,
         },
         {
-          path: "checkr",
-          element: <CheckEmployee />,
+          path: "EmployeeDashboard",
+          element: <EmployeeDashboard />,
+        },
+        {
+          path: "EmpTaskDetail/:id",
+          element: <EmpTaskDeatil />,
+        },
+        {
+          path: "EmployeeProfile",
+          element: <EmployeeProfile />,
         },
       ],
     },
