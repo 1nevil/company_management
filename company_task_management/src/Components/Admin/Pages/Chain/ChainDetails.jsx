@@ -1,4 +1,4 @@
-import { Form, useParams } from "react-router-dom"
+import { Form, Link, useParams } from "react-router-dom"
 import PropTypes from "prop-types"
 import { styled } from "@mui/material/styles"
 import Stack from "@mui/material/Stack"
@@ -13,6 +13,14 @@ import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector"
 import { Grid } from "@mui/material"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getChainDetailsByChainId } from "../../../../Slices/ChainDetailsSlice"
+import { getPositionsByIds } from "../../../../Slices/PositionSlice"
+import EngineeringIcon from "@mui/icons-material/Engineering"
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium"
+import CameraIcon from "@mui/icons-material/Camera"
+import ComputerIcon from "@mui/icons-material/Computer"
 
 // "chainId": 8,
 // "checkerId": 5,
@@ -113,6 +121,10 @@ function ColorlibStepIcon(props) {
     1: <SettingsIcon />,
     2: <GroupAddIcon />,
     3: <VideoLabelIcon />,
+    4: <EngineeringIcon />,
+    5: <WorkspacePremiumIcon />,
+    6: <EngineeringIcon />,
+    7: <ComputerIcon />,
   }
 
   return (
@@ -132,42 +144,63 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 }
 
-const steps = ["Writer", "anchor", "video editor", "boss"]
-
 function ChainDetails() {
   let { chainid } = useParams()
+  const {
+    pending: chainPending,
+    chainFlow,
+    error: chainError,
+  } = useSelector((state) => state.ChainDetail)
+  console.log("🚀 ~ ChainDetails ~ chainFlow:", chainFlow)
 
-  // const initValue = {
-  //   ChainName: "",
-  // }
-  // const { errors, touched, handleBlur } = useFormik({
-  //   initialValues: initValue,
-  //   validationSchema: ChainDetailSchema,
-  //   onSubmit: (data) => {
-  //     alert("hello world")
-  //     console.log(data)
-  //   },
-  // })
+  const { chainPositions } = useSelector((state) => state.Position)
+  // console.log("🚀 ~ ChainDetails ~ positions:", chainPositions)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getChainDetailsByChainId(chainid))
+    dispatch(getPositionsByIds(chainFlow))
+  }, [chainid, dispatch, chainFlow])
+
+  if (chainPending) {
+    return `loading.. `
+  }
+
+  if (chainFlow === "") {
+    return (
+      <>
+        {chainError}
+        <h1>Chain Details is not created </h1>
+        <Link to="/admin/Chain">Create chain Details</Link>
+      </>
+    )
+  }
 
   return (
     <Form>
       <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vw" } }}>
+        {chainPositions &&
+          chainPositions.map((p, index) => (
+            <h1 key={index}> {p.positionName}</h1>
+          ))}
         <Stack sx={{ width: "90%", mt: "30px" }} spacing={4}>
           <Stepper
             alternativeLabel
-            activeStep={steps.length}
+            activeStep={chainPositions.length}
             connector={<ColorlibConnector />}
           >
-            {steps.map((label) => (
-              <Step key={label}>
+            {chainPositions.map((position) => (
+              <Step key={position}>
                 <StepLabel StepIconComponent={ColorlibStepIcon}>
-                  {label}
+                  {position.positionName}
                 </StepLabel>
               </Step>
             ))}
           </Stepper>
         </Stack>
       </Grid>
+      {/* {JSON.stringify(positions)} */}
     </Form>
   )
 }
