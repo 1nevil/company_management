@@ -1,25 +1,25 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import React, { useEffect } from "react"
-import { Link } from "react-router-dom"
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
-import { useDispatch, useSelector } from "react-redux"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { useDispatch, useSelector } from "react-redux";
 import {
   allDisapproveEmps,
   approveDisapproveEmp,
-} from "../../Slices/EmployeeSlice"
-import { IconButton } from "@mui/material"
+} from "../../Slices/EmployeeSlice";
+import { IconButton } from "@mui/material";
 
 function DisapprovedAdmins() {
-  const employeess = useSelector((state) => state.Employee.employees)
-  const dispatch = useDispatch()
+  const employeess = useSelector((state) => state.Employee.employees);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(allDisapproveEmps())
-  }, [dispatch])
+    dispatch(allDisapproveEmps());
+  }, [dispatch]);
 
   const handleClick = (id) => {
-    dispatch(approveDisapproveEmp(id))
-  }
+    dispatch(approveDisapproveEmp(id));
+  };
 
   const columns = [
     {
@@ -83,7 +83,7 @@ function DisapprovedAdmins() {
       headerName: "Resume",
       width: 140,
     },
-  ]
+  ];
 
   return (
     <div>
@@ -103,7 +103,7 @@ function DisapprovedAdmins() {
         disableRowSelectionOnClick
       />
     </div>
-  )
+  );
 }
 
-export default DisapprovedAdmins
+export default DisapprovedAdmins;
