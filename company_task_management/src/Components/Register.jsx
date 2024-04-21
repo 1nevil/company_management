@@ -14,16 +14,21 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useFormik } from "formik";
 import { EmployeeSchema } from "./Validation/validationSchema";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import {
+  Button,
+  Divider,
   Fab,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   NativeSelect,
-  Select,
   styled,
 } from "@mui/material";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import { useState } from "react";
 
 //import { useFormik } from 'formik';
 
@@ -45,18 +50,16 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 //   );
 // }
 
-const movetopage = () => {
-  window.location = "Task";
-};
+
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function Register() {
-  const movetopage = () => {
-    window.location = "Task";
-  };
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   const data = new FormData(event.currentTarget);
@@ -76,12 +79,21 @@ export default function Register() {
     whiteSpace: "nowrap",
     width: 1,
   });
+  const handleAddInput = () => {
+    setAdditionalInputCount((prevCount) => prevCount + 1);
+    setShowAdditionalInputs(true);
+  };
+
+  const handleDeleteInput = () => {
+    setAdditionalInputCount((prevCount) => prevCount - 1);
+  };
 
   const Positions = ["Engineering", "Marketing", "Finance", "HR"];
 
   const initValue = {
     firstName: "",
     lastName: "",
+    surname:"",
     dob: "",
     address: "",
     gender: "",
@@ -100,6 +112,9 @@ export default function Register() {
     ifsc: "",
     branchName: "",
     upiId: "",
+    PhoneNumber:"",
+    ClientCompanyName:"",
+    ServiceCategoryName:"",
     employeeSign: "",
     employeeAdharImage: "",
   };
@@ -431,23 +446,6 @@ export default function Register() {
                   </Grid>
                 </Grid>
                 <br></br>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    label="Rate"
-                    name="rate"
-                    // value={employeeData.alternateMobileNo}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  {errors.rate && touched.rate ? (
-                    <Typography variant="caption" color="error">
-                      {errors.rate}
-                    </Typography>
-                  ) : null}
-                </Grid>
-                <br></br>
-
                 <h2>Bank Details</h2>
                 <br></br>
                 <Grid item xs={12}>
@@ -455,13 +453,12 @@ export default function Register() {
                     fullWidth
                     label="Bank Name"
                     name="bankName"
-                    // value={employeeData.alternateMobileNo}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {errors.rate && touched.rate ? (
+                  {errors.bankName && touched.bankName ? (
                     <Typography variant="caption" color="error">
-                      {errors.rate}
+                      {errors.bankName}
                     </Typography>
                   ) : null}
                 </Grid>
@@ -475,9 +472,9 @@ export default function Register() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {errors.rate && touched.rate ? (
+                  {errors.accHolderName && touched.accHolderName ? (
                     <Typography variant="caption" color="error">
-                      {errors.rate}
+                      {errors.accHolderName}
                     </Typography>
                   ) : null}
                 </Grid>
@@ -491,9 +488,9 @@ export default function Register() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {errors.rate && touched.rate ? (
+                  {errors.accNumber && touched.accNumber ? (
                     <Typography variant="caption" color="error">
-                      {errors.rate}
+                      {errors.accNumber}
                     </Typography>
                   ) : null}
                 </Grid>
@@ -507,9 +504,9 @@ export default function Register() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {errors.rate && touched.rate ? (
+                  {errors.ifsc && touched.ifsc ? (
                     <Typography variant="caption" color="error">
-                      {errors.rate}
+                      {errors.ifsc}
                     </Typography>
                   ) : null}
                 </Grid>
@@ -523,9 +520,9 @@ export default function Register() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {errors.rate && touched.rate ? (
+                  {errors.branchName && touched.branchName ? (
                     <Typography variant="caption" color="error">
-                      {errors.rate}
+                      {errors.branchName}
                     </Typography>
                   ) : null}
                 </Grid>
@@ -539,13 +536,119 @@ export default function Register() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  {errors.rate && touched.rate ? (
+                  {errors.upiId && touched.upiId ? (
                     <Typography variant="caption" color="error">
-                      {errors.rate}
+                      {errors.upiId}
                     </Typography>
                   ) : null}
                 </Grid>
                 <br></br>
+                <h2>Mention Previous Clients/Companies </h2>
+                  {/* ------------------------------------ */}
+                  <div style={{ textAlign: "center" }}>
+          <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
+            <Typography
+              variant="h6"
+              component="h6"
+              color="#7986cb"
+              textAlign="center"
+            >
+              
+            </Typography>
+            <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
+            {showAdditionalInputs && (
+              <div>
+                {[...Array(additionalInputCount)].map((_, index) => (
+                  <div
+                    key={index}
+                    style={{alignItems: "center" }}
+                  >
+                <Box sx={{display:"flex" , gap:"15px"}}>
+                <Grid xs={10}>
+                <Grid >  
+                  <TextField
+                      label={`Client/Company Name ${index + 1}`}
+                      
+                      // variant="outlined"
+                      fullWidth
+                      name={`ClientCompanyName ${index + 1}`}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      // size="small"
+                    />
+                    </Grid>
+                    {errors.checklist && touched.checklist ? (
+                      <Typography variant="caption" color="error">
+                        {errors.checklist}
+                      </Typography>
+                    ) : null}
+                  <Grid >  
+                    <TextField
+                      label={`Service Category Name ${index + 1}`}
+                      
+                      // variant="outlined"
+                      fullWidth
+                      name={`ServiceCategoryName ${index + 1}`}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      // size="small"
+                    />
+                    </Grid>
+                    {errors.checklist && touched.checklist ? (
+                      <Typography variant="caption" color="error">
+                        {errors.checklist}
+                      </Typography>
+                    ) : null}
+                  <Grid >  
+                    <TextField
+                      label={`Phone Number ${index + 1}`}
+                      
+                      // variant="outlined"
+                      fullWidth
+                      name={`PhoneNumber ${index + 1}`}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      // size="small"
+                    />
+                    </Grid>
+                    {errors.checklist && touched.checklist ? (
+                      <Typography variant="caption" color="error">
+                        {errors.checklist}
+                      </Typography>
+                    ) : null}
+                    <Divider width="100%" sx={{ color:"black",width:"70vh"}} />
+                </Grid>
+                    <Grid sx={{display:"flex"}} xs={2}>
+                    <IconButton
+                    sx={{m:"auto"}}
+                      aria-label="delete"
+                      color="error"
+                      onClick={handleDeleteInput}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    </Grid>
+                </Box>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Render button to add input */}
+
+            <Button
+              variant="outlined"
+              sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
+              onClick={handleAddInput}
+              startIcon={<AddIcon />}
+            >
+              Add 
+            </Button>
+          </Grid>
+        </div>
+                  {/* ------------------------------------ */}
+                <br></br>
+
                 <Grid item xs={12}>
                   <TextField
                     type="file"
@@ -623,7 +726,7 @@ export default function Register() {
                     htmlFor="employee-sign-file"
                     style={{ marginTop: "5px" }}
                   >
-                    Upload Sign
+                    Upload  Signature
                   </InputLabel>
                 </Grid>
                 <br></br>

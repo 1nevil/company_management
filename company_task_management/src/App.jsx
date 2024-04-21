@@ -32,6 +32,7 @@ import CheckTaskList from "./Components/Checker/CheckTasklist";
 import EmployeeDashboard from "./Components/Employee/DashBord";
 import EmpTaskDeatil from "./Components/Employee/EmpTaskDetail";
 import EmployeeProfile from "./Components/Employee/EmployeeProfile";
+import CheckerTaskDetails from "./Components/Checker/CheckTaskDetails";
 
 function App() {
   const iconSiderbar = {
@@ -144,9 +145,14 @@ function App() {
           path: "TaskChecker",
           element: <TaskChecker />,
         },
+
         {
           path: "CheckTaskList",
           element: <CheckTaskList />,
+        },
+        {
+          path: "CheckerTaskDetails/:id",
+          element: <CheckerTaskDetails />,
         },
       ],
     },

@@ -1,76 +1,116 @@
-import { Delete, Edit } from "@mui/icons-material";
-import { Button, Dialog, DialogContent, DialogTitle, IconButton, TextField } from "@mui/material";
+import React, { useState } from "react";
+import {
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  Box,
+  Paper,
+  Button,
+} from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React from "react";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CheckList from "../Admin/Pages/Task/Checklist";
-import MyButton from "../Layout/MyButton";
+import { Link } from "react-router-dom";
 
 function CheckTaskList() {
-  const [open , setOpen] = React.useState(false);
-  const [openchecklist, setopenchecklist] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openchecklist, setOpenChecklist] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
-  const handleopenchecklist = () => {
-    setopenchecklist(true);
+  const handleOpenChecklist = () => {
+    setOpenChecklist(true);
   };
-  const handleDisapprove = () =>{
+
+  const handleCloseChecklist = () => {
+    setOpenChecklist(false);
+  };
+
+  const handleDisapprove = (TaskId) => {
     setOpen(true);
-  }
+    setSelectedTask(TaskId);
+  };
+  
+ 
+  const handleSubmit = () => {
+    setOpen(false);
+    setSelectedTask(null);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedTask(null);
+  };
+  const handleApprove = (TaskId) => {
+    alert(TaskId);
+  };
+
+  const handleEdit = (TaskId) => {
+    alert(TaskId);
+  };
+
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
-
     {
-      field: "TaskList",
-      headerName: "TaskList",
+      field: "TaskName",
+      headerName: "TaskName",
       width: 590,
       editable: true,
     },
-  
+    {
+      field: "Position",
+      headerName: "Position",
+      width: 160,
+      editable: true,
+    },
     {
       field: "checklist",
       headerName: "CheckList",
-      description: "Team details",
       sortable: false,
       width: 160,
       renderCell: (params) => (
-        // <Link to={`CheckList/${params.row.id}`}>
-        <IconButton onClick={handleopenchecklist} title="Check List">
-          <VisibilityIcon></VisibilityIcon>
-        </IconButton>
-        // </Link>
+        <Link
+          style={{ color: "gray" }}
+          to={`/Checker/CheckerTaskDetails/${params.row.id}`}
+        >
+          <VisibilityIcon />
+        </Link>
       ),
     },
     {
-      field: "Action",
-      headerName: "Action",
+      field: "Disapprove",
+      headerName: "Disapprove",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 160,
+      width: 100,
       renderCell: (params) => (
         <>
           <IconButton onClick={() => handleDisapprove(params.row.id)} title="Edit">
             <CancelOutlinedIcon sx={{ color: "red" }} />
           </IconButton>
-          <IconButton
-            onClick={() => handleDelete(params.row.id)}
-            title="Delete"
-          >
+          </>
+      ),
+    },
+  
+          {
+      field: "Approve",
+      headerName: "Approve",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <>
+          <IconButton onClick={() => handleApprove(params.row.id)} title="Delete">
             <CheckCircleOutlinedIcon sx={{ color: "green" }} />
           </IconButton>
         </>
       ),
     },
   ];
+  
 
-  const handleDelete = (id) => {
-    alert(id);
-  };
-
-  const handleEdit = (id) => {
-    alert(id);
-  };
+ 
 
   const Tasks = [
     { id: 1, Category: "Snow" },
@@ -99,27 +139,38 @@ function CheckTaskList() {
           pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
         />
       </div>
-      <Dialog open={open}>
-        <DialogTitle>Remarks</DialogTitle>
-        <DialogContent>
-        <TextField
+      
+      <Box sx={{display: 'flex',flexWrap: 'wrap','& > :not(style)': { m: 5, width: 1000,height: 1000 }, }}>
+        
+        <Dialog open={open}>
+          <DialogTitle>Remarks</DialogTitle>
+          <DialogContent>
+            <TextField
               size="small"
-              label="Remarks"
+              label=""
               name="taskName"
               multiline 
               fullWidth
-              rows={3}
-              //value={formData.taskName}
-              // onChange={handleChange}
-              // onBlur={handleBlur}
+              rows={6}
             />
-
-        <MyButton type="submit" fullWidth={true} >
+       <Box sx={{display:'flex', mt: 2,justifyContent:"center" }} >
+        <Button
+         variant="contained"
+          onClick={handleSubmit} 
+          color="primary"
+          sx={{ width: '300px' }}
+          >
           Submit
-        </MyButton>
-        
-        </DialogContent>
-      </Dialog>
+        </Button>
+        </Box>
+        <Box sx={{display:'flex', mt: 2,justifyContent:"right" }} >
+            <Button onClick={handleClose}>Close</Button>
+            </Box>
+          </DialogContent>
+        </Dialog> 
+
+       
+      </Box>
     </div>
   );
 }
