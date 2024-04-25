@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   TextField,
   Button,
@@ -13,13 +13,13 @@ import {
   DialogActions,
   Typography,
   OutlinedInput,
-} from "@mui/material";
-import styled from "@emotion/styled";
-import { EmployeeSchema } from "../../../Validation/validationSchema";
-import { useFormik } from "formik";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosition } from "../../../../Slices/PositionSlice";
-import { insertEmp } from "../../../../Slices/EmployeeSlice";
+} from "@mui/material"
+import styled from "@emotion/styled"
+import { EmployeeSchema } from "../../../Validation/validationSchema"
+import { useFormik } from "formik"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { insertEmp } from "../../../../Slices/EmployeeSlice"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -31,20 +31,20 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
 const EmployeeForm = () => {
-  const [open, setOpen] = useState(false);
-  const positions = useSelector((state) => state.Position.positions);
-  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false)
+  const positions = useSelector((state) => state.Position.positions)
+  const dispatch = useDispatch()
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   const initValue = {
     employeeName: "",
     dob: "",
@@ -60,13 +60,13 @@ const EmployeeForm = () => {
     employeeResume: "",
     // rate: "",
     positionId: "",
-  };
+  }
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: EmployeeSchema,
       onSubmit: async (data) => {
-        alert(data);
+        alert(data)
         const employeeData = {
           ...data,
           roleId: 4,
@@ -74,17 +74,17 @@ const EmployeeForm = () => {
           employeePassword: "xyzABC",
           position: null,
           role: null,
-        };
+        }
 
-        dispatch(insertEmp(employeeData));
-        handleClose();
+        dispatch(insertEmp(employeeData))
+        handleClose()
       },
     }
-  );
+  )
 
   useEffect(() => {
-    dispatch(fetchPosition());
-  }, [dispatch]);
+    dispatch(fetchPosition())
+  }, [dispatch])
 
   return (
     <div>
@@ -357,7 +357,7 @@ const EmployeeForm = () => {
         </DialogActions>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default EmployeeForm;
+export default EmployeeForm

@@ -1,52 +1,43 @@
 import {
+  Box,
+  Button,
   Divider,
   FormControl,
+  FormControlLabel,
   Grid,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
+import DeleteIcon from "@mui/icons-material/Delete"
+import AddIcon from "@mui/icons-material/Add"
 import MyButton from "../../../Layout/MyButton"
 import { useFormik } from "formik"
 import { TaskSchema } from "../../../Validation/validationSchema"
-import { useDispatch, useSelector } from "react-redux"
-import { insertTask } from "../../../../Slices/TaskSlice"
-import { fetchChainMater } from "../../../../Slices/ChainSliceMaster"
-import { getChainDetailsByChainId } from "../../../../Slices/ChainDetailsSlice"
 
 const AddTask = () => {
+  const [showOpenForm, setshowOpenForm] = useState(false)
+  const [showClosedForm, setShowClosedForm] = useState(false)
+
   const initValue = {
     taskName: "",
-    // rate: "",
-    // unit: "",
+    rate: "",
+    unit: "",
     instructions: "",
-    startDate: "",
-    endDate: "",
+    start_date: "",
+    end_date_increase_time: "",
     description: "",
-    // duration: "",
+    duration: "",
+    checklist: "",
+    chainid: "",
+    Position: "",
   }
-
-  // "taskId": 2,
-  //   "taskName": "e-com website",
-  //   "instructions": "Follow the guidelines provided.",
-  //   "startDate": "2024-02-07",
-  //   "endDate": "2024-02-15",
-  //   "description": "Task 1 description.",
-  //   "taskStatus": "Pending",
-
-  const dispatch = useDispatch()
-  const [currentPostion, setCurrentPosition] = useState(null)
-  const [chainId, setChainId] = useState()
-
-  useEffect(() => {
-    dispatch(fetchChainMater())
-  }, [dispatch])
-  const chains = useSelector((state) => state.Chain.chainMaster)
-
-  const chaindetails = useSelector((state) => state.ChainDetail.chainDetail)
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
@@ -54,50 +45,26 @@ const AddTask = () => {
       validationSchema: TaskSchema,
       onSubmit: (data) => {
         alert("hello world")
-        console.log(currentPostion)
-        console.log({
-          ...data,
-          taskStatus: "Pending",
-          chainId,
-          currentPostion: currentPostion[0],
-        })
-
-        const taskData = {
-          ...data,
-          taskStatus: "Pending",
-          currentPostion: currentPostion[0],
-          chainId,
-        }
-        dispatch(insertTask(taskData))
+        console.log(data)
       },
     }
   )
 
-  const handleChangeChain = (e) => {
-    setChainId(e.target.value)
-    dispatch(getChainDetailsByChainId(e.target.value))
-    let cd = chaindetails.chainFlow
-    const t = cd.split(",")
-    console.log(t[0])
-    setCurrentPosition(t)
-  }
-
   const handleAddTask = () => {}
 
-  // const handleRadioChange = (event) => {
-  //   const value = event.target.value
-  //   setshowOpenForm(value === "open")
-  //   setShowClosedForm(value === "closed")
-  // }
+  const handleRadioChange = (event) => {
+    const value = event.target.value
+    setshowOpenForm(value === "open")
+    setShowClosedForm(value === "closed")
+  }
 
   return (
     <div>
-      {/* <Formik onSubmit={handleSubmit}>
-        {({ isSubmitting }) => ( */}
       <form onSubmit={handleSubmit} style={{ width: "100vh" }}>
         <div style={{ textAlign: "center" }}>
           <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vh" } }}>
             <TextField
+              size="small"
               label="task Name"
               name="taskName"
               //value={formData.taskName}
@@ -109,7 +76,8 @@ const AddTask = () => {
                 {errors.taskName}
               </Typography>
             ) : null}
-            {/* <FormControl fullWidth sx={{ m: 1 }}>
+
+            <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel>Position </InputLabel>
               <Select
                 size="small"
@@ -122,8 +90,9 @@ const AddTask = () => {
                 <MenuItem value="writer">writer</MenuItem>
                 <MenuItem value="Enimation">Enimation</MenuItem>
               </Select>
-            </FormControl> */}
-            {/* <TextField
+            </FormControl>
+
+            <TextField
               name="rate"
               label="Rate"
               //value={formData.rate}
@@ -151,14 +120,12 @@ const AddTask = () => {
               <Typography variant="caption" color="error">
                 {errors.unit}
               </Typography>
-            ) : null} */}
+            ) : null}
             <TextField
               id="instructions"
               name="instructions"
               label="Instructions"
               //value={formData.instructions}
-              multiline
-              rows={6}
               onChange={handleChange}
               onBlur={handleBlur}
               size="small"
@@ -169,7 +136,17 @@ const AddTask = () => {
               </Typography>
             ) : null}
 
-            {/* <RadioGroup
+            <Typography
+              variant="h6"
+              component="h6"
+              color="#7986cb"
+              textAlign="center"
+            >
+              Set Reminder
+            </Typography>
+            <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
+
+            <RadioGroup
               name="formStatus"
               value={showOpenForm ? "open" : "closed"}
               onChange={handleRadioChange}
@@ -186,8 +163,9 @@ const AddTask = () => {
                   label="Date"
                 />
               </Box>
-            </RadioGroup>{" "} */}
-            {/* {showOpenForm && (
+            </RadioGroup>
+
+            {showOpenForm && (
               <form onSubmit={handleSubmit}>
                 <TextField
                   label="Duration number"
@@ -229,17 +207,44 @@ const AddTask = () => {
             )}
             {showClosedForm && (
               <form>
-                 
+                <TextField
+                  id="start_date"
+                  name="start_date"
+                  type="date"
+                  //value={formData.start_date}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  size="small"
+                />
+                {errors.start_date && touched.start_date ? (
+                  <Typography variant="caption" color="error">
+                    {errors.start_date}
+                  </Typography>
+                ) : null}
+                <TextField
+                  id="end_date_increase_time"
+                  name="end_date_increase_time"
+                  type="date"
+                  //value={formData.end_date_increase_time}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  size="small"
+                />
+                {/* {errors.end_date_increase_time &&
+                //  touched.end_date_increase_time ? (
+                //    <Typography variant="caption" color="error">
+                //      {errors.end_date_increase_time}
+                //    </Typography>
+                //  ) : null} */}
               </form>
-            )} */}
+            )}
             <TextField
               name="description"
               label="Description"
               //value={formData.description}
-              multiline
-              rows={6}
               onChange={handleChange}
               onBlur={handleBlur}
+              size="small"
             />
             {errors.description && touched.description ? (
               <Typography variant="caption" color="error">
@@ -247,122 +252,30 @@ const AddTask = () => {
               </Typography>
             ) : null}
             <FormControl fullWidth sx={{ m: 1 }}>
-              <InputLabel>Select Chain </InputLabel>
+              <InputLabel>chain </InputLabel>
               <Select
-                value={chainId}
-                onChange={handleChangeChain}
+                //value={formData.teamname}
+                onChange={handleChange}
                 label="chain"
                 name="chainid"
+                size="small"
               >
                 <MenuItem value="">
                   <div>Select chain</div>
                 </MenuItem>
-                {chains.map((chain, index) => (
-                  <MenuItem key={index} value={chain.chainId}>
-                    {chain.chainName}
-                  </MenuItem>
-                ))}
+                <MenuItem value={"chain1"}>chain1</MenuItem>
+                <MenuItem value={"chain2"}>chain2</MenuItem>
+                <MenuItem value={"chain3"}>chain3</MenuItem>
+                <MenuItem value={"chain4"}>chain4</MenuItem>
+                <MenuItem value={"chain5"}>chain5</MenuItem>
               </Select>
             </FormControl>
-            {/* <Typography
-              variant="h6"
-              component="h6"
-              color="#7986cb"
-              textAlign="center"
-            >
-              Checklist
-            </Typography>
-            <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
-            {showAdditionalInputs && (
-              <div>
-                {[...Array(additionalInputCount)].map((_, index) => (
-                  <div key={index}>
-                    <TextField
-                      label={`check list ${index + 1}`}
-                      //variant="outlined"
-                      fullWidth
-                      name={`checkList ${index + 1}`}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      size="small"
-                    />
-                     {errors.checklist && touched.checklist ? (
-                       <Typography variant="caption" color="error">
-                         {errors.checklist}
-                       </Typography>
-                     ) : null}
-
-                    <Button
-                      variant="outlined"
-                      sx={{ marginLeft: "0.5rem" }}
-                      startIcon={<DeleteIcon />}
-                      color="error"
-                      onClick={handleDeleteInput}
-                    >
-                      Delete checklist
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            Render button to add input
-
-            <Button
-              variant="outlined"
-              sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
-              onClick={handleAddInput}
-              startIcon={<AddIcon />}
-            >
-              Add Checklist
-            </Button> */}
-            <Typography
-              variant="h6"
-              component="h6"
-              color="#7986cb"
-              textAlign="center"
-            >
-              Enter Start Date and End Date
-            </Typography>
-            <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
-
-            <TextField
-              id="startDate"
-              name="startDate"
-              type="date"
-              //value={formData.start_date}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              size="small"
-            />
-            {errors.startDate && touched.startDate ? (
-              <Typography variant="caption" color="error">
-                {errors.startDate}
-              </Typography>
-            ) : null}
-            <TextField
-              id="endDate"
-              name="endDate"
-              type="date"
-              //value={formData.end_date_increase_time}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              size="small"
-            />
-            {errors.endDate && touched.endDate ? (
-              <Typography variant="caption" color="error">
-                {errors.endDate}
-              </Typography>
-            ) : null}
           </Grid>
         </div>
-        {/* </Stack> */}
         <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
           Submit
         </MyButton>
       </form>
-      {/* )}
-      </Formik> */}
     </div>
   )
 }
