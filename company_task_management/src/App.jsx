@@ -33,6 +33,8 @@ import EmployeeDashboard from "./Components/Employee/DashBord";
 import EmpTaskDeatil from "./Components/Employee/EmpTaskDetail";
 import EmployeeProfile from "./Components/Employee/EmployeeProfile";
 import CheckerTaskDetails from "./Components/Checker/CheckTaskDetails";
+import TaskHistory from "./Components/Employee/TaskHistory";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 function App() {
   const iconSiderbar = {
@@ -62,8 +64,8 @@ function App() {
       sidebar: ["Task"],
     },
     employee: {
-      icons: [dashboard],
-      sidebar: ["dashboard"],
+      icons: [dashboard, BadgeIcon],
+      sidebar: ["EmployeeDashboard", "TaskHistory"],
     },
     superviser: {
       icons: [dashboard],
@@ -175,12 +177,16 @@ function App() {
           element: <EmployeeDashboard />,
         },
         {
-          path: "EmpTaskDetail/:id",
+          path: "EmpTaskDetail/:taskId",
           element: <EmpTaskDeatil />,
         },
         {
           path: "EmployeeProfile",
           element: <EmployeeProfile />,
+        },
+        {
+          path: "TaskHistory/:id",
+          element: <TaskHistory />,
         },
       ],
     },

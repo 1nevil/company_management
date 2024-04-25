@@ -11,12 +11,42 @@ import { useSelector, useDispatch } from "react-redux";
 import { IconButton } from "@mui/material";
 import { fetchChainMater } from "../../Slices/ChainSliceMaster";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { addAssignTask, getPositionWiseTask } from "../../Slices/TaskSlice";
 
 function EmployeeDashboard() {
   const [TaskDetails, setTaskDetails] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  // const filteredTasksByPosition = useSelector(
+  //   (state) => state.Tasks.filteredTasks
+  // );
+
+  const tasksByPosition = useSelector((state) => state.Tasks.tasks);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPositionWiseTask(1));
+  }, [dispatch]);
 
   const handleClick = (id) => {
+    var currentDate = new Date();
+
+    // Extract day, month, and year
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+
+    day = day < 10 ? "0" + day : day;
+    month = month < 10 ? "0" + month : month;
+
+    var formattedDate = day + "/" + month + "/" + year;
+
+    const insertData = {
+      empId: 6,
+      taskId: id,
+      assignedAt: formattedDate,
+      isActive: "2",
+    };
+    dispatch(addAssignTask(insertData));
     alert(id);
   };
 
@@ -33,7 +63,7 @@ function EmployeeDashboard() {
   const columns = [
     { field: "taskId", headerName: "task ID", width: 90 },
     {
-      field: "TaskName",
+      field: "taskName",
       headerName: "Task Name",
       width: 500,
       editable: true,
@@ -66,17 +96,13 @@ function EmployeeDashboard() {
       ),
     },
   ];
-  const Tasks = [
-    {
-      taskId: 1,
-      TaskName: "Task 1",
-    },
-  ];
+
   return (
     <Box>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
-        rows={Tasks}
+        // rows={filteredTasksByPosition}
+        rows={tasksByPosition}
         columns={columns}
         getRowId={(row) => row.taskId}
         initialState={{
