@@ -1,31 +1,11 @@
 import React, { useEffect, useState } from "react";
-//import * as React from "react";
-//import Avatar from "@mui/material/Avatar";
-//import Button from "@mui/material/Button";
-//import CssBaseline from "@mui/material/CssBaseline";
-//import TextField from "@mui/material/TextField";
-//import FormControlLabel from "@mui/material/FormControlLabel";
-//import Checkbox from "@mui/material/Checkbox";
-//import Link from "@mui/material/Link";
-//import Paper from "@mui/material/Paper";
-//import Box from "@mui/material/Box";
-//import Grid from "@mui/material/Grid";
-//import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-//import Typography from "@mui/material/Typography";
-//import { createTheme, ThemeProvider } from "@mui/material/styles";
-//import { useFormik } from "formik";
-//import { EmployeeSchema } from "./Validation/validationSchema";
-import DeleteIcon from "@mui/icons-material/Delete";
-import NavigationIcon from "@mui/icons-material/Navigation";
-
-import AddIcon from "@mui/icons-material/Add";
 import {
   TextField,
   Button,
   MenuItem,
   FormControl,
   InputLabel,
-  Fab,
+  Select,
   Grid,
   Dialog,
   DialogTitle,
@@ -37,6 +17,7 @@ import {
   Divider,
   Box,
   IconButton,
+  Fab,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { EmployeeSchema } from "../../../Validation/validationSchema";
@@ -81,17 +62,16 @@ const EmployeeForm = () => {
   };
 
   const initValue = {
-    firstName: "",
-    lastName: "",
-    surname: "",
+    employeeName: "",
     dob: "",
-    address: "",
+    addressEmployee: "",
     gender: "",
     dateOfJoining: "",
-    email: "",
-    mobileNo: "",
-    adharNo: "",
-    alternateMobileNo: "",
+    adharNumber: "",
+    employeeAge: 0,
+    employeeEmail: "",
+    mobileNumber: "",
+    altmobileNumber: "",
     employeeImage: "",
     employeeResume: "",
     // rate: "",
@@ -580,7 +560,7 @@ const EmployeeForm = () => {
                               color="error"
                               onClick={handleDeleteInput}
                             >
-                              <DeleteIcon />
+                              {/* <DeleteIcon /> */}
                             </IconButton>
                           </Grid>
                         </Box>
@@ -595,7 +575,7 @@ const EmployeeForm = () => {
                   variant="outlined"
                   sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
                   onClick={handleAddInput}
-                  startIcon={<AddIcon />}
+                  // startIcon={<AddIcon />}
                 >
                   Add
                 </Button>
@@ -691,7 +671,7 @@ const EmployeeForm = () => {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <Fab variant="extended" size="medium" color="primary">
-                <NavigationIcon sx={{ marginRight: 1 }} />
+                {/* <NavigationIcon sx={{ marginRight: 1 }} /> */}
                 Submit
               </Fab>
             </Grid>

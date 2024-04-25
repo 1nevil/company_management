@@ -119,7 +119,7 @@ function Chain() {
             },
           },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
         disableRowSelectionOnClick
       />
       <ChainDetailsForm

@@ -1,21 +1,21 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
+import * as React from "react"
+import Avatar from "@mui/material/Avatar"
 //import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
+import CssBaseline from "@mui/material/CssBaseline"
+import TextField from "@mui/material/TextField"
 //import FormControlLabel from "@mui/material/FormControlLabel";
 //import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useFormik } from "formik";
-import { EmployeeSchema } from "./Validation/validationSchema";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
+import Link from "@mui/material/Link"
+import Paper from "@mui/material/Paper"
+import Box from "@mui/material/Box"
+import Grid from "@mui/material/Grid"
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
+import Typography from "@mui/material/Typography"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { useFormik } from "formik"
+import { EmployeeSchema } from "./Validation/validationSchema"
+import DeleteIcon from "@mui/icons-material/Delete"
+import AddIcon from "@mui/icons-material/Add"
 import {
   Button,
   Divider,
@@ -26,9 +26,9 @@ import {
   MenuItem,
   NativeSelect,
   styled,
-} from "@mui/material";
-import NavigationIcon from "@mui/icons-material/Navigation";
-import { useState } from "react";
+} from "@mui/material"
+import NavigationIcon from "@mui/icons-material/Navigation"
+import { useState } from "react"
 
 //import { useFormik } from 'formik';
 
@@ -50,15 +50,13 @@ import { useState } from "react";
 //   );
 // }
 
-
-
 // TODO remove, this demo shouldn't need to reset the theme.
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme()
 
 export default function Register() {
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -78,22 +76,22 @@ export default function Register() {
     left: 0,
     whiteSpace: "nowrap",
     width: 1,
-  });
+  })
   const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1);
-    setShowAdditionalInputs(true);
-  };
+    setAdditionalInputCount((prevCount) => prevCount + 1)
+    setShowAdditionalInputs(true)
+  }
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1);
-  };
+    setAdditionalInputCount((prevCount) => prevCount - 1)
+  }
 
-  const Positions = ["Engineering", "Marketing", "Finance", "HR"];
+  const Positions = ["Engineering", "Marketing", "Finance", "HR"]
 
   const initValue = {
     firstName: "",
     lastName: "",
-    surname:"",
+    surname: "",
     dob: "",
     address: "",
     gender: "",
@@ -112,22 +110,22 @@ export default function Register() {
     ifsc: "",
     branchName: "",
     upiId: "",
-    PhoneNumber:"",
-    ClientCompanyName:"",
-    ServiceCategoryName:"",
+    PhoneNumber: "",
+    ClientCompanyName: "",
+    ServiceCategoryName: "",
     employeeSign: "",
     employeeAdharImage: "",
-  };
+  }
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
-      validationSchema: EmployeeSchema,
+      // validationSchema: EmployeeSchema,
       onSubmit: (data) => {
-        alert("Form Submitted!");
-        console.log(data);
+        alert("Form Submitted!")
+        console.log(data)
       },
     }
-  );
+  )
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -160,12 +158,7 @@ export default function Register() {
             <Typography component="h1" variant="h5">
               Employee Registeration Form
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" noValidate sx={{ mt: 1 }}>
               <form style={{ paddingTop: "10px" }} onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
@@ -270,9 +263,9 @@ export default function Register() {
                           onChange={handleChange}
                           onBlur={handleBlur}
                         >
-                          <option value={10}>Male</option>
-                          <option value={20}>Female</option>
-                          <option value={30}>Others</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="others">Others</option>
                         </NativeSelect>
                       </FormControl>
                     }
@@ -310,8 +303,8 @@ export default function Register() {
                       onInput={(e) => {
                         e.target.value = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 12);
-                        handleChange(e);
+                          .slice(0, 12)
+                        handleChange(e)
                       }}
                       onKeyDown={(e) => {
                         if (
@@ -323,7 +316,7 @@ export default function Register() {
                             e.keyCode === 46
                           )
                         ) {
-                          e.preventDefault();
+                          e.preventDefault()
                         }
                       }}
                       onChange={handleChange}
@@ -360,8 +353,8 @@ export default function Register() {
                       onInput={(e) => {
                         e.target.value = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 10);
-                        handleChange(e);
+                          .slice(0, 10)
+                        handleChange(e)
                       }}
                       onKeyDown={(e) => {
                         if (
@@ -373,7 +366,7 @@ export default function Register() {
                             e.keyCode === 46
                           )
                         ) {
-                          e.preventDefault();
+                          e.preventDefault()
                         }
                       }}
                       // value={employeeData.mobileNo}
@@ -395,8 +388,8 @@ export default function Register() {
                       onInput={(e) => {
                         e.target.value = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 10);
-                        handleChange(e);
+                          .slice(0, 10)
+                        handleChange(e)
                       }}
                       onKeyDown={(e) => {
                         if (
@@ -408,7 +401,7 @@ export default function Register() {
                             e.keyCode === 46
                           )
                         ) {
-                          e.preventDefault();
+                          e.preventDefault()
                         }
                       }}
                       // value={employeeData.alternateMobileNo}
@@ -544,109 +537,104 @@ export default function Register() {
                 </Grid>
                 <br></br>
                 <h2>Mention Previous Clients/Companies </h2>
-                  {/* ------------------------------------ */}
-                  <div style={{ textAlign: "center" }}>
-          <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
-            <Typography
-              variant="h6"
-              component="h6"
-              color="#7986cb"
-              textAlign="center"
-            >
-              
-            </Typography>
-            <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
-            {showAdditionalInputs && (
-              <div>
-                {[...Array(additionalInputCount)].map((_, index) => (
-                  <div
-                    key={index}
-                    style={{alignItems: "center" }}
-                  >
-                <Box sx={{display:"flex" , gap:"15px"}}>
-                <Grid xs={10}>
-                <Grid >  
-                  <TextField
-                      label={`Client/Company Name ${index + 1}`}
-                      
-                      // variant="outlined"
-                      fullWidth
-                      name={`ClientCompanyName ${index + 1}`}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      // size="small"
-                    />
-                    </Grid>
-                    {errors.checklist && touched.checklist ? (
-                      <Typography variant="caption" color="error">
-                        {errors.checklist}
-                      </Typography>
-                    ) : null}
-                  <Grid >  
-                    <TextField
-                      label={`Service Category Name ${index + 1}`}
-                      
-                      // variant="outlined"
-                      fullWidth
-                      name={`ServiceCategoryName ${index + 1}`}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      // size="small"
-                    />
-                    </Grid>
-                    {errors.checklist && touched.checklist ? (
-                      <Typography variant="caption" color="error">
-                        {errors.checklist}
-                      </Typography>
-                    ) : null}
-                  <Grid >  
-                    <TextField
-                      label={`Phone Number ${index + 1}`}
-                      
-                      // variant="outlined"
-                      fullWidth
-                      name={`PhoneNumber ${index + 1}`}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      // size="small"
-                    />
-                    </Grid>
-                    {errors.checklist && touched.checklist ? (
-                      <Typography variant="caption" color="error">
-                        {errors.checklist}
-                      </Typography>
-                    ) : null}
-                    <Divider width="100%" sx={{ color:"black",width:"70vh"}} />
-                </Grid>
-                    <Grid sx={{display:"flex"}} xs={2}>
-                    <IconButton
-                    sx={{m:"auto"}}
-                      aria-label="delete"
-                      color="error"
-                      onClick={handleDeleteInput}
+
+                <div style={{ textAlign: "center" }}>
+                  <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
+                    <Typography
+                      variant="h6"
+                      component="h6"
+                      color="#7986cb"
+                      textAlign="center"
+                    ></Typography>
+                    <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
+                    {showAdditionalInputs && (
+                      <div>
+                        {[...Array(additionalInputCount)].map((_, index) => (
+                          <div key={index} style={{ alignItems: "center" }}>
+                            <Box sx={{ display: "flex", gap: "15px" }}>
+                              <Grid xs={10}>
+                                <Grid>
+                                  <TextField
+                                    label={`Client/Company Name ${index + 1}`}
+                                    // variant="outlined"
+                                    fullWidth
+                                    name={`ClientCompanyName ${index + 1}`}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    // size="small"
+                                  />
+                                </Grid>
+                                {errors.checklist && touched.checklist ? (
+                                  <Typography variant="caption" color="error">
+                                    {errors.checklist}
+                                  </Typography>
+                                ) : null}
+                                <Grid>
+                                  <TextField
+                                    label={`Service Category Name ${index + 1}`}
+                                    // variant="outlined"
+                                    fullWidth
+                                    name={`ServiceCategoryName ${index + 1}`}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    // size="small"
+                                  />
+                                </Grid>
+                                {errors.checklist && touched.checklist ? (
+                                  <Typography variant="caption" color="error">
+                                    {errors.checklist}
+                                  </Typography>
+                                ) : null}
+                                <Grid>
+                                  <TextField
+                                    label={`Phone Number ${index + 1}`}
+                                    // variant="outlined"
+                                    fullWidth
+                                    name={`PhoneNumber ${index + 1}`}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    // size="small"
+                                  />
+                                </Grid>
+                                {errors.checklist && touched.checklist ? (
+                                  <Typography variant="caption" color="error">
+                                    {errors.checklist}
+                                  </Typography>
+                                ) : null}
+                                <Divider
+                                  width="100%"
+                                  sx={{ color: "black", width: "70vh" }}
+                                />
+                              </Grid>
+                              <Grid sx={{ display: "flex" }} xs={2}>
+                                <IconButton
+                                  sx={{ m: "auto" }}
+                                  aria-label="delete"
+                                  color="error"
+                                  onClick={handleDeleteInput}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Grid>
+                            </Box>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Render button to add input */}
+
+                    <Button
+                      variant="outlined"
+                      sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
+                      onClick={handleAddInput}
+                      startIcon={<AddIcon />}
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                    </Grid>
-                </Box>
-                  </div>
-                ))}
-              </div>
-            )}
+                      Add
+                    </Button>
+                  </Grid>
+                </div>
 
-            {/* Render button to add input */}
-
-            <Button
-              variant="outlined"
-              sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
-              onClick={handleAddInput}
-              startIcon={<AddIcon />}
-            >
-              Add 
-            </Button>
-          </Grid>
-        </div>
-                  {/* ------------------------------------ */}
                 <br></br>
 
                 <Grid item xs={12}>
@@ -726,7 +714,7 @@ export default function Register() {
                     htmlFor="employee-sign-file"
                     style={{ marginTop: "5px" }}
                   >
-                    Upload  Signature
+                    Upload Signature
                   </InputLabel>
                 </Grid>
                 <br></br>
@@ -735,10 +723,14 @@ export default function Register() {
                   xs={12}
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Fab variant="extended" size="medium" color="primary">
-                    <NavigationIcon sx={{ marginRight: 1 }} />
-                    Submit
-                  </Fab>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: "20px" }}
+                  >
+                    Add Position
+                  </Button>
                 </Grid>
               </form>
               <Grid container>
@@ -756,5 +748,5 @@ export default function Register() {
         </Grid>
       </Grid>
     </ThemeProvider>
-  );
+  )
 }

@@ -5,5 +5,12 @@ const axiosInstance = axios.create({
 })
 
 export function insertChainDetailsData(chainDetails) {
-  return axiosInstance.post("api/ChainDetails", chainDetails )
+  return axiosInstance.post("api/ChainDetails", chainDetails)
+}
+
+export function fetchChainDetailChainId(id) {
+  // let r = axiosInstance.get(`api/ChainDetails/${id}`)
+
+  // console.log("🚀 ~ fetchChainDetailChainId ~ r:", r)
+  return axiosInstance.get(`api/ChainDetails/${id}`)
 }

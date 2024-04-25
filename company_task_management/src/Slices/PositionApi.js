@@ -17,3 +17,11 @@ export const updatePositionData = (id) => {
 export const insertPositionData = (position) => {
   return axiosInstance.post(`api/PositionMasters`, position)
 }
+
+export const fetchPositionById = (id) => {
+  return axiosInstance.get(`api/PositionMasters/${id}`)
+}
+
+export const getChainPostionByIds = (ids) => {
+  return axiosInstance.get(`api/PositionMasters/postionChain/${ids}`)
+}
