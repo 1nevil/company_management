@@ -1,9 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { updateTaskSubmission } from "./AssignToTaskApi";
+import {
+  GetTaskAssignDataToChecker,
+  getCompletedTaskForChecker,
+  updateTaskSubmission,
+} from "./AssignToTaskApi";
 
 const initialState = {
   pendding: false,
   tasks: [],
+  taskGuidlinesChecker: {},
   error: "",
 };
 
@@ -13,6 +18,22 @@ export const updateTaskWithCompeletedate = createAsyncThunk(
     console.log(updatedAssign);
     const response = await updateTaskSubmission(updatedAssign);
 
+    return response.data;
+  }
+);
+
+export const getCompletedTaskDataForChecker = createAsyncThunk(
+  "tasks/getCompletedTaskDataForChecker",
+  async () => {
+    const response = await getCompletedTaskForChecker();
+    return response.data;
+  }
+);
+
+export const getTaskAssignDataForChecker = createAsyncThunk(
+  "tasks/checkerdata",
+  async (id) => {
+    const response = await GetTaskAssignDataToChecker(id);
     return response.data;
   }
 );
@@ -30,6 +51,31 @@ export const AssignToTaskSlice = createSlice({
         state.pendding = false;
       })
       .addCase(updateTaskWithCompeletedate.rejected, (state, action) => {
+        state.pendding = false;
+        state.error = action.payload;
+      })
+      .addCase(getCompletedTaskDataForChecker.pending, (state) => {
+        state.pendding = true;
+      })
+      .addCase(getCompletedTaskDataForChecker.fulfilled, (state, action) => {
+        state.pendding = false;
+        state.tasks = action.payload;
+        console.log(action);
+      })
+      .addCase(getCompletedTaskDataForChecker.rejected, (state, action) => {
+        state.pendding = false;
+        state.error = action.payload;
+      })
+      //getTaskAssignDataForChecker
+      .addCase(getTaskAssignDataForChecker.pending, (state) => {
+        state.pendding = true;
+      })
+      .addCase(getTaskAssignDataForChecker.fulfilled, (state, action) => {
+        state.pendding = false;
+        state.taskGuidlinesChecker = action.payload;
+        console.log(action);
+      })
+      .addCase(getTaskAssignDataForChecker.rejected, (state, action) => {
         state.pendding = false;
         state.error = action.payload;
       });

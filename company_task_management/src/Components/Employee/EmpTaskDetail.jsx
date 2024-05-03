@@ -46,7 +46,7 @@ function EmpTaskDeatil(params) {
   const [completedGuidelines, setCompletedGuidelines] = useState([]);
   const [incompleteGuidelines, setIncompleteGuidelines] = useState([]);
   const [fileUpload, setFileUpload] = useState("");
-  const empID = 6;
+  const empID = 9;
 
   const { taskId } = useParams();
   console.log(taskId);
@@ -55,7 +55,7 @@ function EmpTaskDeatil(params) {
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getTaskUsingTaskId({ positionId: 1, taskId: taskId }));
+    dispatch(getTaskUsingTaskId({ positionId: 2, taskId: taskId }));
   }, [dispatch, taskId]);
 
   useEffect(() => {

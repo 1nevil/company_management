@@ -24,3 +24,13 @@ export function updateTaskSubmission({
     `api/EmpTaskAssignments/PutCompletedFileUpload/${taskId}/${empID}?completedAt=${encodedCompletedAt}&fileUpload=${encodedFileUpload}&isActive=${isActive}`
   );
 }
+
+export function getCompletedTaskForChecker() {
+  return axiosInstance.get("api/EmpTaskAssignments/GetCompletedTaskForChecker");
+}
+
+export function GetTaskAssignDataToChecker(id) {
+  return axiosInstance.get(
+    `/api/EmpTaskAssignments/getTaskAssignDataToChecker/${id}`
+  );
+}

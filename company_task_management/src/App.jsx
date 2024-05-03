@@ -153,7 +153,7 @@ function App() {
           element: <CheckTaskList />,
         },
         {
-          path: "CheckerTaskDetails/:id",
+          path: "CheckerTaskDetails/:taskId",
           element: <CheckerTaskDetails />,
         },
       ],

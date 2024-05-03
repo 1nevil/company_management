@@ -24,7 +24,7 @@ function EmployeeDashboard() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPositionWiseTask(1));
+    dispatch(getPositionWiseTask(2));
   }, [dispatch]);
 
   const handleClick = (id) => {
@@ -41,7 +41,7 @@ function EmployeeDashboard() {
     var formattedDate = day + "/" + month + "/" + year;
 
     const insertData = {
-      empId: 6,
+      empId: 9,
       taskId: id,
       assignedAt: formattedDate,
       isActive: "2",
