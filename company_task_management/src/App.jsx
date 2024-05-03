@@ -35,6 +35,10 @@ import EmployeeProfile from "./Components/Employee/EmployeeProfile";
 import CheckerTaskDetails from "./Components/Checker/CheckTaskDetails";
 import TaskHistory from "./Components/Employee/TaskHistory";
 import BadgeIcon from "@mui/icons-material/Badge";
+import SignIn from "./Components/SignIn";
+import TaskIsActive from "./Components/Employee/TaskIsActive";
+import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
+import TaskDetail from "./Components/Employee/TaskDetail";
 
 function App() {
   const iconSiderbar = {
@@ -64,8 +68,8 @@ function App() {
       sidebar: ["Task"],
     },
     employee: {
-      icons: [dashboard, BadgeIcon],
-      sidebar: ["EmployeeDashboard", "TaskHistory"],
+      icons: [dashboard, BadgeIcon, RunningWithErrorsIcon],
+      sidebar: ["EmployeeDashboard", "TaskHistory", "TaskIsActive"],
     },
     superviser: {
       icons: [dashboard],
@@ -188,12 +192,24 @@ function App() {
           path: "TaskHistory/:id",
           element: <TaskHistory />,
         },
+        {
+          path: "TaskIsActive/:id",
+          element: <TaskIsActive />,
+        },
+        {
+          path: "TaskDetail/:id",
+          element: <TaskDetail />,
+        },
       ],
     },
     // ------- path like employee/Register have to change
     {
       path: "Register",
       element: <Register />,
+    },
+    {
+      path: "Login",
+      element: <SignIn />,
     },
     {
       path: "/superviser",

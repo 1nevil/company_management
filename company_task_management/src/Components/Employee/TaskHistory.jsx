@@ -31,7 +31,7 @@ function TaskHistory(params) {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/employee/taskdetail/${params.row.taskId}`}
+          to={`/employee/TaskDetail/${params.row.taskId}`}
         >
           <VisibilityIcon />
         </Link>

@@ -61,7 +61,7 @@ export const getTaskUsingTaskId = createAsyncThunk(
       const response = await getTaskByTaskId(positionId, taskId);
       return response.data;
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
       if (error.response) {
         const errorMessage = error.response.data.message;
         return rejectWithValue(errorMessage);
@@ -158,6 +158,7 @@ const TaskSlice = createSlice({
       })
       .addCase(getTaskUsingTaskId.fulfilled, (state, action) => {
         state.pending = false;
+        console.log(action.payload);
         state.tasks = action.payload;
       })
       .addCase(getTaskUsingTaskId.rejected, (state, action) => {
