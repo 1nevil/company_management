@@ -92,3 +92,11 @@ export const ChainSchema = Yup.object({
 export const ChainDetailSchema = Yup.object({
   chainId: Yup.string().required("**chainId name is required"),
 })
+
+
+export const userLoginSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
+})
