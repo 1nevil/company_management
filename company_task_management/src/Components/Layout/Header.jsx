@@ -19,8 +19,14 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import InboxIcon from "@mui/icons-material/MoveToInbox"
 import MailIcon from "@mui/icons-material/Mail"
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 import { Container } from "@mui/material"
+import MenuItem from "@mui/material/MenuItem"
+import Menu from "@mui/material/Menu"
+import Avatar from "@mui/material/Avatar"
+import Tooltip from "@mui/material/Tooltip"
+import { useDispatch, useSelector } from "react-redux"
+import { clearUserToken, setUserToken } from "../../Slices/AuthenticationSlice"
 
 const drawerWidth = 240
 
@@ -89,11 +95,44 @@ const Drawer = styled(MuiDrawer, {
   }),
 }))
 
+const settings = ["Profile", "Account", "Dashboard", "Logout"]
+
+const loginLink = {
+  color: "#575656",
+  textDecoration: "none",
+  backgroundColor: "#e3e3e3",
+  padding: "0.5rem 1.5rem",
+  borderRadius: "1rem",
+}
 // eslint-disable-next-line react/prop-types
 function Header({ link, icons, sidebarNames }) {
+  
+  const isAuthenticate = useSelector((state) => state.Auth.isAuthenticate)
+
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+
   const theme = useTheme()
+  const [anchorElUser, setAnchorElUser] = React.useState(null)
   const [open, setOpen] = React.useState(false)
 
+  React.useEffect(() => {
+    dispatch(setUserToken())
+  }, [dispatch])
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget)
+  }
+
+  const handleCloseUserMenu = (settingName) => {
+    if (settingName === "Logout") {
+      localStorage.removeItem("token")
+      navigate("/login")
+      dispatch(clearUserToken())
+    }
+    setAnchorElUser(null)
+  }
   const handleDrawerOpen = () => {
     setOpen(true)
   }
@@ -124,6 +163,49 @@ function Header({ link, icons, sidebarNames }) {
           <Typography variant="h6" noWrap component="div">
             Task Mangement
           </Typography>
+          <Box sx={{ flexGrow: 0, ml: "auto" }}>
+            {isAuthenticate === true ? (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => handleCloseUserMenu(setting)}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <Link style={loginLink} to="/Login">
+                Login
+              </Link>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
