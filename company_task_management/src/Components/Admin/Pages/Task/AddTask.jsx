@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import {
   Box,
   Button,
@@ -13,17 +14,28 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material"
-import React, { useState } from "react"
-import DeleteIcon from "@mui/icons-material/Delete"
-import AddIcon from "@mui/icons-material/Add"
-import MyButton from "../../../Layout/MyButton"
-import { useFormik } from "formik"
-import { TaskSchema } from "../../../Validation/validationSchema"
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import MyButton from "../../../Layout/MyButton";
+import { useFormik } from "formik";
+import { TaskSchema } from "../../../Validation/validationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChainMater } from "../../../../Slices/ChainSliceMaster";
+import { fetchPosition } from "../../../../Slices/PositionSlice";
+import { insertTask } from "../../../../Slices/TaskSlice";
 
 const AddTask = () => {
-  const [showOpenForm, setshowOpenForm] = useState(false)
-  const [showClosedForm, setShowClosedForm] = useState(false)
+  const [showOpenForm, setshowOpenForm] = useState(false);
+  const [showClosedForm, setShowClosedForm] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const chainMaster = useSelector((state) => state.Chain.chainMaster);
+  const Positions = useSelector((state) => state.Position.positions);
+
+  console.log(chainMaster);
 
   const initValue = {
     taskName: "",
@@ -33,33 +45,43 @@ const AddTask = () => {
     start_date: "",
     end_date_increase_time: "",
     description: "",
-    duration: "",
+    durationNum: "",
     checklist: "",
     chainid: "",
     Position: "",
-  }
+  };
+  useEffect(() => {
+    dispatch(fetchChainMater());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchPosition());
+  }, [dispatch]);
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: TaskSchema,
       onSubmit: (data) => {
-        alert("hello world")
-        console.log(data)
+        alert("hello world");
+        console.log(data);
+        let TaskStatus = "Pending";
+        data.durationNum = String(data.durationNum);
+        dispatch(insertTask({ ...data, TaskStatus }));
       },
     }
-  )
+  );
 
-  const handleAddTask = () => {}
+  const handleAddTask = () => {};
 
   const handleRadioChange = (event) => {
-    const value = event.target.value
-    setshowOpenForm(value === "open")
-    setShowClosedForm(value === "closed")
-  }
+    const value = event.target.value;
+    setshowOpenForm(value === "open");
+    setShowClosedForm(value === "closed");
+  };
 
   return (
     <div>
+      {/* {JSON.stringify(chainMaster)} */}
       <form onSubmit={handleSubmit} style={{ width: "100vh" }}>
         <div style={{ textAlign: "center" }}>
           <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vh" } }}>
@@ -81,18 +103,25 @@ const AddTask = () => {
               <InputLabel>Position </InputLabel>
               <Select
                 size="small"
-                name="Position"
+                name="currentPostion"
                 // value={employeeData.Position}
                 onChange={handleChange}
                 onBlur={handleBlur}
               >
+                {Positions?.map((position) => {
+                  return (
+                    <MenuItem value={position.positionId}>
+                      {position.positionName}
+                    </MenuItem>
+                  );
+                })}
                 <MenuItem value="video editior">video editior</MenuItem>
                 <MenuItem value="writer">writer</MenuItem>
                 <MenuItem value="Enimation">Enimation</MenuItem>
               </Select>
             </FormControl>
 
-            <TextField
+            {/* <TextField
               name="rate"
               label="Rate"
               //value={formData.rate}
@@ -105,9 +134,9 @@ const AddTask = () => {
               <Typography variant="caption" color="error">
                 {errors.rate}
               </Typography>
-            ) : null}
+            ) : null} */}
 
-            <TextField
+            {/* <TextField
               id="unit"
               name="unit"
               label="Unit"
@@ -120,7 +149,7 @@ const AddTask = () => {
               <Typography variant="caption" color="error">
                 {errors.unit}
               </Typography>
-            ) : null}
+            ) : null} */}
             <TextField
               id="instructions"
               name="instructions"
@@ -172,7 +201,7 @@ const AddTask = () => {
                   type="number"
                   variant="outlined"
                   size="small"
-                  name="duration"
+                  name="durationNum"
                   //sx={{ width: "10%" }}
 
                   onChange={handleChange}
@@ -184,7 +213,7 @@ const AddTask = () => {
                   </Typography>
                 ) : null}
 
-                <FormControl fullWidth sx={{ m: 1 }}>
+                {/* <FormControl fullWidth sx={{ m: 1 }}>
                   <InputLabel>duration </InputLabel>
                   <Select
                     size="small"
@@ -202,14 +231,14 @@ const AddTask = () => {
                     <MenuItem value="month">Month</MenuItem>
                     <MenuItem value="year">Year</MenuItem>
                   </Select>
-                </FormControl>
+                </FormControl> */}
               </form>
             )}
             {showClosedForm && (
               <form>
                 <TextField
                   id="start_date"
-                  name="start_date"
+                  name="startDate"
                   type="date"
                   //value={formData.start_date}
                   onChange={handleChange}
@@ -223,7 +252,7 @@ const AddTask = () => {
                 ) : null}
                 <TextField
                   id="end_date_increase_time"
-                  name="end_date_increase_time"
+                  name="endDate"
                   type="date"
                   //value={formData.end_date_increase_time}
                   onChange={handleChange}
@@ -263,11 +292,11 @@ const AddTask = () => {
                 <MenuItem value="">
                   <div>Select chain</div>
                 </MenuItem>
-                <MenuItem value={"chain1"}>chain1</MenuItem>
-                <MenuItem value={"chain2"}>chain2</MenuItem>
-                <MenuItem value={"chain3"}>chain3</MenuItem>
-                <MenuItem value={"chain4"}>chain4</MenuItem>
-                <MenuItem value={"chain5"}>chain5</MenuItem>
+                {chainMaster?.map((chain) => {
+                  return (
+                    <MenuItem value={chain.chainId}>{chain.chainName}</MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
           </Grid>
@@ -277,7 +306,7 @@ const AddTask = () => {
         </MyButton>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddTask
+export default AddTask;

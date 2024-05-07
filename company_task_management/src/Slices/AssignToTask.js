@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   GetTaskAssignDataToChecker,
+  GetTaskHistoryByEmpID,
   getCompletedTaskForChecker,
   updateTaskSubmission,
 } from "./AssignToTaskApi";
@@ -34,6 +35,14 @@ export const getTaskAssignDataForChecker = createAsyncThunk(
   "tasks/checkerdata",
   async (id) => {
     const response = await GetTaskAssignDataToChecker(id);
+    return response.data;
+  }
+);
+
+export const getTaskFromHistoryByEmpId = createAsyncThunk(
+  "tasks/getTaskFromHistoryByEmpId",
+  async (empid) => {
+    const response = await GetTaskHistoryByEmpID(empid);
     return response.data;
   }
 );
@@ -76,6 +85,19 @@ export const AssignToTaskSlice = createSlice({
         console.log(action);
       })
       .addCase(getTaskAssignDataForChecker.rejected, (state, action) => {
+        state.pendding = false;
+        state.error = action.payload;
+      })
+      //getTaskFromHistoryByEmpId
+      .addCase(getTaskFromHistoryByEmpId.pending, (state) => {
+        state.pendding = true;
+      })
+      .addCase(getTaskFromHistoryByEmpId.fulfilled, (state, action) => {
+        state.pendding = false;
+        state.tasks = action.payload;
+        console.log(state.tasks);
+      })
+      .addCase(getTaskFromHistoryByEmpId.rejected, (state, action) => {
         state.pendding = false;
         state.error = action.payload;
       });

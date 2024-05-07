@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Delete, Edit } from "@mui/icons-material";
 import { Button, IconButton } from "@mui/material";
@@ -15,11 +15,19 @@ import { Link } from "react-router-dom";
 import CheckList from "./Checklist";
 import { useFormik } from "formik";
 import { EmployeeSchema } from "../../../Validation/validationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllTasks } from "../../../../Slices/TaskSlice";
 
 function Task() {
   const [open, setOpen] = React.useState(false);
   const [openchecklist, setopenchecklist] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
+  const dispatch = useDispatch();
+  const allTask = useSelector((state) => state.Tasks.tasks);
+
+  useEffect(() => {
+    dispatch(getAllTasks());
+  }, [dispatch]);
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -101,51 +109,28 @@ function Task() {
       editable: true,
     },
     {
-      field: "rate",
-      headerName: "Rate",
-      width: 120,
-      editable: true,
-    },
-    {
-      field: "role_id",
-      headerName: "Role ID",
-      width: 120,
-      editable: true,
-    },
-    {
-      field: "task_dependency",
-      headerName: "Task Dependency",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "unit",
-      headerName: "Unit",
-      width: 100,
-      editable: true,
-    },
-    {
       field: "instructions",
       headerName: "Instructions",
       width: 200,
       editable: true,
     },
     {
-      field: "start_date",
+      field: "durationNum",
+      headerName: "Duration Day",
+      width: 150,
+      editable: true,
+      textAlign: "center",
+    },
+    {
+      field: "startDate",
       headerName: "Start Date",
       width: 150,
       editable: true,
     },
     {
-      field: "end_date_increase_time",
+      field: "endDate",
       headerName: "End Date Increase Time",
       width: 200,
-      editable: true,
-    },
-    {
-      field: "employee_id",
-      headerName: "Employee ID",
-      width: 150,
       editable: true,
     },
     {
@@ -155,19 +140,7 @@ function Task() {
       editable: true,
     },
     {
-      field: "department",
-      headerName: "Department",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "subdepartment_id",
-      headerName: "Subdepartment ID",
-      width: 180,
-      editable: true,
-    },
-    {
-      field: "task_status",
+      field: "taskStatus",
       headerName: "Task Status",
       width: 150,
       editable: true,
@@ -186,7 +159,7 @@ function Task() {
       editable: true,
     },
     {
-      field: "teamname",
+      field: "chainId",
       headerName: "Team Name",
       width: 150,
       editable: true,
@@ -294,7 +267,8 @@ function Task() {
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           sx={{ height: "450px" }}
-          rows={Tasks}
+          rows={allTask}
+          getRowId={(row) => row.taskId}
           columns={columns}
           slots={{ toolbar: GridToolbar }}
           initialState={{

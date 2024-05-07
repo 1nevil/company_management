@@ -14,9 +14,20 @@ export const fetchChainMater = createAsyncThunk("emps/fetchChain", async () => {
 
 export const insertChainMater = createAsyncThunk(
   "emps/insertChain",
-  async (chainName) => {
-    const response = await createChainName(chainName);
-    return response.data;
+  async (chainName, { rejectWithValue }) => {
+    try {
+      const response = await createChainName(chainName);
+      return response.data; // Assuming your backend returns the data directly
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        // Extract custom message from backend response
+        const errorMessage = error.response.data.message;
+        return rejectWithValue(errorMessage);
+      } else {
+        return rejectWithValue("An unexpected error occurred");
+      }
+    }
   }
 );
 
@@ -45,6 +56,7 @@ export const ChainSliceMaster = createSlice({
       })
       .addCase(insertChainMater.rejected, (state, action) => {
         state.pendding = false;
+        console.log(action.payload);
         state.error = action.payload;
       });
   },

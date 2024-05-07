@@ -1,25 +1,27 @@
-import React from "react"
-import { Box, Button, Stack, TextField, Typography } from "@mui/material"
-import { useFormik } from "formik"
-import { ChainSchema } from "../../../Validation/validationSchema"
-import { useDispatch } from "react-redux"
-import { insertChainMater } from "../../../../Slices/ChainSliceMaster"
+import React from "react";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { useFormik } from "formik";
+import { ChainSchema } from "../../../Validation/validationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { insertChainMater } from "../../../../Slices/ChainSliceMaster";
 
 const AddChain = () => {
+  const error = useSelector((state) => state.Chain.error);
+
   const initValue = {
     ChainName: "",
-  }
+  };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: ChainSchema,
       onSubmit: (data) => {
-        dispatch(insertChainMater(data))
+        dispatch(insertChainMater(data));
       },
     }
-  )
+  );
 
   return (
     <Stack
@@ -51,7 +53,11 @@ const AddChain = () => {
             {errors.ChainName}
           </Typography>
         ) : null}
-
+        {error && (
+          <Typography variant="caption" color="error">
+            {error}
+          </Typography>
+        )}
         <Box>
           <Button
             type="submit"
@@ -64,7 +70,7 @@ const AddChain = () => {
         </Box>
       </form>
     </Stack>
-  )
-}
+  );
+};
 
-export default AddChain
+export default AddChain;

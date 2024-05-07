@@ -6,16 +6,18 @@ import { getTaskUsingEmpId } from "../../Slices/TaskSlice";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { getTaskFromHistoryByEmpId } from "../../Slices/AssignToTask";
 
 function TaskHistory(params) {
-  const tasksByEmpId = useSelector((state) => state.Tasks.tasks);
+  const historytasksByEmpId = useSelector((state) => state.AssignToTask.tasks);
   const dispatch = useDispatch();
-
+  const empId = 11;
   useEffect(() => {
-    dispatch(getTaskUsingEmpId(9));
+    dispatch(getTaskFromHistoryByEmpId(empId));
+    console.log(empId);
   }, [dispatch]);
   const columns = [
-    { field: "taskId", headerName: "task ID", width: 90 },
+    { field: "empTaskHistoryId", headerName: "TaskHistory Id", width: 90 },
     {
       field: "taskName",
       headerName: "Task Name",
@@ -40,9 +42,10 @@ function TaskHistory(params) {
   ];
   return (
     <Box>
+      {/* {JSON.stringify(historytasksByEmpId)} */}
       <DataGrid
         slots={{ toolbar: GridToolbar }}
-        rows={tasksByEmpId}
+        rows={historytasksByEmpId}
         columns={columns}
         getRowId={(row) => row.taskId}
         initialState={{

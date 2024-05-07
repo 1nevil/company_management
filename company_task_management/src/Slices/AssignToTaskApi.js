@@ -34,3 +34,7 @@ export function GetTaskAssignDataToChecker(id) {
     `/api/EmpTaskAssignments/getTaskAssignDataToChecker/${id}`
   );
 }
+
+export function GetTaskHistoryByEmpID(empIid) {
+  return axiosInstance.get(`api/EmpTaskHistories/${empIid}`);
+}

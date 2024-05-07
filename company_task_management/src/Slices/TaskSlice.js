@@ -3,6 +3,7 @@ import {
   GetTaskFromAssignTaskByEmpId,
   addTaskToAssignById,
   approvedTask,
+  getAllTask,
   getTaskAndGuidlinesByTaskId,
   getTaskByPostionId,
   getTaskByTaskId,
@@ -31,6 +32,11 @@ export const getPositionWiseTask = createAsyncThunk(
     return response.data;
   }
 );
+//getAllTasks
+export const getAllTasks = createAsyncThunk("task/getAllTasks", async () => {
+  const response = await getAllTask();
+  return response.data;
+});
 // addAssignTask
 export const addAssignTask = createAsyncThunk(
   "task/addAssignTask",
@@ -103,6 +109,18 @@ const TaskSlice = createSlice({
         state.tasks.push(action.payload);
       })
       .addCase(insertTask.rejected, (state, action) => {
+        state.pending = false;
+        state.error = action.payload;
+      })
+      //addAssignTask
+      .addCase(getAllTasks.pending, (state) => {
+        state.pending = true;
+      })
+      .addCase(getAllTasks.fulfilled, (state, action) => {
+        state.pending = false;
+        state.tasks = action.payload;
+      })
+      .addCase(getAllTasks.rejected, (state, action) => {
         state.pending = false;
         state.error = action.payload;
       })

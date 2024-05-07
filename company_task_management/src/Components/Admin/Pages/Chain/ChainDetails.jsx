@@ -1,26 +1,26 @@
-import { Form, Link, useParams } from "react-router-dom"
-import PropTypes from "prop-types"
-import { styled } from "@mui/material/styles"
-import Stack from "@mui/material/Stack"
-import Stepper from "@mui/material/Stepper"
-import Step from "@mui/material/Step"
-import StepLabel from "@mui/material/StepLabel"
-import Check from "@mui/icons-material/Check"
-import SettingsIcon from "@mui/icons-material/Settings"
-import GroupAddIcon from "@mui/icons-material/GroupAdd"
-import VideoLabelIcon from "@mui/icons-material/VideoLabel"
+import { Form, Link, useParams } from "react-router-dom";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Check from "@mui/icons-material/Check";
+import SettingsIcon from "@mui/icons-material/Settings";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import VideoLabelIcon from "@mui/icons-material/VideoLabel";
 import StepConnector, {
   stepConnectorClasses,
-} from "@mui/material/StepConnector"
-import { Grid } from "@mui/material"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { getChainDetailsByChainId } from "../../../../Slices/ChainDetailsSlice"
-import { getPositionsByIds } from "../../../../Slices/PositionSlice"
-import EngineeringIcon from "@mui/icons-material/Engineering"
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium"
-import CameraIcon from "@mui/icons-material/Camera"
-import ComputerIcon from "@mui/icons-material/Computer"
+} from "@mui/material/StepConnector";
+import { Grid } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getChainDetailsByChainId } from "../../../../Slices/ChainDetailsSlice";
+import { getPositionsByIds } from "../../../../Slices/PositionSlice";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import CameraIcon from "@mui/icons-material/Camera";
+import ComputerIcon from "@mui/icons-material/Computer";
 
 // "chainId": 8,
 // "checkerId": 5,
@@ -45,10 +45,10 @@ const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     borderRadius: "50%",
     backgroundColor: "currentColor",
   },
-}))
+}));
 
 function QontoStepIcon(props) {
-  const { active, completed, className } = props
+  const { active, completed, className } = props;
 
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
@@ -58,14 +58,14 @@ function QontoStepIcon(props) {
         <div className="QontoStepIcon-circle" />
       )}
     </QontoStepIconRoot>
-  )
+  );
 }
 
 QontoStepIcon.propTypes = {
   active: PropTypes.bool,
   className: PropTypes.string,
   completed: PropTypes.bool,
-}
+};
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -90,7 +90,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
       theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
     borderRadius: 1,
   },
-}))
+}));
 
 const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   backgroundColor:
@@ -112,10 +112,10 @@ const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     backgroundImage:
       "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
   }),
-}))
+}));
 
 function ColorlibStepIcon(props) {
-  const { active, completed, className } = props
+  const { active, completed, className } = props;
 
   const icons = {
     1: <SettingsIcon />,
@@ -125,7 +125,7 @@ function ColorlibStepIcon(props) {
     5: <WorkspacePremiumIcon />,
     6: <EngineeringIcon />,
     7: <ComputerIcon />,
-  }
+  };
 
   return (
     <ColorlibStepIconRoot
@@ -134,7 +134,7 @@ function ColorlibStepIcon(props) {
     >
       {icons[String(props.icon)]}
     </ColorlibStepIconRoot>
-  )
+  );
 }
 
 ColorlibStepIcon.propTypes = {
@@ -142,29 +142,29 @@ ColorlibStepIcon.propTypes = {
   className: PropTypes.string,
   completed: PropTypes.bool,
   icon: PropTypes.node,
-}
+};
 
 function ChainDetails() {
-  let { chainid } = useParams()
+  let { chainid } = useParams();
   const {
     pending: chainPending,
     chainFlow,
     error: chainError,
-  } = useSelector((state) => state.ChainDetail)
-  console.log("🚀 ~ ChainDetails ~ chainFlow:", chainFlow)
+  } = useSelector((state) => state.ChainDetail);
+  console.log("🚀 ~ ChainDetails ~ chainFlow:", chainFlow);
 
-  const { chainPositions } = useSelector((state) => state.Position)
+  const { chainPositions } = useSelector((state) => state.Position);
   // console.log("🚀 ~ ChainDetails ~ positions:", chainPositions)
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getChainDetailsByChainId(chainid))
-    dispatch(getPositionsByIds(chainFlow))
-  }, [chainid, dispatch, chainFlow])
+    dispatch(getChainDetailsByChainId(chainid));
+    dispatch(getPositionsByIds(chainFlow));
+  }, [chainid, dispatch, chainFlow]);
 
   if (chainPending) {
-    return `loading.. `
+    return `loading.. `;
   }
 
   if (chainFlow === "") {
@@ -174,7 +174,7 @@ function ChainDetails() {
         <h1>Chain Details is not created </h1>
         <Link to="/admin/Chain">Create chain Details</Link>
       </>
-    )
+    );
   }
 
   return (
@@ -202,7 +202,7 @@ function ChainDetails() {
       </Grid>
       {/* {JSON.stringify(positions)} */}
     </Form>
-  )
+  );
 }
 
-export default ChainDetails
+export default ChainDetails;

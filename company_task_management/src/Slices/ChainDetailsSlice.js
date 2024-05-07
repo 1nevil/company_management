@@ -1,34 +1,34 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchChainDetailChainId,
   insertChainDetailsData,
-} from "./ChainDetailsApi"
+} from "./ChainDetailsApi";
 
 export const insertChainDetails = createAsyncThunk(
   "chain/insertChainDetails",
   async (chainDetails) => {
-    const response = await insertChainDetailsData(chainDetails)
-    return response.data
+    const response = await insertChainDetailsData(chainDetails);
+    return response.data;
   }
-)
+);
 
 export const getChainDetailsByChainId = createAsyncThunk(
   "chain/getDetailsByChainId",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await fetchChainDetailChainId(id)
-      return response.data // Assuming your backend returns the data directly
+      const response = await fetchChainDetailChainId(id);
+      return response.data; // Assuming your backend returns the data directly
     } catch (error) {
       if (error.response) {
         // Extract custom message from backend response
-        const errorMessage = error.response.data.message
-        return rejectWithValue(errorMessage)
+        const errorMessage = error.response.data.message;
+        return rejectWithValue(errorMessage);
       } else {
-        return rejectWithValue("An unexpected error occurred")
+        return rejectWithValue("An unexpected error occurred");
       }
     }
   }
-)
+);
 
 const initialState = {
   pending: false,
@@ -36,7 +36,7 @@ const initialState = {
   error: "",
   chainDetail: {},
   chainFlow: "",
-}
+};
 
 export const ChainSliceMaster = createSlice({
   name: "ChainDetailsSlice",
@@ -44,33 +44,33 @@ export const ChainSliceMaster = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(insertChainDetails.pending, (state) => {
-        state.pending = true
+        state.pending = true;
       })
       .addCase(insertChainDetails.fulfilled, (state, action) => {
-        state.chainDetails = action.payload
-        state.pending = false
+        state.chainDetails = action.payload;
+        state.pending = false;
       })
       .addCase(insertChainDetails.rejected, (state, action) => {
-        state.pending = false
-        state.error = action.payload
+        state.pending = false;
+        state.error = action.payload;
       })
       .addCase(getChainDetailsByChainId.pending, (state) => {
-        state.chainDetail = {}
-        state.pending = true
+        state.chainDetail = {};
+        state.pending = true;
       })
       .addCase(getChainDetailsByChainId.fulfilled, (state, action) => {
-        state.pending = false
-        state.chainDetail = action.payload
-        state.chainFlow = state.chainDetail.chainFlow
+        state.pending = false;
+        state.chainDetail = action.payload;
+        state.chainFlow = state.chainDetail.chainFlow;
       })
       .addCase(getChainDetailsByChainId.rejected, (state, action) => {
-        state.pending = false
-        state.chainFlow = ""
-        state.chainDetail = {}
+        state.pending = false;
+        state.chainFlow = "";
+        state.chainDetail = {};
 
-        state.error = action.payload
-      })
+        state.error = action.payload;
+      });
   },
-})
+});
 
-export default ChainSliceMaster.reducer
+export default ChainSliceMaster.reducer;

@@ -6,6 +6,10 @@ export const insertTaskData = (task) => {
   return axiosInstance.post("api/TaskMasters", task);
 };
 
+export const getAllTask = () => {
+  return axiosInstance.get("api/TaskMasters");
+};
+
 export const getTaskByPostionId = (positionId) => {
   return axiosInstance.get(`api/TaskMasters/getTaskByPostionId/${positionId}`);
 };
