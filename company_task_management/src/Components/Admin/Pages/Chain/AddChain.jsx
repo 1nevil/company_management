@@ -1,27 +1,29 @@
-import React from "react";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { useFormik } from "formik";
-import { ChainSchema } from "../../../Validation/validationSchema";
-import { useDispatch, useSelector } from "react-redux";
-import { insertChainMater } from "../../../../Slices/ChainSliceMaster";
+import React from "react"
+import { Box, Button, Stack, TextField, Typography } from "@mui/material"
+import { useFormik } from "formik"
+import { ChainSchema } from "../../../Validation/validationSchema"
+import { useDispatch, useSelector } from "react-redux"
+import { insertChainMater } from "../../../../Slices/ChainSliceMaster"
 
-const AddChain = () => {
-  const error = useSelector((state) => state.Chain.error);
+// eslint-disable-next-line react/prop-types
+const AddChain = ({ closeform }) => {
+  const error = useSelector((state) => state.Chain.error)
 
   const initValue = {
     ChainName: "",
-  };
+  }
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: ChainSchema,
       onSubmit: (data) => {
-        dispatch(insertChainMater(data));
+        closeform()
+        dispatch(insertChainMater(data))
       },
     }
-  );
+  )
 
   return (
     <Stack
@@ -36,7 +38,7 @@ const AddChain = () => {
     >
       <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
         <Typography variant="h5" color="#7986cb" component="h5">
-          Enter Team Details
+          Enter Chain Name
         </Typography>
         <Box sx={{ "& .MuiTextField-root": { m: 1, width: "30rem" } }}>
           <TextField
@@ -70,7 +72,7 @@ const AddChain = () => {
         </Box>
       </form>
     </Stack>
-  );
-};
+  )
+}
 
-export default AddChain;
+export default AddChain

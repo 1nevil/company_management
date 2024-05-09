@@ -1,21 +1,26 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from "react";
 // import { jwtDecode } from "jwt-decode"
 import { useSelector, useDispatch } from "react-redux";
-import { setUserToken } from "../Slices/AuthenticationSlice";
-import { useNavigate, Outlet, Link, Navigate } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { Box, Typography, Button } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { setUserToken } from "../Slices/AuthenticationSlice";
 
 function ProtectedRoute({ role }) {
   console.log("Protected route re-render");
   const { isAuthenticate, authicatedUser } = useSelector((state) => state.Auth);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [roleOfUser, setRoleOfUser] = useState(null);
-
+  useEffect(() => {
+    dispatch(setUserToken());
+  }, [dispatch]);
   console.log(authicatedUser);
+
+  // if (!isAuthenticate) {
+  //   // User is not authenticated, redirect to login page
+  //   return <Navigate to="/login" />
+  // }
 
   return isAuthenticate || roleOfUser === role ? (
     <>

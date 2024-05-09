@@ -63,12 +63,19 @@ export const AuthenticationSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         const token = action.payload.token;
+        console.log(
+          "🚀 ~ .addCase ~  action.payload.token:",
+          action.payload.token
+        );
+
         if (token) {
           state.token = token;
           state.pending = false;
           state.error = null;
           localStorage.setItem("token", token);
+
           const user = jwtDecode(token);
+
           console.log(
             user["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
           );

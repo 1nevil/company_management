@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   TextField,
   Button,
@@ -12,16 +12,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from "@mui/material";
+} from "@mui/material"
 // import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import styled from "@emotion/styled";
-import { useFormik } from "formik";
-import { PositionSchema } from "../../../Validation/validationSchema";
-import {
-  insertPosition,
-  fetchPosition,
-} from "../../../../Slices/PositionSlice";
-import { useDispatch } from "react-redux";
+import styled from "@emotion/styled"
+import { useFormik } from "formik"
+import { PositionSchema } from "../../../Validation/validationSchema"
+import { insertPosition, fetchPosition } from "../../../../Slices/PositionSlice"
+import { useDispatch } from "react-redux"
 
 // const Positions = ["Engineering", "Marketing", "Finance", "HR"];
 
@@ -35,37 +32,39 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
 const PositionForm = () => {
-  const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false)
+  const dispatch = useDispatch()
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   const initValue = {
     PositionName: "",
     Duration: "",
     Unit: "",
     Unitname: "",
     Rate: "",
-  };
+  }
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: PositionSchema,
       onSubmit: (data) => {
-        handleClose();
-        dispatch(insertPosition(data));
+        console.log("🚀 ~ PositionForm ~ data:", data)
+        handleClose()
+
+        dispatch(insertPosition(data))
       },
     }
-  );
+  )
 
   return (
     <div>
@@ -73,7 +72,7 @@ const PositionForm = () => {
         Add Position
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Position</DialogTitle>
+        <DialogTitle>Enter Position</DialogTitle>
         <DialogContent>
           <form style={{ paddingTop: "10px" }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -158,6 +157,7 @@ const PositionForm = () => {
               variant="contained"
               color="primary"
               style={{ marginTop: "20px" }}
+              onClick={handleSubmit}
             >
               Add Position
             </Button>
@@ -170,7 +170,7 @@ const PositionForm = () => {
         </DialogActions>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default PositionForm;
+export default PositionForm

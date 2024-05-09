@@ -12,6 +12,7 @@ import {
 const initialState = {
   pendding: false,
   employees: [],
+  checkers: [],
   error: "",
 }
 
@@ -132,7 +133,7 @@ export const EmployeeSlice = createSlice({
       })
       .addCase(checkersEmp.fulfilled, (state, action) => {
         state.pendding = false
-        state.employees = action.payload
+        state.checkers = action.payload
       })
       .addCase(checkersEmp.rejected, (state, action) => {
         state.error = action.payload

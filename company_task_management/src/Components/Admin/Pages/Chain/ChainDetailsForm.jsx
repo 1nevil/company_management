@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosition } from "../../../../Slices/PositionSlice";
-import { checkersEmp } from "../../../../Slices/EmployeeSlice";
-import { insertChainDetails } from "../../../../Slices/ChainDetailsSlice";
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
+import Select from "@mui/material/Select"
+import MenuItem from "@mui/material/MenuItem"
+import DeleteIcon from "@mui/icons-material/Delete"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { checkersEmp } from "../../../../Slices/EmployeeSlice"
+import { insertChainDetails } from "../../../../Slices/ChainDetailsSlice"
 import {
   Dialog,
   DialogActions,
@@ -17,71 +17,72 @@ import {
   FormControl,
   InputLabel,
   Typography,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+} from "@mui/material"
+import AddIcon from "@mui/icons-material/Add"
 
 function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
 
-  const [checklistItems, setChecklistItems] = useState([]);
-  const dispatch = useDispatch();
+  const [checklistItems, setChecklistItems] = useState([])
+  const dispatch = useDispatch()
 
-  const checkers = useSelector((state) => state.Employee.employees);
-  const Positions = useSelector((state) => state.Position.positions);
+  const checkers = useSelector((state) => state.Employee.checkers)
+  const Positions = useSelector((state) => state.Position.positions)
 
   useEffect(() => {
-    dispatch(fetchPosition());
-    dispatch(checkersEmp());
-  }, [dispatch]);
+    dispatch(fetchPosition())
+    dispatch(checkersEmp())
+  }, [dispatch])
 
   const handleSubmit = () => {
     // console.log(chainid)
-    console.log(checker);
-    console.log(checklistItems);
+    handleCloseDetails()
+    console.log(checker)
+    console.log(checklistItems)
 
     console.log({
       //   chainId: Number(chainid),
       checkerId: checker,
       chainFlow: checklistItems.toString(),
-    });
+    })
 
     const chainDetails = {
       chainId: Number(chainId),
       checkerId: checker,
       chainFlow: checklistItems.toString(),
-    };
+    }
 
-    dispatch(insertChainDetails(chainDetails));
-  };
+    dispatch(insertChainDetails(chainDetails))
+  }
 
-  const [checker, setChecker] = useState();
+  const [checker, setChecker] = useState()
 
   const handleChange = (index) => (event) => {
-    const newChecklistItems = [...checklistItems];
-    newChecklistItems[index] = event.target.value;
-    setChecklistItems(newChecklistItems);
-  };
+    const newChecklistItems = [...checklistItems]
+    newChecklistItems[index] = event.target.value
+    setChecklistItems(newChecklistItems)
+  }
 
   const handleChangeChecker = (event) => {
-    setChecker(event.target.value);
-  };
+    setChecker(event.target.value)
+  }
 
   const handleAddInput = () => {
-    setAdditionalInputCount(additionalInputCount + 1);
-    setShowAdditionalInputs(true);
-    setChecklistItems([...checklistItems, null]);
-  };
+    setAdditionalInputCount(additionalInputCount + 1)
+    setShowAdditionalInputs(true)
+    setChecklistItems([...checklistItems, null])
+  }
 
   const handleDeleteInput = (index) => () => {
-    const newChecklistItems = [...checklistItems];
-    newChecklistItems.splice(index, 1);
-    setChecklistItems(newChecklistItems);
-    setAdditionalInputCount(additionalInputCount - 1);
+    const newChecklistItems = [...checklistItems]
+    newChecklistItems.splice(index, 1)
+    setChecklistItems(newChecklistItems)
+    setAdditionalInputCount(additionalInputCount - 1)
     if (additionalInputCount === 1) {
-      setShowAdditionalInputs(false);
+      setShowAdditionalInputs(false)
     }
-  };
+  }
 
   return (
     <Dialog open={chainDetails} onClose={handleCloseDetails}>
@@ -193,7 +194,7 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
         </DialogActions>
       </Box>
     </Dialog>
-  );
+  )
 }
 
-export default ChainDetailsForm;
+export default ChainDetailsForm
