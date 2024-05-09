@@ -1,22 +1,12 @@
 /* eslint-disable no-constant-condition */
-import {
-  Link,
-  Navigate,
-  RouterProvider,
-  createBrowserRouter,
-  useNavigate,
-} from "react-router-dom"
+import { Link, RouterProvider, createBrowserRouter } from "react-router-dom"
 import "./App.css"
 import TaskChecker from "./Components/Checker/Task/TaskChecker"
 import dashboard from "@mui/icons-material/GridView"
 import AddTask from "@mui/icons-material/AddTask"
-import CheckEmployee from "./Components/Employee/CheckEmployee"
 import Header from "./Components/Layout/Header"
-import ListAltIcon from "@mui/icons-material/ListAlt"
 import PeopleIcon from "@mui/icons-material/People"
 import Diversity3Icon from "@mui/icons-material/Diversity3"
-import DepartmentIcon from "@mui/icons-material/AddBox"
-import DepartmentCom from "./Components/Admin/Pages/Department/Department"
 import Employee from "./Components/Admin/Pages/Employee/Employee"
 import Task from "./Components/Admin/Pages/Task/Task"
 import DashBord from "./Components/Admin/DashBord"
@@ -29,7 +19,6 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined"
 import ApprovedAdmins from "./Components/Superadmin/ApprovedAdmins"
 import DisapprovedAdmins from "./Components/Superadmin/DisapprovedAdmins"
-import PositionForm from "./Components/Admin/Pages/Position/PositionForm"
 import Position from "./Components/Admin/Pages/Position/Position"
 import StreetviewIcon from "@mui/icons-material/Streetview"
 //import Chain from "./Components/Admin/Pages/Chain/Chain";
@@ -46,10 +35,7 @@ import SignIn from "./Components/SignIn"
 import TaskIsActive from "./Components/Employee/TaskIsActive"
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors"
 import TaskDetail from "./Components/Employee/TaskDetail"
-import { useSelector, useDispatch } from "react-redux"
-import { useEffect } from "react"
-import { setUserToken } from "./Slices/AuthenticationSlice"
-import { gridQuickFilterValuesSelector } from "@mui/x-data-grid"
+import LinkIcon from "@mui/icons-material/Link"
 import ProtectedRoute from "./Route/ProtectedRoute"
 
 function App() {
@@ -59,19 +45,19 @@ function App() {
       icons: [
         Dashboard,
         AddTask,
-        DepartmentIcon,
-        // LinkIcon,
+        // DepartmentIcon,
+        LinkIcon,
         PeopleIcon,
-        Diversity3Icon,
+        // Diversity3Icon,
         StreetviewIcon,
       ],
       sidebar: [
         "dashbord",
         "Task",
-        "Department",
-        // "chain",
+        // "Department",
+        "chain",
         "Employee",
-        "Chain",
+        // "Chain",
         "Position",
       ],
     },
@@ -115,10 +101,6 @@ function App() {
               element: <DashBord />,
             },
             {
-              path: "department",
-              element: <DepartmentCom />,
-            },
-            {
               path: "Position",
               element: <Position />,
             },
@@ -160,10 +142,10 @@ function App() {
         />
       ),
       children: [
-        {
-          index: true,
-          element: <h1>Hello</h1>,
-        },
+        // {
+        //   index: true,
+        //   element: <h1>Hello</h1>,
+        // },
         {
           element: <ProtectedRoute role="checker" />,
           children: [

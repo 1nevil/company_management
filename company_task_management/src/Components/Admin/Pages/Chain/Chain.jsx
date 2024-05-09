@@ -100,7 +100,7 @@ function Chain() {
         onClose={handleCloseChain}
         aria-labelledby="responsive-dialog-title"
       >
-        <AddChain></AddChain>
+        <AddChain closeform={handleCloseChain}></AddChain>
         <DialogActions>
           <Button autoFocus onClick={handleCloseChain}>
             Cancel

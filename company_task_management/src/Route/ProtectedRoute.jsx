@@ -19,31 +19,25 @@ function ProtectedRoute({ role }) {
     dispatch(setUserToken())
   }, [dispatch])
 
-  useEffect(() => {
-    if (authicatedUser) {
-      console.table(authicatedUser)
-      const userRole =
-        authicatedUser[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ]
-      setRoleOfUser(userRole)
-      if (userRole) {
-        if (userRole === "super_admin") {
-          navigate("/superadmin/approved")
-        } else if (userRole === "admin") {
-          navigate("/admin/dashbord")
-        } else if (userRole === "employee") {
-          navigate("/employee/EmployeeDashboard")
-        } else if (userRole === "checker") {
-          navigate("/checker/TaskChecker")
-        }
-      }
-    } else {
-      navigate("/")
-    }
-  }, [authicatedUser, navigate])
+  // if (!isAuthenticate) {
+  //   // User is not authenticated, redirect to login page
+  //   return <Navigate to="/login" />
+  // }
 
-  return !isAuthenticate || roleOfUser !== role ? (
+  return isAuthenticate || roleOfUser === role ? (
+    <>
+      {/* {JSON.stringify(!isAuthenticate)}
+      <br></br>
+      {JSON.stringify(roleOfUser !== role)}
+      <br></br>
+      {JSON.stringify(roleOfUser)}
+      <br></br>
+      {JSON.stringify(role)}
+      <br></br> */}
+
+      <Outlet />
+    </>
+  ) : (
     <Box
       component="div"
       sx={{
@@ -72,19 +66,6 @@ function ProtectedRoute({ role }) {
         Login
       </Link>
     </Box>
-  ) : (
-    <>
-      {JSON.stringify(!isAuthenticate)}
-      <br></br>
-      {JSON.stringify(roleOfUser !== role)}
-      <br></br>
-      {JSON.stringify(roleOfUser)}
-      <br></br>
-      {JSON.stringify(role)}
-      <br></br>
-
-      <Outlet />
-    </>
   )
 }
 export default ProtectedRoute

@@ -99,6 +99,8 @@ export default function SignIn() {
             authicatedUser[
               "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
             ]
+          console.log("🚀 ~ SignIn ~ role:", role)
+
           if (role === "super_admin") {
             navigate("/superadmin/approved")
           } else if (role === "admin") {
