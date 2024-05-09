@@ -27,7 +27,6 @@ import Chain from "./Components/Admin/Pages/Chain/Chain";
 import CheckTaskList from "./Components/Checker/CheckTasklist";
 import EmployeeDashboard from "./Components/Employee/DashBord";
 import EmpTaskDeatil from "./Components/Employee/EmpTaskDetail";
-import EmployeeProfile from "./Components/Admin/Pages/Employee/EmployeeProfile";
 import CheckerTaskDetails from "./Components/Checker/CheckTaskDetails";
 import TaskHistory from "./Components/Employee/TaskHistory";
 import BadgeIcon from "@mui/icons-material/Badge";
@@ -44,24 +43,8 @@ function App() {
   const iconSiderbar = {
     // admin started
     admin: {
-      icons: [
-        Dashboard,
-        AddTask,
-        // DepartmentIcon,
-        LinkIcon,
-        PeopleIcon,
-        // Diversity3Icon,
-        StreetviewIcon,
-      ],
-      sidebar: [
-        "dashbord",
-        "Task",
-        // "Department",
-        "chain",
-        "Employee",
-        // "Chain",
-        "Position",
-      ],
+      icons: [Dashboard, AddTask, LinkIcon, PeopleIcon, StreetviewIcon],
+      sidebar: ["dashbord", "Task", "chain", "Employee", "Position"],
     },
     checker: {
       icons: [AddTask],
@@ -81,7 +64,6 @@ function App() {
     },
   };
 
-  //distructure for easyly accesss
   const { admin, checker, employee, superviser, superadmin } = iconSiderbar;
 
   const router = createBrowserRouter([
@@ -196,10 +178,6 @@ function App() {
             {
               path: "EmpTaskDetail/:taskId",
               element: <EmpTaskDeatil />,
-            },
-            {
-              path: "EmployeeProfile",
-              element: <EmployeeProfile />,
             },
             {
               path: "TaskHistory",

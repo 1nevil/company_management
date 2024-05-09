@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import {
   TextField,
   Button,
@@ -8,63 +8,79 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material"
-// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import styled from "@emotion/styled"
-import { useFormik } from "formik"
-import { PositionSchema } from "../../../Validation/validationSchema"
-import { insertPosition, fetchPosition } from "../../../../Slices/PositionSlice"
-import { useDispatch } from "react-redux"
-
-// const Positions = ["Engineering", "Marketing", "Finance", "HR"];
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-})
+  Divider,
+  IconButton,
+} from "@mui/material";
+import { useFormik } from "formik";
+import { PositionSchema } from "../../../Validation/validationSchema";
+import { insertPosition } from "../../../../Slices/PositionSlice";
+import { useDispatch } from "react-redux";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 
 const PositionForm = () => {
-  const [open, setOpen] = useState(false)
-  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const [guidlines, setGuidlines] = useState([]);
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+  const [inputs, setInputs] = useState([]);
 
   const handleOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
+  const handleAddInput = () => {
+    setShowAdditionalInputs(true);
+    setAdditionalInputCount((prevCount) => prevCount + 1);
+  };
+
+  const handleDeleteInput = () => {
+    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1));
+  };
+
+  const handleGuildlineChange = (event, index) => {
+    const { name, value } = event.target;
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
+  };
+
+  const handleLogData = () => {
+    console.log("Data:", inputs);
+  };
   const initValue = {
-    PositionName: "",
-    Duration: "",
-    Unit: "",
-    Unitname: "",
-    Rate: "",
-  }
+    positionName: "",
+    duration: "",
+    unit: "",
+    unitname: "",
+    rate: "",
+  };
+
+  // const handleAddInput = () => {
+  //   setAdditionalInputCount((prevCount) => prevCount + 1);
+  //   setShowAdditionalInputs(true);
+  // };
+
+  // const handleDeleteInput = () => {
+  //   setAdditionalInputCount((prevCount) => prevCount - 1);
+  // };
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: PositionSchema,
       onSubmit: (data) => {
-        console.log("🚀 ~ PositionForm ~ data:", data)
-        handleClose()
-
-        dispatch(insertPosition(data))
+        console.log("🚀 ~ PositionForm ~ data:", data);
+        handleClose();
+        // dispatch(insertPosition(data));
       },
     }
-  )
+  );
 
   return (
     <div>
@@ -74,20 +90,20 @@ const PositionForm = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Enter Position</DialogTitle>
         <DialogContent>
-          <form style={{ paddingTop: "10px" }} onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ paddingTop: "10px" }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
                   label="Position Name"
-                  name="PositionName"
+                  name="positionName"
                   //value={employeeData.firstName}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.PositionName && touched.PositionName ? (
+                {errors.positionName && touched.positionName ? (
                   <Typography variant="caption" color="error">
-                    {errors.PositionName}
+                    {errors.positionName}
                   </Typography>
                 ) : null}
               </Grid>
@@ -95,14 +111,14 @@ const PositionForm = () => {
                 <TextField
                   fullWidth
                   label="Duration"
-                  name="Duration"
+                  name="duration"
                   // value={employeeData.Duration}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.Duration && touched.Duration ? (
+                {errors.duration && touched.duration ? (
                   <Typography variant="caption" color="error">
-                    {errors.Duration}
+                    {errors.duration}
                   </Typography>
                 ) : null}
               </Grid>
@@ -110,14 +126,14 @@ const PositionForm = () => {
                 <TextField
                   fullWidth
                   label="Unit"
-                  name="Unit"
+                  name="unit"
                   //value={employeeData.Unit}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.Unit && touched.Unit ? (
+                {errors.unit && touched.unit ? (
                   <Typography variant="caption" color="error">
-                    {errors.Unit}
+                    {errors.unit}
                   </Typography>
                 ) : null}
               </Grid>
@@ -125,14 +141,14 @@ const PositionForm = () => {
                 <TextField
                   fullWidth
                   label="Unit Name"
-                  name="UnitName"
+                  name="unitName"
                   //value={employeeData.Unit}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.Unit && touched.Unit ? (
+                {errors.unitName && touched.unitName ? (
                   <Typography variant="caption" color="error">
-                    {errors.Unit}
+                    {errors.unitName}
                   </Typography>
                 ) : null}
               </Grid>
@@ -140,24 +156,78 @@ const PositionForm = () => {
                 <TextField
                   fullWidth
                   label="Rate Per Unit"
-                  name="Rate"
+                  name="rate"
                   // value={employeeData.Rate}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.Rate && touched.Rate ? (
+                {errors.rate && touched.rate ? (
                   <Typography variant="caption" color="error">
-                    {errors.Rate}
+                    {errors.rate}
                   </Typography>
                 ) : null}
               </Grid>
+            </Grid>
+            <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
+              <Typography
+                variant="h6"
+                component="h6"
+                color="#7986cb"
+                textAlign="center"
+              >
+                guideline
+              </Typography>
+              <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
+              {showAdditionalInputs && (
+                <div>
+                  {[...Array(additionalInputCount)].map((_, index) => (
+                    <div
+                      key={index}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <TextField
+                        label={`guideline ${index + 1}`}
+                        multiline
+                        rows={2}
+                        fullWidth
+                        name={`guideline ${index + 1}`}
+                        onChange={(event) =>
+                          handleGuildlineChange(event, index)
+                        }
+                        // onBlur={handleBlur}
+                      />
+                      <IconButton
+                        aria-label="delete"
+                        color="error"
+                        onClick={handleDeleteInput}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <Button
+                variant="outlined"
+                sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
+                onClick={handleAddInput}
+                startIcon={<AddIcon />}
+              >
+                Add Guideline
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleLogData}
+                sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
+              >
+                Log Data
+              </Button>
             </Grid>
             <Button
               type="submit"
               variant="contained"
               color="primary"
               style={{ marginTop: "20px" }}
-              onClick={handleSubmit}
             >
               Add Position
             </Button>
@@ -170,7 +240,7 @@ const PositionForm = () => {
         </DialogActions>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default PositionForm
+export default PositionForm;

@@ -88,9 +88,9 @@ function Task() {
       ),
     },
     {
-      field: "checklist",
-      headerName: "CheckList",
-      description: "Team details",
+      field: "TaskDetail",
+      headerName: "TaskDetail",
+      description: "TaskDetail",
       sortable: false,
       width: 160,
       renderCell: (params) => (
@@ -280,21 +280,6 @@ function Task() {
           pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
         />
       </div>
-      <Dialog open={openchecklist} onClose={handleClosechecklist}>
-        <DialogTitle>Add CheckList</DialogTitle>
-        <DialogContent>
-          <CheckList></CheckList>
-          <Button
-            onClick={handleClosechecklist}
-            sx={{
-              color: "red",
-            }}
-            color="primary"
-          >
-            Cancel
-          </Button>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

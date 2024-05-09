@@ -151,20 +151,23 @@ const AddTask = () => {
                 {errors.unit}
               </Typography>
             ) : null} */}
+            <Typography
+              variant="h6"
+              component="h6"
+              color="#7986cb"
+              textAlign="center"
+            >
+              End Date
+            </Typography>
             <TextField
-              id="instructions"
-              name="instructions"
-              label="Instructions"
-              //value={formData.instructions}
+              id="end_date_increase_time"
+              name="endDate"
+              type="date"
+              //value={formData.end_date_increase_time}
               onChange={handleChange}
               onBlur={handleBlur}
               size="small"
             />
-            {errors.instructions && touched.instructions ? (
-              <Typography variant="caption" color="error">
-                {errors.instructions}
-              </Typography>
-            ) : null}
 
             <Typography
               variant="h6"
@@ -251,15 +254,7 @@ const AddTask = () => {
                     {errors.start_date}
                   </Typography>
                 ) : null}
-                <TextField
-                  id="end_date_increase_time"
-                  name="endDate"
-                  type="date"
-                  //value={formData.end_date_increase_time}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  size="small"
-                />
+
                 {/* {errors.end_date_increase_time &&
                 //  touched.end_date_increase_time ? (
                 //    <Typography variant="caption" color="error">
@@ -269,6 +264,8 @@ const AddTask = () => {
               </form>
             )}
             <TextField
+              multiline
+              rows={5}
               name="description"
               label="Description"
               //value={formData.description}

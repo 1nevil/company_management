@@ -358,6 +358,7 @@ export default function EmployeeForm() {
                   fullWidth
                   label="Mobile No"
                   name="mobileNumber"
+                  inputProps={{ maxLength: 10 }}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
