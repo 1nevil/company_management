@@ -1,35 +1,59 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import { IconButton } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
-import { Typography } from "@mui/material";
-import EmployeeForm from "./EmployeeForm";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import React, { useEffect } from "react"
+import Box from "@mui/material/Box"
+import { IconButton } from "@mui/material"
+import { Link } from "react-router-dom"
+import { Delete, Edit } from "@mui/icons-material"
+import { Typography } from "@mui/material"
+import EmployeeForm from "./EmployeeForm"
+import { useDispatch, useSelector } from "react-redux"
+import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import VisibilityIcon from "@mui/icons-material/Visibility"
 
 function Employee() {
-  const dispatch = useDispatch();
-  const employeess = useSelector((state) => state.Employee.employees);
+  const dispatch = useDispatch()
+  const [openchecklist, setopenchecklist] = React.useState(false)
+
+  const employeess = useSelector((state) => state.Employee.employees)
 
   const handleDelete = (id, name) => {
-    dispatch(deleteEmp(id));
-    notify(name);
-  };
+    dispatch(deleteEmp(id))
+    notify(name)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
   useEffect(() => {
-    dispatch(fetchEmp());
-  }, [dispatch]);
+    dispatch(fetchEmp())
+  }, [dispatch])
 
-  const notify = (name) => toast(name + "is deleted !");
+  const notify = (name) => toast(name + "is deleted !")
 
   const columns = [
+    {
+      field: "checklist",
+      headerName: "Employee Card",
+      description: "Team details",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <Link
+          style={{ color: "gray" }}
+          to={`/admin/EmployeeCard/${params.row.employeeId}`}
+        >
+          <VisibilityIcon />
+        </Link>
+      ),
+    },
+    {
+      field: "employeeId",
+      headerName: "id",
+      width: 140,
+    },
     {
       field: "employeeName",
       headerName: "Name",
@@ -86,6 +110,7 @@ function Employee() {
       headerName: "Role",
       width: 140,
     },
+
     {
       field: "Action",
       headerName: "Action",
@@ -111,7 +136,7 @@ function Employee() {
         </>
       ),
     },
-  ];
+  ]
 
   return (
     <>
@@ -143,7 +168,7 @@ function Employee() {
         />
       </Box>
     </>
-  );
+  )
 }
 
-export default Employee;
+export default Employee
