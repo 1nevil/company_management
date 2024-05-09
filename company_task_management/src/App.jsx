@@ -35,9 +35,9 @@ import SignIn from "./Components/SignIn";
 import TaskIsActive from "./Components/Employee/TaskIsActive";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import TaskDetail from "./Components/Employee/TaskDetail";
-import TaskIsActiveDeatils from "./Components/Employee/TaskIsActiveDeatils";
 import LinkIcon from "@mui/icons-material/Link";
 import ProtectedRoute from "./Route/ProtectedRoute";
+import TaskIsActiveDeatils from "./Components/Employee/TaskIsActiveDetail";
 
 function App() {
   const iconSiderbar = {
