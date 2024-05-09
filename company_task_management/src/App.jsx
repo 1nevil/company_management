@@ -27,7 +27,7 @@ import Chain from "./Components/Admin/Pages/Chain/Chain";
 import CheckTaskList from "./Components/Checker/CheckTasklist";
 import EmployeeDashboard from "./Components/Employee/DashBord";
 import EmpTaskDeatil from "./Components/Employee/EmpTaskDetail";
-import EmployeeProfile from "./Components/Employee/EmployeeProfile";
+import EmployeeProfile from "./Components/Admin/Pages/Employee/EmployeeProfile";
 import CheckerTaskDetails from "./Components/Checker/CheckTaskDetails";
 import TaskHistory from "./Components/Employee/TaskHistory";
 import BadgeIcon from "@mui/icons-material/Badge";
@@ -38,7 +38,7 @@ import TaskDetail from "./Components/Employee/TaskDetail";
 import LinkIcon from "@mui/icons-material/Link";
 import ProtectedRoute from "./Route/ProtectedRoute";
 import TaskIsActiveDeatils from "./Components/Employee/TaskIsActiveDetail";
-import EmployeeCard from "./Components/Employee/EmployeeCard";
+import EmployeeCard from "./Components/Admin/Pages/Employee/EmployeeCard";
 
 function App() {
   const iconSiderbar = {

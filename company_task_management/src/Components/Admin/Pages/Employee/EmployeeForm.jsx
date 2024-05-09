@@ -1,4 +1,9 @@
+/* eslint-disable react/jsx-key */
 import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import NavigationIcon from "@mui/icons-material/Navigation";
+
+import AddIcon from "@mui/icons-material/Add";
 import {
   TextField,
   Button,
@@ -12,12 +17,12 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  OutlinedInput,
   NativeSelect,
+  IconButton,
   Divider,
   Box,
-  IconButton,
-  Fab,
+  Input,
+  Autocomplete,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { EmployeeSchema } from "../../../Validation/validationSchema";
@@ -25,6 +30,7 @@ import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPosition } from "../../../../Slices/PositionSlice";
 import { insertEmp } from "../../../../Slices/EmployeeSlice";
+// const Positions = ["Engineering", "Marketing", "Finance", "HR"];
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -38,12 +44,130 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const EmployeeForm = () => {
-  const [open, setOpen] = useState(false);
-  const positions = useSelector((state) => state.Position.positions);
+export default function EmployeeForm() {
   const dispatch = useDispatch();
-  const [showAdditionalInputs, setshowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setadditionalInputCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const Positions = useSelector((state) => state.Position.positions);
+
+  useEffect(() => {
+    dispatch(fetchPosition());
+  }, [dispatch]);
+
+  const initValue = {
+    firstName: "",
+    lastName: "",
+    surname: "",
+    dob: "",
+    addressEmployee: "",
+    gender: "",
+    roleId: "",
+    dateOfJoining: "",
+    employeeEmail: "",
+    mobileNumber: 0,
+    adharNumber: 0,
+    altmobileNumber: 0,
+    employeeImage: "",
+    employeeResume: "",
+    positionId: "",
+    bankName: "",
+    accountHolderName: "",
+    accountNo: "",
+    ifscCode: "",
+    branchName: "",
+    upiId: "",
+    employeeAge: 0,
+    employeePassword: "",
+    signImage: "",
+    adharImage: "",
+    isActive: "",
+  };
+
+  const {
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+    values,
+  } = useFormik({
+    initialValues: initValue,
+    validationSchema: EmployeeSchema,
+    onSubmit: (values) => {
+      alert("clicked");
+      console.log(values);
+      dispatch(
+        insertEmp({
+          employeeName:
+            values.surname + " " + values.firstName + " " + values.lastName,
+          dob: values.dob,
+          addressEmployee: values.addressEmployee,
+          gender: values.gender,
+          roleId: values.roleId,
+          dateOfJoining: values.dateOfJoining,
+          employeeEmail: values.employeeEmail,
+          adharNumber: values.adharNumber,
+          altmobileNumber: values.altmobileNumber,
+          mobileNumber: values.mobileNumber,
+
+          accountHolderName: values.accountHolderName,
+          ifscCode: values.ifscCode,
+          accountNo: values.accountNo,
+          bankName: values.bankName,
+          branchName: values.branchName,
+          employeeAge: values.employeeAge,
+          upiId: values.upiId,
+          employeePassword: values.employeePassword,
+          positionId: String(values.positionId),
+          adharImage: values.adharImage,
+          SignatureImage: values.signImage,
+          employeeResume: values.employeeResume,
+          employeeImage: values.employeeImage,
+          isActive: "0",
+        })
+      );
+      console.log({
+        employeeName:
+          values.surname + " " + values.firstName + " " + values.lastName,
+        dob: values.dob,
+        addressEmployee: values.addressEmployee,
+        gender: values.gender,
+        dateOfJoining: values.dateOfJoining,
+        employeeEmail: values.employeeEmail,
+        adharNumber: values.adharNumber,
+        altmobileNumber: values.altmobileNumber,
+        mobileNumber: values.mobileNumber,
+
+        roleId: values.roleId,
+        accountHolderName: values.accountHolderName,
+        bankName: values.bankName,
+        ifscCode: values.ifscCode,
+        branchName: values.branchName,
+        upiId: values.upiId,
+      });
+    },
+  });
+  const calculateAge = (dob) => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let ageDiff = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      ageDiff--;
+    }
+
+    setFieldValue("employeeAge", ageDiff.toString()); // Update age
+  };
+
+  const handleDateChange = (event) => {
+    const { value } = event.target;
+    handleChange(event); // Update formik state with new value
+    calculateAge(value); // Calculate and update age
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -52,54 +176,6 @@ const EmployeeForm = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handleAddInput = () => {
-    setadditionalInputCount((prevcount) => prevcount + 1);
-    showAdditionalInputs(true);
-  };
-  const handleDeleteInput = () => {
-    setadditionalInputCount((prevcount) => prevcount - 1);
-  };
-
-  const initValue = {
-    employeeName: "",
-    dob: "",
-    addressEmployee: "",
-    gender: "",
-    dateOfJoining: "",
-    adharNumber: "",
-    employeeAge: 0,
-    employeeEmail: "",
-    mobileNumber: "",
-    altmobileNumber: "",
-    employeeImage: "",
-    employeeResume: "",
-    // rate: "",
-    positionId: "",
-  };
-  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
-    {
-      initialValues: initValue,
-      validationSchema: EmployeeSchema,
-      onSubmit: async (data) => {
-        alert(data);
-        const employeeData = {
-          ...data,
-          roleId: 4,
-          isActive: "1",
-          employeePassword: "xyzABC",
-          position: null,
-          role: null,
-        };
-        dispatch(insertEmp(employeeData));
-        handleClose();
-      },
-    }
-  );
-
-  useEffect(() => {
-    dispatch(fetchPosition());
-  }, [dispatch]);
 
   return (
     <div>
@@ -156,24 +232,44 @@ const EmployeeForm = () => {
                   </Typography>
                 ) : null}
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="password"
+                  name="password"
+                  // value={employeeData.alternateMobileNo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.password && touched.password ? (
+                  <Typography variant="caption" color="error">
+                    {errors.password}
+                  </Typography>
+                ) : null}
+              </Grid>
               <Grid item xs={6}>
+                <Typography variant="h6" component="h6" textAlign="">
+                  Date Of Birth
+                </Typography>
                 <TextField
                   fullWidth
                   type="date"
                   name="dob"
                   //value={employeeData.dob}
-                  onChange={handleChange}
+                  onChange={handleDateChange}
                   onBlur={handleBlur}
                   //label="Date of Birth"
                 />
-                <InputLabel htmlFor="employee-image-file">
-                  Date of Birth
-                  {errors.dob && touched.dob ? (
-                    <Typography variant="caption" color="error">
-                      {errors.dob}
-                    </Typography>
-                  ) : null}
-                </InputLabel>
+              </Grid>
+              <Grid item xs={6} mt={4}>
+                <TextField
+                  inputProps={{ readOnly: true }}
+                  fullWidth
+                  label="Age"
+                  name="employeeAge"
+                  value={values.employeeAge}
+                  //value={employeeData.surname}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -181,51 +277,41 @@ const EmployeeForm = () => {
                   fullWidth
                   label="Address"
                   multiline
-                  name="address"
+                  name="addressEmployee"
                   rows={4}
                   // value={employeeData.address}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.address && touched.address ? (
+                {errors.addressEmployee && touched.addressEmployee ? (
                   <Typography variant="caption" color="error">
-                    {errors.address}
+                    {errors.addressEmployee}
                   </Typography>
                 ) : null}
               </Grid>
               <Grid item xs={6}>
+                <Typography variant="h6" component="h6" textAlign="">
+                  Gender
+                </Typography>
                 {
                   <FormControl fullWidth>
-                    <InputLabel
-                      variant="standard"
-                      htmlFor="uncontrolled-native"
-                    >
-                      Gender
-                    </InputLabel>
-
-                    <NativeSelect
-                      defaultValue={10}
-                      inputProps={{
-                        name: "gender",
-                        id: "uncontrolled-native",
-                      }}
+                    <Select
+                      name="gender"
                       // value={employeeData.gender}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     >
-                      <option value={10}>Male</option>
-                      <option value={20}>Female</option>
-                      <option value={30}>Others</option>
-                    </NativeSelect>
+                      <MenuItem value="Male">Male</MenuItem>
+                      <MenuItem value="Female">Female</MenuItem>
+                      <MenuItem value="Others">Others</MenuItem>
+                    </Select>
                   </FormControl>
                 }
-                {errors.gender && touched.gender ? (
-                  <Typography variant="caption" color="error">
-                    {errors.gender}
-                  </Typography>
-                ) : null}
               </Grid>
               <Grid item xs={6}>
+                <Typography variant="h6" component="h6" textAlign="">
+                  Date Of Joining
+                </Typography>
                 <TextField
                   fullWidth
                   label=""
@@ -235,46 +321,19 @@ const EmployeeForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <InputLabel htmlFor="employee-image-file">
-                  Date of Joining
-                  {errors.dateOfJoining && touched.dateOfJoining ? (
-                    <Typography variant="caption" color="error">
-                      {errors.dateOfJoining}
-                    </Typography>
-                  ) : null}
-                </InputLabel>
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
                   label="Adhar No"
-                  name="adharNo"
+                  name="adharNumber"
                   inputProps={{ maxLength: 12 }}
-                  onInput={(e) => {
-                    e.target.value = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 12);
-                    handleChange(e);
-                  }}
-                  onKeyDown={(e) => {
-                    if (
-                      !(
-                        (e.keyCode >= 48 && e.keyCode <= 57) ||
-                        (e.keyCode >= 96 && e.keyCode <= 105) ||
-                        e.keyCode === 8 ||
-                        e.keyCode === 9 ||
-                        e.keyCode === 46
-                      )
-                    ) {
-                      e.preventDefault();
-                    }
-                  }}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.adharNo && touched.adharNo ? (
+                {errors.adharNumber && touched.adharNumber ? (
                   <Typography variant="caption" color="error">
-                    {errors.adharNo}
+                    {errors.adharNumber}
                   </Typography>
                 ) : null}
               </Grid>
@@ -283,14 +342,14 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Email"
-                  name="email"
+                  name="employeeEmail"
                   // value={employeeData.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.email && touched.email ? (
+                {errors.employeeEmail && touched.employeeEmail ? (
                   <Typography variant="caption" color="error">
-                    {errors.email}
+                    {errors.employeeEmail}
                   </Typography>
                 ) : null}
               </Grid>
@@ -298,34 +357,13 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Mobile No"
-                  name="mobileNo"
-                  inputProps={{ maxLength: 10 }}
-                  onInput={(e) => {
-                    e.target.value = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 10);
-                    handleChange(e);
-                  }}
-                  onKeyDown={(e) => {
-                    if (
-                      !(
-                        (e.keyCode >= 48 && e.keyCode <= 57) ||
-                        (e.keyCode >= 96 && e.keyCode <= 105) ||
-                        e.keyCode === 8 ||
-                        e.keyCode === 9 ||
-                        e.keyCode === 46
-                      )
-                    ) {
-                      e.preventDefault();
-                    }
-                  }}
-                  // value={employeeData.mobileNo}
+                  name="mobileNumber"
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.mobileNo && touched.mobileNo ? (
+                {errors.mobileNumber && touched.mobileNumber ? (
                   <Typography variant="caption" color="error">
-                    {errors.mobileNo}
+                    {errors.mobileNumber}
                   </Typography>
                 ) : null}
               </Grid>
@@ -333,259 +371,163 @@ const EmployeeForm = () => {
                 <TextField
                   fullWidth
                   label="Alternate Mobile No"
-                  name="alternateMobileNo"
+                  name="altmobileNumber"
                   inputProps={{ maxLength: 10 }}
-                  onInput={(e) => {
-                    e.target.value = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 10);
-                    handleChange(e);
-                  }}
-                  onKeyDown={(e) => {
-                    if (
-                      !(
-                        (e.keyCode >= 48 && e.keyCode <= 57) ||
-                        (e.keyCode >= 96 && e.keyCode <= 105) ||
-                        e.keyCode === 8 ||
-                        e.keyCode === 9 ||
-                        e.keyCode === 46
-                      )
-                    ) {
-                      e.preventDefault();
-                    }
-                  }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.altmobileNumber && touched.altmobileNumber ? (
+                  <Typography variant="caption" color="error">
+                    {errors.altmobileNumber}
+                  </Typography>
+                ) : null}
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="h6" component="h6">
+                  Position
+                </Typography>
+                <FormControl fullWidth>
+                  <InputLabel></InputLabel>
+
+                  <Select
+                    name="positionId"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  >
+                    {Positions?.map((position) => {
+                      return (
+                        <MenuItem value={position.positionId}>
+                          {position.positionName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="h6" component="h6" textAlign="">
+                  Roles
+                </Typography>
+                {
+                  <FormControl fullWidth>
+                    <Select
+                      name="roleId"
+                      // value={employeeData.gender}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    >
+                      <MenuItem value="2">Admin</MenuItem>
+                      <MenuItem value="3">Employee</MenuItem>
+                      <MenuItem value="4">Checker</MenuItem>
+                    </Select>
+                  </FormControl>
+                }
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h6" component="h6" textAlign="">
+                  Bank Details
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Bank Name"
+                  name="bankName"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.bankName && touched.bankName ? (
+                  <Typography variant="caption" color="error">
+                    {errors.dob}
+                  </Typography>
+                ) : null}
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Account Holder Name"
+                  name="accountHolderName"
                   // value={employeeData.alternateMobileNo}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.alternateMobileNo && touched.alternateMobileNo ? (
+                {errors.accountHolderName && touched.accountHolderName ? (
                   <Typography variant="caption" color="error">
-                    {errors.alternateMobileNo}
+                    {errors.accountHolderName}
                   </Typography>
                 ) : null}
               </Grid>
+
               <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                    Positions
-                  </InputLabel>
-                  <NativeSelect
-                    defaultValue={10}
-                    inputProps={{
-                      name: "position",
-                    }}
-                    //value={initValue.position}
-                  >
-                    {positions.map((department) => (
-                      <MenuItem key={department} value={department}>
-                        {department}
-                      </MenuItem>
-                    ))}
-                  </NativeSelect>
-                </FormControl>
+                <TextField
+                  fullWidth
+                  label="Account number"
+                  name="accountNo"
+                  // value={employeeData.alternateMobileNo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.accountNo && touched.accountNo ? (
+                  <Typography variant="caption" color="error">
+                    {errors.accountNo}
+                  </Typography>
+                ) : null}
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="IFSC"
+                  name="ifscCode"
+                  // value={employeeData.alternateMobileNo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.ifscCode && touched.ifscCode ? (
+                  <Typography variant="caption" color="error">
+                    {errors.ifscCode}
+                  </Typography>
+                ) : null}
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Branch Name"
+                  name="branchName"
+                  // value={employeeData.alternateMobileNo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.branchName && touched.branchName ? (
+                  <Typography variant="caption" color="error">
+                    {errors.branchName}
+                  </Typography>
+                ) : null}
+              </Grid>
+
+              <Grid item xs={12} mb={4}>
+                <TextField
+                  fullWidth
+                  label="Upi Id"
+                  name="upiId"
+                  // value={employeeData.alternateMobileNo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.upiId && touched.upiId ? (
+                  <Typography variant="caption" color="error">
+                    {errors.upiId}
+                  </Typography>
+                ) : null}
               </Grid>
             </Grid>
-            <br></br>
-            <h2>Bank Details</h2>
-            <br></br>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Bank Name"
-                name="bankName"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.bankName && touched.bankName ? (
-                <Typography variant="caption" color="error">
-                  {errors.bankName}
-                </Typography>
-              ) : null}
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Account Holder Name"
-                name="accHolderName"
-                // value={employeeData.alternateMobileNo}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.accHolderName && touched.accHolderName ? (
-                <Typography variant="caption" color="error">
-                  {errors.accHolderName}
-                </Typography>
-              ) : null}
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Account number"
-                name="accNumber"
-                // value={employeeData.alternateMobileNo}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.accNumber && touched.accNumber ? (
-                <Typography variant="caption" color="error">
-                  {errors.accNumber}
-                </Typography>
-              ) : null}
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="IFSC"
-                name="ifsc"
-                // value={employeeData.alternateMobileNo}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.ifsc && touched.ifsc ? (
-                <Typography variant="caption" color="error">
-                  {errors.ifsc}
-                </Typography>
-              ) : null}
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Branch Name"
-                name="branchName"
-                // value={employeeData.alternateMobileNo}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.branchName && touched.branchName ? (
-                <Typography variant="caption" color="error">
-                  {errors.branchName}
-                </Typography>
-              ) : null}
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Upi Id"
-                name="upiId"
-                // value={employeeData.alternateMobileNo}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.upiId && touched.upiId ? (
-                <Typography variant="caption" color="error">
-                  {errors.upiId}
-                </Typography>
-              ) : null}
-            </Grid>
-            <br></br>
-            <h2>Mention Previous Clients/Companies </h2>
-            {/* ------------------------------------ */}
-            <div style={{ textAlign: "center" }}>
-              <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
-                <Typography
-                  variant="h6"
-                  component="h6"
-                  color="#7986cb"
-                  textAlign="center"
-                ></Typography>
-                <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
-                {showAdditionalInputs && (
-                  <div>
-                    {[...Array(additionalInputCount)].map((_, index) => (
-                      <div key={index} style={{ alignItems: "center" }}>
-                        <Box sx={{ display: "flex", gap: "15px" }}>
-                          <Grid xs={10}>
-                            <Grid>
-                              <TextField
-                                label={`Client/Company Name ${index + 1}`}
-                                // variant="outlined"
-                                fullWidth
-                                name={`ClientCompanyName ${index + 1}`}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                // size="small"
-                              />
-                            </Grid>
-                            {errors.checklist && touched.checklist ? (
-                              <Typography variant="caption" color="error">
-                                {errors.checklist}
-                              </Typography>
-                            ) : null}
-                            <Grid>
-                              <TextField
-                                label={`Service Category Name ${index + 1}`}
-                                // variant="outlined"
-                                fullWidth
-                                name={`ServiceCategoryName ${index + 1}`}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                // size="small"
-                              />
-                            </Grid>
-                            {errors.checklist && touched.checklist ? (
-                              <Typography variant="caption" color="error">
-                                {errors.checklist}
-                              </Typography>
-                            ) : null}
-                            <Grid>
-                              <TextField
-                                label={`Phone Number ${index + 1}`}
-                                // variant="outlined"
-                                fullWidth
-                                name={`PhoneNumber ${index + 1}`}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                // size="small"
-                              />
-                            </Grid>
-                            {errors.checklist && touched.checklist ? (
-                              <Typography variant="caption" color="error">
-                                {errors.checklist}
-                              </Typography>
-                            ) : null}
-                            <Divider
-                              width="100%"
-                              sx={{ color: "black", width: "70vh" }}
-                            />
-                          </Grid>
-                          <Grid sx={{ display: "flex" }} xs={2}>
-                            <IconButton
-                              sx={{ m: "auto" }}
-                              aria-label="delete"
-                              color="error"
-                              onClick={handleDeleteInput}
-                            >
-                              {/* <DeleteIcon /> */}
-                            </IconButton>
-                          </Grid>
-                        </Box>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Render button to add input */}
-
-                <Button
-                  variant="outlined"
-                  sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
-                  onClick={handleAddInput}
-                  // startIcon={<AddIcon />}
-                >
-                  Add
-                </Button>
-              </Grid>
-            </div>
-            {/* ------------------------------------ */}
-            <br></br>
-
-            <Grid item xs={12}>
-              <TextField
+              <Typography variant="h6" component="h6" textAlign="">
+                Employee Image
+              </Typography>
+              <Input
                 type="file"
                 fullWidth
                 name="employeeImage"
@@ -598,21 +540,13 @@ const EmployeeForm = () => {
                 type="file"
                 name="employeeImage"
               />
-              <InputLabel
-                htmlFor="employee-image-file"
-                style={{ marginTop: "5px" }}
-              >
-                Upload Employee Image
-              </InputLabel>
-              {errors.employeeImage && touched.employeeImage ? (
-                <Typography variant="caption" color="error">
-                  {errors.employeeImage}
-                </Typography>
-              ) : null}
             </Grid>
             <br></br>
             <Grid item xs={12}>
-              <TextField
+              <Typography variant="h6" component="h6" textAlign="">
+                Employee Resume
+              </Typography>
+              <Input
                 type="file"
                 fullWidth
                 name="employeeResume"
@@ -621,59 +555,46 @@ const EmployeeForm = () => {
                 onBlur={handleBlur}
               />
               <VisuallyHiddenInput id="employee-resume-file" type="file" />
-              <InputLabel
-                htmlFor="employee-resume-file"
-                style={{ marginTop: "5px" }}
-              >
-                Upload Employee Resume
-              </InputLabel>
             </Grid>
             <br></br>
             <Grid item xs={12}>
-              <TextField
+              <Typography variant="h6" component="h6" textAlign="">
+                Adhar Upload
+              </Typography>
+              <Input
                 type="file"
                 fullWidth
-                name="employeeAdharImage"
+                name="adharImage"
                 // value={employeeData.employeeResume}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
               <VisuallyHiddenInput id="employee-adhar-file" type="file" />
-              <InputLabel
-                htmlFor="employee-adhar-file"
-                style={{ marginTop: "5px" }}
-              >
-                Upload Adhar Image
-              </InputLabel>
             </Grid>
             <br></br>
             <Grid item xs={12}>
-              <TextField
+              <Typography variant="h6" component="h6" textAlign="">
+                Employee Sign
+              </Typography>
+              <Input
                 type="file"
                 fullWidth
-                name="employeeSign"
+                name="signImage"
                 // value={employeeData.employeeResume}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <VisuallyHiddenInput id="employee-sign-file" type="file" />
-              <InputLabel
-                htmlFor="employee-sign-file"
-                style={{ marginTop: "5px" }}
-              >
-                Upload Signature
-              </InputLabel>
             </Grid>
-
             <Grid
               item
               xs={12}
+              mt={5}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <Fab variant="extended" size="medium" color="primary">
-                {/* <NavigationIcon sx={{ marginRight: 1 }} /> */}
+              <VisuallyHiddenInput id="employee-sign-file" type="file" />
+              <Button variant="contained" type="submit">
                 Submit
-              </Fab>
+              </Button>
             </Grid>
           </form>
         </DialogContent>
@@ -685,6 +606,6 @@ const EmployeeForm = () => {
       </Dialog>
     </div>
   );
-};
+}
 
-export default EmployeeForm;
+//
