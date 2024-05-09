@@ -38,6 +38,7 @@ import TaskDetail from "./Components/Employee/TaskDetail";
 import LinkIcon from "@mui/icons-material/Link";
 import ProtectedRoute from "./Route/ProtectedRoute";
 import TaskIsActiveDeatils from "./Components/Employee/TaskIsActiveDetail";
+import EmployeeCard from "./Components/Employee/EmployeeCard";
 
 function App() {
   const iconSiderbar = {
@@ -130,6 +131,10 @@ function App() {
               element: <Chain />,
             },
           ],
+        },
+        {
+          path: "EmployeeCard/:employeeId",
+          element: <EmployeeCard />,
         },
       ],
     },
