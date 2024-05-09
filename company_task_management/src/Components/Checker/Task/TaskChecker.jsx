@@ -30,7 +30,7 @@ function TaskChecker() {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/Checker/EmployeeDetails/${params.row.id}`}
+          to={`/Checker/CheckerTaskDetails/${params.row.id}`}
         >
           <MessageIcon />
         </Link>

@@ -1,32 +1,32 @@
-import * as React from "react"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import CssBaseline from "@mui/material/CssBaseline"
-import TextField from "@mui/material/TextField"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import Checkbox from "@mui/material/Checkbox"
-import Link from "@mui/material/Link"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
-import Typography from "@mui/material/Typography"
-import Container from "@mui/material/Container"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { useDispatch, useSelector } from "react-redux"
-import { loginUser, setUserToken } from "../Slices/AuthenticationSlice"
-import Snackbar from "@mui/material/Snackbar"
-import Alert from "@mui/material/Alert"
-import { Navigate, useNavigate } from "react-router-dom"
-import { useFormik } from "formik"
-import { userLoginSchema } from "./Validation/validationSchema"
-import AccountCircle from "@mui/icons-material/AccountCircle"
-import InputAdornment from "@mui/material/InputAdornment"
-import InputLabel from "@mui/material/InputLabel"
-import FormControl from "@mui/material/FormControl"
-import OutlinedInput from "@mui/material/OutlinedInput"
-import IconButton from "@mui/material/IconButton"
-import Visibility from "@mui/icons-material/Visibility"
-import VisibilityOff from "@mui/icons-material/VisibilityOff"
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, setUserToken } from "../Slices/AuthenticationSlice";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { userLoginSchema } from "./Validation/validationSchema";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import InputAdornment from "@mui/material/InputAdornment";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Copyright(props) {
   return (
@@ -43,31 +43,31 @@ function Copyright(props) {
       {new Date().getFullYear()}
       {"."}
     </Typography>
-  )
+  );
 }
 
-const defaultTheme = createTheme()
+const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const dispatch = useDispatch()
-  const [showPassword, setShowPassword] = React.useState(false)
-  const [roleOfUser, setRoleOfUser] = React.useState(null)
-  const { pending, error, authicatedUser } = useSelector((state) => state.Auth)
-  const [open, setOpen] = React.useState(true)
+  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [roleOfUser, setRoleOfUser] = React.useState(null);
+  const { pending, error, authicatedUser } = useSelector((state) => state.Auth);
+  const [open, setOpen] = React.useState(true);
   const handleClickShowPassword = React.useCallback(() => {
-    setShowPassword((show) => !show)
-  }, [])
+    setShowPassword((show) => !show);
+  }, []);
 
   const handleMouseDownPassword = React.useCallback((event) => {
-    event.preventDefault()
-  }, [])
+    event.preventDefault();
+  }, []);
 
   const handleClose = React.useCallback((event, reason) => {
     if (reason === "clickaway") {
-      return
+      return;
     }
-    setOpen(false)
-  }, [])
+    setOpen(false);
+  }, []);
 
   const initialState = React.useMemo(
     () => ({
@@ -75,71 +75,71 @@ export default function SignIn() {
       password: "",
     }),
     []
-  )
+  );
 
   const handleClick = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
-  console.log("signin re-render")
-  const navigate = useNavigate()
+  console.log("signin re-render");
+  const navigate = useNavigate();
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initialState,
       validationSchema: userLoginSchema,
       onSubmit: (data) => {
-        dispatch(loginUser(data))
-        if (error !== null) handleClick()
+        dispatch(loginUser(data));
+        if (error !== null) handleClick();
 
         if (authicatedUser !== null) {
-          console.log("🚀 ~ SignIn ~ authicatedUser:", authicatedUser)
+          console.log("🚀 ~ SignIn ~ authicatedUser:", authicatedUser);
 
           const role =
             authicatedUser[
               "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-            ]
+            ];
           if (role === "super_admin") {
-            navigate("/superadmin/approved")
+            navigate("/superadmin/approved");
           } else if (role === "admin") {
-            navigate("/admin/dashbord")
+            navigate("/admin/dashbord");
           } else if (role === "employee") {
-            navigate("/employee/EmployeeDashboard")
+            navigate("/employee/EmployeeDashboard");
           } else if (role === "checker") {
-            navigate("/checker/TaskChecker")
+            navigate("/checker/CheckTaskList");
           }
         }
       },
     }
-  )
+  );
 
   React.useEffect(() => {
-    dispatch(setUserToken())
-  }, [dispatch])
+    dispatch(setUserToken());
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (authicatedUser) {
       const userRole =
         authicatedUser[
           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ]
-      setRoleOfUser(userRole)
+        ];
+      setRoleOfUser(userRole);
       if (userRole) {
-        console.log("🚀 ~ React.useEffect ~ userRole:", userRole)
+        console.log("🚀 ~ React.useEffect ~ userRole:", userRole);
         if (userRole === "super_admin") {
-          navigate("/superadmin/approved")
+          navigate("/superadmin/approved");
         } else if (userRole === "admin") {
-          navigate("/admin/dashbord")
+          navigate("/admin/dashbord");
         } else if (userRole === "employee") {
-          navigate("/employee/EmployeeDashboard")
+          navigate("/employee/EmployeeDashboard");
         } else if (userRole === "checker") {
-          navigate("/checker/TaskChecker")
+          navigate("/checker/CheckTaskList");
         }
       }
     } else {
-      navigate("/")
+      navigate("/");
     }
-  }, [authicatedUser, navigate])
+  }, [authicatedUser, navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -271,5 +271,5 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
-  )
+  );
 }

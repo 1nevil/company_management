@@ -38,3 +38,7 @@ export function GetTaskAssignDataToChecker(id) {
 export function GetTaskHistoryByEmpID(empIid) {
   return axiosInstance.get(`api/EmpTaskHistories/${empIid}`);
 }
+
+export function GetTaskHistoryUsingEmpID(empId) {
+  return axiosInstance.get(`api/TaskMasters/getActiveTask/${empId}`);
+}

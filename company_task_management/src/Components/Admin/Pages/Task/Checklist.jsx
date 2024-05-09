@@ -55,7 +55,7 @@ const CheckList = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ width: "500px" }}>
+      <form onSubmit={handleSubmit} style={{ width: "650px" }}>
         <div style={{ textAlign: "center" }}>
           <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
             <Typography
@@ -116,9 +116,6 @@ const CheckList = () => {
           </Grid>
         </div>
         {/* </Stack> */}
-        <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
-          Submit
-        </MyButton>
       </form>
     </div>
   );

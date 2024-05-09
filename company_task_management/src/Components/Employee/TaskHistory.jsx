@@ -11,11 +11,11 @@ import { getTaskFromHistoryByEmpId } from "../../Slices/AssignToTask";
 function TaskHistory(params) {
   const historytasksByEmpId = useSelector((state) => state.AssignToTask.tasks);
   const dispatch = useDispatch();
-  const empId = 11;
+  const { id: empId } = useSelector((state) => state.Auth.authicatedUser);
+
   useEffect(() => {
     dispatch(getTaskFromHistoryByEmpId(empId));
-    console.log(empId);
-  }, [dispatch]);
+  }, [dispatch, empId]);
   const columns = [
     { field: "empTaskHistoryId", headerName: "TaskHistory Id", width: 90 },
     {

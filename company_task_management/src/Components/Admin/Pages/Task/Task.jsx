@@ -67,7 +67,6 @@ function Task() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
     {
       field: "Action",
       headerName: "Action",

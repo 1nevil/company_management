@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchChainMater } from "../../../../Slices/ChainSliceMaster";
 import { fetchPosition } from "../../../../Slices/PositionSlice";
 import { insertTask } from "../../../../Slices/TaskSlice";
+import CheckList from "./Checklist";
 
 const AddTask = () => {
   const [showOpenForm, setshowOpenForm] = useState(false);
@@ -299,6 +300,7 @@ const AddTask = () => {
                 })}
               </Select>
             </FormControl>
+            <CheckList></CheckList>
           </Grid>
         </div>
         <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>

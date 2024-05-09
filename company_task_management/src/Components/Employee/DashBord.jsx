@@ -21,11 +21,15 @@ function EmployeeDashboard() {
   // );
 
   const tasksByPosition = useSelector((state) => state.Tasks.tasks);
+  const { id: empId, Position: positionId } = useSelector(
+    (state) => state.Auth.authicatedUser
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPositionWiseTask(1));
-  }, [dispatch]);
+    dispatch(getPositionWiseTask(positionId));
+  }, [dispatch, positionId]);
 
   const handleClick = (id) => {
     var currentDate = new Date();
@@ -41,7 +45,7 @@ function EmployeeDashboard() {
     var formattedDate = day + "/" + month + "/" + year;
 
     const insertData = {
-      empId: 11,
+      empId: empId,
       taskId: id,
       assignedAt: formattedDate,
       isActive: "1",
