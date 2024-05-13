@@ -94,11 +94,11 @@ function Task() {
       sortable: false,
       width: 160,
       renderCell: (params) => (
-        // <Link to={`CheckList/${params.row.id}`}>
-        <IconButton onClick={handleopenchecklist} title="Check List">
+        <Link to={`/admin/AdminTaskDeatil/${params.row.taskId}`}>
+          {/* <IconButton onClick={handleopenchecklist} title="AdminTask Deatil"> */}
           <VisibilityIcon></VisibilityIcon>
-        </IconButton>
-        // </Link>
+          {/* </IconButton> */}
+        </Link>
       ),
     },
     {

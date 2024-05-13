@@ -35,6 +35,7 @@ const AddTask = () => {
 
   const chainMaster = useSelector((state) => state.Chain.chainMaster);
   const Positions = useSelector((state) => state.Position.positions);
+  const error = useSelector((state) => state.Tasks.error);
 
   console.log(chainMaster);
 
@@ -61,13 +62,14 @@ const AddTask = () => {
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
-      validationSchema: TaskSchema,
+      // validationSchema: TaskSchema,
       onSubmit: (data) => {
         alert("hello world");
         console.log(data);
         let TaskStatus = "Pending";
         data.durationNum = String(data.durationNum);
         dispatch(insertTask({ ...data, TaskStatus }));
+        console.log(error);
       },
     }
   );
@@ -99,6 +101,11 @@ const AddTask = () => {
                 {errors.taskName}
               </Typography>
             ) : null}
+            {error && (
+              <Typography variant="caption" color="error">
+                {error}
+              </Typography>
+            )}
 
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel>Position </InputLabel>

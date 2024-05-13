@@ -23,8 +23,8 @@ export const GetTaskFromAssignTaskByEmpId = (empID) => {
   return axiosInstance.get(`api/EmpTaskAssignments/task/${empID}`);
 };
 
-export const getTaskByTaskId = (positionId, taskId) => {
-  return axiosInstance.get(`api/TaskMasters/${positionId}/${taskId}`);
+export const getTaskByTaskId = (taskId) => {
+  return axiosInstance.get(`api/TaskMasters/${taskId}`);
 };
 
 export const getTaskAndGuidlinesByTaskId = (taskId) => {

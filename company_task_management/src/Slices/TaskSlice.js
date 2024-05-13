@@ -15,12 +15,27 @@ const initialState = {
   tasks: [],
   error: "",
   taskAndGuidelines: [],
+  completeTaskDetailForAdmin: {},
 };
 
-export const insertTask = createAsyncThunk("task/insertTask", async (task) => {
-  const response = await insertTaskData(task);
-  return response.data;
-});
+export const insertTask = createAsyncThunk(
+  "task/insertTask",
+  async (task, { rejectWithValue }) => {
+    try {
+      const response = await insertTaskData(task);
+      return response.data; // Assuming your backend returns the data directly
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        // Extract custom message from backend response
+        const errorMessage = error.response.data.message;
+        return rejectWithValue(errorMessage);
+      } else {
+        return rejectWithValue("An unexpected error occurred");
+      }
+    }
+  }
+);
 
 //getTaskByPostionId;
 export const getPositionWiseTask = createAsyncThunk(
@@ -60,11 +75,10 @@ export const getTaskUsingEmpId = createAsyncThunk(
 // getTaskByTaskId
 export const getTaskUsingTaskId = createAsyncThunk(
   "task/getTaskUsingTaskId",
-  async ({ positionId, taskId }, { rejectWithValue }) => {
-    console.log(positionId);
+  async (taskId, { rejectWithValue }) => {
     console.log(taskId);
     try {
-      const response = await getTaskByTaskId(positionId, taskId);
+      const response = await getTaskByTaskId(taskId);
       return response.data;
     } catch (error) {
       // console.log(error.response);
@@ -169,7 +183,8 @@ const TaskSlice = createSlice({
         state.pending = false;
         state.error = action.payload;
       })
-      // GetTaskFromAssignTaskByTaskId
+
+      // getTaskUsingTaskId
 
       .addCase(getTaskUsingTaskId.pending, (state) => {
         state.pending = true;
@@ -177,13 +192,14 @@ const TaskSlice = createSlice({
       .addCase(getTaskUsingTaskId.fulfilled, (state, action) => {
         state.pending = false;
         console.log(action.payload);
-        state.tasks = action.payload;
+        state.completeTaskDetailForAdmin = action.payload;
       })
       .addCase(getTaskUsingTaskId.rejected, (state, action) => {
         state.pending = false;
         // state.tasks = [];
         state.error = action.payload;
       })
+
       .addCase(getTaskDataAndGuidlinesByTaskId.pending, (state) => {
         state.pending = true;
       })
