@@ -16,26 +16,26 @@ const initialState = {
   error: null,
   taskAndGuidelines: [],
   completeTaskDetailForAdmin: {},
-};
+}
 
 export const insertTask = createAsyncThunk(
   "task/insertTask",
   async (task, { rejectWithValue }) => {
     try {
-      const response = await insertTaskData(task);
-      return response.data; // Assuming your backend returns the data directly
+      const response = await insertTaskData(task)
+      return response.data // Assuming your backend returns the data directly
     } catch (error) {
-      console.log(error);
+      console.log(error)
       if (error.response) {
         // Extract custom message from backend response
-        const errorMessage = error.response.data.message;
-        return rejectWithValue(errorMessage);
+        const errorMessage = error.response.data.message
+        return rejectWithValue(errorMessage)
       } else {
-        return rejectWithValue("An unexpected error occurred");
+        return rejectWithValue("An unexpected error occurred")
       }
     }
   }
-);
+)
 
 //getTaskByPostionId;
 export const getPositionWiseTask = createAsyncThunk(
@@ -76,10 +76,11 @@ export const getTaskUsingEmpId = createAsyncThunk(
 export const getTaskUsingTaskId = createAsyncThunk(
   "task/getTaskUsingTaskId",
   async (taskId, { rejectWithValue }) => {
-    console.log(taskId);
+    console.log(taskId)
     try {
-      const response = await getTaskByTaskId(taskId);
-      return response.data;
+      const response = await getTaskByTaskId(taskId)
+      console.log(response.data)
+      return response.data
     } catch (error) {
       // console.log(error.response);
       if (error.response) {
@@ -194,7 +195,7 @@ const TaskSlice = createSlice({
       .addCase(getTaskUsingTaskId.fulfilled, (state, action) => {
         state.pending = false
         console.log(action.payload)
-        state.tasks = action.payload
+        state.completeTaskDetailForAdmin = action.payload
       })
       .addCase(getTaskUsingTaskId.rejected, (state, action) => {
         state.pending = false
