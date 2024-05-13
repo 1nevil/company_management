@@ -1,41 +1,38 @@
 /* eslint-disable react/prop-types */
 // import { jwtDecode } from "jwt-decode"
-import { useSelector, useDispatch } from "react-redux";
-import { Outlet, Link } from "react-router-dom";
-import { Box, Typography, Button } from "@mui/material";
-import ErrorIcon from "@mui/icons-material/Error";
-import { useEffect, useState } from "react";
-import { setUserToken } from "../Slices/AuthenticationSlice";
+import { useSelector, useDispatch } from "react-redux"
+import { Outlet, Link } from "react-router-dom"
+import { Box, Typography, Button } from "@mui/material"
+import ErrorIcon from "@mui/icons-material/Error"
+import { useEffect, useState } from "react"
+import { setUserToken } from "../Slices/AuthenticationSlice"
 
 function ProtectedRoute({ role }) {
-  console.log("Protected route re-render");
-  const { isAuthenticate, authicatedUser } = useSelector((state) => state.Auth);
-  const dispatch = useDispatch();
-  const [roleOfUser, setRoleOfUser] = useState(null);
+  console.log("🚀 ~ ProtectedRoute ~ role:", role)
+  console.log("Protected route re-render")
+  const { isAuthenticate, authicatedUser } = useSelector((state) => state.Auth)
+  const dispatch = useDispatch()
+  const [roleOfUser, setRoleOfUser] = useState(null)
   useEffect(() => {
-    dispatch(setUserToken());
-  }, [dispatch]);
-  console.log(authicatedUser);
+    dispatch(setUserToken())
+  }, [dispatch])
+  console.log(authicatedUser)
 
   // if (!isAuthenticate) {
   //   // User is not authenticated, redirect to login page
   //   return <Navigate to="/login" />
   // }
 
-  return isAuthenticate || roleOfUser === role ? (
-    <>
-      {/* {JSON.stringify(!isAuthenticate)}
-      <br></br>
-      {JSON.stringify(roleOfUser !== role)}
-      <br></br>
-      {JSON.stringify(roleOfUser)}
-      <br></br>
-      {JSON.stringify(role)}
-      <br></br> */}
-
-      <Outlet />
-    </>
-  ) : (
+  console.log(
+    !isAuthenticate ||
+      authicatedUser[
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+      ] !== role
+  )
+  return !isAuthenticate ||
+    authicatedUser[
+      "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+    ] !== role ? (
     <Box
       component="div"
       sx={{
@@ -64,9 +61,13 @@ function ProtectedRoute({ role }) {
         Login
       </Link>
     </Box>
-  );
+  ) : (
+    <>
+      <Outlet />
+    </>
+  )
 }
-export default ProtectedRoute;
+export default ProtectedRoute
 
 // return !isAuthenticate || roleOfUser !== role ? (
 //   <Box

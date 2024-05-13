@@ -14,9 +14,9 @@ export const updatePositionData = (id) => {
   return axiosInstance.put(`api/PositionMasters/${id}`);
 };
 
-export const insertPositionData = (position) => {
-  return axiosInstance.post(`api/PositionMasters`, position);
-};
+export const insertPositionData = (positionWithGuidlines) => {
+  return axiosInstance.post(`api/PositionMasters`, positionWithGuidlines)
+}
 
 export const fetchPositionById = (id) => {
   return axiosInstance.get(`api/PositionMasters/${id}`);

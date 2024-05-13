@@ -1,9 +1,9 @@
 // validationSchema.js
-import * as Yup from "yup";
+import * as Yup from "yup"
 
 export const DepartmentSchema = Yup.object({
   //departmentName: Yup.string().min(3, "**At least 3 characters").required("**Department name is required"),
-});
+})
 
 export const SubdepartmentSchema = Yup.object({
   //departmentName: Yup.string().required("**select any one Department"),
@@ -11,14 +11,14 @@ export const SubdepartmentSchema = Yup.object({
   rate: Yup.number().required("**Rate name is required"),
   unit: Yup.string().required("**Unit name is required"),
   time: Yup.number().required("date is required"),
-});
+})
 
 export const TeamSchema = Yup.object({
   TeamName: Yup.string().required("**TeamName name is required"),
   Employee: Yup.string()
     .required("**Employee name is required")
     .min(2, "TeamName is greater Then 2"),
-});
+})
 
 export const EmployeeSchema = Yup.object({
   firstName: Yup.string().required("**First Name is required"),
@@ -51,21 +51,36 @@ export const EmployeeSchema = Yup.object({
   employeeAge: Yup.number()
     .required("**Age is Required")
     .typeError("**Only enter number"),
-});
-
+})
 export const TaskSchema = Yup.object({
   taskName: Yup.string().required("**Task Name is required"),
-  // rate: Yup.number().required("number is required"),
-  // unit: Yup.string().required("unit is required"),
-  instructions: Yup.string().required("instructions is required"),
-  //start_date: Yup.date().required("start_date is required"),
-  // end_date_increase_time: Yup.date().required(
-  //   "end_date_increase_time is required"
-  // ),
-  description: Yup.string().required("description is required"),
-  //checklist: Yup.string().required("checklist is required"),
-  // //chainid: Yup.string().required("teamname is required"),
-});
+  description: Yup.string().required("Description is required"),
+  // formStatus: Yup.string().required("Please select a reminder type"),
+  // startDate: Yup.date().when("formStatus", {
+  //   is: "closed",
+  //   then: Yup.date().required("Start Date is required"),
+  //   otherwise: Yup.date().notRequired(),
+  // }),
+  // endDate: Yup.date().when(["formStatus", "startDate"], {
+  //   is: (formStatus, startDate) => formStatus === "closed" && startDate,
+  //   then: Yup.date()
+  //     .required("End Date is required")
+  //     .min(Yup.ref("startDate"), "End Date must be after Start Date"),
+  //   otherwise: Yup.date().notRequired(),
+  // }),
+  // durationNum: Yup.number().when("formStatus", {
+  //   is: "open",
+  //   then: Yup.number()
+  //     .required("Duration Number is required")
+  //     .positive("Duration Number must be a positive number"),
+  //   otherwise: Yup.number().notRequired(),
+  // }),
+  // durationType: Yup.string().when("formStatus", {
+  //   is: "open",
+  //   then: Yup.string().required("Duration Type is required"),
+  //   otherwise: Yup.string().notRequired(),
+  // }),
+})
 
 export const PositionSchema = Yup.object({
   positionName: Yup.string().required("**PositionName name is required"),
@@ -73,18 +88,18 @@ export const PositionSchema = Yup.object({
   unit: Yup.string().required("**unit is required"),
   unitName: Yup.string().required("**Unitname name is required"),
   rate: Yup.number().required("**Rate name is required"),
-});
+})
 
 export const ChainSchema = Yup.object({
   ChainName: Yup.string().required("**Chainname name is required"),
-});
+})
 export const ChainDetailSchema = Yup.object({
   chainId: Yup.string().required("**chainId name is required"),
-});
+})
 
 export const userLoginSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
   password: Yup.string().required("Password is required"),
-});
+})

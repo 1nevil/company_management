@@ -70,14 +70,14 @@ function Position() {
           >
             <Edit />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             onClick={() =>
               handleDelete(params.row.positionId, params.row.positionName)
             }
             title="Delete"
           >
             <Delete sx={{ color: "red" }} />
-          </IconButton>
+          </IconButton> */}
         </>
       ),
     },

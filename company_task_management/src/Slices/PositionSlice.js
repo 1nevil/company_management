@@ -32,9 +32,13 @@ export const deletePosition = createAsyncThunk(
 
 export const insertPosition = createAsyncThunk(
   "position/insertPosition",
-  async (position) => {
-    let response = await insertPositionData(position)
-    return response.data
+  async (positionWithGuidlines) => {
+    let response = await insertPositionData(positionWithGuidlines)
+    const responsePositionWithGuidLine = response.data
+    const { positionId, positionName, duration, unitName, rate, unit } =
+      responsePositionWithGuidLine // const postion = { responsePositionWithGuidLine }
+    let position = { positionId, positionName, duration, unitName, rate, unit }
+    return position
   }
 )
 
