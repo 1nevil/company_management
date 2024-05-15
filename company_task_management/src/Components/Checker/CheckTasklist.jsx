@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   IconButton,
   Dialog,
@@ -8,47 +8,47 @@ import {
   Box,
   Paper,
   Button,
-} from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getCompletedTaskDataForChecker } from "../../Slices/AssignToTask";
-import { updateapprovedTask } from "../../Slices/TaskSlice";
+} from "@mui/material"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import { Link } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { getCompletedTaskDataForChecker } from "../../Slices/AssignToTask"
+import { updateapprovedTask } from "../../Slices/TaskSlice"
 
 function CheckTaskList() {
-  const [open, setOpen] = useState(false);
-  const [openchecklist, setOpenChecklist] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const dispatch = useDispatch();
-  const compltedTask = useSelector((state) => state.AssignToTask.tasks);
+  const [open, setOpen] = useState(false)
+  const [openchecklist, setOpenChecklist] = useState(false)
+  const [selectedTask, setSelectedTask] = useState(null)
+  const dispatch = useDispatch()
+  const compltedTask = useSelector((state) => state.AssignToTask.tasks)
   useEffect(() => {
-    dispatch(getCompletedTaskDataForChecker());
-  }, [dispatch]);
+    dispatch(getCompletedTaskDataForChecker())
+  }, [dispatch])
 
   const handleOpenChecklist = () => {
-    setOpenChecklist(true);
-  };
+    setOpenChecklist(true)
+  }
 
   const handleCloseChecklist = () => {
-    setOpenChecklist(false);
-  };
+    setOpenChecklist(false)
+  }
 
   const handleDisapprove = (TaskId) => {
-    setOpen(true);
-    setSelectedTask(TaskId);
-  };
+    setOpen(true)
+    setSelectedTask(TaskId)
+  }
 
   const handleSubmit = () => {
-    setOpen(false);
-    setSelectedTask(null);
-  };
+    setOpen(false)
+    setSelectedTask(null)
+  }
   const handleClose = () => {
-    setOpen(false);
-    setSelectedTask(null);
-  };
+    setOpen(false)
+    setSelectedTask(null)
+  }
   // const handleApprove = (TaskId) => {
   //   alert(TaskId);
   //   dispatch(updateapprovedTask(42));
@@ -56,24 +56,24 @@ function CheckTaskList() {
 
   const handleApprove = (empTaskId) => {
     // Find the row data corresponding to the empTaskId
-    alert(empTaskId);
-    const rowData = compltedTask.find((row) => row.empTaskId === empTaskId);
-    console.log(rowData);
+    alert(empTaskId)
+    const rowData = compltedTask.find((row) => row.empTaskId === empTaskId)
+    console.log(rowData)
     if (rowData) {
       // Access the taskId from the row data
-      const taskId = rowData.taskId;
-      alert(taskId);
+      const taskId = rowData.taskId
+      alert(taskId)
       // Dispatch your action with the taskId
-      dispatch(updateapprovedTask(taskId));
+      dispatch(updateapprovedTask(taskId))
     } else {
       // Handle case when row data is not found
-      console.error("Row data not found for empTaskId:", empTaskId);
+      console.error("Row data not found for empTaskId:", empTaskId)
     }
-  };
+  }
 
   const handleEdit = (TaskId) => {
-    alert(TaskId);
-  };
+    alert(TaskId)
+  }
 
   const columns = [
     { field: "empTaskId", headerName: "ID", width: 90 },
@@ -132,14 +132,14 @@ function CheckTaskList() {
         </>
       ),
     },
-  ];
+  ]
 
   const Tasks = [
     { id: 1, Category: "Snow" },
     { id: 2, Category: "Lannister" },
     { id: 3, Category: "Lannister" },
-  ];
-  console.log(compltedTask);
+  ]
+  console.log(compltedTask)
   return (
     <div>
       <div style={{ height: 400, width: "100%" }}>
@@ -198,7 +198,7 @@ function CheckTaskList() {
         </Dialog>
       </Box>
     </div>
-  );
+  )
 }
 
-export default CheckTaskList;
+export default CheckTaskList

@@ -7,6 +7,7 @@ import {
   getTaskAndGuidlinesByTaskId,
   getTaskByPostionId,
   getTaskByTaskId,
+  getTaskByTaskPositionId,
   insertTaskData,
 } from "./TaskApi"
 
@@ -16,6 +17,7 @@ const initialState = {
   error: null,
   taskAndGuidelines: [],
   completeTaskDetailForAdmin: {},
+  getActiveTaskDetail: {},
 }
 
 export const insertTask = createAsyncThunk(
@@ -95,10 +97,33 @@ export const getTaskUsingTaskId = createAsyncThunk(
   }
 )
 
+export const getTaskUsingTaskIdAndPostionId = createAsyncThunk(
+  "task/getTaskUsingTaskIdAndPostionId",
+  async ({ positionId, taskId }, { rejectWithValue }) => {
+    console.log(positionId, taskId)
+    try {
+      const response = await getTaskByTaskPositionId(positionId, taskId)
+      console.log(response.data)
+      return response.data
+    } catch (error) {
+      // console.log(error.response);
+      if (error.response) {
+        const errorMessage = error.response.data.message
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
+    // console.log(taskId);
+    // console.log(response.data);
+  }
+)
+
 export const getTaskDataAndGuidlinesByTaskId = createAsyncThunk(
   "task/getTaskAndGuidlinesByTaskId",
   async (taskId) => {
     const response = await getTaskAndGuidlinesByTaskId(taskId)
+    console.log(response)
     return response.data
   }
 )
@@ -228,6 +253,20 @@ const TaskSlice = createSlice({
         )
       })
       .addCase(updateapprovedTask.rejected, (state, action) => {
+        state.pending = false
+        state.error = action.payload
+      })
+      .addCase(getTaskUsingTaskIdAndPostionId.pending, (state) => {
+        state.pending = true
+        state.error = null
+      })
+      .addCase(getTaskUsingTaskIdAndPostionId.fulfilled, (state, action) => {
+        state.pending = false
+        state.error = null
+        console.log(action.payload)
+        state.getActiveTaskDetail = action.payload
+      })
+      .addCase(getTaskUsingTaskIdAndPostionId.rejected, (state, action) => {
         state.pending = false
         state.error = action.payload
       })
