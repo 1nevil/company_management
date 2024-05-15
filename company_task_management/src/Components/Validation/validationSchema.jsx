@@ -22,6 +22,12 @@ export const TeamSchema = Yup.object({
 
 export const EmployeeSchema = Yup.object({
   firstName: Yup.string().required("**First Name is required"),
+  employeeImage: Yup.string().required("**required field"),
+  employeeResume: Yup.string().required("**required field"),
+  adharImage: Yup.string().required("**required field"),
+  signImage: Yup.string().required("**required field"),
+
+
   lastName: Yup.string().required("**Last Name is required"),
   surname: Yup.string().required("**SurName is required"),
   addressEmployee: Yup.string().required("**Address is required"),
@@ -30,12 +36,26 @@ export const EmployeeSchema = Yup.object({
   accountHolderName: Yup.string().required(
     "**Account  Holder Name is required"
   ),
-  accountNo: Yup.number().required("**Account Number  is required"),
-  ifscCode: Yup.string().required("**IFSC is required"),
-  branchName: Yup.string().required("**Branch Name is required"),
+  accountNo: Yup.string()
+  .matches(/^\d+$/, "Account number must contain only digits")
+  .required("Account Number is required"),
+  employeePassword: Yup.string().required("**Password  is required"),
+  dob: Yup.string().required("**Date of birth  is required"),
+
+  dateOfJoining: Yup.string().required("**Date of joining  is required"),
+  positionId: Yup.string().required("**Position  is required"),
+  roleId: Yup.string().required("**Role  is required"),
+
+  xender: Yup.string().required("**select your gender"),
+
+  ifscCode: Yup.string()
+  .matches(/^\w{4}0\w{6}$/, "Invalid IFSC code format")
+  .required("IFSC is required"),
+branchName: Yup.string().required("**Branch Name is required"),
   upiId: Yup.string()
-    .matches(/^\d+$/, "UPI ID must contain only digits")
+    .matches(/^[\w.-]+@[\w.-]+$/, "Invalid UPI ID format")
     .required("UPI ID is required"),
+
   adharNumber: Yup.string()
     .matches(/^[0-9]{12}$/, "Adhar No must be 12 digits")
     .required("Adhar No is required"),
@@ -48,9 +68,10 @@ export const EmployeeSchema = Yup.object({
   altmobileNumber: Yup.string()
     .matches(/^[0-9]{10}$/, "Mobile No must be 10 digits")
     .required("only number is required"),
-  employeeAge: Yup.number()
+    employeeAge: Yup.number()
     .required("**Age is Required")
-    .typeError("**Only enter number"),
+    .typeError("**Only enter number")
+    .min(18, "**Employee must be at least 18 years old"),
 });
 
 export const TaskSchema = Yup.object({

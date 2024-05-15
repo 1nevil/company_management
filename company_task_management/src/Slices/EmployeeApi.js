@@ -10,6 +10,10 @@ export function deleteEmpById(id) {
   return axiosInstance.delete(`api/Employees/${id}`);
 }
 
+export function updateEmployeeData(id) {
+  return axiosInstance.put(`api/Employees/${id}`);
+}
+
 export function createEmp(emp) {
   return axiosInstance.post(`api/Employees`, emp);
 }

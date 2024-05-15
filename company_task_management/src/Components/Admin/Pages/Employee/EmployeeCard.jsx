@@ -96,8 +96,17 @@ function EmployeeCard() {
                   {employee?.positionName}
                 </Typography>
               </Grid>
+              
               {showMore && (
                 <>
+                 <Grid item xs={6}>
+                <Typography variant="subtitle1">Gender :</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  {employee?.xender}
+                </Typography>
+              </Grid>
                   <Grid item xs={6}>
                     <Typography variant="subtitle1">Phone no:</Typography>
                   </Grid>

@@ -1,9 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import NavigationIcon from "@mui/icons-material/Navigation";
-
-import AddIcon from "@mui/icons-material/Add";
 import {
   TextField,
   Button,
@@ -17,12 +13,9 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  NativeSelect,
-  IconButton,
-  Divider,
-  Box,
+  
   Input,
-  Autocomplete,
+ 
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { EmployeeSchema } from "../../../Validation/validationSchema";
@@ -30,7 +23,9 @@ import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPosition } from "../../../../Slices/PositionSlice";
 import { insertEmp } from "../../../../Slices/EmployeeSlice";
-// const Positions = ["Engineering", "Marketing", "Finance", "HR"];
+import Alert from "@mui/material/Alert";
+
+
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -45,6 +40,11 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function EmployeeForm() {
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [showPositionDropdown, setShowPositionDropdown] = useState(false);
+  const [formOpen, setFormOpen] = useState(false); // State variable to track form open/close
+
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const Positions = useSelector((state) => state.Position.positions);
@@ -59,7 +59,7 @@ export default function EmployeeForm() {
     surname: "",
     dob: "",
     addressEmployee: "",
-    gender: "",
+    xender: "",
     roleId: "",
     dateOfJoining: "",
     employeeEmail: "",
@@ -94,7 +94,7 @@ export default function EmployeeForm() {
     initialValues: initValue,
     validationSchema: EmployeeSchema,
     onSubmit: (values) => {
-      alert("clicked");
+      setSuccessAlertOpen(true);
       console.log(values);
       dispatch(
         insertEmp({
@@ -102,7 +102,7 @@ export default function EmployeeForm() {
             values.surname + " " + values.firstName + " " + values.lastName,
           dob: values.dob,
           addressEmployee: values.addressEmployee,
-          gender: values.gender,
+          xender: values.xender,
           roleId: values.roleId,
           dateOfJoining: values.dateOfJoining,
           employeeEmail: values.employeeEmail,
@@ -115,6 +115,7 @@ export default function EmployeeForm() {
           accountNo: values.accountNo,
           bankName: values.bankName,
           branchName: values.branchName,
+
           employeeAge: values.employeeAge,
           upiId: values.upiId,
           employeePassword: values.employeePassword,
@@ -131,7 +132,7 @@ export default function EmployeeForm() {
           values.surname + " " + values.firstName + " " + values.lastName,
         dob: values.dob,
         addressEmployee: values.addressEmployee,
-        gender: values.gender,
+        xender: values.xender,
         dateOfJoining: values.dateOfJoining,
         employeeEmail: values.employeeEmail,
         adharNumber: values.adharNumber,
@@ -169,22 +170,29 @@ export default function EmployeeForm() {
     calculateAge(value); // Calculate and update age
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
+ 
   const handleClose = () => {
     setOpen(false);
+    setFormOpen(false); // Close the form
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+    setFormOpen(true); // Open the form
+  };
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleOpen}>
+       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Employee
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={formOpen ? undefined : handleClose}> {/* Disable closing when form is open */}
         <DialogTitle>Add Employee</DialogTitle>
-        <DialogContent>
+  <DialogContent>
+    {successAlertOpen && (
+      <Alert severity="success">
+        Form submitted successfully!
+      </Alert>
+    )}
           <form style={{ paddingTop: "10px" }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -220,7 +228,7 @@ export default function EmployeeForm() {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  label="Surname"
+                  label="SurName"
                   name="surname"
                   //value={employeeData.surname}
                   onChange={handleChange}
@@ -236,14 +244,14 @@ export default function EmployeeForm() {
                 <TextField
                   fullWidth
                   label="password"
-                  name="password"
+                  name="employeePassword"
                   // value={employeeData.alternateMobileNo}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.password && touched.password ? (
+                {errors.employeePassword && touched.employeePassword ? (
                   <Typography variant="caption" color="error">
-                    {errors.password}
+                    {errors.employeePassword}
                   </Typography>
                 ) : null}
               </Grid>
@@ -260,6 +268,11 @@ export default function EmployeeForm() {
                   onBlur={handleBlur}
                   //label="Date of Birth"
                 />
+                 {errors.dob && touched.dob ? (
+                  <Typography variant="caption" color="error">
+                    {errors.dob}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6} mt={4}>
                 <TextField
@@ -270,6 +283,11 @@ export default function EmployeeForm() {
                   value={values.employeeAge}
                   //value={employeeData.surname}
                 />
+                  {errors.employeeAge && touched.employeeAge ? (
+                  <Typography variant="caption" color="error">
+                    {errors.employeeAge}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -296,17 +314,24 @@ export default function EmployeeForm() {
                 {
                   <FormControl fullWidth>
                     <Select
-                      name="gender"
+                      name="xender"
                       // value={employeeData.gender}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     >
+                     
                       <MenuItem value="Male">Male</MenuItem>
                       <MenuItem value="Female">Female</MenuItem>
                       <MenuItem value="Others">Others</MenuItem>
                     </Select>
                   </FormControl>
+                  
                 }
+                  {errors.xender && touched.xender ? (
+                  <Typography variant="caption" color="error">
+                    {errors.xender}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="h6" component="h6" textAlign="">
@@ -321,6 +346,11 @@ export default function EmployeeForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
+                 {errors.dateOfJoining && touched.dateOfJoining ? (
+                  <Typography variant="caption" color="error">
+                    {errors.dateOfJoining}
+                  </Typography>
+                ) : null}
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -384,46 +414,65 @@ export default function EmployeeForm() {
                 ) : null}
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="h6" component="h6">
-                  Position
-                </Typography>
-                <FormControl fullWidth>
-                  <InputLabel></InputLabel>
-
-                  <Select
-                    name="positionId"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  >
-                    {Positions?.map((position) => {
-                      return (
-                        <MenuItem value={position.positionId}>
-                          {position.positionName}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
                 <Typography variant="h6" component="h6" textAlign="">
-                  Roles
+                  Role
                 </Typography>
                 {
-                  <FormControl fullWidth>
-                    <Select
-                      name="roleId"
-                      // value={employeeData.gender}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    >
-                      <MenuItem value="2">Admin</MenuItem>
-                      <MenuItem value="3">Employee</MenuItem>
-                      <MenuItem value="4">Checker</MenuItem>
-                    </Select>
-                  </FormControl>
-                }
+                 <FormControl fullWidth>
+                <Select
+  name="roleId"
+  value={values.roleId} // Make sure to assign the value from formik's values object
+  onChange={(event) => {
+    handleChange(event); // Update formik's state
+    setSelectedRole(event.target.value);
+    // Toggle position dropdown based on selected role
+    setShowPositionDropdown(event.target.value === "3"); // Assuming "Employee" role ID is "3"
+  }}
+  onBlur={handleBlur}
+>
+  <MenuItem value="2">Admin</MenuItem>
+  <MenuItem value="3">Employee</MenuItem>
+  <MenuItem value="4">Checker</MenuItem>
+</Select>
+
+               </FormControl>
+                               }
+                 {errors.roleId && touched.roleId ? (
+                  <Typography variant="caption" color="error">
+                    {errors.roleId}
+                  </Typography>
+                ) : null}
               </Grid>
+             {showPositionDropdown && (
+  <Grid item xs={6}>
+    <Typography variant="h6" component="h6">
+      Position
+    </Typography>
+    <FormControl fullWidth>
+      <InputLabel></InputLabel>
+      <Select
+        name="positionId"
+        onChange={handleChange}
+        onBlur={handleBlur}
+      >
+        {Positions?.map((position) => {
+          return (
+            <MenuItem value={position.positionId}>
+              {position.positionName}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
+    {errors.positionId && touched.positionId ? (
+      <Typography variant="caption" color="error">
+        {errors.positionId}
+      </Typography>
+    ) : null}
+  </Grid>
+)}
+
+             
               <Grid item xs={12}>
                 <Typography variant="h6" component="h6" textAlign="">
                   Bank Details
@@ -439,7 +488,7 @@ export default function EmployeeForm() {
                 />
                 {errors.bankName && touched.bankName ? (
                   <Typography variant="caption" color="error">
-                    {errors.dob}
+                    {errors.bankName}
                   </Typography>
                 ) : null}
               </Grid>
@@ -541,6 +590,11 @@ export default function EmployeeForm() {
                 type="file"
                 name="employeeImage"
               />
+              {errors.employeeImage && touched.employeeImage ? (
+                  <Typography variant="caption" color="error">
+                    {errors.employeeImage}
+                  </Typography>
+                ) : null}
             </Grid>
             <br></br>
             <Grid item xs={12}>
@@ -556,6 +610,11 @@ export default function EmployeeForm() {
                 onBlur={handleBlur}
               />
               <VisuallyHiddenInput id="employee-resume-file" type="file" />
+              {errors.employeeResume && touched.employeeResume ? (
+                  <Typography variant="caption" color="error">
+                    {errors.employeeResume}
+                  </Typography>
+                ) : null}
             </Grid>
             <br></br>
             <Grid item xs={12}>
@@ -571,6 +630,11 @@ export default function EmployeeForm() {
                 onBlur={handleBlur}
               />
               <VisuallyHiddenInput id="employee-adhar-file" type="file" />
+              {errors.adharImage && touched.adharImage ? (
+                  <Typography variant="caption" color="error">
+                    {errors.adharImage}
+                  </Typography>
+                ) : null}
             </Grid>
             <br></br>
             <Grid item xs={12}>
@@ -585,6 +649,11 @@ export default function EmployeeForm() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
+               {errors.signImage && touched.signImage ? (
+                  <Typography variant="caption" color="error">
+                    {errors.signImage}
+                  </Typography>
+                ) : null}
             </Grid>
             <Grid
               item
@@ -592,18 +661,24 @@ export default function EmployeeForm() {
               mt={5}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <VisuallyHiddenInput id="employee-sign-file" type="file" />
+             
               <Button variant="contained" type="submit">
                 Submit
               </Button>
+              {successAlertOpen && (
+      <Alert severity="success">
+        Form submitted successfully!
+      </Alert>
+    )}
             </Grid>
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
         </DialogActions>
+        
       </Dialog>
     </div>
   );

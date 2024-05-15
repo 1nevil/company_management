@@ -7,6 +7,7 @@ import {
   disapprovedEmps,
   approveNotApprove,
   checkersEmps,
+  updateEmployeeData,
   fetchEmployeeDataById,
 } from "./EmployeeApi";
 
@@ -16,6 +17,11 @@ const initialState = {
   checkers: [],
   error: "",
 };
+
+export const updateEmp = createAsyncThunk("emps/updateEmp", async (id) => {
+  await updateEmployeeData(id);
+  return id;
+});
 
 export const fetchEmp = createAsyncThunk("emps/fetchEmps", async () => {
   const response = await fetchEmployeeData();
@@ -78,6 +84,18 @@ export const EmployeeSlice = createSlice({
         state.pendding = false;
       })
       .addCase(fetchEmp.rejected, (state, action) => {
+        state.pendding = false;
+        state.error = action.payload;
+      })
+      .addCase(updateEmp.pending, (state) => {
+        state.pendding = true;
+      })
+      .addCase(updateEmp.fulfilled, (state, action) => {
+        state.employees = state.employees.filter(
+          (emp) => emp.employeeId !== action.payload
+        );
+      })
+      .addCase(updateEmp.rejected, (state, action) => {
         state.pendding = false;
         state.error = action.payload;
       })

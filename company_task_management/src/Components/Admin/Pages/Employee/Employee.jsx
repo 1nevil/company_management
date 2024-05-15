@@ -1,45 +1,56 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import React, { useEffect } from "react"
-import Box from "@mui/material/Box"
-import { IconButton } from "@mui/material"
-import { Link } from "react-router-dom"
-import { Delete, Edit } from "@mui/icons-material"
-import { Typography } from "@mui/material"
-import EmployeeForm from "./EmployeeForm"
-import { useDispatch, useSelector } from "react-redux"
-import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice"
-import { ToastContainer, toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import VisibilityIcon from "@mui/icons-material/Visibility"
+import React, { useEffect, useState } from "react";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import Box from "@mui/material/Box";
+import { IconButton, TextField } from "@mui/material"; // Import TextField for search input
+import { Link } from "react-router-dom";
+import { Delete, Edit } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import EmployeeForm from "./EmployeeForm";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function Employee() {
-  const dispatch = useDispatch()
-  const [openchecklist, setopenchecklist] = React.useState(false)
-
-  const employeess = useSelector((state) => state.Employee.employees)
-
-  const handleDelete = (id, name) => {
-    dispatch(deleteEmp(id))
-    notify(name)
-  }
-
-  const handleEdit = (id) => {
-    alert(id)
-  }
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
+  const employeess = useSelector((state) => state.Employee.employees);
 
   useEffect(() => {
-    dispatch(fetchEmp())
-  }, [dispatch])
+    dispatch(fetchEmp());
+  }, [dispatch]);
 
-  const notify = (name) => toast(name + "is deleted !")
+  const handleDelete = (id, name) => {
+    dispatch(deleteEmp(id));
+    notify(name);
+  };
+
+  const handleEdit = (id) => {
+    alert(id);
+  };
+
+  const notify = (name) => toast(name + " is deleted !");
+
+  // Filtered rows based on search term
+  const filteredRows = employeess.filter((row) =>
+    Object.values(row).some(
+      (value) =>
+        value &&
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  // Sort filtered rows by dateOfJoining in descending order
+  const sortedRows = filteredRows.sort((a, b) => new Date(b.dateOfJoining) - new Date(a.dateOfJoining));
 
   const columns = [
     {
       field: "checklist",
-      headerName: "Employee Card",
-      description: "Team details",
+      headerName: "", // Empty header name
+      description: "details",
       sortable: false,
-      width: 160,
+      width: 60,
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
@@ -49,14 +60,41 @@ function Employee() {
         </Link>
       ),
     },
+    
+   
     {
-      field: "employeeId",
-      headerName: "id",
-      width: 140,
+      field: "Action",
+      headerName: "",
+      description: "delete",
+      sortable: false,
+      width: 60,
+      renderCell: (params) => (
+        <>
+          <IconButton
+            onClick={() =>
+              handleDelete(params.row.employeeId, params.row.employeeName)
+            }
+            title="Delete"
+          >
+            <Delete sx={{ color: "red" }} />
+          </IconButton>
+        </>
+      ),
     },
+   
     {
       field: "employeeName",
       headerName: "Name",
+      width: 140,
+    },
+    {
+      field: "dateOfJoining",
+      headerName: "Date Of joining",
+      width: 140,
+    },
+    {
+      field: "xender",
+      headerName: "Gender",
       width: 140,
     },
     {
@@ -90,16 +128,7 @@ function Employee() {
       headerName: "Adhar Number",
       width: 140,
     },
-    {
-      field: "employeeImage",
-      headerName: "Image",
-      width: 140,
-    },
-    {
-      field: "employeeResume",
-      headerName: "Resume",
-      width: 140,
-    },
+    
     {
       field: "positionName",
       headerName: "Position",
@@ -111,38 +140,25 @@ function Employee() {
       width: 140,
     },
 
-    {
-      field: "Action",
-      headerName: "Action",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
-      renderCell: (params) => (
-        <>
-          <IconButton
-            onClick={() => handleEdit(params.row.employeeId)}
-            title="Edit"
-          >
-            <Edit />
-          </IconButton>
-          <IconButton
-            onClick={() =>
-              handleDelete(params.row.employeeId, params.row.employeeName)
-            }
-            title="Delete"
-          >
-            <Delete sx={{ color: "red" }} />
-          </IconButton>
-        </>
-      ),
-    },
+   
   ]
 
   return (
     <>
       <Box>
         <ToastContainer />
-        <EmployeeForm></EmployeeForm>
+        <EmployeeForm />
+       
+        <Box mt={2}>
+          {/* Search input field */}
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            fullWidth
+          />
+        </Box>
         <Typography
           variant="h6"
           component="h6"
@@ -153,7 +169,7 @@ function Employee() {
           Employees
         </Typography>
         <DataGrid
-          rows={employeess}
+          rows={sortedRows} // Pass sorted rows to DataGrid
           getRowId={(row) => row.employeeId}
           columns={columns}
           slots={{ toolbar: GridToolbar }}
@@ -168,7 +184,7 @@ function Employee() {
         />
       </Box>
     </>
-  )
+  );
 }
 
-export default Employee
+export default Employee;
