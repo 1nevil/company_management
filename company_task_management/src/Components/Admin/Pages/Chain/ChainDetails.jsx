@@ -154,7 +154,7 @@ function ChainDetails() {
   console.log("🚀 ~ ChainDetails ~ chainFlow:", chainFlow);
 
   const { chainPositions } = useSelector((state) => state.Position);
-  // console.log("🚀 ~ ChainDetails ~ positions:", chainPositions)
+  console.log("🚀 ~ ChainDetails ~ positions:", chainPositions);
 
   const dispatch = useDispatch();
 

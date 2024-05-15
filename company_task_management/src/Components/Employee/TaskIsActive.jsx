@@ -1,24 +1,22 @@
-import { Box } from "@mui/system";
+import { Box } from "@mui/system"
 
-import { Link } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
 import {
   getTaskFromHistoryUsingEmpId,
   updateTaskWithCompeletedate,
-} from "../../Slices/AssignToTask";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+} from "../../Slices/AssignToTask"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 
 function TaskIsActive(params) {
-  const activeTask = useSelector((state) => state.AssignToTask.tasks);
-  console.log(activeTask);
-  const { id: empId } = useSelector((state) => state.Auth.authicatedUser);
+  const { pendding, tasks, error } = useSelector((state) => state.AssignToTask)
+  console.table(tasks)
+  const { id: empId } = useSelector((state) => state.Auth.authicatedUser)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const columns = [
-    { field: "empTaskHistoryId", headerName: "TaskHistory Id", width: 90 },
     {
       field: "taskName",
       headerName: "Task Name",
@@ -40,42 +38,47 @@ function TaskIsActive(params) {
         </Link>
       ),
     },
-  ];
+  ]
 
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getTaskFromHistoryUsingEmpId(empId));
-    console.log();
-  }, [dispatch, empId]);
+    dispatch(getTaskFromHistoryUsingEmpId(empId))
+    console.log()
+  }, [dispatch, empId])
 
   return (
     <div>
       {/* {JSON.stringify(task)} */}
-
-      <Box>
-        <DataGrid
-          slots={{ toolbar: GridToolbar }}
-          rows={activeTask}
-          columns={columns}
-          getRowId={(row) => row.taskId}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
+      {pendding ? (
+        <>Loading</>
+      ) : error ? (
+        <>{error}</>
+      ) : (
+        <Box>
+          <DataGrid
+            slots={{ toolbar: GridToolbar }}
+            rows={tasks}
+            columns={columns}
+            getRowId={(row) => row.taskId}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
               },
-            },
-          }}
-          pageSizeOptions={[5]}
-          disableRowSelectionOnClick
-        />
-        {/* <ChainDetailsForm
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+          />
+          {/* <ChainDetailsForm
           handleCloseDetails={handleCloseChainDetail}
           chainDetails={TaskDetails}
           chainId={selectedRow}
         /> */}
-      </Box>
+        </Box>
+      )}
     </div>
-  );
+  )
 }
-export default TaskIsActive;
+export default TaskIsActive

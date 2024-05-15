@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   TextField,
   Button,
@@ -10,56 +10,58 @@ import {
   Typography,
   Divider,
   IconButton,
-} from "@mui/material";
-import { useFormik } from "formik";
-import { PositionSchema } from "../../../Validation/validationSchema";
-import { insertPosition } from "../../../../Slices/PositionSlice";
-import { useDispatch } from "react-redux";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material"
+import { useFormik } from "formik"
+import { PositionSchema } from "../../../Validation/validationSchema"
+import { insertPosition } from "../../../../Slices/PositionSlice"
+import { useDispatch } from "react-redux"
+import DeleteIcon from "@mui/icons-material/Delete"
+import AddIcon from "@mui/icons-material/Add"
 
 const PositionForm = () => {
-  const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false)
+  const dispatch = useDispatch()
 
-  const [guidlines, setGuidlines] = useState([]);
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
-  const [inputs, setInputs] = useState([]);
+  const [guidlines, setGuidlines] = useState([])
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
+  const [inputs, setInputs] = useState([])
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   const handleAddInput = () => {
-    setShowAdditionalInputs(true);
-    setAdditionalInputCount((prevCount) => prevCount + 1);
-  };
+    setShowAdditionalInputs(true)
+    setAdditionalInputCount((prevCount) => prevCount + 1)
+  }
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1));
-  };
+    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1))
+  }
 
   const handleGuildlineChange = (event, index) => {
-    const { name, value } = event.target;
-    const newInputs = [...inputs];
-    newInputs[index] = value;
-    setInputs(newInputs);
-  };
+    const { name, value } = event.target
+    const newInputs = [...inputs]
+    newInputs[index] = value
+    setInputs(newInputs)
+  }
 
-  const handleLogData = () => {
-    console.log("Data:", inputs);
-  };
   const initValue = {
     positionName: "",
     duration: "",
     unit: "",
-    unitname: "",
+    unitName: "",
     rate: "",
-  };
+    durationType: "",
+  }
 
   // const handleAddInput = () => {
   //   setAdditionalInputCount((prevCount) => prevCount + 1);
@@ -75,12 +77,16 @@ const PositionForm = () => {
       initialValues: initValue,
       validationSchema: PositionSchema,
       onSubmit: (data) => {
-        console.log("🚀 ~ PositionForm ~ data:", data);
-        handleClose();
-        // dispatch(insertPosition(data));
+        const positionWithGuidlines = { ...data, positionGuidelines: inputs }
+
+        console.log("🚀 ~ PositionForm ~ data:", positionWithGuidlines)
+
+        handleClose()
+        // dispatch(insertPosition(positionWithGuidlines))
+        setAdditionalInputCount(0)
       },
     }
-  );
+  )
 
   return (
     <div>
@@ -121,6 +127,26 @@ const PositionForm = () => {
                     {errors.duration}
                   </Typography>
                 ) : null}
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Duration Type</InputLabel>
+                  <Select
+                    name="durationType"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  >
+                    <MenuItem value="">
+                      <em>Select Duration Type</em>
+                    </MenuItem>
+                    <MenuItem value="Minutes">Minutes</MenuItem>
+                    <MenuItem value="Hours">Hours</MenuItem>
+                    <MenuItem value="Days">Days</MenuItem>
+                    <MenuItem value="Weeks">Weeks</MenuItem>
+                    <MenuItem value="Month">Month</MenuItem>
+                    <MenuItem value="Year">Year</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -215,13 +241,13 @@ const PositionForm = () => {
               >
                 Add Guideline
               </Button>
-              <Button
+              {/* <Button
                 variant="outlined"
                 onClick={handleLogData}
                 sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
               >
                 Log Data
-              </Button>
+              </Button> */}
             </Grid>
             <Button
               type="submit"
@@ -240,7 +266,7 @@ const PositionForm = () => {
         </DialogActions>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default PositionForm;
+export default PositionForm

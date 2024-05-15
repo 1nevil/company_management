@@ -1,66 +1,67 @@
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import AddIcon from "@mui/icons-material/Add";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import { useSelector, useDispatch } from "react-redux";
-import { IconButton } from "@mui/material";
-import { fetchChainMater } from "../../Slices/ChainSliceMaster";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import { addAssignTask, getPositionWiseTask } from "../../Slices/TaskSlice";
+import React, { useEffect, useState } from "react"
+import Box from "@mui/material/Box"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { Link } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import AddIcon from "@mui/icons-material/Add"
+import Dialog from "@mui/material/Dialog"
+import DialogActions from "@mui/material/DialogActions"
+import Button from "@mui/material/Button"
+import { useSelector, useDispatch } from "react-redux"
+import { IconButton } from "@mui/material"
+import { fetchChainMater } from "../../Slices/ChainSliceMaster"
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
+import { addAssignTask, getPositionWiseTask } from "../../Slices/TaskSlice"
 
 function EmployeeDashboard() {
-  const [TaskDetails, setTaskDetails] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [TaskDetails, setTaskDetails] = useState(false)
+  const [selectedRow, setSelectedRow] = useState(null)
   // const filteredTasksByPosition = useSelector(
   //   (state) => state.Tasks.filteredTasks
   // );
 
-  const tasksByPosition = useSelector((state) => state.Tasks.tasks);
+  const tasksByPosition = useSelector((state) => state.Tasks.tasks)
   const { id: empId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
-  );
+  )
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getPositionWiseTask(positionId));
-  }, [dispatch, positionId]);
+    console.log(positionId)
+    dispatch(getPositionWiseTask(positionId))
+  }, [dispatch, positionId])
 
   const handleClick = (id) => {
-    var currentDate = new Date();
+    var currentDate = new Date()
 
     // Extract day, month, and year
-    var day = currentDate.getDate();
-    var month = currentDate.getMonth() + 1;
-    var year = currentDate.getFullYear();
+    var day = currentDate.getDate()
+    var month = currentDate.getMonth() + 1
+    var year = currentDate.getFullYear()
 
-    day = day < 10 ? "0" + day : day;
-    month = month < 10 ? "0" + month : month;
+    day = day < 10 ? "0" + day : day
+    month = month < 10 ? "0" + month : month
 
-    var formattedDate = day + "/" + month + "/" + year;
+    var formattedDate = day + "/" + month + "/" + year
 
     const insertData = {
       empId: empId,
       taskId: id,
       assignedAt: formattedDate,
       isActive: "1",
-    };
-    dispatch(addAssignTask(insertData));
-    alert(id);
-  };
+    }
+    dispatch(addAssignTask(insertData))
+    alert(id)
+  }
 
   const handleOpenChainDetail = () => {
-    setTaskDetails(true);
-  };
+    setTaskDetails(true)
+  }
 
   const handleCloseChainDetail = () => {
-    setTaskDetails(false);
-  };
+    setTaskDetails(false)
+  }
 
   // const handleDelete = () => {}
 
@@ -99,7 +100,7 @@ function EmployeeDashboard() {
         </IconButton>
       ),
     },
-  ];
+  ]
 
   return (
     <Box>
@@ -125,7 +126,7 @@ function EmployeeDashboard() {
         chainId={selectedRow}
       /> */}
     </Box>
-  );
+  )
 }
 
-export default EmployeeDashboard;
+export default EmployeeDashboard

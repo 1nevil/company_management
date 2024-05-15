@@ -38,6 +38,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import ProtectedRoute from "./Route/ProtectedRoute";
 import TaskIsActiveDeatils from "./Components/Employee/TaskIsActiveDetail";
 import EmployeeCard from "./Components/Admin/Pages/Employee/EmployeeCard";
+import AdminTaskDeatil from "./Components/Admin/Pages/Task/AdminTaskDeatil";
 
 function App() {
   const iconSiderbar = {
@@ -111,6 +112,10 @@ function App() {
             {
               path: "AddChain",
               element: <Chain />,
+            },
+            {
+              path: "AdminTaskDeatil/:taskId",
+              element: <AdminTaskDeatil />,
             },
           ],
         },

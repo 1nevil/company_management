@@ -11,21 +11,25 @@ import {
   Skeleton,
   TextField,
   Typography,
-} from "@mui/material";
-import { Box, Stack } from "@mui/system";
+} from "@mui/material"
+import { Box, Stack } from "@mui/system"
 // import { useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 // import { getTaskUsingEmpId } from "../../Slices/TaskSlice";
 // import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link, useParams } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { getTaskUsingTaskId } from "../../Slices/TaskSlice";
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask";
+import { Link, useParams } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react"
+import {
+  getTaskDataAndGuidlinesByTaskId,
+  getTaskUsingTaskId,
+  getTaskUsingTaskIdAndPostionId,
+} from "../../Slices/TaskSlice"
+import { styled } from "@mui/material/styles"
+import Button from "@mui/material/Button"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload"
+import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -37,24 +41,29 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
-function EmpTaskDeatil(params) {
-  const { task, guidelines } = useSelector((state) => state.Tasks.tasks);
-  const { error } = useSelector((state) => state.Tasks);
+function EmpTaskDeatil() {
+  const { pending, getActiveTaskDetail, error } = useSelector(
+    (state) => state.Tasks
+  )
+  console.log(getActiveTaskDetail)
+
+  const { task, guidelines } = getActiveTaskDetail
 
   const { Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
-  );
+  )
 
-  const { taskId } = useParams();
-  const dispatch = useDispatch();
+  const { taskId } = useParams()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getTaskUsingTaskId({ positionId: positionId, taskId: taskId }));
-  }, [dispatch, positionId, taskId]);
+    console.log(taskId)
+    dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }))
+  }, [dispatch, positionId, taskId])
 
   return (
     <div>
@@ -166,6 +175,6 @@ function EmpTaskDeatil(params) {
     //     chainId={selectedRow}
     //   /> */}
     // </Box>
-  );
+  )
 }
-export default EmpTaskDeatil;
+export default EmpTaskDeatil

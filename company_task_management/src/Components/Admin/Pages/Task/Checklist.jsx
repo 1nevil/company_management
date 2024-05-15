@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Box,
   Button,
@@ -15,47 +16,49 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import MyButton from "../../../Layout/MyButton";
-import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
-import { TaskSchema } from "../../../Validation/validationSchema";
+} from "@mui/material"
+import React, { useState } from "react"
+import DeleteIcon from "@mui/icons-material/Delete"
+import AddIcon from "@mui/icons-material/Add"
+import MyButton from "../../../Layout/MyButton"
+import { ErrorMessage, Field, Form, Formik, useFormik } from "formik"
+import { TaskSchema } from "../../../Validation/validationSchema"
 
-const CheckList = () => {
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
-  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+const CheckList = ({ onSubmit }) => {
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
 
   const initValue = {
     checklist: "",
-  };
+  }
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: TaskSchema,
       onSubmit: (data) => {
-        alert("hello world");
-        console.log(data);
+        alert("hello world")
+        console.log(data)
+
+        onSubmit(data)
       },
     }
-  );
+  )
 
-  const handleAddTask = () => {};
+  const handleAddTask = () => {}
 
   const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1);
-    setShowAdditionalInputs(true);
-  };
+    setAdditionalInputCount((prevCount) => prevCount + 1)
+    setShowAdditionalInputs(true)
+  }
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1);
-  };
+    setAdditionalInputCount((prevCount) => prevCount - 1)
+  }
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ width: "650px" }}>
+      <form onSubmit={handleSubmit} style={{ width: "600px" }}>
         <div style={{ textAlign: "center" }}>
           <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
             <Typography
@@ -113,12 +116,21 @@ const CheckList = () => {
             >
               Add Checklist
             </Button>
+
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ marginTop: ".5rem" }}
+              type="submit"
+            >
+              Submit Task Details
+            </Button>
           </Grid>
         </div>
         {/* </Stack> */}
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default CheckList;
+export default CheckList

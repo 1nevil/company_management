@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
 import {
   Box,
@@ -14,82 +15,149 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import MyButton from "../../../Layout/MyButton";
-import { useFormik } from "formik";
-import { TaskSchema } from "../../../Validation/validationSchema";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchChainMater } from "../../../../Slices/ChainSliceMaster";
-import { fetchPosition } from "../../../../Slices/PositionSlice";
-import { insertTask } from "../../../../Slices/TaskSlice";
-import CheckList from "./Checklist";
+  IconButton,
+  Snackbar,
+  Alert,
+} from "@mui/material"
+import React, { useEffect, useState } from "react"
+import DeleteIcon from "@mui/icons-material/Delete"
+import AddIcon from "@mui/icons-material/Add"
+import MyButton from "../../../Layout/MyButton"
+import { useFormik } from "formik"
+import { TaskSchema } from "../../../Validation/validationSchema"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchChainMater } from "../../../../Slices/ChainSliceMaster"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { insertTask } from "../../../../Slices/TaskSlice"
+import CheckList from "./Checklist"
 
-const AddTask = () => {
-  const [showOpenForm, setshowOpenForm] = useState(false);
-  const [showClosedForm, setShowClosedForm] = useState(false);
+const AddTask = ({ handleCloseForm }) => {
+  const [showOpenForm, setshowOpenForm] = useState(false)
+  const [showClosedForm, setShowClosedForm] = useState(false)
+  const [durationType, setDurationType] = useState(null)
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
+  const [additionalInputCount, setAdditionalInputCount] = useState(0)
+  const [inputs, setInputs] = useState([])
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const chainMaster = useSelector((state) => state.Chain.chainMaster);
-  const Positions = useSelector((state) => state.Position.positions);
-
-  console.log(chainMaster);
+  const chainMaster = useSelector((state) => state.Chain.chainMaster)
+  const { pending, error } = useSelector((state) => state.Tasks)
 
   const initValue = {
     taskName: "",
     rate: "",
     unit: "",
     instructions: "",
-    start_date: "",
-    end_date_increase_time: "",
+    startDate: "",
+    endDate: "",
     description: "",
     durationNum: "",
-    checklist: "",
     chainid: "",
-    Position: "",
-  };
+  }
   useEffect(() => {
-    dispatch(fetchChainMater());
-  }, [dispatch]);
-  useEffect(() => {
-    dispatch(fetchPosition());
-  }, [dispatch]);
+    dispatch(fetchChainMater())
+    // dispatch(fetchPosition())
+  }, [dispatch])
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
-      validationSchema: TaskSchema,
+      // validationSchema: TaskSchema,
       onSubmit: (data) => {
-        alert("hello world");
-        console.log(data);
-        let TaskStatus = "Pending";
-        data.durationNum = String(data.durationNum);
-        dispatch(insertTask({ ...data, TaskStatus }));
+        handleCloseForm()
+        let TaskStatus = "Pending"
+        data.durationNum = String(data.durationNum)
+        console.log({
+          ...data,
+          durationType,
+          taskStatus: TaskStatus,
+          checklists: inputs,
+        })
+        dispatch(
+          insertTask({
+            ...data,
+            durationType,
+            taskStatus: TaskStatus,
+            checklists: inputs,
+          })
+        )
       },
     }
-  );
+  )
 
-  const handleAddTask = () => {};
+  const [checkListData, setCheckListData] = useState(null)
+
+  const handleCheckListSubmit = (data) => {
+    // Update the state in the parent component with the checklist data
+    setCheckListData(data)
+  }
+
+  const handleAddInput = () => {
+    setShowAdditionalInputs(true)
+    setAdditionalInputCount((prevCount) => prevCount + 1)
+  }
+
+  const handleDeleteInput = () => {
+    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1))
+  }
+
+  const handleGuildlineChange = (event, index) => {
+    const { name, value } = event.target
+    const newInputs = [...inputs]
+    newInputs[index] = value
+    setInputs(newInputs)
+  }
 
   const handleRadioChange = (event) => {
-    const value = event.target.value;
-    setshowOpenForm(value === "open");
-    setShowClosedForm(value === "closed");
-  };
+    const value = event.target.value
+    setshowOpenForm(value === "open")
+    setShowClosedForm(value === "closed")
+  }
+
+  const [open, setOpen] = React.useState(true)
+
+  const handleClick = () => {
+    setOpen(true)
+  }
+
+  const handleClose = React.useCallback((event, reason) => {
+    if (reason === "clickaway") {
+      return
+    }
+    setOpen(false)
+  }, [])
+  console.log(error)
 
   return (
     <div>
+      {error !== null && (
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: "30rem" }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
+      )}
       {/* {JSON.stringify(chainMaster)} */}
       <form onSubmit={handleSubmit} style={{ width: "100vh" }}>
         <div style={{ textAlign: "center" }}>
           <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vh" } }}>
             <TextField
               size="small"
-              label="task Name"
+              label="Enter task name"
               name="taskName"
+              multiline
+              rows={3}
               //value={formData.taskName}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -99,75 +167,11 @@ const AddTask = () => {
                 {errors.taskName}
               </Typography>
             ) : null}
-
-            <FormControl fullWidth sx={{ m: 1 }}>
-              <InputLabel>Position </InputLabel>
-              <Select
-                size="small"
-                name="currentPostion"
-                // value={employeeData.Position}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              >
-                {Positions?.map((position) => {
-                  return (
-                    <MenuItem value={position.positionId}>
-                      {position.positionName}
-                    </MenuItem>
-                  );
-                })}
-                <MenuItem value="video editior">video editior</MenuItem>
-                <MenuItem value="writer">writer</MenuItem>
-                <MenuItem value="Enimation">Enimation</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* <TextField
-              name="rate"
-              label="Rate"
-              //value={formData.rate}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              size="small"
-            />
-
-            {errors.rate && touched.rate ? (
+            {error && (
               <Typography variant="caption" color="error">
-                {errors.rate}
+                {error}
               </Typography>
-            ) : null} */}
-
-            {/* <TextField
-              id="unit"
-              name="unit"
-              label="Unit"
-              //value={formData.unit}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              size="small"
-            />
-            {errors.unit && touched.unit ? (
-              <Typography variant="caption" color="error">
-                {errors.unit}
-              </Typography>
-            ) : null} */}
-            <Typography
-              variant="h6"
-              component="h6"
-              color="#7986cb"
-              textAlign="center"
-            >
-              End Date
-            </Typography>
-            <TextField
-              id="end_date_increase_time"
-              name="endDate"
-              type="date"
-              //value={formData.end_date_increase_time}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              size="small"
-            />
+            )}
 
             <Typography
               variant="h6"
@@ -177,7 +181,7 @@ const AddTask = () => {
             >
               Set Reminder
             </Typography>
-            <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
+            <Divider width="100%" sx={{ marginBottom: ".5Reminder" }} />
 
             <RadioGroup
               name="formStatus"
@@ -197,6 +201,11 @@ const AddTask = () => {
                 />
               </Box>
             </RadioGroup>
+            {errors.formStatus && touched.formStatus ? (
+              <Typography variant="caption" color="error">
+                {errors.formStatus}
+              </Typography>
+            ) : null}
 
             {showOpenForm && (
               <form onSubmit={handleSubmit}>
@@ -217,31 +226,31 @@ const AddTask = () => {
                   </Typography>
                 ) : null}
 
-                {/* <FormControl fullWidth sx={{ m: 1 }}>
-                  <InputLabel>duration </InputLabel>
+                <FormControl size="small" fullWidth sx={{ m: 1 }}>
+                  <InputLabel>Duration Type</InputLabel>
                   <Select
-                    size="small"
-                    name="duration"
-                    // value={employeeData.duration}
-                    onChange={handleChange}
+                    name="durationType"
+                    value={durationType}
+                    onChange={(e) => setDurationType(e.target.value)}
                     onBlur={handleBlur}
                   >
                     <MenuItem value="">
-                      <div>Select Duration</div>
+                      <em>Select Duration Type</em>
                     </MenuItem>
-                    <MenuItem value="minute">Minute</MenuItem>
-                    <MenuItem value="hour">Hour</MenuItem>
-                    <MenuItem value="day">Day</MenuItem>
-                    <MenuItem value="month">Month</MenuItem>
-                    <MenuItem value="year">Year</MenuItem>
+                    <MenuItem value="Minutes">Minutes</MenuItem>
+                    <MenuItem value="Hours">Hours</MenuItem>
+                    <MenuItem value="Days">Days</MenuItem>
+                    <MenuItem value="Weeks">Weeks</MenuItem>
+                    <MenuItem value="Month">Month</MenuItem>
+                    <MenuItem value="Year">Year</MenuItem>
                   </Select>
-                </FormControl> */}
+                </FormControl>
               </form>
             )}
             {showClosedForm && (
               <form>
                 <TextField
-                  id="start_date"
+                  id="startDate"
                   name="startDate"
                   type="date"
                   //value={formData.start_date}
@@ -249,18 +258,25 @@ const AddTask = () => {
                   onBlur={handleBlur}
                   size="small"
                 />
-                {errors.start_date && touched.start_date ? (
+                {errors.startDate && touched.startDate ? (
                   <Typography variant="caption" color="error">
-                    {errors.start_date}
+                    {errors.startDate}
                   </Typography>
                 ) : null}
-
-                {/* {errors.end_date_increase_time &&
-                //  touched.end_date_increase_time ? (
-                //    <Typography variant="caption" color="error">
-                //      {errors.end_date_increase_time}
-                //    </Typography>
-                //  ) : null} */}
+                <TextField
+                  id="endDate"
+                  name="endDate"
+                  type="date"
+                  //value={formData.end_date_increase_time}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  size="small"
+                />
+                {errors.endDate && touched.endDate ? (
+                  <Typography variant="caption" color="error">
+                    {errors.endDate}
+                  </Typography>
+                ) : null}
               </form>
             )}
             <TextField
@@ -278,34 +294,89 @@ const AddTask = () => {
                 {errors.description}
               </Typography>
             ) : null}
-            <FormControl fullWidth sx={{ m: 1 }}>
+            <FormControl fullWidth sx={{ m: 1 }} size="small">
               <InputLabel>chain </InputLabel>
               <Select
                 //value={formData.teamname}
                 onChange={handleChange}
                 label="chain"
                 name="chainid"
-                size="small"
               >
                 <MenuItem value="">
-                  <div>Select chain</div>
+                  <em>Select Chain</em>
                 </MenuItem>
                 {chainMaster?.map((chain) => {
                   return (
                     <MenuItem value={chain.chainId}>{chain.chainName}</MenuItem>
-                  );
+                  )
                 })}
               </Select>
             </FormControl>
-            <CheckList></CheckList>
+
+            <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
+              <Typography
+                variant="h6"
+                component="h6"
+                color="#7986cb"
+                textAlign="center"
+              >
+                Enter CheckList
+              </Typography>
+              <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
+              {showAdditionalInputs && (
+                <div>
+                  {[...Array(additionalInputCount)].map((_, index) => (
+                    <div
+                      key={index}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <TextField
+                        label={`Checklist ${index + 1}`}
+                        multiline
+                        rows={2}
+                        fullWidth
+                        name={`Checklist ${index + 1}`}
+                        onChange={(event) =>
+                          handleGuildlineChange(event, index)
+                        }
+                        // onBlur={handleBlur}
+                      />
+                      <IconButton
+                        aria-label="delete"
+                        color="error"
+                        onClick={handleDeleteInput}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <Button
+                variant="outlined"
+                onClick={handleAddInput}
+                startIcon={<AddIcon />}
+                fullWidth
+              >
+                Add CheckList of the task
+              </Button>
+            </Grid>
+
+            {/* <CheckList onSubmit={handleCheckListSubmit}></CheckList> */}
           </Grid>
         </div>
-        <MyButton type="submit" fullWidth={true} onSmash={handleAddTask}>
-          Submit
-        </MyButton>
+
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          sx={{ marginTop: ".5rem" }}
+        >
+          Enter Task details
+        </Button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default AddTask;
+export default AddTask
