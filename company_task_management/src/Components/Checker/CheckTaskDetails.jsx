@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Button,
   Card,
@@ -7,119 +8,156 @@ import {
   Checkbox,
   Divider,
   Grid,
-  InputLabel,
   Skeleton,
   TextField,
   Typography,
-} from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-import CheckIcon from "@mui/icons-material/Check";
-import { Box, Stack } from "@mui/system";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import {
-  getTaskDataAndGuidlinesByTaskId,
-  updateapprovedTask,
-} from "../../Slices/TaskSlice";
+} from "@mui/material"
+import { Dialog, DialogTitle, DialogContent } from "@mui/material"
+import ClearIcon from "@mui/icons-material/Clear"
+import CheckIcon from "@mui/icons-material/Check"
+import { Box, Stack } from "@mui/system"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+// import { approveDisapproveTask } from "../../Slices/TaskSlice"
 import {
   getTaskAssignDataForChecker,
   updateTaskWithCompeletedate,
-} from "../../Slices/AssignToTask";
-import styled from "@emotion/styled";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+  approveDisapprove,
+} from "../../Slices/AssignToTask"
 
 function CheckerTaskDetails(params) {
   const { task, guidelines, empTaskAssignment, emp } = useSelector(
     (state) => state.AssignToTask.taskGuidlinesChecker
-  );
-  const { taskId } = useParams();
-  const [completedGuidelines, setCompletedGuidelines] = useState([]);
-  const [incompleteGuidelines, setIncompleteGuidelines] = useState([]);
-  const [fileUpload, setFileUpload] = useState("");
+  )
+
+  const { id: employeeId } = useSelector((state) => state.Auth.authicatedUser)
+  // console.table(user)
+  const { taskId } = useParams()
+  const [open, setOpen] = useState(false)
+  const [completedGuidelines, setCompletedGuidelines] = useState([])
+  const [incompleteGuidelines, setIncompleteGuidelines] = useState([])
+  const [fileUpload, setFileUpload] = useState("")
+  const [message, setMessage] = useState("")
+  const navigate = useNavigate()
+
   // const empID = 6;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(getTaskAssignDataForChecker(taskId));
-  }, [dispatch, taskId]);
+    dispatch(getTaskAssignDataForChecker(taskId))
+  }, [dispatch, taskId])
 
   useEffect(() => {
     const storedCompletedGuidelines =
-      JSON.parse(localStorage.getItem(`completedGuidelines_${taskId}`)) || [];
+      JSON.parse(localStorage.getItem(`completedGuidelines_${taskId}`)) || []
     const storedIncompleteGuidelines =
-      JSON.parse(localStorage.getItem(`incompleteGuidelines_${taskId}`)) || [];
-    setCompletedGuidelines(storedCompletedGuidelines);
-    setIncompleteGuidelines(storedIncompleteGuidelines);
-  }, [taskId]);
+      JSON.parse(localStorage.getItem(`incompleteGuidelines_${taskId}`)) || []
+    setCompletedGuidelines(storedCompletedGuidelines)
+    setIncompleteGuidelines(storedIncompleteGuidelines)
+  }, [taskId])
 
   const handleUploadWork = () => {
-    var currentDate = new Date();
+    var currentDate = new Date()
 
-    var day = currentDate.getDate();
-    var month = currentDate.getMonth() + 1;
-    var year = currentDate.getFullYear();
+    var day = currentDate.getDate()
+    var month = currentDate.getMonth() + 1
+    var year = currentDate.getFullYear()
 
-    day = day < 10 ? "0" + day : day;
-    month = month < 10 ? "0" + month : month;
+    day = day < 10 ? "0" + day : day
+    month = month < 10 ? "0" + month : month
 
-    var completedAt = day + "/" + month + "/" + year;
+    var completedAt = day + "/" + month + "/" + year
     const updatedAssign = {
       taskId: Number(taskId),
       // empID,
       completedAt,
       fileUpload,
       isActive: "2",
-    };
-    dispatch(updateTaskWithCompeletedate(updatedAssign));
-  };
+    }
+    dispatch(updateTaskWithCompeletedate(updatedAssign))
+  }
 
   const handleCheckboxChange = (guidelineId, isChecked) => {
     if (isChecked) {
       // Move the guideline to completed list
-      setCompletedGuidelines([...completedGuidelines, guidelineId]);
+      setCompletedGuidelines([...completedGuidelines, guidelineId])
       setIncompleteGuidelines(
         incompleteGuidelines.filter((id) => id !== guidelineId)
-      );
+      )
     } else {
       // Move the guideline to incomplete list
-      setIncompleteGuidelines([...incompleteGuidelines, guidelineId]);
+      setIncompleteGuidelines([...incompleteGuidelines, guidelineId])
       setCompletedGuidelines(
         completedGuidelines.filter((id) => id !== guidelineId)
-      );
+      )
     }
-  };
+  }
+
+  /* public int TaskAssId { get; set; }
+ public int CheckerId { get; set; }
+ public bool IsApprove { get; set; }
+ public string? Message { get; set; } */
 
   const handleApprove = () => {
-    alert(taskId);
     // Access the taskId from the row data
     // Dispatch your action with the taskId
-    dispatch(updateapprovedTask(taskId));
-  };
+    dispatch(
+      approveDisapprove({
+        TaskAssId: taskId,
+
+        CheckerId: employeeId,
+        IsApprove: true,
+      })
+    )
+    navigate("CheckTaskList")
+  }
 
   useEffect(() => {
     localStorage.setItem(
       `completedGuidelines_${taskId}`,
       JSON.stringify(completedGuidelines)
-    );
+    )
     localStorage.setItem(
       `incompleteGuidelines_${taskId}`,
       JSON.stringify(incompleteGuidelines)
-    );
-  }, [completedGuidelines, incompleteGuidelines, taskId]);
+    )
+  }, [completedGuidelines, incompleteGuidelines, taskId])
+
+  const handleSubmitModel = () => {
+    alert("Disapprove")
+    dispatch(
+      approveDisapprove({
+        TaskAssId: taskId,
+        CheckerId: employeeId,
+        IsApprove: false,
+        Message: message,
+      })
+    )
+    setOpen(false)
+    navigate("CheckTaskList")
+  }
+
+  const handleSubmitClose = () => {
+    setOpen(false)
+  }
+
+  const handleSubmitOpen = () => {
+    setOpen(true)
+  }
 
   return (
     <div>
+      <Box>
+        <OpenModel
+          open={open}
+          setOpen={setOpen}
+          handleSubmitModel={handleSubmitModel}
+          handleSubmitClose={handleSubmitClose}
+          message={message}
+          setMessage={setMessage}
+        ></OpenModel>
+      </Box>
       <Grid container>
         <Grid item xs={4}>
           <Box mt={5} p={4}>
@@ -246,7 +284,7 @@ function CheckerTaskDetails(params) {
               </InputLabel>
             </Box> */}
 
-            {JSON.stringify(emp)}
+            {/* {JSON.stringify(emp)}
             <br />
             <br />
             <br />
@@ -258,7 +296,7 @@ function CheckerTaskDetails(params) {
             <br />
             {JSON.stringify(empTaskAssignment?.taskName)}
             <br />
-            {JSON.stringify(empTaskAssignment?.fileUpload)}
+            {JSON.stringify(empTaskAssignment?.fileUpload)} */}
             <Box
               p={2}
               sx={{
@@ -279,6 +317,7 @@ function CheckerTaskDetails(params) {
                 variant="outlined"
                 color="error"
                 startIcon={<ClearIcon />}
+                onClick={handleSubmitOpen}
               >
                 Not Approved
               </Button>
@@ -287,6 +326,54 @@ function CheckerTaskDetails(params) {
         </Grid>
       </Grid>
     </div>
-  );
+  )
 }
-export default CheckerTaskDetails;
+export default CheckerTaskDetails
+
+const OpenModel = ({
+  open,
+  handleSubmitModel,
+  handleSubmitClose,
+  message,
+  setMessage,
+}) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        "& > :not(style)": { m: 5, width: 1000, height: 1000 },
+      }}
+    >
+      <Dialog open={open}>
+        <DialogTitle>Remarks</DialogTitle>
+        <DialogContent>
+          <TextField
+            sx={{ mt: 2 }}
+            size="small"
+            label="Enter the message"
+            name="message"
+            multiline
+            fullWidth
+            rows={6}
+            required
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Box sx={{ display: "flex", mt: 2, justifyContent: "center" }}>
+            <Button
+              variant="contained"
+              onClick={handleSubmitModel}
+              color="primary"
+              sx={{ width: "300px" }}
+            >
+              Submit
+            </Button>
+          </Box>
+          <Box sx={{ display: "flex", mt: 2, justifyContent: "right" }}>
+            <Button onClick={handleSubmitClose}>Close</Button>
+          </Box>
+        </DialogContent>
+      </Dialog>
+    </Box>
+  )
+}

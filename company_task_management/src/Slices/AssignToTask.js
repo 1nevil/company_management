@@ -3,6 +3,7 @@ import {
   GetTaskAssignDataToChecker,
   GetTaskHistoryByEmpID,
   GetTaskHistoryUsingEmpID,
+  approveDisapproveTask,
   getCompletedTaskForChecker,
   updateTaskSubmission,
 } from "./AssignToTaskApi"
@@ -67,6 +68,16 @@ export const getTaskFromHistoryUsingEmpId = createAsyncThunk(
     // console.log(response.data);
   }
 )
+
+export const approveDisapprove = createAsyncThunk(
+  "empTask/approveDisapprove",
+  async (empAssTask) => {
+    const response = await approveDisapproveTask(empAssTask)
+    return response.data.task
+  }
+)
+
+
 
 export const AssignToTaskSlice = createSlice({
   name: "AssignToTaskSlice",

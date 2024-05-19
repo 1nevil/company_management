@@ -42,3 +42,10 @@ export function GetTaskHistoryByEmpID(empIid) {
 export function GetTaskHistoryUsingEmpID(empId) {
   return axiosInstance.get(`api/TaskMasters/getActiveTask/${empId}`)
 }
+
+export const approveDisapproveTask = (empAssData) => {
+  return axiosInstance.put(
+    `/api/EmpTaskAssignments/approveDisapproveTask`,
+    empAssData
+  )
+}
