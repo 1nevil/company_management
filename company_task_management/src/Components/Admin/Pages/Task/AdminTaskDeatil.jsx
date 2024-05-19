@@ -1,9 +1,18 @@
 import {
+  Button,
   Card,
   CardActionArea,
   CardContent,
   CardHeader,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
+  FormControlLabel,
+  FormGroup,
   Grid,
   Skeleton,
   Stack,
@@ -14,30 +23,41 @@ import {
   Typography,
   stepConnectorClasses,
   styled,
-} from "@mui/material"
-import { Box } from "@mui/system"
-import { Link, useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import { getTaskUsingTaskId } from "../../../../Slices/TaskSlice"
-import SettingsIcon from "@mui/icons-material/Settings"
-import GroupAddIcon from "@mui/icons-material/GroupAdd"
-import VideoLabelIcon from "@mui/icons-material/VideoLabel"
-import EngineeringIcon from "@mui/icons-material/Engineering"
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium"
-import ComputerIcon from "@mui/icons-material/Computer"
-import Check from "@mui/icons-material/Check"
-import PropTypes from "prop-types"
-import { getPositionsByIds } from "../../../../Slices/PositionSlice"
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import VisibilityIcon from "@mui/icons-material/Visibility"
+} from "@mui/material";
+import { Box } from "@mui/system";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getTaskUsingTaskId } from "../../../../Slices/TaskSlice";
+import SettingsIcon from "@mui/icons-material/Settings";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import VideoLabelIcon from "@mui/icons-material/VideoLabel";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import ComputerIcon from "@mui/icons-material/Computer";
+import Check from "@mui/icons-material/Check";
+import PropTypes from "prop-types";
+import { getPositionsByIds } from "../../../../Slices/PositionSlice";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function AdminTaskDeatil(params) {
-  const [chainFlow, setChainFlow] = useState([])
-  const [currentPostionIndex, setCurrentPostionIndex] = useState(-1)
+  const [chainFlow, setChainFlow] = useState([]);
+  const [currentPostionIndex, setCurrentPostionIndex] = useState(-1);
   const message = useSelector(
     (state) => state.Tasks.completeTaskDetailForAdmin.message
-  )
+  );
+
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   const {
     taskMaster,
@@ -49,7 +69,14 @@ function AdminTaskDeatil(params) {
     history,
   } = useSelector(
     (state) => state.Tasks.completeTaskDetailForAdmin.responseData || {}
-  )
+  );
+  const displayedChecklist = showMoreChecklist
+    ? checklistMasters
+    : checklistMasters?.slice(0, 2);
+
+  const displayedGuidelines = showMoreGuidelines
+    ? positionGuidelines
+    : positionGuidelines?.slice(0, 2);
 
   console.log(
     taskMaster,
@@ -59,9 +86,9 @@ function AdminTaskDeatil(params) {
     positionGuidelines,
     checklistMasters,
     history
-  )
+  );
 
-  const { error } = useSelector((state) => state.Tasks)
+  const { error } = useSelector((state) => state.Tasks);
 
   //   const { Position: positionId } = useSelector(
   //     (state) => state.Auth.authicatedUser
@@ -81,18 +108,18 @@ function AdminTaskDeatil(params) {
   //   }
   // }, [chainDetails, chainMaster, currentPostionIndex, taskMaster]);
 
-  const { chainPositions } = useSelector((state) => state.Position)
-  const dispatch = useDispatch()
+  const { chainPositions } = useSelector((state) => state.Position);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (chainDetails) {
-      const chainFlow = chainDetails[0]?.chainFlow
-      const flowarray = chainFlow.split(",")
-      setChainFlow(flowarray)
-      const currentPostion = taskMaster?.currentPostion
-      const stringposition = currentPostion.toString()
-      console.log(stringposition)
-      const indexOfPostion = flowarray?.indexOf(stringposition)
-      setCurrentPostionIndex(indexOfPostion)
+      const chainFlow = chainDetails[0]?.chainFlow;
+      const flowarray = chainFlow.split(",");
+      setChainFlow(flowarray);
+      const currentPostion = taskMaster?.currentPostion;
+      const stringposition = currentPostion.toString();
+      console.log(stringposition);
+      const indexOfPostion = flowarray?.indexOf(stringposition);
+      setCurrentPostionIndex(indexOfPostion);
       // setCurrentPostionIndex(indexOfPostion);
       // const flow = chainDetails[0]?.chainFlow?.split(",");
       // setChainFlow(flow);
@@ -100,11 +127,11 @@ function AdminTaskDeatil(params) {
       // console.log("indx" + indexOfPostion);
       // console.log("current postion" + currentPostion);
       // console.log("flow" + flow);
-      dispatch(getPositionsByIds(chainFlow))
+      dispatch(getPositionsByIds(chainFlow));
     }
-  }, [chainDetails, taskMaster, dispatch])
+  }, [chainDetails, taskMaster, dispatch]);
 
-  const { taskId } = useParams()
+  const { taskId } = useParams();
   // console.log(chainDetails[0]?.chainFlow?.split(","));
   // console.log(
   //   chainDetails[0]?.chainFlow?.split(",")?.indexOf(taskMaster?.currentPostion)
@@ -113,8 +140,8 @@ function AdminTaskDeatil(params) {
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getTaskUsingTaskId(taskId))
-  }, [dispatch, taskId])
+    dispatch(getTaskUsingTaskId(taskId));
+  }, [dispatch, taskId]);
   const columns = [
     { field: "empTaskHistoryId", headerName: "TaskHistory Id", width: 90 },
     {
@@ -138,7 +165,7 @@ function AdminTaskDeatil(params) {
         </Link>
       ),
     },
-  ]
+  ];
   const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     color: theme.palette.mode === "dark" ? theme.palette.grey[700] : "#eaeaf0",
     display: "flex",
@@ -158,10 +185,10 @@ function AdminTaskDeatil(params) {
       borderRadius: "50%",
       backgroundColor: "currentColor",
     },
-  }))
+  }));
 
   function QontoStepIcon(props) {
-    const { active, completed, className } = props
+    const { active, completed, className } = props;
 
     return (
       <QontoStepIconRoot ownerState={{ active }} className={className}>
@@ -171,14 +198,14 @@ function AdminTaskDeatil(params) {
           <div className="QontoStepIcon-circle" />
         )}
       </QontoStepIconRoot>
-    )
+    );
   }
 
   QontoStepIcon.propTypes = {
     active: PropTypes.bool,
     className: PropTypes.string,
     completed: PropTypes.bool,
-  }
+  };
 
   const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -203,7 +230,7 @@ function AdminTaskDeatil(params) {
         theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
       borderRadius: 1,
     },
-  }))
+  }));
 
   const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     backgroundColor:
@@ -225,10 +252,10 @@ function AdminTaskDeatil(params) {
       backgroundImage:
         "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
     }),
-  }))
+  }));
 
   function ColorlibStepIcon(props) {
-    const { active, completed, className } = props
+    const { active, completed, className } = props;
 
     const icons = {
       1: <SettingsIcon />,
@@ -238,7 +265,7 @@ function AdminTaskDeatil(params) {
       5: <WorkspacePremiumIcon />,
       6: <EngineeringIcon />,
       7: <ComputerIcon />,
-    }
+    };
 
     return (
       <ColorlibStepIconRoot
@@ -247,7 +274,7 @@ function AdminTaskDeatil(params) {
       >
         {icons[String(props.icon)]}
       </ColorlibStepIconRoot>
-    )
+    );
   }
 
   ColorlibStepIcon.propTypes = {
@@ -255,81 +282,121 @@ function AdminTaskDeatil(params) {
     className: PropTypes.string,
     completed: PropTypes.bool,
     icon: PropTypes.node,
-  }
+  };
 
   return (
     <div>
-      {JSON.stringify(taskMaster)}
-      {JSON.stringify(chainMaster)}
-      {JSON.stringify(chainDetails)}
-      {JSON.stringify(positionMaster)}
-      {JSON.stringify(positionGuidelines)}
-      {JSON.stringify(checklistMasters)}
-
       <Grid container>
         <Grid item xs={4}>
-          <Typography variant="h5" mt={5} ml={8} sx={{ fontWeight: "bold" }}>
-            TaskList
-          </Typography>
-          <Box p={4} pt={0}>
-            {checklistMasters?.map((checklist) => (
-              <Box
-                key={checklist.checklistId}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  id="demoCheckbox"
-                  name="checkbox"
-                  value="1"
-                  checked={checklist.status === "complete" ? true : false} // Use ternary operator to conditionally set checked attribute
-                  readOnly
-                />
-                <Typography
-                  variant="h5"
-                  gutterBottom
-                  textTransform="capitalize"
-                  ml={3}
+          <Box
+            p={1}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+            }}
+          >
+            <Typography
+              variant="h6"
+              mt={3}
+              sx={{ textAlign: "center", fontWeight: "bold" }}
+            >
+              Check List
+            </Typography>
+            <FormGroup sx={{ mt: 2 }}>
+              {displayedChecklist?.map((checklist) => (
+                <Box
+                  key={checklist.checklistId}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4",
+                    lineHeight: "43px",
+                  }}
                 >
-                  {checklist.taskMessage}
+                  <Typography
+                    variant="p"
+                    gutterBottom
+                    textTransform="capitalize"
+                    ml={3}
+                    sx={{ m: "auto" }}
+                  >
+                    {checklist.taskMessage}
+                  </Typography>
+                </Box>
+              ))}
+              {checklistMasters?.length > 3 && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  sx={{ cursor: "pointer", textAlign: "end" }}
+                  onClick={handleOpenModal}
+                >
+                  See More
                 </Typography>
-              </Box>
-            ))}
+              )}
+            </FormGroup>
           </Box>
 
-          <Box p={4} pt={0}>
-            <Typography variant="h5" mt={5} sx={{ fontWeight: "bold" }}>
-              position Guidelines
+          <Box
+            p={2}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+              mt: 3,
+            }}
+          >
+            <Typography
+              variant="h6"
+              mt={3}
+              sx={{ textAlign: "center", fontWeight: "bold" }}
+            >
+              Position Guidelines
             </Typography>
-            {positionGuidelines?.map((guideline) => (
-              <Box
-                key={guideline.positionGuidelineId}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4",
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  gutterBottom
-                  textTransform="capitalize"
-                  ml={3}
+            <FormGroup sx={{ mt: 2 }}>
+              {displayedGuidelines?.map((guideline) => (
+                <Box
+                  key={guideline.positionGuidelineId}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4",
+                    lineHeight: "43px",
+                  }}
                 >
-                  {guideline.positionGuidline}
+                  <Typography
+                    variant="p"
+                    gutterBottom
+                    textTransform="capitalize"
+                    ml={4}
+                    sx={{ m: "auto" }}
+                  >
+                    {guideline.positionGuidline}
+                  </Typography>
+                </Box>
+              ))}
+              {positionGuidelines?.length > 3 && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  sx={{ cursor: "pointer", textAlign: "end" }}
+                  onClick={handleOpenModal}
+                >
+                  See More
                 </Typography>
-              </Box>
-            ))}
+              )}
+            </FormGroup>
           </Box>
         </Grid>
         <Divider orientation="vertical" flexItem />
-        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto" }}>
+        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto", ml: 10 }}>
           <Grid xs={12}>
-            <Typography variant="h5">Task Detail</Typography>
+            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+              Task Detail
+            </Typography>
             <Box
               mt={5}
               p={4}
@@ -350,23 +417,39 @@ function AdminTaskDeatil(params) {
                       title={`Task Name: ${taskMaster.taskName}`}
                       subheader={
                         <>
-                          <Typography component="span" variant="body2">
-                            Start Date: {taskMaster.startDate}
-                          </Typography>
-                          <br />
-                          <Typography component="span" variant="body2">
-                            End Date: {taskMaster.endDate}
-                          </Typography>
+                          {taskMaster.startDate && taskMaster.endDate ? (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Start Date: {taskMaster.startDate}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                End Date: {taskMaster.endDate}
+                              </Typography>
+                            </>
+                          ) : (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Duration: {taskMaster.durationNum}{" "}
+                                {taskMaster.durationType}
+                              </Typography>
+                            </>
+                          )}
                         </>
                       }
                     />
                     <CardActionArea>
                       <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          Instructions: {taskMaster.instructions}
-                        </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Description: {taskMaster.description}
+                          <Typography
+                            sx={{
+                              variant: "p",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Description
+                          </Typography>{" "}
+                          {taskMaster.description}
                         </Typography>
                       </CardContent>
                     </CardActionArea>
@@ -385,8 +468,20 @@ function AdminTaskDeatil(params) {
             </Box>
           </Grid>
         </Grid>
-        <Divider orientation="vertical" flexItem />
+        {/* <Divider orientation="vertical" flexItem /> */}
       </Grid>
+      <Divider sx={{ mt: 4 }} orientation="horizontal" flexItem />
+      <Typography
+        variant="p"
+        sx={{
+          fontWeight: "bold",
+          display: "flex",
+          justifyContent: "center",
+          mt: 4,
+        }}
+      >
+        Chain For Task
+      </Typography>
       <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vw" } }}>
         {chainDetails &&
           chainDetails[0]?.chainFlow
@@ -406,6 +501,7 @@ function AdminTaskDeatil(params) {
                 </Step>
               ))}
             </Stepper> */}
+
           <Stepper
             alternativeLabel
             activeStep={currentPostionIndex}
@@ -423,6 +519,17 @@ function AdminTaskDeatil(params) {
       </Grid>
       {history && (
         <Box>
+          <Typography
+            variant="p"
+            sx={{
+              fontWeight: "bold",
+              display: "flex  ",
+              justifyContent: "center",
+              p: 4,
+            }}
+          >
+            Task History
+          </Typography>
           <DataGrid
             slots={{ toolbar: GridToolbar }}
             rows={history}
@@ -440,7 +547,39 @@ function AdminTaskDeatil(params) {
           />
         </Box>
       )}
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography variant="h6">Checklist Items</Typography>
+            {checklistMasters?.map((checklist) => (
+              <Typography
+                key={checklist.checklistId}
+                variant="body1"
+                gutterBottom
+              >
+                {checklist.taskMessage}
+              </Typography>
+            ))}
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              Position Guidelines
+            </Typography>
+            {positionGuidelines?.map((guideline) => (
+              <Typography
+                key={guideline.positionGuidelineId}
+                variant="body1"
+                gutterBottom
+              >
+                {guideline.positionGuidline}
+              </Typography>
+            ))}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
-  )
+  );
 }
-export default AdminTaskDeatil
+export default AdminTaskDeatil;

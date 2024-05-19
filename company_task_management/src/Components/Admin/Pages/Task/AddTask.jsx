@@ -18,31 +18,31 @@ import {
   IconButton,
   Snackbar,
   Alert,
-} from "@mui/material"
-import React, { useEffect, useState } from "react"
-import DeleteIcon from "@mui/icons-material/Delete"
-import AddIcon from "@mui/icons-material/Add"
-import MyButton from "../../../Layout/MyButton"
-import { useFormik } from "formik"
-import { TaskSchema } from "../../../Validation/validationSchema"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchChainMater } from "../../../../Slices/ChainSliceMaster"
-import { fetchPosition } from "../../../../Slices/PositionSlice"
-import { insertTask } from "../../../../Slices/TaskSlice"
-import CheckList from "./Checklist"
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import MyButton from "../../../Layout/MyButton";
+import { useFormik } from "formik";
+import { TaskSchema } from "../../../Validation/validationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChainMater } from "../../../../Slices/ChainSliceMaster";
+import { fetchPosition } from "../../../../Slices/PositionSlice";
+import { insertTask } from "../../../../Slices/TaskSlice";
+import CheckList from "./Checklist";
 
 const AddTask = ({ handleCloseForm }) => {
-  const [showOpenForm, setshowOpenForm] = useState(false)
-  const [showClosedForm, setShowClosedForm] = useState(false)
-  const [durationType, setDurationType] = useState(null)
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
-  const [additionalInputCount, setAdditionalInputCount] = useState(0)
-  const [inputs, setInputs] = useState([])
+  const [showOpenForm, setshowOpenForm] = useState(false);
+  const [showClosedForm, setShowClosedForm] = useState(false);
+  const [durationType, setDurationType] = useState(null);
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+  const [inputs, setInputs] = useState([]);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const chainMaster = useSelector((state) => state.Chain.chainMaster)
-  const { pending, error } = useSelector((state) => state.Tasks)
+  const chainMaster = useSelector((state) => state.Chain.chainMaster);
+  const { pending, error } = useSelector((state) => state.Tasks);
 
   const initValue = {
     taskName: "",
@@ -54,26 +54,26 @@ const AddTask = ({ handleCloseForm }) => {
     description: "",
     durationNum: "",
     chainid: "",
-  }
+  };
   useEffect(() => {
-    dispatch(fetchChainMater())
+    dispatch(fetchChainMater());
     // dispatch(fetchPosition())
-  }, [dispatch])
+  }, [dispatch]);
 
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       // validationSchema: TaskSchema,
       onSubmit: (data) => {
-        handleCloseForm()
-        let TaskStatus = "Pending"
-        data.durationNum = String(data.durationNum)
+        handleCloseForm();
+        let TaskStatus = "Pending";
+        data.durationNum = String(data.durationNum);
         console.log({
           ...data,
           durationType,
           taskStatus: TaskStatus,
           checklists: inputs,
-        })
+        });
         dispatch(
           insertTask({
             ...data,
@@ -81,53 +81,53 @@ const AddTask = ({ handleCloseForm }) => {
             taskStatus: TaskStatus,
             checklists: inputs,
           })
-        )
+        );
       },
     }
-  )
+  );
 
-  const [checkListData, setCheckListData] = useState(null)
+  const [checkListData, setCheckListData] = useState(null);
 
   const handleCheckListSubmit = (data) => {
     // Update the state in the parent component with the checklist data
-    setCheckListData(data)
-  }
+    setCheckListData(data);
+  };
 
   const handleAddInput = () => {
-    setShowAdditionalInputs(true)
-    setAdditionalInputCount((prevCount) => prevCount + 1)
-  }
+    setShowAdditionalInputs(true);
+    setAdditionalInputCount((prevCount) => prevCount + 1);
+  };
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1))
-  }
+    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1));
+  };
 
   const handleGuildlineChange = (event, index) => {
-    const { name, value } = event.target
-    const newInputs = [...inputs]
-    newInputs[index] = value
-    setInputs(newInputs)
-  }
+    const { name, value } = event.target;
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
+  };
 
   const handleRadioChange = (event) => {
-    const value = event.target.value
-    setshowOpenForm(value === "open")
-    setShowClosedForm(value === "closed")
-  }
+    const value = event.target.value;
+    setshowOpenForm(value === "open");
+    setShowClosedForm(value === "closed");
+  };
 
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = React.useCallback((event, reason) => {
     if (reason === "clickaway") {
-      return
+      return;
     }
-    setOpen(false)
-  }, [])
-  console.log(error)
+    setOpen(false);
+  }, []);
+  console.log(error);
 
   return (
     <div>
@@ -308,7 +308,7 @@ const AddTask = ({ handleCloseForm }) => {
                 {chainMaster?.map((chain) => {
                   return (
                     <MenuItem value={chain.chainId}>{chain.chainName}</MenuItem>
-                  )
+                  );
                 })}
               </Select>
             </FormControl>
@@ -376,7 +376,7 @@ const AddTask = ({ handleCloseForm }) => {
         </Button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AddTask
+export default AddTask;

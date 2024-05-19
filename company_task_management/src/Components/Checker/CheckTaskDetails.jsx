@@ -5,7 +5,14 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
+  FormControlLabel,
+  FormGroup,
   Grid,
   InputLabel,
   Skeleton,
@@ -40,11 +47,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-function CheckerTaskDetails(params) {
-  const { task, guidelines, empTaskAssignment, emp } = useSelector(
+function CheckerTaskDetails() {
+  const { task, guidelines, empTaskAssignment, emp, checklist } = useSelector(
     (state) => state.AssignToTask.taskGuidlinesChecker
   );
   const { taskId } = useParams();
+  const [completedChecklist, setCompletedChecklist] = useState([]);
+  const [incompleteChecklist, setIncompleteChecklist] = useState([]);
   const [completedGuidelines, setCompletedGuidelines] = useState([]);
   const [incompleteGuidelines, setIncompleteGuidelines] = useState([]);
   const [fileUpload, setFileUpload] = useState("");
@@ -53,6 +62,45 @@ function CheckerTaskDetails(params) {
   useEffect(() => {
     dispatch(getTaskAssignDataForChecker(taskId));
   }, [dispatch, taskId]);
+
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const displayedChecklist = showMoreChecklist
+    ? checklist
+    : checklist?.slice(0, 2);
+
+  const displayedGuidelines = showMoreGuidelines
+    ? guidelines
+    : guidelines?.slice(0, 2);
+
+  useEffect(() => {
+    const storedCompletedChecklist =
+      JSON.parse(localStorage.getItem(`completedChecklist_${taskId}`)) || [];
+    const storedIncompleteChecklist =
+      JSON.parse(localStorage.getItem(`incompleteChecklist_${taskId}`)) || [];
+    setCompletedChecklist(storedCompletedChecklist);
+    setIncompleteChecklist(storedIncompleteChecklist);
+  }, [taskId]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      `completedChecklist_${taskId}`,
+      JSON.stringify(completedChecklist)
+    );
+    localStorage.setItem(
+      `incompleteChecklist_${taskId}`,
+      JSON.stringify(incompleteChecklist)
+    );
+  }, [completedChecklist, incompleteChecklist, taskId]);
 
   useEffect(() => {
     const storedCompletedGuidelines =
@@ -84,19 +132,29 @@ function CheckerTaskDetails(params) {
     dispatch(updateTaskWithCompeletedate(updatedAssign));
   };
 
-  const handleCheckboxChange = (guidelineId, isChecked) => {
-    if (isChecked) {
-      // Move the guideline to completed list
-      setCompletedGuidelines([...completedGuidelines, guidelineId]);
-      setIncompleteGuidelines(
-        incompleteGuidelines.filter((id) => id !== guidelineId)
-      );
-    } else {
-      // Move the guideline to incomplete list
-      setIncompleteGuidelines([...incompleteGuidelines, guidelineId]);
-      setCompletedGuidelines(
-        completedGuidelines.filter((id) => id !== guidelineId)
-      );
+  const handleCheckboxChange = (id, isChecked, type) => {
+    if (type === "checklist") {
+      if (isChecked) {
+        setCompletedChecklist([...completedChecklist, id]);
+        setIncompleteChecklist(
+          incompleteChecklist.filter((item) => item !== id)
+        );
+      } else {
+        setIncompleteChecklist([...incompleteChecklist, id]);
+        setCompletedChecklist(completedChecklist.filter((item) => item !== id));
+      }
+    } else if (type === "guideline") {
+      if (isChecked) {
+        setCompletedGuidelines([...completedGuidelines, id]);
+        setIncompleteGuidelines(
+          incompleteGuidelines.filter((item) => item !== id)
+        );
+      } else {
+        setIncompleteGuidelines([...incompleteGuidelines, id]);
+        setCompletedGuidelines(
+          completedGuidelines.filter((item) => item !== id)
+        );
+      }
     }
   };
 
@@ -122,8 +180,72 @@ function CheckerTaskDetails(params) {
     <div>
       <Grid container>
         <Grid item xs={4}>
-          <Box mt={5} p={4}>
-            {guidelines ? (
+          <Box
+            p={4}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+            }}
+          >
+            <FormGroup>
+              <Typography
+                variant="h6"
+                mt={3}
+                sx={{ textAlign: "center", fontWeight: "bold" }}
+              >
+                Checklist
+              </Typography>
+              {displayedChecklist?.map((checklist) => (
+                <Box
+                  key={checklist.checklistId}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4",
+                  }}
+                >
+                  <Typography
+                    variant="p"
+                    gutterBottom
+                    textTransform="capitalize"
+                    ml={3}
+                  >
+                    {checklist.taskMessage}
+                  </Typography>
+                </Box>
+              ))}
+              {checklist?.length > 3 && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  sx={{ cursor: "pointer", textAlign: "end" }}
+                  onClick={handleOpenModal}
+                >
+                  See More
+                </Typography>
+              )}
+            </FormGroup>
+          </Box>
+
+          <Box
+            mt={5}
+            p={2}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+            }}
+          >
+            <Typography
+              variant="h6"
+              mt={3}
+              sx={{ textAlign: "center", fontWeight: "bold" }}
+            >
+              Position Guidelines
+            </Typography>
+            {/* {guidelines ? (
               guidelines.map((guideline) => (
                 <Box
                   key={guideline.positionGuidelineId}
@@ -174,7 +296,82 @@ function CheckerTaskDetails(params) {
                   <Typography key={guidelineId}>{guidelineId}</Typography>
                 ))}
               </>
+            )} */}
+            {displayedGuidelines?.map((guideline) => (
+              <Box
+                key={guideline.positionGuidelineId}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4",
+                  lineHeight: "43px",
+                }}
+              >
+                <Checkbox
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
+                  checked={completedGuidelines.includes(
+                    guideline.positionGuidelineId
+                  )}
+                  onChange={(e) =>
+                    handleCheckboxChange(
+                      guideline.positionGuidelineId,
+                      e.target.checked
+                    )
+                  }
+                />
+                <Typography
+                  variant="p"
+                  gutterBottom
+                  textTransform="capitalize"
+                  ml={4}
+                  sx={{ m: "auto" }}
+                >
+                  {guideline.positionGuidline}
+                </Typography>
+              </Box>
+            ))}
+            {guidelines?.length > 3 && (
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{ cursor: "pointer", textAlign: "end" }}
+                onClick={handleOpenModal}
+              >
+                See More
+              </Typography>
             )}
+
+            {/* {displayedGuidelines?.map((guideline) => (
+              <Box
+                key={guideline.positionGuidelineId}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4",
+                  lineHeight: "43px",
+                }}
+              >
+                <Typography
+                  variant="p"
+                  gutterBottom
+                  textTransform="capitalize"
+                  ml={4}
+                  sx={{ m: "auto" }}
+                >
+                  {guideline.positionGuidline}
+                </Typography>
+              </Box>
+            ))}
+            {guidelines?.length > 3 && (
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{ cursor: "pointer", textAlign: "end" }}
+                onClick={handleOpenModal}
+              >
+                See More
+              </Typography>
+            )} */}
           </Box>
         </Grid>
 
@@ -202,23 +399,38 @@ function CheckerTaskDetails(params) {
                       title={`Task Name: ${task.taskName}`}
                       subheader={
                         <>
-                          <Typography component="span" variant="body2">
-                            Start Date: {task.startDate}
-                          </Typography>
-                          <br />
-                          <Typography component="span" variant="body2">
-                            End Date: {task.endDate}
-                          </Typography>
+                          {task.startDate && task.endDate ? (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Start Date: {task.startDate}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                End Date: {task.endDate}
+                              </Typography>
+                            </>
+                          ) : (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Duration: {task.durationNum} {task.durationType}
+                              </Typography>
+                            </>
+                          )}
                         </>
                       }
                     />
                     <CardActionArea>
                       <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          Instructions: {task.instructions}
-                        </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Description: {task.description}
+                          <Typography
+                            sx={{
+                              variant: "p",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Description
+                          </Typography>{" "}
+                          {task.description}
                         </Typography>
                       </CardContent>
                     </CardActionArea>
@@ -286,6 +498,82 @@ function CheckerTaskDetails(params) {
           </Grid>
         </Grid>
       </Grid>
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography variant="h6">Checklist Items</Typography>
+            {checklist?.map((checklist) => (
+              <Box
+                key={checklist.checklistId}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4",
+                }}
+              >
+                <Checkbox
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
+                  checked={completedChecklist.includes(checklist.checklistId)}
+                  onChange={(e) =>
+                    handleCheckboxChange(
+                      checklist.checklistId,
+                      e.target.checked,
+                      "checklist"
+                    )
+                  }
+                />
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  textTransform="capitalize"
+                  ml={3}
+                >
+                  {checklist.taskMessage}
+                </Typography>
+              </Box>
+            ))}
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              Position Guidelines
+            </Typography>
+            {guidelines?.map((guideline) => (
+              <Box
+                key={guideline.positionGuidelineId}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4",
+                }}
+              >
+                <Checkbox
+                  sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
+                  checked={completedGuidelines.includes(
+                    guideline.positionGuidelineId
+                  )}
+                  onChange={(e) =>
+                    handleCheckboxChange(
+                      guideline.positionGuidelineId,
+                      e.target.checked,
+                      "guideline"
+                    )
+                  }
+                />
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  textTransform="capitalize"
+                  ml={3}
+                >
+                  {guideline.positionGuidline}
+                </Typography>
+              </Box>
+            ))}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import {
   TextField,
   Button,
@@ -14,45 +14,45 @@ import {
   InputLabel,
   Select,
   MenuItem,
-} from "@mui/material"
-import { useFormik } from "formik"
-import { PositionSchema } from "../../../Validation/validationSchema"
-import { insertPosition } from "../../../../Slices/PositionSlice"
-import { useDispatch } from "react-redux"
-import DeleteIcon from "@mui/icons-material/Delete"
-import AddIcon from "@mui/icons-material/Add"
+} from "@mui/material";
+import { useFormik } from "formik";
+import { PositionSchema } from "../../../Validation/validationSchema";
+import { insertPosition } from "../../../../Slices/PositionSlice";
+import { useDispatch } from "react-redux";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 
 const PositionForm = () => {
-  const [open, setOpen] = useState(false)
-  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
-  const [guidlines, setGuidlines] = useState([])
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
-  const [additionalInputCount, setAdditionalInputCount] = useState(0)
-  const [inputs, setInputs] = useState([])
+  const [guidlines, setGuidlines] = useState([]);
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [additionalInputCount, setAdditionalInputCount] = useState(0);
+  const [inputs, setInputs] = useState([]);
 
   const handleOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
   const handleAddInput = () => {
-    setShowAdditionalInputs(true)
-    setAdditionalInputCount((prevCount) => prevCount + 1)
-  }
+    setShowAdditionalInputs(true);
+    setAdditionalInputCount((prevCount) => prevCount + 1);
+  };
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1))
-  }
+    setAdditionalInputCount((prevCount) => Math.max(0, prevCount - 1));
+  };
 
   const handleGuildlineChange = (event, index) => {
-    const { name, value } = event.target
-    const newInputs = [...inputs]
-    newInputs[index] = value
-    setInputs(newInputs)
-  }
+    const { name, value } = event.target;
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
+  };
 
   const initValue = {
     positionName: "",
@@ -61,7 +61,7 @@ const PositionForm = () => {
     unitName: "",
     rate: "",
     durationType: "",
-  }
+  };
 
   // const handleAddInput = () => {
   //   setAdditionalInputCount((prevCount) => prevCount + 1);
@@ -77,16 +77,16 @@ const PositionForm = () => {
       initialValues: initValue,
       validationSchema: PositionSchema,
       onSubmit: (data) => {
-        const positionWithGuidlines = { ...data, positionGuidelines: inputs }
+        const positionWithGuidlines = { ...data, positionGuidelines: inputs };
 
-        console.log("🚀 ~ PositionForm ~ data:", positionWithGuidlines)
+        console.log("🚀 ~ PositionForm ~ data:", positionWithGuidlines);
 
-        handleClose()
-        // dispatch(insertPosition(positionWithGuidlines))
-        setAdditionalInputCount(0)
+        handleClose();
+        dispatch(insertPosition(positionWithGuidlines));
+        setAdditionalInputCount(0);
       },
     }
-  )
+  );
 
   return (
     <div>
@@ -266,7 +266,7 @@ const PositionForm = () => {
         </DialogActions>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default PositionForm
+export default PositionForm;

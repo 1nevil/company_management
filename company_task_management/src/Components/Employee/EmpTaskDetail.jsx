@@ -1,77 +1,124 @@
+import React, { useEffect, useState } from "react";
 import {
+  Box,
+  Button,
   Card,
   CardActionArea,
   CardContent,
   CardHeader,
-  CardMedia,
-  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
+  FormGroup,
   Grid,
-  InputLabel,
   Skeleton,
-  TextField,
   Typography,
-} from "@mui/material"
-import { Box, Stack } from "@mui/system"
-// import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getTaskUsingEmpId } from "../../Slices/TaskSlice";
-// import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link, useParams } from "react-router-dom"
-import VisibilityIcon from "@mui/icons-material/Visibility"
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import {
-  getTaskDataAndGuidlinesByTaskId,
-  getTaskUsingTaskId,
-  getTaskUsingTaskIdAndPostionId,
-} from "../../Slices/TaskSlice"
-import { styled } from "@mui/material/styles"
-import Button from "@mui/material/Button"
-import CloudUploadIcon from "@mui/icons-material/CloudUpload"
-import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask"
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { json, useParams } from "react-router-dom";
+import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-})
-
-function EmpTaskDeatil() {
+function EmpTaskDetail() {
   const { pending, getActiveTaskDetail, error } = useSelector(
     (state) => state.Tasks
-  )
-  console.log(getActiveTaskDetail)
-
-  const { task, guidelines } = getActiveTaskDetail
-
+  );
+  const { checklistMasters } = useSelector(
+    (state) => state.Tasks.completeTaskDetailForAdmin.responseData || {}
+  );
+  const { task, guidelines, checklist } = getActiveTaskDetail;
+  console.log(checklist);
   const { Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
-  )
+  );
+  const { taskId } = useParams();
+  const dispatch = useDispatch();
 
-  const { taskId } = useParams()
-  const dispatch = useDispatch()
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    //1 is postion id for validation
-    //task ID : for getting task
-    console.log(taskId)
-    dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }))
-  }, [dispatch, positionId, taskId])
+    dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }));
+  }, [dispatch, positionId, taskId]);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const displayedChecklist = showMoreChecklist
+    ? checklist
+    : checklist?.slice(0, 3);
+
+  const displayedGuidelines = showMoreGuidelines
+    ? guidelines
+    : guidelines?.slice(0, 3);
 
   return (
     <div>
-      {/* {JSON.stringify(task)} */}
       <Grid container>
         <Grid item xs={4}>
-          <Box mt={5} p={4}>
-            {guidelines?.map((guideline) => (
+          <Box
+            p={2}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+            }}
+          >
+            <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
+              Checklist
+            </Typography>
+            {displayedChecklist?.map((checklist) => (
+              <Box
+                key={checklist.checklistId}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4",
+                }}
+              >
+                <Typography
+                  variant="p"
+                  gutterBottom
+                  textTransform="capitalize"
+                  ml={3}
+                >
+                  {checklist.taskMessage}
+                </Typography>
+              </Box>
+            ))}
+            {checklist?.length > 3 && (
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{ cursor: "pointer", textAlign: "end" }}
+                onClick={handleOpenModal}
+              >
+                See More
+              </Typography>
+            )}
+          </Box>
+          {/* <Box
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+              mt: 3,
+              p: 2,
+            }}
+          >
+            <Typography variant="h5" sx={{ textAlign: "center", p: 2 }}>
+              Position Guidelines
+            </Typography>
+            {displayedGuidelines?.map((guideline) => (
               <Box
                 key={guideline.positionGuidelineId}
                 sx={{
@@ -81,7 +128,7 @@ function EmpTaskDeatil() {
                 }}
               >
                 <Typography
-                  variant="h5"
+                  variant="p"
                   gutterBottom
                   textTransform="capitalize"
                   ml={3}
@@ -90,12 +137,136 @@ function EmpTaskDeatil() {
                 </Typography>
               </Box>
             ))}
+            {guidelines?.length > 3 && (
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{ cursor: "pointer", textAlign: "end" }}
+                onClick={handleOpenModal}
+              >
+                See More
+              </Typography>
+            )}
+          </Box> */}
+          <Box
+            p={2}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+              mt: 3,
+            }}
+          >
+            <Typography
+              variant="h6"
+              mt={3}
+              sx={{ textAlign: "center", fontWeight: "bold" }}
+            >
+              Position Guidelines
+            </Typography>
+            <FormGroup sx={{ mt: 2 }}>
+              {displayedGuidelines?.map((guideline) => (
+                <Box
+                  key={guideline.positionGuidelineId}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4",
+                    lineHeight: "43px",
+                  }}
+                >
+                  <Typography
+                    variant="p"
+                    gutterBottom
+                    textTransform="capitalize"
+                    ml={4}
+                    sx={{ m: "auto" }}
+                  >
+                    {guideline.positionGuidline}
+                  </Typography>
+                </Box>
+              ))}
+              {guidelines?.length > 3 && (
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  sx={{ cursor: "pointer", textAlign: "end" }}
+                  onClick={handleOpenModal}
+                >
+                  See More
+                </Typography>
+              )}
+            </FormGroup>
           </Box>
         </Grid>
         <Divider orientation="vertical" flexItem />
-        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto" }}>
+        {/* <Grid item xs={7} sx={{ textAlign: "center", margin: "auto" }}>
           <Grid xs={12}>
             <Typography variant="h5">Task Detail</Typography>
+            <Box
+              mt={5}
+              p={4}
+              sx={{
+                border: "2px solid gray",
+                boxShadow: "2px 2px 10px 1px black",
+              }}
+            >
+              {task ? (
+                <Card
+                  sx={{
+                    border: "2px solid gray",
+                    boxShadow: "2px 2px 10px black",
+                  }}
+                >
+                  <CardHeader
+                    title={`Task Name: ${task.taskName}`}
+                    subheader={
+                      <>
+                        <Typography component="span" variant="body2">
+                          Start Date: {task.startDate}
+                        </Typography>
+                        <br />
+                        <Typography component="span" variant="body2">
+                          End Date: {task.endDate}
+                        </Typography>
+                      </>
+                    }
+                  />
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        Instructions: {task.instructions}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Description: {task.description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              ) : error ? (
+                <Typography variant="h5" gutterBottom>
+                  {error}
+                </Typography>
+              ) : (
+                <Typography variant="h5" gutterBottom>
+                  Loading...
+                  <Skeleton animation="wave" />
+                </Typography>
+              )}
+            </Box>
+          </Grid>
+          <Box pt={5}>
+            <Button fullWidth variant="contained">
+              Upload Your Work
+            </Button>
+          </Box>
+        </Grid> */}
+        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto", ml: 10 }}>
+          <Grid xs={12}>
+            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+              Task Detail
+            </Typography>
             <Box
               mt={5}
               p={4}
@@ -116,23 +287,38 @@ function EmpTaskDeatil() {
                       title={`Task Name: ${task.taskName}`}
                       subheader={
                         <>
-                          <Typography component="span" variant="body2">
-                            Start Date: {task.startDate}
-                          </Typography>
-                          <br />
-                          <Typography component="span" variant="body2">
-                            End Date: {task.endDate}
-                          </Typography>
+                          {task.startDate && task.endDate ? (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Start Date: {task.startDate}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                End Date: {task.endDate}
+                              </Typography>
+                            </>
+                          ) : (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Duration: {task.durationNum} {task.durationType}
+                              </Typography>
+                            </>
+                          )}
                         </>
                       }
                     />
                     <CardActionArea>
                       <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          Instructions: {task.instructions}
-                        </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Description: {task.description}
+                          <Typography
+                            sx={{
+                              variant: "p",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Description
+                          </Typography>{" "}
+                          {task.description}
                         </Typography>
                       </CardContent>
                     </CardActionArea>
@@ -150,31 +336,47 @@ function EmpTaskDeatil() {
               )}
             </Box>
           </Grid>
+          <Box pt={5}>
+            <Button fullWidth variant="contained">
+              Upload Your Work
+            </Button>
+          </Box>
         </Grid>
       </Grid>
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography variant="h6">Checklist Items</Typography>
+            {checklist?.map((checklist) => (
+              <Typography
+                key={checklist.checklistId}
+                variant="body1"
+                gutterBottom
+              >
+                {checklist.taskMessage}
+              </Typography>
+            ))}
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              Position Guidelines
+            </Typography>
+            {guidelines?.map((guideline) => (
+              <Typography
+                key={guideline.positionGuidelineId}
+                variant="body1"
+                gutterBottom
+              >
+                {guideline.positionGuidline}
+              </Typography>
+            ))}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
-    // <Box>
-    //   <DataGrid
-    //     slots={{ toolbar: GridToolbar }}
-    //     rows={tasksByEmpId}
-    //     columns={columns}
-    //     getRowId={(row) => row.taskId}
-    //     initialState={{
-    //       pagination: {
-    //         paginationModel: {
-    //           pageSize: 5,
-    //         },
-    //       },
-    //     }}
-    //     pageSizeOptions={[5]}
-    //     disableRowSelectionOnClick
-    //   />
-    //   {/* <ChainDetailsForm
-    //     handleCloseDetails={handleCloseChainDetail}
-    //     chainDetails={TaskDetails}
-    //     chainId={selectedRow}
-    //   /> */}
-    // </Box>
-  )
+  );
 }
-export default EmpTaskDeatil
+
+export default EmpTaskDetail;
