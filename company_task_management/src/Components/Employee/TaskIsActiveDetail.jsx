@@ -5,21 +5,27 @@ import {
   CardHeader,
   CardMedia,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
+  FormGroup,
   Grid,
   InputLabel,
   Skeleton,
   TextField,
   Typography,
-} from "@mui/material"
-import { Box } from "@mui/system"
-import { useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice"
-import { styled } from "@mui/material/styles"
-import Button from "@mui/material/Button"
-import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask"
+} from "@mui/material";
+import { Box } from "@mui/system";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -31,157 +37,208 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-})
+});
 
 function TaskIsActiveDeatils() {
   const { pending, getActiveTaskDetail, error } = useSelector(
     (state) => state.Tasks
-  )
+  );
 
-  const { task, guidelines } = getActiveTaskDetail
+  const { task, guidelines, checklist } = getActiveTaskDetail;
 
-  const [completedGuidelines, setCompletedGuidelines] = useState([])
-  const [incompleteGuidelines, setIncompleteGuidelines] = useState([])
-  const [fileUpload, setFileUpload] = useState("")
-  const { taskId } = useParams()
-  console.log(taskId)
-  const dispatch = useDispatch()
+  const [completedGuidelines, setCompletedGuidelines] = useState([]);
+  const [incompleteGuidelines, setIncompleteGuidelines] = useState([]);
+  const [fileUpload, setFileUpload] = useState("");
+  const { taskId } = useParams();
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  console.log(taskId);
+  const dispatch = useDispatch();
   const { id: empId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
-  )
+  );
 
-  console.log(positionId)
+  const displayedChecklist = showMoreChecklist
+    ? checklist
+    : checklist?.slice(0, 3);
+
+  const displayedGuidelines = showMoreGuidelines
+    ? guidelines
+    : guidelines?.slice(0, 3);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  console.log(positionId);
 
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }))
-  }, [dispatch, taskId, positionId])
+    dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }));
+  }, [dispatch, taskId, positionId]);
 
   useEffect(() => {
     const storedCompletedGuidelines =
-      JSON.parse(localStorage.getItem(`completedGuidelines_${taskId}`)) || []
+      JSON.parse(localStorage.getItem(`completedGuidelines_${taskId}`)) || [];
     const storedIncompleteGuidelines =
-      JSON.parse(localStorage.getItem(`incompleteGuidelines_${taskId}`)) || []
-    setCompletedGuidelines(storedCompletedGuidelines)
-    setIncompleteGuidelines(storedIncompleteGuidelines)
-  }, [taskId])
+      JSON.parse(localStorage.getItem(`incompleteGuidelines_${taskId}`)) || [];
+    setCompletedGuidelines(storedCompletedGuidelines);
+    setIncompleteGuidelines(storedIncompleteGuidelines);
+  }, [taskId]);
 
   const handleUploadWork = () => {
-    var currentDate = new Date()
+    var currentDate = new Date();
 
-    var day = currentDate.getDate()
-    var month = currentDate.getMonth() + 1
-    var year = currentDate.getFullYear()
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
 
-    day = day < 10 ? "0" + day : day
-    month = month < 10 ? "0" + month : month
+    day = day < 10 ? "0" + day : day;
+    month = month < 10 ? "0" + month : month;
 
-    var completedAt = day + "/" + month + "/" + year
+    var completedAt = day + "/" + month + "/" + year;
     const updatedAssign = {
       taskId: Number(taskId),
       empId,
       completedAt,
       fileUpload,
       isActive: "2",
-    }
-    console.log("🚀 ~ handleUploadWork ~ updatedAssign:", updatedAssign)
+    };
+    console.log("🚀 ~ handleUploadWork ~ updatedAssign:", updatedAssign);
 
-    dispatch(updateTaskWithCompeletedate(updatedAssign))
-  }
+    dispatch(updateTaskWithCompeletedate(updatedAssign));
+  };
 
   const handleCheckboxChange = (guidelineId, isChecked) => {
     if (isChecked) {
       // Move the guideline to completed list
-      setCompletedGuidelines([...completedGuidelines, guidelineId])
+      setCompletedGuidelines([...completedGuidelines, guidelineId]);
       setIncompleteGuidelines(
         incompleteGuidelines.filter((id) => id !== guidelineId)
-      )
+      );
     } else {
       // Move the guideline to incomplete list
-      setIncompleteGuidelines([...incompleteGuidelines, guidelineId])
+      setIncompleteGuidelines([...incompleteGuidelines, guidelineId]);
       setCompletedGuidelines(
         completedGuidelines.filter((id) => id !== guidelineId)
-      )
+      );
     }
-  }
+  };
 
   useEffect(() => {
     localStorage.setItem(
       `completedGuidelines_${taskId}`,
       JSON.stringify(completedGuidelines)
-    )
+    );
     localStorage.setItem(
       `incompleteGuidelines_${taskId}`,
       JSON.stringify(incompleteGuidelines)
-    )
-  }, [completedGuidelines, incompleteGuidelines, taskId])
+    );
+  }, [completedGuidelines, incompleteGuidelines, taskId]);
 
   return (
     <div>
       <Grid container>
         <Grid item xs={4}>
-          <Box mt={5} p={4}>
-            {guidelines ? (
-              guidelines.map((guideline) => (
+          <Box
+            p={2}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+            }}
+          >
+            <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
+              Checklist
+            </Typography>
+            {displayedChecklist?.map((checklist) => (
+              <Box
+                key={checklist.checklistId}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4",
+                }}
+              >
+                <Typography
+                  variant="p"
+                  gutterBottom
+                  textTransform="capitalize"
+                  ml={3}
+                >
+                  {checklist.taskMessage}
+                </Typography>
+              </Box>
+            ))}
+            {checklist?.length > 3 && (
+              <Typography
+                variant="body2"
+                color="primary"
+                sx={{ cursor: "pointer", textAlign: "end" }}
+                onClick={handleOpenModal}
+              >
+                See More
+              </Typography>
+            )}
+          </Box>
+          <Box
+            p={2}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+              mt: 3,
+            }}
+          >
+            <Typography
+              variant="h6"
+              mt={3}
+              sx={{ textAlign: "center", fontWeight: "bold" }}
+            >
+              Position Guidelines
+            </Typography>
+            <FormGroup sx={{ mt: 2 }}>
+              {displayedGuidelines?.map((guideline) => (
                 <Box
                   key={guideline.positionGuidelineId}
                   sx={{
                     display: "flex",
                     alignItems: "center",
                     gap: "4",
+                    lineHeight: "43px",
                   }}
                 >
-                  <Checkbox
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
-                    checked={completedGuidelines.includes(
-                      guideline.positionGuidelineId
-                    )}
-                    onChange={(e) =>
-                      handleCheckboxChange(
-                        guideline.positionGuidelineId,
-                        e.target.checked
-                      )
-                    }
-                  />
                   <Typography
-                    variant="h5"
+                    variant="p"
                     gutterBottom
                     textTransform="capitalize"
-                    ml={3}
+                    ml={4}
+                    sx={{ m: "auto" }}
                   >
                     {guideline.positionGuidline}
                   </Typography>
                 </Box>
-              ))
-            ) : error ? (
-              <Typography variant="h5" gutterBottom>
-                Guidline not Found !!
-              </Typography>
-            ) : pending ? (
-              <Typography variant="h5" gutterBottom>
-                Guideline Is loading ....
-              </Typography>
-            ) : (
-              <Typography variant="h5" gutterBottom>
-                No Guideline Available
-              </Typography>
-            )}
-            {guidelines && (
-              <>
+              ))}
+              {guidelines?.length > 3 && (
                 <Typography
-                  variant="h5"
-                  gutterBottom
-                  textTransform="capitalize"
-                  ml={3}
+                  variant="body2"
+                  color="primary"
+                  sx={{ cursor: "pointer", textAlign: "end" }}
+                  onClick={handleOpenModal}
                 >
-                  completed guideline
+                  See More
                 </Typography>
-                {completedGuidelines.map((guidelineId) => (
-                  <Typography key={guidelineId}>{guidelineId}</Typography>
-                ))}
-              </>
-            )}
+              )}
+            </FormGroup>
           </Box>
         </Grid>
         <Divider orientation="vertical" flexItem />
@@ -208,13 +265,23 @@ function TaskIsActiveDeatils() {
                       title={`Task Name: ${task.taskName}`}
                       subheader={
                         <>
-                          <Typography component="span" variant="body2">
-                            Start Date: {task.startDate}
-                          </Typography>
-                          <br />
-                          <Typography component="span" variant="body2">
-                            End Date: {task.endDate}
-                          </Typography>
+                          {task.startDate && task.endDate ? (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Start Date: {task.startDate}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                End Date: {task.endDate}
+                              </Typography>
+                            </>
+                          ) : (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Duration: {task.durationNum} {task.durationType}
+                              </Typography>
+                            </>
+                          )}
                         </>
                       }
                     />
@@ -263,7 +330,39 @@ function TaskIsActiveDeatils() {
           </Grid>
         </Grid>
       </Grid>
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography variant="h6">Checklist Items</Typography>
+            {checklist?.map((checklist) => (
+              <Typography
+                key={checklist.checklistId}
+                variant="body1"
+                gutterBottom
+              >
+                {checklist.taskMessage}
+              </Typography>
+            ))}
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              Position Guidelines
+            </Typography>
+            {guidelines?.map((guideline) => (
+              <Typography
+                key={guideline.positionGuidelineId}
+                variant="body1"
+                gutterBottom
+              >
+                {guideline.positionGuidline}
+              </Typography>
+            ))}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
-  )
+  );
 }
-export default TaskIsActiveDeatils
+export default TaskIsActiveDeatils;

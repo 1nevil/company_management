@@ -15,7 +15,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 function Employee() {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState(""); // State to store search term
-  const employeess = useSelector((state) => state.Employee.employees);
+  const employeess = useSelector((state) => state.Employee.employees) || [];
 
   useEffect(() => {
     dispatch(fetchEmp());
@@ -33,16 +33,27 @@ function Employee() {
   const notify = (name) => toast(name + " is deleted !");
 
   // Filtered rows based on search term
-  const filteredRows = employeess.filter((row) =>
-    Object.values(row).some(
-      (value) =>
-        value &&
-        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  // const filteredRows = employeess?.filter((row) =>
+  //   Object.values(row).some(
+  //     (value) =>
+  //       value &&
+  //       value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+  //   )
+  // );
+  const filteredRows = Array.isArray(employeess)
+    ? employeess.filter((row) =>
+        Object.values(row).some(
+          (value) =>
+            value &&
+            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
+    : [];
 
   // Sort filtered rows by dateOfJoining in descending order
-  const sortedRows = filteredRows.sort((a, b) => new Date(b.dateOfJoining) - new Date(a.dateOfJoining));
+  const sortedRows = filteredRows.sort(
+    (a, b) => new Date(b.dateOfJoining) - new Date(a.dateOfJoining)
+  );
 
   const columns = [
     {
@@ -60,8 +71,7 @@ function Employee() {
         </Link>
       ),
     },
-    
-   
+
     {
       field: "Action",
       headerName: "",
@@ -81,17 +91,17 @@ function Employee() {
         </>
       ),
     },
-   
+
     {
       field: "employeeName",
       headerName: "Name",
       width: 140,
     },
-    {
-      field: "dateOfJoining",
-      headerName: "Date Of joining",
-      width: 140,
-    },
+    // {
+    //   field: "dateOfJoining",
+    //   headerName: "Date Of joining",
+    //   width: 140,
+    // },
     {
       field: "xender",
       headerName: "Gender",
@@ -128,7 +138,7 @@ function Employee() {
       headerName: "Adhar Number",
       width: 140,
     },
-    
+
     {
       field: "positionName",
       headerName: "Position",
@@ -139,16 +149,14 @@ function Employee() {
       headerName: "Role",
       width: 140,
     },
-
-   
-  ]
+  ];
 
   return (
     <>
       <Box>
         <ToastContainer />
         <EmployeeForm />
-       
+
         <Box mt={2}>
           {/* Search input field */}
           <TextField
@@ -176,7 +184,7 @@ function Employee() {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: 50,
               },
             },
           }}
