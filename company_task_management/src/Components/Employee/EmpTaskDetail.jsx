@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   Box,
   Button,
@@ -16,49 +16,49 @@ import {
   Grid,
   Skeleton,
   Typography,
-} from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { json, useParams } from "react-router-dom";
-import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice";
+} from "@mui/material"
+import { useDispatch, useSelector } from "react-redux"
+import { json, useParams } from "react-router-dom"
+import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice"
 
 function EmpTaskDetail() {
   const { pending, getActiveTaskDetail, error } = useSelector(
     (state) => state.Tasks
-  );
+  )
   const { checklistMasters } = useSelector(
     (state) => state.Tasks.completeTaskDetailForAdmin.responseData || {}
-  );
-  const { task, guidelines, checklist } = getActiveTaskDetail;
-  console.log(checklist);
+  )
+  const { task, guidelines, checklist } = getActiveTaskDetail
+  console.log(checklist)
   const { Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
-  );
-  const { taskId } = useParams();
-  const dispatch = useDispatch();
+  )
+  const { taskId } = useParams()
+  const dispatch = useDispatch()
 
-  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
-  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false)
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
 
   useEffect(() => {
-    dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }));
-  }, [dispatch, positionId, taskId]);
+    dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }))
+  }, [dispatch, positionId, taskId])
 
   const handleOpenModal = () => {
-    setOpenModal(true);
-  };
+    setOpenModal(true)
+  }
 
   const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+    setOpenModal(false)
+  }
 
   const displayedChecklist = showMoreChecklist
     ? checklist
-    : checklist?.slice(0, 3);
+    : checklist?.slice(0, 3)
 
   const displayedGuidelines = showMoreGuidelines
     ? guidelines
-    : guidelines?.slice(0, 3);
+    : guidelines?.slice(0, 3)
 
   return (
     <div>
@@ -376,7 +376,7 @@ function EmpTaskDetail() {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
-export default EmpTaskDetail;
+export default EmpTaskDetail

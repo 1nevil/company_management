@@ -1,167 +1,373 @@
-// import {
-//   Card,
-//   CardActionArea,
-//   CardContent,
-//   CardHeader,
-//   CardMedia,
-//   Checkbox,
-//   Divider,
-//   Grid,
-//   InputLabel,
-//   Skeleton,
-//   TextField,
-//   Typography,
-// } from "@mui/material"
-// import { Box, Stack } from "@mui/system"
-// import { useEffect } from "react"
-// import { useDispatch, useSelector } from "react-redux"
-// import { getTaskUsingEmpId } from "../../Slices/TaskSlice"
-// import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-// import { Link, useParams } from "react-router-dom"
-// import VisibilityIcon from "@mui/icons-material/Visibility"
-// import { useState } from "react"
-// import { getTaskUsingTaskId } from "../../Slices/TaskSlice"
-// import { styled } from "@mui/material/styles"
-// import Button from "@mui/material/Button"
-// import CloudUploadIcon from "@mui/icons-material/CloudUpload"
-// import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask"
+import React, { useEffect, useState } from "react"
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  FormGroup,
+  Grid,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Skeleton,
+  Typography,
+} from "@mui/material"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
+import { getHistoryDetails } from "../../Slices/TaskSlice"
 
-// const VisuallyHiddenInput = styled("input")({
-//   clip: "rect(0 0 0 0)",
-//   clipPath: "inset(50%)",
-//   height: 1,
-//   overflow: "hidden",
-//   position: "absolute",
-//   bottom: 0,
-//   left: 0,
-//   whiteSpace: "nowrap",
-//   width: 1,
-// })
+function EmpTaskDetail() {
+  const { pending, error } = useSelector((state) => state.Tasks)
 
-function TaskDetail(params) {
-  //   const { task, guidelines } = useSelector((state) => state.Tasks.tasks)
-  //   const { pending, error } = useSelector((state) => state.Tasks)
-  //   const [completedGuidelines, setCompletedGuidelines] = useState([])
-  //   const [incompleteGuidelines, setIncompleteGuidelines] = useState([])
-  //   const [fileUpload, setFileUpload] = useState("")
-  //   const { id } = useParams()
-  //   console.log(id)
-  //   const dispatch = useDispatch()
-  //   useEffect(() => {
-  //     //1 is postion id for validation
-  //     //task ID : for getting task
-  //     dispatch(getTaskUsingTaskId({ positionId: 2, taskId: id }))
-  //   }, [dispatch, id])
-  //   return (
-  //     <div>
-  //       {/* {JSON.stringify(task)} */}
-  //       <Grid container>
-  //         <Grid item xs={4}>
-  //           <Box mt={5} p={4}>
-  //             {guidelines?.map((guideline) => (
-  //               <Box
-  //                 key={guideline.positionGuidelineId}
-  //                 sx={{
-  //                   display: "flex",
-  //                   alignItems: "center",
-  //                   gap: "4",
-  //                 }}
-  //               >
-  //                 <Typography
-  //                   variant="h5"
-  //                   gutterBottom
-  //                   textTransform="capitalize"
-  //                   ml={3}
-  //                 >
-  //                   {guideline.positionGuidline}
-  //                 </Typography>
-  //               </Box>
-  //             ))}
-  //           </Box>
-  //         </Grid>
-  //         <Divider orientation="vertical" flexItem />
-  //         <Grid item xs={7} sx={{ textAlign: "center", margin: "auto" }}>
-  //           <Grid xs={12}>
-  //             <Typography variant="h5">Task Detail</Typography>
-  //             <Box
-  //               mt={5}
-  //               p={4}
-  //               sx={{
-  //                 border: "2px solid gray",
-  //                 boxShadow: "2px 2px 10px 1px black",
-  //               }}
-  //             >
-  //               {task ? (
-  //                 <>
-  //                   <Card
-  //                     sx={{
-  //                       border: "2px solid gray",
-  //                       boxShadow: "2px 2px 10px black",
-  //                     }}
-  //                   >
-  //                     <CardHeader
-  //                       title={`Task Name: ${task.taskName}`}
-  //                       subheader={
-  //                         <>
-  //                           <Typography component="span" variant="body2">
-  //                             Start Date: {task.startDate}
-  //                           </Typography>
-  //                           <br />
-  //                           <Typography component="span" variant="body2">
-  //                             End Date: {task.endDate}
-  //                           </Typography>
-  //                         </>
-  //                       }
-  //                     />
-  //                     <CardActionArea>
-  //                       <CardContent>
-  //                         <Typography gutterBottom variant="h5" component="div">
-  //                           Instructions: {task.instructions}
-  //                         </Typography>
-  //                         <Typography variant="body2" color="text.secondary">
-  //                           Description: {task.description}
-  //                         </Typography>
-  //                       </CardContent>
-  //                     </CardActionArea>
-  //                   </Card>
-  //                 </>
-  //               ) : error ? (
-  //                 <Typography variant="h5" gutterBottom>
-  //                   {error}
-  //                 </Typography>
-  //               ) : (
-  //                 <Typography variant="h5" gutterBottom>
-  //                   Loading...
-  //                   <Skeleton animation="wave" />
-  //                 </Typography>
-  //               )}
-  //             </Box>
-  //           </Grid>
-  //         </Grid>
-  //       </Grid>
-  //     </div>
-  //     //  <Box>
-  //     //    <DataGrid
-  //     //      slots={{ toolbar: GridToolbar }}
-  //     //      rows={tasksByEmpId}
-  //     //      columns={columns}
-  //     //      getRowId={(row) => row.taskId}
-  //     //      initialState={{
-  //     //        pagination: {
-  //     //          paginationModel: {
-  //     //            pageSize: 5,
-  //     //          },
-  //     //        },
-  //     //      }}
-  //     //      pageSizeOptions={[5]}
-  //     //      disableRowSelectionOnClick
-  //     //    />
-  //     //    {/* <ChainDetailsForm
-  //     //      handleCloseDetails={handleCloseChainDetail}
-  //     //      chainDetails={TaskDetails}
-  //     //      chainId={selectedRow}
-  //     //    /> */}
-  //     //  </Box>
-  //   )
+  const {
+    messages,
+    checker,
+    taskDetails,
+    guidelines,
+    checklist,
+    empTaskHistory,
+  } = useSelector((state) => state.Tasks.getHistoryDetail)
+
+  const { taskHistoryId } = useParams()
+  const dispatch = useDispatch()
+
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false)
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+
+  useEffect(() => {
+    dispatch(getHistoryDetails(taskHistoryId))
+  }, [dispatch, taskHistoryId])
+
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
+
+  const displayedChecklist = showMoreChecklist
+    ? checklist
+    : checklist?.slice(0, 3)
+  const displayedGuidelines = showMoreGuidelines
+    ? guidelines
+    : guidelines?.slice(0, 3)
+
+  return (
+    <div>
+      <Box mb={2}>
+        {pending ? (
+          <Skeleton animation="wave" variant="rectangular" height={50} />
+        ) : (
+          <>
+            {empTaskHistory?.isApprove === "0" ? (
+              <Alert variant="filled" severity="error">
+                {messages.map((message, index) => (
+                  <Typography key={index} variant="body2">
+                    {message}
+                  </Typography>
+                ))}
+              </Alert>
+            ) : (
+              <Alert variant="filled" severity="success">
+                Approved
+              </Alert>
+            )}
+          </>
+        )}
+      </Box>
+      <Grid container>
+        <Grid item xs={4}>
+          {/* Checklist */}
+          <Box
+            p={2}
+            pt={0}
+            sx={{ border: "2px solid gray", borderRadius: "10px", mr: "50px" }}
+          >
+            <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
+              Checklist
+            </Typography>
+            {pending ? (
+              <Skeleton animation="wave" variant="rectangular" height={200} />
+            ) : (
+              <>
+                {displayedChecklist?.length > 0 ? (
+                  displayedChecklist?.map((checklist) => (
+                    <Box
+                      key={checklist.checklistId}
+                      sx={{ display: "flex", alignItems: "center", gap: "4" }}
+                    >
+                      <Typography
+                        variant="p"
+                        gutterBottom
+                        textTransform="capitalize"
+                        ml={3}
+                      >
+                        {checklist.taskMessage}
+                      </Typography>
+                    </Box>
+                  ))
+                ) : (
+                  <Typography variant="body2" textAlign="center" color="error">
+                    No position Found !!
+                  </Typography>
+                )}
+                {checklist?.length > 3 && (
+                  <Typography
+                    variant="body2"
+                    color="primary"
+                    sx={{ cursor: "pointer", textAlign: "end" }}
+                    onClick={handleOpenModal}
+                  >
+                    See More
+                  </Typography>
+                )}
+              </>
+            )}
+          </Box>
+          {/* Position Guidelines */}
+          <Box
+            p={2}
+            pt={0}
+            sx={{
+              border: "2px solid gray",
+              borderRadius: "10px",
+              mr: "50px",
+              mt: 3,
+            }}
+          >
+            <Typography
+              variant="h6"
+              mt={3}
+              sx={{ textAlign: "center", fontWeight: "bold" }}
+            >
+              Position Guidelines
+            </Typography>
+            {pending ? (
+              <Skeleton animation="wave" variant="rectangular" height={200} />
+            ) : (
+              <FormGroup sx={{ mt: 2 }}>
+                {displayedGuidelines?.map((guideline) => (
+                  <Box
+                    key={guideline.positionGuidelineId}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4",
+                      lineHeight: "43px",
+                    }}
+                  >
+                    <Typography
+                      variant="p"
+                      gutterBottom
+                      textTransform="capitalize"
+                      ml={4}
+                      sx={{ m: "auto" }}
+                    >
+                      {guideline.positionGuidline}
+                    </Typography>
+                  </Box>
+                ))}
+                {guidelines?.length > 3 && (
+                  <Typography
+                    variant="body2"
+                    color="primary"
+                    sx={{ cursor: "pointer", textAlign: "end" }}
+                    onClick={handleOpenModal}
+                  >
+                    See More
+                  </Typography>
+                )}
+              </FormGroup>
+            )}
+          </Box>
+        </Grid>
+        <Divider orientation="vertical" flexItem />
+        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto", ml: 10 }}>
+          {/* Task Detail */}
+          <Grid xs={12}>
+            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+              Task Detail
+            </Typography>
+            <Box
+              mt={5}
+              p={4}
+              sx={{
+                border: "2px solid gray",
+                boxShadow: "2px 2px 10px 1px black",
+              }}
+            >
+              {pending ? (
+                <Skeleton animation="wave" />
+              ) : (
+                <>
+                  {taskDetails ? (
+                    <Card
+                      sx={{
+                        border: "2px solid gray",
+                        boxShadow: "2px 2px 10px black",
+                      }}
+                    >
+                      <CardHeader
+                        title={`Task Name: ${taskDetails.taskName}`}
+                        subheader={
+                          <>
+                            {taskDetails.startDate && taskDetails.endDate ? (
+                              <>
+                                <Typography component="span" variant="body2">
+                                  Start Date: {taskDetails.startDate}
+                                </Typography>
+                                <br />
+                                <Typography component="span" variant="body2">
+                                  End Date: {taskDetails.endDate}
+                                </Typography>
+                              </>
+                            ) : (
+                              <>
+                                <Typography component="span" variant="body2">
+                                  Duration: {taskDetails.durationNum}{" "}
+                                  {taskDetails.durationType}
+                                </Typography>
+                              </>
+                            )}
+                          </>
+                        }
+                      />
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography variant="body2" color="text.secondary">
+                            <Typography
+                              sx={{ variant: "p", fontWeight: "bold" }}
+                            >
+                              Description
+                            </Typography>{" "}
+                            {taskDetails.description}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  ) : error ? (
+                    <Typography variant="h5" gutterBottom>
+                      {error}
+                    </Typography>
+                  ) : (
+                    <Typography variant="h5" gutterBottom>
+                      Loading...
+                      <Skeleton animation="wave" />
+                    </Typography>
+                  )}
+                </>
+              )}
+            </Box>
+          </Grid>
+        </Grid>
+      </Grid>
+      {/* Modal */}
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography variant="h6">Checklist Items</Typography>
+            {checklist?.length > 0 ? (
+              checklist?.map((checklist) => (
+                <Typography
+                  key={checklist.checklistId}
+                  variant="body1"
+                  gutterBottom
+                >
+                  {checklist.taskMessage}
+                </Typography>
+              ))
+            ) : (
+              <Typography variant="body2" textAlign="center" color="error">
+                No position Found !!
+              </Typography>
+            )}
+            <Typography variant="h6" sx={{ mt: 2 }}>
+              Position Guidelines
+            </Typography>
+            {guidelines?.map((guideline) => (
+              <Typography
+                key={guideline.positionGuidelineId}
+                variant="body1"
+                gutterBottom
+              >
+                {guideline.positionGuidline}
+              </Typography>
+            ))}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      {/* Checked By */}
+      <Box mt={5}>
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          Checked By
+        </Typography>
+        <Box
+          mt={2}
+          p={4}
+          sx={{
+            border: "2px solid gray",
+            borderRadius: "10px",
+            boxShadow: "2px 2px 10px 1px black",
+          }}
+        >
+          {pending ? (
+            <Skeleton animation="wave" />
+          ) : (
+            <>
+              {checker ? (
+                <>
+                  <Typography variant="body1">
+                    <strong>Employee ID:</strong> {checker.employeeId}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Employee Name:</strong> {checker.employeeName}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Employee Email:</strong> {checker.employeeEmail}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Employee Age:</strong> {checker.employeeAge}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Mobile Number:</strong> {checker.mobileNumber}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Alternate Mobile Number:</strong>{" "}
+                    {checker.altmobileNumber}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>DOB:</strong> {checker.dob}
+                  </Typography>
+                  <Typography variant="body1">
+                    <strong>Address:</strong> {checker.addressEmployee}
+                  </Typography>
+                </>
+              ) : (
+                <Typography variant="h5" gutterBottom>
+                  {error}
+                </Typography>
+              )}
+            </>
+          )}
+        </Box>
+      </Box>
+    </div>
+  )
 }
-export default TaskDetail
+
+export default EmpTaskDetail

@@ -11,6 +11,7 @@ import {
 const initialState = {
   pendding: false,
   tasks: [],
+  taskHistory: [],
   taskGuidlinesChecker: {},
   error: null,
 }
@@ -27,9 +28,22 @@ export const updateTaskWithCompeletedate = createAsyncThunk(
 
 export const getCompletedTaskDataForChecker = createAsyncThunk(
   "tasks/getCompletedTaskDataForChecker",
-  async () => {
-    const response = await getCompletedTaskForChecker()
-    return response.data
+  async (postionId, { rejectWithValue }) => {
+    try {
+      const response = await getCompletedTaskForChecker(postionId)
+
+      return response.data
+    } catch (error) {
+      console.log(error.response.data)
+      if (error.response) {
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
+    // console.log(taskId);
+    // console.log(response.data);
   }
 )
 
@@ -77,8 +91,6 @@ export const approveDisapprove = createAsyncThunk(
   }
 )
 
-
-
 export const AssignToTaskSlice = createSlice({
   name: "AssignToTaskSlice",
   initialState,
@@ -96,12 +108,13 @@ export const AssignToTaskSlice = createSlice({
         state.error = action.payload
       })
       .addCase(getCompletedTaskDataForChecker.pending, (state) => {
+        state.tasks = []
+        state.error = null
         state.pendding = true
       })
       .addCase(getCompletedTaskDataForChecker.fulfilled, (state, action) => {
         state.pendding = false
         state.tasks = action.payload
-        console.log(action)
       })
       .addCase(getCompletedTaskDataForChecker.rejected, (state, action) => {
         state.pendding = false
@@ -126,8 +139,7 @@ export const AssignToTaskSlice = createSlice({
       })
       .addCase(getTaskFromHistoryByEmpId.fulfilled, (state, action) => {
         state.pendding = false
-        state.tasks = action.payload
-        console.log(state.tasks)
+        state.taskHistory = action.payload
       })
       .addCase(getTaskFromHistoryByEmpId.rejected, (state, action) => {
         state.pendding = false
@@ -135,6 +147,7 @@ export const AssignToTaskSlice = createSlice({
       })
       //getTaskFromHistoryUsingEmpId
       .addCase(getTaskFromHistoryUsingEmpId.pending, (state) => {
+        state.error = null
         state.pendding = true
       })
       .addCase(getTaskFromHistoryUsingEmpId.fulfilled, (state, action) => {

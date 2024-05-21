@@ -6,6 +6,7 @@ import {
   Button,
   Modal,
   Box,
+  IconButton,
 } from "@mui/material"
 import { Stack } from "@mui/system"
 import { useEffect, useState } from "react"
@@ -15,6 +16,8 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Link } from "react-router-dom"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { getTaskFromHistoryByEmpId } from "../../Slices/AssignToTask"
+import DoneAllIcon from "@mui/icons-material/DoneAll"
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt"
 
 const style = {
   position: "absolute",
@@ -29,7 +32,7 @@ const style = {
 }
 
 function TaskHistory(params) {
-  const historytasksByEmpId = useSelector((state) => state.AssignToTask.tasks)
+  const { pendding, taskHistory } = useSelector((state) => state.AssignToTask)
   const dispatch = useDispatch()
   const { id: empId } = useSelector((state) => state.Auth.authicatedUser)
   const [open, setOpen] = useState(false)
@@ -50,7 +53,7 @@ function TaskHistory(params) {
   }
 
   const columns = [
-    { field: "empTaskHistoryId", headerName: "TaskHistory Id", width: 90 },
+    { field: "empTaskHistoryId", headerName: "empTaskHistoryId", width: 100 },
     {
       field: "taskName",
       headerName: "Task Name",
@@ -66,7 +69,7 @@ function TaskHistory(params) {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/employee/TaskDetail/${params.row.taskId}`}
+          to={`/employee/TaskDetail/${params.row.empTaskHistoryId}`}
         >
           <VisibilityIcon />
         </Link>
@@ -79,15 +82,25 @@ function TaskHistory(params) {
       sortable: false,
       width: 200,
       renderCell: (params) =>
+        // 0 means not approved
         params.row.isApprove === "0" ? (
           <Button
+            startIcon={<ThumbDownOffAltIcon />}
             variant="contained"
             color="error"
             onClick={() => handleOpen(params.row.message)}
           >
-            View Disapproval
+            disapproved
           </Button>
-        ) : null,
+        ) : (
+          <Button
+            startIcon={<DoneAllIcon />}
+            variant="contained"
+            color="success"
+          >
+            approved
+          </Button>
+        ),
     },
   ]
 
@@ -95,19 +108,21 @@ function TaskHistory(params) {
     <Box>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
-        rows={historytasksByEmpId}
+        loading={pendding}
+        rows={taskHistory}
         columns={columns}
-        getRowId={(row) => row.taskId}
+        getRowId={(row) => row.empTaskHistoryId}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: 10,
             },
           },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[10, 25, 50, 100, 200]}
         disableRowSelectionOnClick
       />
+
       <Modal
         open={open}
         onClose={handleClose}

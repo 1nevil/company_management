@@ -47,8 +47,8 @@ function CheckerTaskDetails() {
   const [fileUpload, setFileUpload] = useState("")
   const navigate = useNavigate()
   const [message, setMessage] = useState("")
-    const [completedChecklist, setCompletedChecklist] = useState([]);
-  const [incompleteChecklist, setIncompleteChecklist] = useState([]);
+  const [completedChecklist, setCompletedChecklist] = useState([])
+  const [incompleteChecklist, setIncompleteChecklist] = useState([])
 
   // const empID = 6;
   const dispatch = useDispatch()
@@ -56,44 +56,44 @@ function CheckerTaskDetails() {
     dispatch(getTaskAssignDataForChecker(taskId))
   }, [dispatch, taskId])
 
-  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
-  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false)
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const handleOpenModal = () => {
-    setOpenModal(true);
-  };
+    setOpenModal(true)
+  }
 
   const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+    setOpenModal(false)
+  }
 
   const displayedChecklist = showMoreChecklist
     ? checklist
-    : checklist?.slice(0, 2);
+    : checklist?.slice(0, 2)
 
   const displayedGuidelines = showMoreGuidelines
     ? guidelines
-    : guidelines?.slice(0, 2);
+    : guidelines?.slice(0, 2)
 
   useEffect(() => {
     const storedCompletedChecklist =
-      JSON.parse(localStorage.getItem(`completedChecklist_${taskId}`)) || [];
+      JSON.parse(localStorage.getItem(`completedChecklist_${taskId}`)) || []
     const storedIncompleteChecklist =
-      JSON.parse(localStorage.getItem(`incompleteChecklist_${taskId}`)) || [];
-    setCompletedChecklist(storedCompletedChecklist);
-    setIncompleteChecklist(storedIncompleteChecklist);
-  }, [taskId]);
+      JSON.parse(localStorage.getItem(`incompleteChecklist_${taskId}`)) || []
+    setCompletedChecklist(storedCompletedChecklist)
+    setIncompleteChecklist(storedIncompleteChecklist)
+  }, [taskId])
 
   useEffect(() => {
     localStorage.setItem(
       `completedChecklist_${taskId}`,
       JSON.stringify(completedChecklist)
-    );
+    )
     localStorage.setItem(
       `incompleteChecklist_${taskId}`,
       JSON.stringify(incompleteChecklist)
-    );
-  }, [completedChecklist, incompleteChecklist, taskId]);
+    )
+  }, [completedChecklist, incompleteChecklist, taskId])
 
   useEffect(() => {
     const storedCompletedGuidelines =
@@ -128,33 +128,28 @@ function CheckerTaskDetails() {
   const handleCheckboxChange = (id, isChecked, type) => {
     if (type === "checklist") {
       if (isChecked) {
-        setCompletedChecklist([...completedChecklist, id]);
+        setCompletedChecklist([...completedChecklist, id])
         setIncompleteChecklist(
           incompleteChecklist.filter((item) => item !== id)
-        );
+        )
       } else {
-        setIncompleteChecklist([...incompleteChecklist, id]);
-        setCompletedChecklist(completedChecklist.filter((item) => item !== id));
+        setIncompleteChecklist([...incompleteChecklist, id])
+        setCompletedChecklist(completedChecklist.filter((item) => item !== id))
       }
     } else if (type === "guideline") {
       if (isChecked) {
-        setCompletedGuidelines([...completedGuidelines, id]);
+        setCompletedGuidelines([...completedGuidelines, id])
         setIncompleteGuidelines(
           incompleteGuidelines.filter((item) => item !== id)
-        );
+        )
       } else {
-        setIncompleteGuidelines([...incompleteGuidelines, id]);
+        setIncompleteGuidelines([...incompleteGuidelines, id])
         setCompletedGuidelines(
           completedGuidelines.filter((item) => item !== id)
-        );
+        )
       }
     }
   }
-
-  /* public int TaskAssId { get; set; }
- public int CheckerId { get; set; }
- public bool IsApprove { get; set; }
- public string? Message { get; set; } */
 
   const handleApprove = () => {
     // Access the taskId from the row data
@@ -162,7 +157,6 @@ function CheckerTaskDetails() {
     dispatch(
       approveDisapprove({
         TaskAssId: taskId,
-
         CheckerId: employeeId,
         IsApprove: true,
       })
@@ -192,7 +186,7 @@ function CheckerTaskDetails() {
       })
     )
     setOpen(false)
-    navigate("CheckTaskList")
+    navigate("/Checker/CheckTaskList")
   }
 
   const handleSubmitClose = () => {

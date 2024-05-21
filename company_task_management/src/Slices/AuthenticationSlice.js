@@ -63,10 +63,7 @@ export const AuthenticationSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         const token = action.payload.token
-        console.log(
-          "🚀 ~ .addCase ~  action.payload.token:",
-          action.payload.token
-        )
+        state.pending = false
 
         if (token) {
           state.token = token

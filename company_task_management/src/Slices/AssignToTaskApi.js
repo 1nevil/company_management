@@ -25,8 +25,12 @@ export function updateTaskSubmission({
   )
 }
 
-export function getCompletedTaskForChecker() {
-  return axiosInstance.get("api/EmpTaskAssignments/GetCompletedTaskForChecker")
+export function getCompletedTaskForChecker(postionId) {
+  console.log("🚀 ~ getCompletedTaskForChecker ~ postionId:", postionId)
+
+  return axiosInstance.get(
+    `api/EmpTaskAssignments/getCompletedTaskForChecker/${postionId}`
+  )
 }
 
 export function GetTaskAssignDataToChecker(id) {
@@ -35,8 +39,8 @@ export function GetTaskAssignDataToChecker(id) {
   )
 }
 
-export function GetTaskHistoryByEmpID(empIid) {
-  return axiosInstance.get(`api/EmpTaskHistories/${empIid}`)
+export function GetTaskHistoryByEmpID(empId) {
+  return axiosInstance.get(`api/EmpTaskHistories/${empId}`)
 }
 
 export function GetTaskHistoryUsingEmpID(empId) {

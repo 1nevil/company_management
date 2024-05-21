@@ -38,3 +38,9 @@ export const getTaskAndGuidlinesByTaskId = (taskId) => {
 export const approvedTask = (meptaskId) => {
   return axiosInstance.put(`/api/EmpTaskAssignments/approveTask/${meptaskId}`)
 }
+
+export const getHistoryDetailsById = (historyId) => {
+  return axiosInstance.get(
+    `api/EmpTaskHistories/getTaskHistoryDetailsById/${historyId}`
+  )
+}

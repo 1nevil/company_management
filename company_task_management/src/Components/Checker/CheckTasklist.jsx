@@ -6,8 +6,9 @@ import {
   DialogContent,
   TextField,
   Box,
-  Paper,
   Button,
+  Skeleton,
+  Typography,
 } from "@mui/material"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
@@ -15,26 +16,21 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { getCompletedTaskDataForChecker } from "../../Slices/AssignToTask"
 import { updateapprovedTask } from "../../Slices/TaskSlice"
+import { getCompletedTaskDataForChecker } from "../../Slices/AssignToTask"
+import WarningAmberIcon from "@mui/icons-material/WarningAmber"
 
 function CheckTaskList() {
   const [open, setOpen] = useState(false)
-  const [openchecklist, setOpenChecklist] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
   const dispatch = useDispatch()
-  const compltedTask = useSelector((state) => state.AssignToTask.tasks)
+  const { pendding, tasks, error } = useSelector((state) => state.AssignToTask)
+  const { Position: positionId } = useSelector(
+    (state) => state.Auth.authicatedUser
+  )
   useEffect(() => {
-    dispatch(getCompletedTaskDataForChecker())
-  }, [dispatch])
-
-  const handleOpenChecklist = () => {
-    setOpenChecklist(true)
-  }
-
-  const handleCloseChecklist = () => {
-    setOpenChecklist(false)
-  }
+    dispatch(getCompletedTaskDataForChecker(positionId))
+  }, [dispatch, positionId])
 
   const handleDisapprove = (TaskId) => {
     setOpen(true)
@@ -49,30 +45,15 @@ function CheckTaskList() {
     setOpen(false)
     setSelectedTask(null)
   }
-  // const handleApprove = (TaskId) => {
-  //   alert(TaskId);
-  //   dispatch(updateapprovedTask(42));
-  // };
 
   const handleApprove = (empTaskId) => {
-    // Find the row data corresponding to the empTaskId
-    alert(empTaskId)
-    const rowData = compltedTask.find((row) => row.empTaskId === empTaskId)
-    console.log(rowData)
+    const rowData = tasks.find((row) => row.empTaskId === empTaskId)
     if (rowData) {
-      // Access the taskId from the row data
       const taskId = rowData.taskId
-      alert(taskId)
-      // Dispatch your action with the taskId
       dispatch(updateapprovedTask(taskId))
     } else {
-      // Handle case when row data is not found
       console.error("Row data not found for empTaskId:", empTaskId)
     }
-  }
-
-  const handleEdit = (TaskId) => {
-    alert(TaskId)
   }
 
   const columns = [
@@ -100,74 +81,70 @@ function CheckTaskList() {
     {
       field: "Disapprove",
       headerName: "Disapprove",
-      description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 100,
+      width: 120,
       renderCell: (params) => (
-        <>
-          <IconButton
-            onClick={() => handleDisapprove(params.row.id)}
-            title="Edit"
-          >
-            <CancelOutlinedIcon sx={{ color: "red" }} />
-          </IconButton>
-        </>
+        <IconButton
+          onClick={() => handleDisapprove(params.row.id)}
+          title="Disapprove"
+        >
+          <CancelOutlinedIcon sx={{ color: "red" }} />
+        </IconButton>
       ),
     },
-
     {
       field: "Approve",
       headerName: "Approve",
-      description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 100,
+      width: 120,
       renderCell: (params) => (
-        <>
-          <IconButton
-            onClick={() => handleApprove(params.row.empTaskId)}
-            title="Delete"
-          >
-            <CheckCircleOutlinedIcon sx={{ color: "green" }} />
-          </IconButton>
-        </>
+        <IconButton
+          onClick={() => handleApprove(params.row.empTaskId)}
+          title="Approve"
+        >
+          <CheckCircleOutlinedIcon sx={{ color: "green" }} />
+        </IconButton>
       ),
     },
   ]
 
-  const Tasks = [
-    { id: 1, Category: "Snow" },
-    { id: 2, Category: "Lannister" },
-    { id: 3, Category: "Lannister" },
-  ]
-  console.log(compltedTask)
-  return (
-    <div>
-      <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          sx={{ height: "450px" }}
-          xs={12}
-          sm={6}
-          md={7}
-          getRowId={(row) => row.empTaskId}
-          columns={columns}
-          rows={compltedTask}
-          slots={{ toolbar: GridToolbar }}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
-        />
-      </div>
-
+  if (error) {
+    return (
       <Box
         sx={{
           display: "flex",
-          flexWrap: "wrap",
-          "& > :not(style)": { m: 5, width: 1000, height: 1000 },
+          alignItems: "center",
+          justifyContent: "center",
+          mt: 3,
+        }}
+      >
+        <WarningAmberIcon color="error" sx={{ mr: 1 }} />
+        <Typography variant="body1" color="error">
+          {error}
+        </Typography>
+      </Box>
+    )
+  }
+
+  return (
+    <div style={{ height: 400, width: "100%" }}>
+      <DataGrid
+        loading={pendding}
+        rows={tasks}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5, 10, 20]}
+        components={{
+          Toolbar: GridToolbar,
+        }}
+        getRowId={(row) => row.empTaskId}
+        pagination
+      />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: 2,
         }}
       >
         <Dialog open={open}>

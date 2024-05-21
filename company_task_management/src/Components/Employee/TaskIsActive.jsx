@@ -44,7 +44,6 @@ function TaskIsActive(params) {
     //1 is postion id for validation
     //task ID : for getting task
     dispatch(getTaskFromHistoryUsingEmpId(empId))
-    console.log()
   }, [dispatch, empId])
 
   return (

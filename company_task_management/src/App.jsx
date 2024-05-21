@@ -193,7 +193,7 @@ function App() {
               element: <TaskIsActive />,
             },
             {
-              path: "TaskDetail",
+              path: "TaskDetail/:taskHistoryId",
               element: <TaskDetail />,
             },
             {
