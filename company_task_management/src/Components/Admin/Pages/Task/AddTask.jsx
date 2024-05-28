@@ -67,7 +67,8 @@ const AddTask = ({ handleCloseForm }) => {
       initialValues: initValue,
       // validationSchema: TaskSchema,
       onSubmit: (data) => {
-        error && handleCloseForm()
+        console.log(error)
+        error === null && handleCloseForm()
         let TaskStatus = "Pending"
         data.durationNum = String(data.durationNum)
 

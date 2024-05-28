@@ -18,6 +18,7 @@ function EmployeeDashboard() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log(positionId)
     dispatch(getPositionWiseTask(positionId))
   }, [dispatch, positionId])
 

@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom"
 // import { approveDisapproveTask } from "../../Slices/TaskSlice"
 import {
   getTaskAssignDataForChecker,
-  updateTaskWithCompeletedate,
+  // updateTaskWithCompeletedate,
   approveDisapprove,
   getCompletedTaskDataForChecker,
 } from "../../Slices/AssignToTask"
@@ -125,7 +125,7 @@ function CheckerTaskDetails() {
       fileUpload,
       isActive: "2",
     }
-    dispatch(updateTaskWithCompeletedate(updatedAssign))
+    // dispatch(updateTaskWithCompeletedate(updatedAssign))
   }
 
   const handleCheckboxChange = (id, isChecked, type) => {

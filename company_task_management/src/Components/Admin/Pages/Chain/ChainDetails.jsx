@@ -23,6 +23,7 @@ import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium"
 import ComputerIcon from "@mui/icons-material/Computer"
 import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft"
 import CallMadeIcon from "@mui/icons-material/CallMade"
+import EastIcon from "@mui/icons-material/East"
 
 // Define the number of steps per row
 const stepsPerRow = 5
@@ -212,6 +213,10 @@ function ChainDetails() {
                       index !== stepChunks.length - 1 && (
                         <StepLabel icon={<SubdirectoryArrowLeftIcon />} />
                       )}
+                    {JSON.stringify()}
+                    {posIndex === 0 && index === stepChunks.length - 1 && (
+                      <StepLabel icon={<EastIcon />} />
+                    )}
                   </Step>
                 ))}
               </Stepper>

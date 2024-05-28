@@ -35,7 +35,7 @@ import { useEffect, useState } from "react"
 import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice"
 import { styled } from "@mui/material/styles"
 import Button from "@mui/material/Button"
-import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask"
+// import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask"
 import Modal from "@mui/material/Modal"
 
 const VisuallyHiddenInput = styled("input")({
@@ -127,7 +127,7 @@ function TaskIsActiveDeatils() {
       isActive: "2",
     }
 
-    dispatch(updateTaskWithCompeletedate(updatedAssign))
+    // dispatch(updateTaskWithCompeletedate(updatedAssign))
     navigate("/employee/EmployeeDashboard")
   }
 
