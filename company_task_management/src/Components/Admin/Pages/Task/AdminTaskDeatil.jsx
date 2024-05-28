@@ -67,9 +67,7 @@ function AdminTaskDeatil(params) {
     positionGuidelines,
     checklistMasters,
     history,
-  } = useSelector(
-    (state) => state.Tasks.completeTaskDetailForAdmin.responseData || {}
-  );
+  } = useSelector((state) => state.Tasks.completeTaskDetailForAdmin);
   const displayedChecklist = showMoreChecklist
     ? checklistMasters
     : checklistMasters?.slice(0, 2);
@@ -159,7 +157,7 @@ function AdminTaskDeatil(params) {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/employee/TaskDetail/${params.row.taskId}`}
+          to={`/admin/TaskHistoryDetailForAdmin/${params.row.empTaskHistoryId}`}
         >
           <VisibilityIcon />
         </Link>

@@ -5,18 +5,27 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
+  getCheckerTaskHistoryByCheckerId,
   getTaskFromHistoryUsingEmpId,
   updateTaskWithCompeletedate,
 } from "../../Slices/AssignToTask";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
-function TaskIsActive(params) {
-  const { pendding, tasks, error } = useSelector((state) => state.AssignToTask);
-  console.table(tasks);
-  const { id: empId } = useSelector((state) => state.Auth.authicatedUser);
+function CheckerTaskIsActive() {
+  const { pendding, taskHistory, error } = useSelector(
+    (state) => state.AssignToTask
+  );
+  console.table(taskHistory);
+  const { id: checkerId } = useSelector((state) => state.Auth.authicatedUser);
 
   const dispatch = useDispatch();
   const columns = [
+    {
+      field: "empTaskHistoryId",
+      headerName: "empTaskHistoryId",
+      width: 200,
+      editable: true,
+    },
     {
       field: "taskName",
       headerName: "Task Name",
@@ -32,7 +41,7 @@ function TaskIsActive(params) {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/employee/TaskIsActiveDeatils/${params.row.taskId}`}
+          to={`/Checker/CheckerTaskIsActiveDeatils/${params.row.empTaskHistoryId}`}
         >
           <VisibilityIcon />
         </Link>
@@ -43,23 +52,24 @@ function TaskIsActive(params) {
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getTaskFromHistoryUsingEmpId(empId));
-  }, [dispatch, empId]);
+    dispatch(getCheckerTaskHistoryByCheckerId(checkerId));
+  }, [dispatch, checkerId]);
 
   return (
     <div>
       {/* {JSON.stringify(task)} */}
       {pendding ? (
-        <>Loading</>
+        <>Loading..</>
       ) : error ? (
         <>{error}</>
       ) : (
         <Box>
           <DataGrid
             slots={{ toolbar: GridToolbar }}
-            rows={tasks}
+            loading={pendding}
+            rows={taskHistory}
             columns={columns}
-            getRowId={(row) => row.taskId}
+            getRowId={(row) => row.empTaskHistoryId}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -80,4 +90,4 @@ function TaskIsActive(params) {
     </div>
   );
 }
-export default TaskIsActive;
+export default CheckerTaskIsActive;

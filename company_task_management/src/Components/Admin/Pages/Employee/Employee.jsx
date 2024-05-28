@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import { IconButton, TextField } from "@mui/material"; // Import TextField for search input
+import { Grid, IconButton, TextField } from "@mui/material"; // Import TextField for search input
 import { Link } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { Typography } from "@mui/material";
@@ -103,42 +103,10 @@ function Employee() {
     //   width: 140,
     // },
     {
-      field: "xender",
-      headerName: "Gender",
-      width: 140,
-    },
-    {
       field: "employeeEmail",
       headerName: "Email",
-      width: 140,
+      width: 180,
     },
-    {
-      field: "employeeAge",
-      headerName: "Age",
-      width: 140,
-    },
-    {
-      field: "mobileNumber",
-      headerName: "MobileNumber",
-      width: 140,
-    },
-    {
-      field: "altmobileNumber",
-      headerName: "Alt Mobile No",
-      width: 140,
-    },
-
-    {
-      field: "dob",
-      headerName: "Date Of Birth",
-      width: 140,
-    },
-    {
-      field: "adharNumber",
-      headerName: "Adhar Number",
-      width: 140,
-    },
-
     {
       field: "positionName",
       headerName: "Position",
@@ -154,42 +122,47 @@ function Employee() {
   return (
     <>
       <Box>
-        <ToastContainer />
-        <EmployeeForm />
+        <Grid container>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <ToastContainer />
+            <EmployeeForm />
 
-        <Box mt={2}>
-          {/* Search input field */}
-          <TextField
-            label="Search"
-            variant="outlined"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            fullWidth
-          />
-        </Box>
-        <Typography
-          variant="h6"
-          component="h6"
-          textAlign="center"
-          color="primary"
-          mb={2}
-        >
-          Employees
-        </Typography>
-        <DataGrid
-          rows={sortedRows} // Pass sorted rows to DataGrid
-          getRowId={(row) => row.employeeId}
-          columns={columns}
-          slots={{ toolbar: GridToolbar }}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 50,
-              },
-            },
-          }}
-          pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
-        />
+            <Box mt={2}>
+              <TextField
+                label="Search"
+                variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                fullWidth
+              />
+            </Box>
+            <Typography
+              variant="h6"
+              component="h6"
+              textAlign="center"
+              color="primary"
+              mb={2}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              Employees
+            </Typography>
+
+            <DataGrid
+              rows={sortedRows} // Pass sorted rows to DataGrid
+              getRowId={(row) => row.employeeId}
+              columns={columns}
+              slots={{ toolbar: GridToolbar }}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 50,
+                  },
+                },
+              }}
+              pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
+            />
+          </Grid>
+        </Grid>
       </Box>
     </>
   );
