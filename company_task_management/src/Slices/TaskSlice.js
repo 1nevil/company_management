@@ -17,7 +17,15 @@ const initialState = {
   tasks: [],
   error: null,
   taskAndGuidelines: [],
-  completeTaskDetailForAdmin: {},
+  completeTaskDetailForAdmin: {
+    taskMaster: {},
+    chainMaster: {},
+    chainDetails: [],
+    positionMaster: {},
+    positionGuidelines: [],
+    checklistMasters: [],
+    history: [],
+  },
   getActiveTaskDetail: {},
   getHistoryDetail: {
     messages: [],
@@ -26,6 +34,7 @@ const initialState = {
     guidelines: null,
     checklist: null,
     empTaskHistory: null,
+    employee: null,
   },
 }
 
@@ -53,8 +62,7 @@ export const getPositionWiseTask = createAsyncThunk(
   "task/getPositionWiseTask",
   async (positionId) => {
     const response = await getTaskByPostionId(positionId)
-    console.log(positionId)
-    // console.log(response.data);
+    console.log(response)
     return response.data
   }
 )
@@ -89,8 +97,6 @@ export const getTaskUsingEmpId = createAsyncThunk(
   "task/getTaskUsingEmpId",
   async (empId) => {
     const response = await GetTaskFromAssignTaskByEmpId(empId)
-    console.log(empId)
-    // console.log(response.data);
     return response.data
   }
 )
@@ -99,22 +105,17 @@ export const getTaskUsingEmpId = createAsyncThunk(
 export const getTaskUsingTaskId = createAsyncThunk(
   "task/getTaskUsingTaskId",
   async (taskId, { rejectWithValue }) => {
-    console.log(taskId)
     try {
-      const response = await getTaskByTaskId(1036)
-      console.log(response.data)
+      const response = await getTaskByTaskId(taskId)
       return response.data.responseData
     } catch (error) {
-      // console.log(error.response);
       if (error.response) {
-        const errorMessage = error.response.data.message
+        const errorMessage = error.response.data
         return rejectWithValue(errorMessage)
       } else {
         return rejectWithValue("An unexpected error occurred")
       }
     }
-    // console.log(taskId);
-    // console.log(response.data);
   }
 )
 
@@ -123,7 +124,6 @@ export const getTaskUsingTaskIdAndPostionId = createAsyncThunk(
   async ({ positionId, taskId }, { rejectWithValue }) => {
     try {
       const response = await getTaskByTaskPositionId(positionId, taskId)
-      console.log(response.data)
       return response.data
     } catch (error) {
       console.log(error.response.data)
@@ -134,18 +134,14 @@ export const getTaskUsingTaskIdAndPostionId = createAsyncThunk(
         return rejectWithValue("An unexpected error occurred")
       }
     }
-    // console.log(taskId);
-    // console.log(response.data);
   }
 )
 
 export const getHistoryDetails = createAsyncThunk(
   "task/getHistoryDetails",
   async (taskHistoryId, { rejectWithValue }) => {
-    console.log(taskHistoryId)
     try {
       const response = await getHistoryDetailsById(taskHistoryId)
-      console.log(response.data)
       return response.data
     } catch (error) {
       console.log(error.response)
@@ -156,8 +152,6 @@ export const getHistoryDetails = createAsyncThunk(
         return rejectWithValue("An unexpected error occurred")
       }
     }
-    // console.log(taskId);
-    // console.log(response.data);
   }
 )
 
@@ -165,7 +159,6 @@ export const getTaskDataAndGuidlinesByTaskId = createAsyncThunk(
   "task/getTaskAndGuidlinesByTaskId",
   async (taskId) => {
     const response = await getTaskAndGuidlinesByTaskId(taskId)
-    console.log(response)
     return response.data
   }
 )
@@ -190,7 +183,7 @@ const TaskSlice = createSlice({
       .addCase(insertTask.fulfilled, (state, action) => {
         state.error = null
         state.pending = false
-        state.tasks.push(action.payload)
+        state.tasks = [action.payload, ...state.tasks]
       })
       .addCase(insertTask.rejected, (state, action) => {
         state.pending = false
@@ -216,12 +209,10 @@ const TaskSlice = createSlice({
       })
       .addCase(getPositionWiseTask.fulfilled, (state, action) => {
         state.pending = false
-        console.log(action.payload)
         state.tasks = action.payload
       })
       .addCase(getPositionWiseTask.rejected, (state, action) => {
         state.pending = false
-        console.log(action.payload)
         state.error = action.payload
       })
       //addTaskToAssignById;
@@ -266,12 +257,19 @@ const TaskSlice = createSlice({
       })
       .addCase(getTaskUsingTaskId.fulfilled, (state, action) => {
         state.pending = false
-        console.log(action.payload)
-        state.completeTaskDetailForAdmin = action.payload
+        const payload = action.payload
+        state.completeTaskDetailForAdmin.chainDetails = payload.chainDetails
+        state.completeTaskDetailForAdmin.taskMaster = payload.taskMaster
+        state.completeTaskDetailForAdmin.chainMaster = payload.chainMaster
+        state.completeTaskDetailForAdmin.checklistMasters =
+          payload.checklistMasters
+        state.completeTaskDetailForAdmin.positionGuidelines =
+          payload.positionGuidelines
+        state.completeTaskDetailForAdmin.history = payload.history
+        state.completeTaskDetailForAdmin.positionMaster = payload.positionMaster
       })
       .addCase(getTaskUsingTaskId.rejected, (state, action) => {
         state.pending = false
-        // state.tasks = [];
         state.error = action.payload
       })
 
@@ -295,7 +293,6 @@ const TaskSlice = createSlice({
       })
       .addCase(updateapprovedTask.fulfilled, (state, action) => {
         state.pending = false
-        console.log(action.payload)
         //state.tasks.filter = action.payload;
         state.tasks = state.tasks.filter(
           (t) => t.taskId !== action.payload.taskId
@@ -324,19 +321,17 @@ const TaskSlice = createSlice({
         state.error = null
         state.getHistoryDetail = {
           messages: [],
-          checker: null,
+          checker: {},
           taskDetails: null,
           guidelines: null,
           checklist: null,
           empTaskHistory: null,
+          employee: {},
         }
       })
       .addCase(getHistoryDetails.fulfilled, (state, action) => {
         state.pending = false
         const payload = action.payload
-
-        // Log the payload to verify the structure
-        console.log("Payload:", payload)
 
         state.getHistoryDetail.checker = payload.checker
         state.getHistoryDetail.taskDetails = payload.task
@@ -346,9 +341,8 @@ const TaskSlice = createSlice({
           ? payload.message.split(",")
           : []
         state.getHistoryDetail.empTaskHistory = payload.empTaskHistory
-
-        // state.getHistoryDetail.
-        // state.getHistoryDetail.
+        console.log(payload)
+        state.getHistoryDetail.employee = payload.employee
       })
       .addCase(getHistoryDetails.rejected, (state, action) => {
         state.pending = false

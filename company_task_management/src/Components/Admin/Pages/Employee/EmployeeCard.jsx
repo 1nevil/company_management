@@ -45,7 +45,7 @@ function EmployeeCard() {
   }, [dispatch, employeeId, employeess]);
   return (
     <Grid container spacing={1}>
-      <Grid item xs={3}>
+      <Grid item xs={12} md={3}>
         <Box p={[0, "3rem"]}>
           <img
             width={"70%"}
@@ -59,90 +59,88 @@ function EmployeeCard() {
               display: "block",
               margin: "0 auto",
             }}
-            src={proimg.img}
             alt=""
+            src={proimg.img}
           />
         </Box>
       </Grid>
-      <Grid item xs={9}>
-        <Box ml={[-2, 8]} mt={[3, 4]}>
+      <Grid item xs={12} md={9}>
+        <Box p={2}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h5" gutterBottom>
               Employee Profile
             </Typography>
             <hr />
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="subtitle1">Name :</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="body1">
                   {employee?.employeeName}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="subtitle1">Email :</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="body1">
                   {employee?.employeeEmail}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="subtitle1">Position :</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="body1">
                   {employee?.positionName}
                 </Typography>
               </Grid>
-              
+
               {showMore && (
                 <>
-                 <Grid item xs={6}>
-                <Typography variant="subtitle1">Gender :</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body1">
-                  {employee?.xender}
-                </Typography>
-              </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
+                    <Typography variant="subtitle1">Gender :</Typography>
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <Typography variant="body1">{employee?.xender}</Typography>
+                  </Grid>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">Phone no:</Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">
                       {employee?.mobileNumber}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">Alt Phone :</Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">
                       {employee?.altmobileNumber}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">Adhar No :</Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">
                       {employee?.adharNumber}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">Role :</Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">
                       {employee?.rolename}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">Address :</Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">
                       {employee?.addressEmployee}
                     </Typography>
@@ -159,55 +157,55 @@ function EmployeeCard() {
             {/* Add other sections of employee details */}
           </Paper>
         </Box>
-        <Box ml={[-2, 8]} mt={[3, 4]}>
+        <Box p={2}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h5" gutterBottom>
               Bank Details
             </Typography>
             <hr />
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="subtitle1">Bank Name :</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="body1">{employee?.bankName}</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="subtitle1">Branch Name :</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="body1">{employee?.branchName}</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="subtitle1">IFSC :</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} md={6}>
                 <Typography variant="body1">{employee?.ifscCode}</Typography>
               </Grid>
               {showMore2 && (
                 <>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">
                       Acc Holder Name:
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">
                       {employee?.accountHolderName}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">Acc No :</Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">
                       {employee?.accountNo}
                     </Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="subtitle1">UPI ID :</Typography>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={6} md={6}>
                     <Typography variant="body1">{employee?.upiId}</Typography>
                   </Grid>
                 </>

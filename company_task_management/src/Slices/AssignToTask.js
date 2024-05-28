@@ -8,6 +8,8 @@ import {
   updateTaskSubmission,
   NotCheckedByChecker,
   getFileFromHistoryToCarryForward,
+  getCheckerTaskHistory,
+  getTaskHistoryDetailsByIdforChecker,
 } from "./AssignToTaskApi"
 
 const initialState = {
@@ -19,27 +21,32 @@ const initialState = {
   taskGuidlinesChecker: {},
   lastFileDetailHistory: {},
   error: null,
+  getHistoryDetail: {
+    messages: [],
+    employee: null,
+    taskDetails: null,
+    guidelines: null,
+    checklist: null,
+    empTaskHistory: null,
+  },
 }
 
-export const updateTaskWithCompeletedate = createAsyncThunk(
-  "tasks/updateTaskSubmission",
-  async (updatedAssign) => {
-    console.log(updatedAssign)
-    const response = await updateTaskSubmission(updatedAssign)
-
-    return response.data
-  }
-)
+// export const
+//  updateTaskWithCompletedDate = createAsyncThunk(
+//   "tasks/updateTaskSubmission",
+//   async (updatedAssign) => {
+//     const response = await updateTaskSubmission(updatedAssign)
+//     return response.data
+//   }
+// )
 
 export const getCompletedTaskDataForChecker = createAsyncThunk(
   "tasks/getCompletedTaskDataForChecker",
   async (empId, { rejectWithValue }) => {
     try {
       const response = await getCompletedTaskForChecker(empId)
-
       return response.data
     } catch (error) {
-      console.log(error.response.data)
       if (error.response) {
         const errorMessage = error.response.data
         return rejectWithValue(errorMessage)
@@ -47,8 +54,6 @@ export const getCompletedTaskDataForChecker = createAsyncThunk(
         return rejectWithValue("An unexpected error occurred")
       }
     }
-    // console.log(taskId);
-    // console.log(response.data);
   }
 )
 
@@ -68,6 +73,22 @@ export const getTaskFromHistoryByEmpId = createAsyncThunk(
   }
 )
 
+export const getCheckerTaskHistoryByCheckerId = createAsyncThunk(
+  "tasks/getCheckerTaskHistoryByCheckerId",
+  async (checkerId) => {
+    const response = await getCheckerTaskHistory(checkerId)
+    return response.data
+  }
+)
+
+export const getHistoryOfTaskDetailsByIdforChecker = createAsyncThunk(
+  "tasks/getHistoryOfTaskDetailsByIdforChecker",
+  async (taskHistoryId) => {
+    const response = await getTaskHistoryDetailsByIdforChecker(taskHistoryId)
+    return response.data
+  }
+)
+
 export const getTaskFromHistoryUsingEmpId = createAsyncThunk(
   "tasks/getTaskFromHistoryUsingEmpId",
   async (empid, { rejectWithValue }) => {
@@ -75,7 +96,6 @@ export const getTaskFromHistoryUsingEmpId = createAsyncThunk(
       const response = await GetTaskHistoryUsingEmpID(empid)
       return response.data
     } catch (error) {
-      // console.log(error.response);
       if (error.response) {
         const errorMessage = error.response.data.message
         return rejectWithValue(errorMessage)
@@ -83,8 +103,6 @@ export const getTaskFromHistoryUsingEmpId = createAsyncThunk(
         return rejectWithValue("An unexpected error occurred")
       }
     }
-    // console.log(taskId);
-    // console.log(response.data);
   }
 )
 
@@ -95,7 +113,6 @@ export const getFileFromHistoryToSendNextEmployee = createAsyncThunk(
       const response = await getFileFromHistoryToCarryForward(taskId)
       return response.data
     } catch (error) {
-      // console.log(error.response);
       if (error.response) {
         const errorMessage = error.response.data.message
         return rejectWithValue(errorMessage)
@@ -103,8 +120,6 @@ export const getFileFromHistoryToSendNextEmployee = createAsyncThunk(
         return rejectWithValue("An unexpected error occurred")
       }
     }
-    // console.log(taskId);
-    // console.log(response.data);
   }
 )
 
@@ -122,8 +137,6 @@ export const NotCheckedByCheckerData = createAsyncThunk(
         return rejectWithValue("An unexpected error occurred")
       }
     }
-    // console.log(taskId);
-    // console.log(response.data);
   }
 )
 
@@ -131,7 +144,6 @@ export const approveDisapprove = createAsyncThunk(
   "empTask/approveDisapprove",
   async (empAssTask) => {
     const response = await approveDisapproveTask(empAssTask)
-    console.log(response.data.empTaskAssignment.empTaskId)
     return response.data.empTaskAssignment.empTaskId
   }
 )
@@ -141,18 +153,18 @@ export const AssignToTaskSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(updateTaskWithCompeletedate.pending, (state) => {
-        state.error = null
-        state.pendding = true
-      })
-      .addCase(updateTaskWithCompeletedate.fulfilled, (state, action) => {
-        state.employees = action.payload
-        state.pendding = false
-      })
-      .addCase(updateTaskWithCompeletedate.rejected, (state, action) => {
-        state.pendding = false
-        state.error = action.payload
-      })
+      // .addCase(updateTaskWithCompletedDate.pending, (state) => {
+      //   state.error = null
+      //   state.pendding = true
+      // })
+      // .addCase(updateTaskWithCompletedDate.fulfilled, (state, action) => {
+      //   state.employees = action.payload
+      //   state.pendding = false
+      // })
+      // .addCase(updateTaskWithCompletedDate.rejected, (state, action) => {
+      //   state.pendding = false
+      //   state.error = action.payload
+      // })
       .addCase(getCompletedTaskDataForChecker.pending, (state) => {
         state.tasks = []
         state.error = null
@@ -166,7 +178,6 @@ export const AssignToTaskSlice = createSlice({
         state.pendding = false
         state.error = action.payload
       })
-      //getTaskAssignDataForChecker
       .addCase(getTaskAssignDataForChecker.pending, (state) => {
         state.error = null
         state.pendding = true
@@ -174,13 +185,11 @@ export const AssignToTaskSlice = createSlice({
       .addCase(getTaskAssignDataForChecker.fulfilled, (state, action) => {
         state.pendding = false
         state.taskGuidlinesChecker = action.payload
-        console.log(action)
       })
       .addCase(getTaskAssignDataForChecker.rejected, (state, action) => {
         state.pendding = false
         state.error = action.payload
       })
-      //getTaskFromHistoryByEmpId
       .addCase(getTaskFromHistoryByEmpId.pending, (state) => {
         state.error = null
         state.pendding = true
@@ -193,7 +202,6 @@ export const AssignToTaskSlice = createSlice({
         state.pendding = false
         state.error = action.payload
       })
-      //getTaskFromHistoryUsingEmpId
       .addCase(getTaskFromHistoryUsingEmpId.pending, (state) => {
         state.error = null
         state.pendding = true
@@ -206,7 +214,6 @@ export const AssignToTaskSlice = createSlice({
         state.pendding = false
         state.error = action.payload
       })
-      //Not checked By checker data
       .addCase(NotCheckedByCheckerData.pending, (state) => {
         state.error = null
         state.pendding = true
@@ -224,7 +231,7 @@ export const AssignToTaskSlice = createSlice({
         state.pendding = true
       })
       .addCase(approveDisapprove.fulfilled, (state, action) => {
-        state.pendding = false
+        state.pending = false
         state.taskCompletedButNotChecked =
           state.taskCompletedButNotChecked.filter(
             (task) => task.AssignToTaskSlice !== action.payload
@@ -248,6 +255,54 @@ export const AssignToTaskSlice = createSlice({
       )
       .addCase(
         getFileFromHistoryToSendNextEmployee.rejected,
+        (state, action) => {
+          state.pendding = false
+          state.error = action.payload
+        }
+      )
+      .addCase(getCheckerTaskHistoryByCheckerId.pending, (state) => {
+        state.error = null
+        state.pendding = true
+      })
+      .addCase(getCheckerTaskHistoryByCheckerId.fulfilled, (state, action) => {
+        state.pendding = false
+        state.taskHistory = action.payload
+      })
+      .addCase(getCheckerTaskHistoryByCheckerId.rejected, (state, action) => {
+        state.pendding = false
+        state.error = action.payload
+      })
+      .addCase(getHistoryOfTaskDetailsByIdforChecker.pending, (state) => {
+        state.pendding = true
+        state.error = null
+        state.getHistoryDetail = {
+          messages: [],
+          employee: null,
+          taskDetails: null,
+          guidelines: null,
+          checklist: null,
+          empTaskHistory: null,
+        }
+      })
+      .addCase(
+        getHistoryOfTaskDetailsByIdforChecker.fulfilled,
+        (state, action) => {
+          state.pendding = false
+          state.error = null
+          const payload = action.payload
+
+          state.getHistoryDetail.employee = payload.employee
+          state.getHistoryDetail.taskDetails = payload.task
+          state.getHistoryDetail.guidelines = payload.guidelines || []
+          state.getHistoryDetail.checklist = payload.checklist || []
+          state.getHistoryDetail.messages = payload.message
+            ? payload.message.split(",")
+            : []
+          state.getHistoryDetail.empTaskHistory = payload.empTaskHistory
+        }
+      )
+      .addCase(
+        getHistoryOfTaskDetailsByIdforChecker.rejected,
         (state, action) => {
           state.pendding = false
           state.error = action.payload

@@ -1,7 +1,7 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import React, { useEffect } from "react"
 import Box from "@mui/material/Box"
-import { IconButton } from "@mui/material"
+import { Grid, IconButton } from "@mui/material"
 import { Delete, Edit } from "@mui/icons-material"
 import { Typography } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
@@ -34,19 +34,19 @@ function Position() {
   const Positions = useSelector((state) => state.Position.positions)
 
   const handleDelete = (id, position) => {
-    dispatch(deletePosition(id))
-    notify(position)
-  }
+    dispatch(deletePosition(id));
+    notify(position);
+  };
 
   const handleEdit = (id) => {
-    alert(id)
-  }
+    alert(id);
+  };
 
   useEffect(() => {
-    dispatch(fetchPosition())
-  }, [dispatch])
+    dispatch(fetchPosition());
+  }, [dispatch]);
 
-  const notify = (position) => toast(position + " is deleted !")
+  const notify = (position) => toast(position + " is deleted !");
 
   const columns = [
     {
@@ -100,7 +100,7 @@ function Position() {
         </>
       ),
     },
-  ]
+  ];
 
   return (
     <>
@@ -116,23 +116,27 @@ function Position() {
         >
           Position
         </Typography>
-        <DataGrid
-          rows={Positions}
-          getRowId={(row) => row.positionId}
-          columns={columns}
-          slots={{ toolbar: GridToolbar }}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 20,
-              },
-            },
-          }}
-          pageSizeOptions={[5, 15, 25, 50, 100, 200]}
-        />
+        <Grid container>
+          <Grid item xs={11} sm={12} md={12} sx={{ margin: "auto" }}>
+            <DataGrid
+              rows={Positions}
+              getRowId={(row) => row.positionId}
+              columns={columns}
+              slots={{ toolbar: GridToolbar }}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 20,
+                  },
+                },
+              }}
+              pageSizeOptions={[5, 15, 25, 50, 100, 200]}
+            />
+          </Grid>
+        </Grid>
       </Box>
     </>
-  )
+  );
 }
 
-export default Position
+export default Position;

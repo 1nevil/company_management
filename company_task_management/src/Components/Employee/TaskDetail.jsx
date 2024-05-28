@@ -15,9 +15,6 @@ import {
   Divider,
   FormGroup,
   Grid,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Skeleton,
   Typography,
 } from "@mui/material"
@@ -34,8 +31,6 @@ function EmpTaskDetail() {
     lastFileDetailHistory
   )
 
-  console.log("🚀 ~ EmpTaskDetail ~ error:", error)
-
   const {
     messages,
     checker,
@@ -47,7 +42,6 @@ function EmpTaskDetail() {
   console.log("🚀 ~ EmpTaskDetail ~ taskDetails:", taskDetails)
 
   const { taskHistoryId } = useParams()
-
   const dispatch = useDispatch()
 
   const [showMoreChecklist, setShowMoreChecklist] = useState(false)
@@ -57,7 +51,7 @@ function EmpTaskDetail() {
   useEffect(() => {
     dispatch(getHistoryDetails(taskHistoryId))
     // dispatch(getFileFromHistoryToSendNextEmployee(taskDetails))
-  }, [dispatch, taskDetails, taskHistoryId])
+  }, [dispatch, taskHistoryId])
 
   const handleOpenModal = () => {
     setOpenModal(true)
@@ -137,7 +131,7 @@ function EmpTaskDetail() {
                           }}
                         >
                           <Typography
-                            variant="p"
+                            variant="body2"
                             gutterBottom
                             textTransform="capitalize"
                             ml={3}
@@ -205,7 +199,7 @@ function EmpTaskDetail() {
                         }}
                       >
                         <Typography
-                          variant="p"
+                          variant="body2"
                           gutterBottom
                           textTransform="capitalize"
                           ml={4}
@@ -236,94 +230,80 @@ function EmpTaskDetail() {
               sx={{ textAlign: "center", margin: "auto", ml: 10 }}
             >
               {/* Task Detail */}
-              <Grid xs={12}>
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                  Task Detail
-                </Typography>
-                <Box
-                  mt={5}
-                  p={4}
-                  sx={{
-                    border: "2px solid gray",
-                    boxShadow: "2px 2px 10px 1px black",
-                  }}
-                >
-                  {pending ? (
-                    <Skeleton animation="wave" />
-                  ) : (
-                    <>
-                      {taskDetails ? (
-                        <Card
-                          sx={{
-                            border: "2px solid gray",
-                            boxShadow: "2px 2px 10px black",
-                          }}
-                        >
-                          <CardHeader
-                            title={`Task Name: ${taskDetails.taskName}`}
-                            subheader={
-                              <>
-                                {taskDetails.startDate &&
-                                taskDetails.endDate ? (
-                                  <>
-                                    <Typography
-                                      component="span"
-                                      variant="body2"
-                                    >
-                                      Start Date: {taskDetails.startDate}
-                                    </Typography>
-                                    <br />
-                                    <Typography
-                                      component="span"
-                                      variant="body2"
-                                    >
-                                      End Date: {taskDetails.endDate}
-                                    </Typography>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Typography
-                                      component="span"
-                                      variant="body2"
-                                    >
-                                      Duration: {taskDetails.durationNum}{" "}
-                                      {taskDetails.durationType}
-                                    </Typography>
-                                  </>
-                                )}
-                              </>
-                            }
-                          />
-                          <CardActionArea>
-                            <CardContent>
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                Task Detail
+              </Typography>
+              <Box
+                mt={5}
+                p={4}
+                sx={{
+                  border: "2px solid gray",
+                  boxShadow: "2px 2px 10px 1px black",
+                }}
+              >
+                {pending ? (
+                  <Skeleton animation="wave" />
+                ) : (
+                  <>
+                    {taskDetails ? (
+                      <Card
+                        sx={{
+                          border: "2px solid gray",
+                          boxShadow: "2px 2px 10px black",
+                        }}
+                      >
+                        <CardHeader
+                          title={`Task Name: ${taskDetails.taskName}`}
+                          subheader={
+                            <>
+                              {taskDetails.startDate && taskDetails.endDate ? (
+                                <>
+                                  <Typography component="span" variant="body2">
+                                    Start Date: {taskDetails.startDate}
+                                  </Typography>
+                                  <br />
+                                  <Typography component="span" variant="body2">
+                                    End Date: {taskDetails.endDate}
+                                  </Typography>
+                                </>
+                              ) : (
+                                <>
+                                  <Typography component="span" variant="body2">
+                                    Duration: {taskDetails.durationNum}{" "}
+                                    {taskDetails.durationType}
+                                  </Typography>
+                                </>
+                              )}
+                            </>
+                          }
+                        />
+                        <CardActionArea>
+                          <CardContent>
+                            <Typography variant="body2" color="text.secondary">
                               <Typography
-                                variant="body2"
-                                color="text.secondary"
+                                variant="body1"
+                                sx={{ fontWeight: "bold" }}
                               >
-                                <Typography
-                                  sx={{ variant: "p", fontWeight: "bold" }}
-                                >
-                                  Description
-                                </Typography>{" "}
-                                {taskDetails.description}
-                              </Typography>
-                            </CardContent>
-                          </CardActionArea>
-                        </Card>
-                      ) : error ? (
-                        <Typography variant="h5" gutterBottom>
-                          {error}
-                        </Typography>
-                      ) : (
-                        <Typography variant="h5" gutterBottom>
-                          Loading...
-                          <Skeleton animation="wave" />
-                        </Typography>
-                      )}
-                    </>
-                  )}
-                </Box>
-              </Grid>
+                                Description
+                              </Typography>{" "}
+                              {taskDetails.description}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    ) : error ? (
+                      <Typography variant="h5" gutterBottom>
+                        {error}
+                      </Typography>
+                    ) : (
+                      <Typography variant="h5" gutterBottom>
+                        Loading...
+                        <Skeleton animation="wave" />
+                      </Typography>
+                    )}
+                  </>
+                )}
+              </Box>
             </Grid>
           </Grid>
           {/* Modal */}
@@ -367,57 +347,65 @@ function EmpTaskDetail() {
           </Dialog>
           {/* Checked By */}
           <Box mt={5}>
-            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            <Typography
+              variant="h5"
+              textAlign="center"
+              mb={3}
+              sx={{ fontWeight: "bold" }}
+            >
               Checked By
             </Typography>
             <Box
-              mt={2}
-              p={4}
               sx={{
-                border: "2px solid gray",
-                borderRadius: "10px",
-                boxShadow: "2px 2px 10px 1px black",
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
               }}
             >
-              {pending ? (
-                <Skeleton animation="wave" />
-              ) : (
-                <>
-                  {checker ? (
-                    <>
-                      <Typography variant="body1">
-                        <strong>Employee ID:</strong> {checker.employeeId}
+              <Box
+                p={4}
+                sx={{
+                  border: "2px solid gray",
+                  borderRadius: "20px",
+                  boxShadow: "5px 5px 10px gray",
+                }}
+              >
+                {pending ? (
+                  <Skeleton animation="wave" height={150} />
+                ) : (
+                  <Typography
+                    variant="body1"
+                    textAlign="center"
+                    textTransform="capitalize"
+                  >
+                    {checker ? (
+                      <p>{JSON.stringify(checker)}</p>
+                    ) : (
+                      // checker?.map((checker, index) => (
+                      //   <Typography
+                      //     key={index}
+                      //     variant="body1"
+                      //     textTransform="capitalize"
+                      //     sx={{
+                      //       display: "inline",
+                      //       "&::after":
+                      //         index !== checker.length - 1 ? ", " : "",
+                      //     }}
+                      //   >
+                      //     {checker}
+                      //   </Typography>
+                      // ))
+                      <Typography
+                        variant="body1"
+                        textAlign="center"
+                        color="error"
+                      >
+                        No checker found
                       </Typography>
-                      <Typography variant="body1">
-                        <strong>Employee Name:</strong> {checker.employeeName}
-                      </Typography>
-                      <Typography variant="body1">
-                        <strong>Employee Email:</strong> {checker.employeeEmail}
-                      </Typography>
-                      <Typography variant="body1">
-                        <strong>Employee Age:</strong> {checker.employeeAge}
-                      </Typography>
-                      <Typography variant="body1">
-                        <strong>Mobile Number:</strong> {checker.mobileNumber}
-                      </Typography>
-                      <Typography variant="body1">
-                        <strong>Alternate Mobile Number:</strong>{" "}
-                        {checker.altmobileNumber}
-                      </Typography>
-                      <Typography variant="body1">
-                        <strong>DOB:</strong> {checker.dob}
-                      </Typography>
-                      <Typography variant="body1">
-                        <strong>Address:</strong> {checker.addressEmployee}
-                      </Typography>
-                    </>
-                  ) : (
-                    <Typography variant="h5" gutterBottom>
-                      {error}
-                    </Typography>
-                  )}
-                </>
-              )}
+                    )}
+                  </Typography>
+                )}
+              </Box>
             </Box>
           </Box>
         </div>

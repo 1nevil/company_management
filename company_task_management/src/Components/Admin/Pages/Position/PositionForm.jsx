@@ -98,7 +98,7 @@ const PositionForm = () => {
         <DialogContent>
           <form onSubmit={handleSubmit} style={{ paddingTop: "10px" }}>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Position Name"
@@ -113,7 +113,7 @@ const PositionForm = () => {
                   </Typography>
                 ) : null}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Duration"
@@ -128,7 +128,7 @@ const PositionForm = () => {
                   </Typography>
                 ) : null}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <InputLabel>Duration Type</InputLabel>
                   <Select
@@ -148,7 +148,7 @@ const PositionForm = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Unit"
@@ -163,7 +163,7 @@ const PositionForm = () => {
                   </Typography>
                 ) : null}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Unit Name"
@@ -178,7 +178,7 @@ const PositionForm = () => {
                   </Typography>
                 ) : null}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Rate Per Unit"
