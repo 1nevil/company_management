@@ -39,6 +39,9 @@ import ProtectedRoute from "./Route/ProtectedRoute"
 import TaskIsActiveDeatils from "./Components/Employee/TaskIsActiveDetail"
 import EmployeeCard from "./Components/Admin/Pages/Employee/EmployeeCard"
 import AdminTaskDeatil from "./Components/Admin/Pages/Task/AdminTaskDeatil"
+import ManageHistoryIcon from "@mui/icons-material/ManageHistory"
+import FlakyIcon from "@mui/icons-material/Flaky"
+import NotChecked from "./Components/Employee/NotChecked"
 
 function App() {
   const iconSiderbar = {
@@ -52,8 +55,13 @@ function App() {
       sidebar: ["Task"],
     },
     employee: {
-      icons: [dashboard, BadgeIcon, RunningWithErrorsIcon],
-      sidebar: ["EmployeeDashboard", "TaskHistory", "TaskIsActive"],
+      icons: [dashboard, ManageHistoryIcon, RunningWithErrorsIcon, FlakyIcon],
+      sidebar: [
+        "EmployeeDashboard",
+        "TaskHistory",
+        "TaskIsActive",
+        "notChecked",
+      ],
     },
     superviser: {
       icons: [dashboard],
@@ -199,6 +207,10 @@ function App() {
             {
               path: "TaskIsActiveDeatils/:taskId",
               element: <TaskIsActiveDeatils />,
+            },
+            {
+              path: "notChecked",
+              element: <NotChecked />,
             },
             // ,{
             //   path:"dashboard",

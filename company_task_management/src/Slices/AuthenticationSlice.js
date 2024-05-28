@@ -59,6 +59,7 @@ export const AuthenticationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(loginUser.fulfilled, (state, action) => {

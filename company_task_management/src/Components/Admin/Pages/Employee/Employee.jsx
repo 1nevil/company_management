@@ -1,36 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import Box from "@mui/material/Box";
-import { IconButton, TextField } from "@mui/material"; // Import TextField for search input
-import { Link } from "react-router-dom";
-import { Delete, Edit } from "@mui/icons-material";
-import { Typography } from "@mui/material";
-import EmployeeForm from "./EmployeeForm";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import React, { useEffect, useState } from "react"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import Box from "@mui/material/Box"
+import { IconButton, TextField } from "@mui/material" // Import TextField for search input
+import { Link } from "react-router-dom"
+import { Delete, Edit } from "@mui/icons-material"
+import { Typography } from "@mui/material"
+import EmployeeForm from "./EmployeeForm"
+import { useDispatch, useSelector } from "react-redux"
+import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import VisibilityIcon from "@mui/icons-material/Visibility"
 
 function Employee() {
-  const dispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
-  const employeess = useSelector((state) => state.Employee.employees) || [];
+  const dispatch = useDispatch()
+  const [searchTerm, setSearchTerm] = useState("") // State to store search term
+  const employeess = useSelector((state) => state.Employee.employees) || []
 
   useEffect(() => {
-    dispatch(fetchEmp());
-  }, [dispatch]);
+    dispatch(fetchEmp())
+  }, [dispatch])
 
   const handleDelete = (id, name) => {
-    dispatch(deleteEmp(id));
-    notify(name);
-  };
+    dispatch(deleteEmp(id))
+    notify(name)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
-  const notify = (name) => toast(name + " is deleted !");
+  const notify = (name) => toast(name + " is deleted !")
 
   // Filtered rows based on search term
   // const filteredRows = employeess?.filter((row) =>
@@ -48,12 +48,12 @@ function Employee() {
             value.toString().toLowerCase().includes(searchTerm.toLowerCase())
         )
       )
-    : [];
+    : []
 
   // Sort filtered rows by dateOfJoining in descending order
   const sortedRows = filteredRows.sort(
     (a, b) => new Date(b.dateOfJoining) - new Date(a.dateOfJoining)
-  );
+  )
 
   const columns = [
     {
@@ -149,7 +149,7 @@ function Employee() {
       headerName: "Role",
       width: 140,
     },
-  ];
+  ]
 
   return (
     <>
@@ -176,23 +176,25 @@ function Employee() {
         >
           Employees
         </Typography>
-        <DataGrid
-          rows={sortedRows} // Pass sorted rows to DataGrid
-          getRowId={(row) => row.employeeId}
-          columns={columns}
-          slots={{ toolbar: GridToolbar }}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 50,
+        <Box style={{ height: "50%", width: "100%" }}>
+          <DataGrid
+            rows={sortedRows} // Pass sorted rows to DataGrid
+            getRowId={(row) => row.employeeId}
+            columns={columns}
+            slots={{ toolbar: GridToolbar }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 50,
+                },
               },
-            },
-          }}
-          pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
-        />
+            }}
+            pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
+          />
+        </Box>
       </Box>
     </>
-  );
+  )
 }
 
-export default Employee;
+export default Employee

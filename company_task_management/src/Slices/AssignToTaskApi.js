@@ -11,13 +11,6 @@ export function updateTaskSubmission({
   fileUpload,
   isActive,
 }) {
-  console.log({
-    taskId: Number(taskId),
-    empId,
-    completedAt,
-    fileUpload,
-    isActive,
-  })
   const encodedCompletedAt = encodeURIComponent(completedAt)
   const encodedFileUpload = encodeURIComponent(fileUpload)
   return axiosInstance.put(
@@ -26,8 +19,6 @@ export function updateTaskSubmission({
 }
 
 export function getCompletedTaskForChecker(postionId) {
-  console.log("🚀 ~ getCompletedTaskForChecker ~ postionId:", postionId)
-
   return axiosInstance.get(
     `api/EmpTaskAssignments/getCompletedTaskForChecker/${postionId}`
   )
@@ -51,5 +42,15 @@ export const approveDisapproveTask = (empAssData) => {
   return axiosInstance.put(
     `/api/EmpTaskAssignments/approveDisapproveTask`,
     empAssData
+  )
+}
+
+export const NotCheckedByChecker = (empId) => {
+  return axiosInstance.get(`api/EmpTaskAssignments/pendingToCheck/${empId}`)
+}
+
+export const getFileFromHistoryToCarryForward = (taskId) => {
+  return axiosInstance.get(
+    `api/EmpTaskHistories/GetTaskApprovedTaskFromPreviosEmployee/${taskId}`
   )
 }

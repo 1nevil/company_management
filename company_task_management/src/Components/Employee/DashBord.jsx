@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Box from "@mui/material/Box"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Link } from "react-router-dom"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import AddIcon from "@mui/icons-material/Add"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import Button from "@mui/material/Button"
 import { useSelector, useDispatch } from "react-redux"
 import { IconButton } from "@mui/material"
-import { fetchChainMater } from "../../Slices/ChainSliceMaster"
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
 import { addAssignTask, getPositionWiseTask } from "../../Slices/TaskSlice"
+import Alert from "@mui/material/Alert"
 
 function EmployeeDashboard() {
-  const [TaskDetails, setTaskDetails] = useState(false)
-  const [selectedRow, setSelectedRow] = useState(null)
-  // const filteredTasksByPosition = useSelector(
-  //   (state) => state.Tasks.filteredTasks
-  // );
-
-  const tasksByPosition = useSelector((state) => state.Tasks.tasks)
+  const { pending, tasks, error } = useSelector((state) => state.Tasks)
   const { id: empId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
   )
@@ -28,7 +18,6 @@ function EmployeeDashboard() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(positionId)
     dispatch(getPositionWiseTask(positionId))
   }, [dispatch, positionId])
 
@@ -46,24 +35,13 @@ function EmployeeDashboard() {
     var formattedDate = day + "/" + month + "/" + year
 
     const insertData = {
-      empId: empId,
+      empId: Number(empId),
       taskId: id,
       assignedAt: formattedDate,
       isActive: "1",
     }
     dispatch(addAssignTask(insertData))
-    alert(id)
   }
-
-  const handleOpenChainDetail = () => {
-    setTaskDetails(true)
-  }
-
-  const handleCloseChainDetail = () => {
-    setTaskDetails(false)
-  }
-
-  // const handleDelete = () => {}
 
   const columns = [
     { field: "taskId", headerName: "task ID", width: 90 },
@@ -104,10 +82,13 @@ function EmployeeDashboard() {
 
   return (
     <Box>
+      <Box mb={1}>
+        {error !== null && <Alert severity="error">{error}</Alert>}
+      </Box>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
         // rows={filteredTasksByPosition}
-        rows={tasksByPosition}
+        rows={tasks}
         columns={columns}
         getRowId={(row) => row.taskId}
         initialState={{

@@ -87,7 +87,7 @@ function Chain() {
   return (
     <Box>
       <Button
-        sx={{ margin: "1rem 0" }}
+        sx={{ margin: "0 0 0.7rem 0" }}
         variant="contained"
         onClick={handleOpenChain}
       >

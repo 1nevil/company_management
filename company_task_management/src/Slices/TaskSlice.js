@@ -36,10 +36,10 @@ export const insertTask = createAsyncThunk(
       const response = await insertTaskData(task)
       return response.data // Assuming your backend returns the data directly
     } catch (error) {
-      console.log(error)
+      console.log(error.response.data)
       if (error.response) {
         // Extract custom message from backend response
-        const errorMessage = error.response.data.message
+        const errorMessage = error.response.data
         return rejectWithValue(errorMessage)
       } else {
         return rejectWithValue("An unexpected error occurred")
@@ -66,9 +66,21 @@ export const getAllTasks = createAsyncThunk("task/getAllTasks", async () => {
 // addAssignTask
 export const addAssignTask = createAsyncThunk(
   "task/addAssignTask",
-  async (task) => {
-    const response = await addTaskToAssignById(task)
-    return response.data
+  async (task, { rejectWithValue }) => {
+    try {
+      console.log(task)
+      const response = await addTaskToAssignById(task)
+      console.log("🚀 ~ response:", response)
+      return response.data
+    } catch (error) {
+      console.log(error.response.data)
+      if (error.response) {
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
   }
 )
 
@@ -109,15 +121,14 @@ export const getTaskUsingTaskId = createAsyncThunk(
 export const getTaskUsingTaskIdAndPostionId = createAsyncThunk(
   "task/getTaskUsingTaskIdAndPostionId",
   async ({ positionId, taskId }, { rejectWithValue }) => {
-    console.log(positionId, taskId)
     try {
       const response = await getTaskByTaskPositionId(positionId, taskId)
       console.log(response.data)
       return response.data
     } catch (error) {
-      // console.log(error.response);
+      console.log(error.response.data)
       if (error.response) {
-        const errorMessage = error.response.data.message
+        const errorMessage = error.response.data
         return rejectWithValue(errorMessage)
       } else {
         return rejectWithValue("An unexpected error occurred")
@@ -137,9 +148,9 @@ export const getHistoryDetails = createAsyncThunk(
       console.log(response.data)
       return response.data
     } catch (error) {
-      // console.log(error.response);
+      console.log(error.response)
       if (error.response) {
-        const errorMessage = error.response.data.message
+        const errorMessage = error.response.data
         return rejectWithValue(errorMessage)
       } else {
         return rejectWithValue("An unexpected error occurred")
@@ -187,6 +198,7 @@ const TaskSlice = createSlice({
       })
       //addAssignTask
       .addCase(getAllTasks.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(getAllTasks.fulfilled, (state, action) => {
@@ -199,6 +211,7 @@ const TaskSlice = createSlice({
       })
       //   getTaskByPostionId
       .addCase(getPositionWiseTask.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(getPositionWiseTask.fulfilled, (state, action) => {
@@ -213,11 +226,12 @@ const TaskSlice = createSlice({
       })
       //addTaskToAssignById;
       .addCase(addAssignTask.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(addAssignTask.fulfilled, (state, action) => {
-        // state.pending = false;
-        console.log(action.payload.taskId)
+        state.error = null
+        console.log(action.payload)
         state.tasks = state.tasks.filter(
           (t) => t.taskId !== action.payload.taskId
         )
@@ -230,6 +244,7 @@ const TaskSlice = createSlice({
       // GetTaskFromAssignTaskByEmpId
 
       .addCase(getTaskUsingEmpId.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(getTaskUsingEmpId.fulfilled, (state, action) => {
@@ -246,6 +261,7 @@ const TaskSlice = createSlice({
       // getTaskUsingTaskId
 
       .addCase(getTaskUsingTaskId.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(getTaskUsingTaskId.fulfilled, (state, action) => {
@@ -260,6 +276,7 @@ const TaskSlice = createSlice({
       })
 
       .addCase(getTaskDataAndGuidlinesByTaskId.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(getTaskDataAndGuidlinesByTaskId.fulfilled, (state, action) => {
@@ -273,6 +290,7 @@ const TaskSlice = createSlice({
       })
       //updateapprovedTask
       .addCase(updateapprovedTask.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(updateapprovedTask.fulfilled, (state, action) => {
@@ -315,7 +333,6 @@ const TaskSlice = createSlice({
       })
       .addCase(getHistoryDetails.fulfilled, (state, action) => {
         state.pending = false
-        state.error = null
         const payload = action.payload
 
         // Log the payload to verify the structure

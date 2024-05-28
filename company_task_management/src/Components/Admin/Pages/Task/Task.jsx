@@ -165,50 +165,6 @@ function Task() {
     },
   ]
 
-  const Tasks = [
-    {
-      id: 1,
-      taskName: "Task 1",
-      rate: "100",
-      role_id: "1",
-      task_dependency: "1",
-      unit: "1",
-      instructions: "Do this and that",
-      start_date: "2024-02-27",
-      end_date_increase_time: "2024-02-27",
-      employee_id: "EMP001",
-      description: "Description for Task 1",
-      department: "Dept A",
-      subdepartment_id: "Subdept 1",
-      task_status: "Pending",
-      duration: "3 days",
-      //checklist: "Checklist for Task 1",
-      set_Reminder: "Reminder set",
-      teamname: "Team X",
-    },
-    {
-      id: 2,
-      taskName: "Task 2",
-      rate: "100",
-      role_id: "ROLE002",
-      task_dependency: "Task 1",
-      unit: "Hours",
-      instructions: "Follow the instructions carefully",
-      start_date: "2024-03-05",
-      end_date_increase_time: "2024-02-27",
-      employee_id: "EMP002",
-      description: "Description for Task 2",
-      department: "Dept B",
-      subdepartment_id: "Subdept 2",
-      task_status: "In Progress",
-      duration: "5 hours",
-      //checklist: "Checklist for Task 2",
-      set_Reminder: "Reminder not set",
-      teamname: "Team Y",
-    },
-    // Add more rows as needed
-  ]
-
   const handleDelete = (id) => {
     alert(id)
   }
@@ -217,16 +173,9 @@ function Task() {
     alert(id)
   }
 
-  // const Tasks = [
-  //   { id: 1, Category: "Snow" },
-  //   { id: 2, Category: "Lannister" },
-  //   { id: 3, Category: "Lannister" },
-  // ];
-
   return (
     <>
       <MyButton
-        sx={{ margin: "1rem 0" }}
         variant="contained"
         fullWidth={false}
         onSmash={handleClickOpen("body")}
@@ -263,21 +212,20 @@ function Task() {
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: "80vh", width: "100%" }}>
         <DataGrid
-          sx={{ height: "450px" }}
-          rows={allTask}
+          rows={allTask} // Pass sorted rows to DataGrid
           getRowId={(row) => row.taskId}
           columns={columns}
           slots={{ toolbar: GridToolbar }}
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: 50,
               },
             },
           }}
-          pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
+          pageSizeOptions={[50, 75, 100, 200]}
         />
       </div>
     </>
