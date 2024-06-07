@@ -18,18 +18,15 @@ import {
   Skeleton,
   TextField,
   Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice";
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import {
-  getHistoryOfTaskDetailsByIdforChecker,
-  updateTaskWithCompeletedate,
-} from "../../Slices/AssignToTask";
+} from "@mui/material"
+import { Box } from "@mui/system"
+import { useParams, useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react"
+import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice"
+import { styled } from "@mui/material/styles"
+import Button from "@mui/material/Button"
+import { getHistoryOfTaskDetailsByIdforChecker } from "../../Slices/AssignToTask"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -41,10 +38,10 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
 function CheckerTaskIsActiveDeatils() {
-  const { pending, error } = useSelector((state) => state.AssignToTask);
+  const { pending, error } = useSelector((state) => state.AssignToTask)
   const {
     messages,
     employee,
@@ -52,103 +49,103 @@ function CheckerTaskIsActiveDeatils() {
     guidelines,
     checklist,
     empTaskHistory,
-  } = useSelector((state) => state.AssignToTask.getHistoryDetail);
+  } = useSelector((state) => state.AssignToTask.getHistoryDetail)
 
-  const navigate = useNavigate();
-  const { id: checkerId } = useSelector((state) => state.Auth.authicatedUser);
+  const navigate = useNavigate()
+  const { id: checkerId } = useSelector((state) => state.Auth.authicatedUser)
 
-  const [completedGuidelines, setCompletedGuidelines] = useState([]);
-  const [incompleteGuidelines, setIncompleteGuidelines] = useState([]);
-  const [fileUpload, setFileUpload] = useState("");
-  const { taskId } = useParams();
-  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
-  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [completedGuidelines, setCompletedGuidelines] = useState([])
+  const [incompleteGuidelines, setIncompleteGuidelines] = useState([])
+  const [fileUpload, setFileUpload] = useState("")
+  const { taskId } = useParams()
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false)
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
 
-  const dispatch = useDispatch();
-  const { id: empId } = useSelector((state) => state.Auth.authicatedUser);
+  const dispatch = useDispatch()
+  const { id: empId } = useSelector((state) => state.Auth.authicatedUser)
 
   const displayedChecklist = showMoreChecklist
     ? checklist
-    : checklist?.slice(0, 3);
+    : checklist?.slice(0, 3)
 
   const displayedGuidelines = showMoreGuidelines
     ? guidelines
-    : guidelines?.slice(0, 3);
+    : guidelines?.slice(0, 3)
 
   const handleOpenModal = () => {
-    setOpenModal(true);
-  };
+    setOpenModal(true)
+  }
 
   const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+    setOpenModal(false)
+  }
 
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getHistoryOfTaskDetailsByIdforChecker(taskId));
-  }, [dispatch, taskId]);
+    dispatch(getHistoryOfTaskDetailsByIdforChecker(taskId))
+  }, [dispatch, taskId])
 
   useEffect(() => {
     const storedCompletedGuidelines =
-      JSON.parse(localStorage.getItem(`completedGuidelines_${taskId}`)) || [];
+      JSON.parse(localStorage.getItem(`completedGuidelines_${taskId}`)) || []
     const storedIncompleteGuidelines =
-      JSON.parse(localStorage.getItem(`incompleteGuidelines_${taskId}`)) || [];
-    setCompletedGuidelines(storedCompletedGuidelines);
-    setIncompleteGuidelines(storedIncompleteGuidelines);
-  }, [taskId]);
+      JSON.parse(localStorage.getItem(`incompleteGuidelines_${taskId}`)) || []
+    setCompletedGuidelines(storedCompletedGuidelines)
+    setIncompleteGuidelines(storedIncompleteGuidelines)
+  }, [taskId])
 
   const handleUploadWork = () => {
-    var currentDate = new Date();
+    var currentDate = new Date()
 
-    var day = currentDate.getDate();
-    var month = currentDate.getMonth() + 1;
-    var year = currentDate.getFullYear();
+    var day = currentDate.getDate()
+    var month = currentDate.getMonth() + 1
+    var year = currentDate.getFullYear()
 
-    day = day < 10 ? "0" + day : day;
-    month = month < 10 ? "0" + month : month;
+    day = day < 10 ? "0" + day : day
+    month = month < 10 ? "0" + month : month
 
-    var completedAt = day + "/" + month + "/" + year;
+    var completedAt = day + "/" + month + "/" + year
     const updatedAssign = {
       taskId: Number(taskId),
       empId,
       completedAt,
       fileUpload,
       isActive: "2",
-    };
-    console.log("🚀 ~ handleUploadWork ~ updatedAssign:", updatedAssign);
+    }
+    console.log("🚀 ~ handleUploadWork ~ updatedAssign:", updatedAssign)
 
-    dispatch(updateTaskWithCompeletedate(updatedAssign));
-    navigate("/employee/EmployeeDashboard");
-  };
+    // dispatch(updateTaskWithCompeletedate(updatedAssign));
+    navigate("/employee/EmployeeDashboard")
+  }
 
   const handleCheckboxChange = (guidelineId, isChecked) => {
     if (isChecked) {
       // Move the guideline to completed list
-      setCompletedGuidelines([...completedGuidelines, guidelineId]);
+      setCompletedGuidelines([...completedGuidelines, guidelineId])
       setIncompleteGuidelines(
         incompleteGuidelines.filter((id) => id !== guidelineId)
-      );
+      )
     } else {
       // Move the guideline to incomplete list
-      setIncompleteGuidelines([...incompleteGuidelines, guidelineId]);
+      setIncompleteGuidelines([...incompleteGuidelines, guidelineId])
       setCompletedGuidelines(
         completedGuidelines.filter((id) => id !== guidelineId)
-      );
+      )
     }
-  };
+  }
 
   useEffect(() => {
     localStorage.setItem(
       `completedGuidelines_${taskId}`,
       JSON.stringify(completedGuidelines)
-    );
+    )
     localStorage.setItem(
       `incompleteGuidelines_${taskId}`,
       JSON.stringify(incompleteGuidelines)
-    );
-  }, [completedGuidelines, incompleteGuidelines, taskId]);
+    )
+  }, [completedGuidelines, incompleteGuidelines, taskId])
 
   return (
     <div>
@@ -454,6 +451,6 @@ function CheckerTaskIsActiveDeatils() {
         </Box>
       </Box>
     </div>
-  );
+  )
 }
-export default CheckerTaskIsActiveDeatils;
+export default CheckerTaskIsActiveDeatils

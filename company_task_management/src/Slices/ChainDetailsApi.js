@@ -12,5 +12,5 @@ export function fetchChainDetailChainId(id) {
   // let r = axiosInstance.get(`api/ChainDetails/${id}`)
 
   // console.log("🚀 ~ fetchChainDetailChainId ~ r:", r)
-  return axiosInstance.get(`api/ChainDetails/${id}`)
+  return axiosInstance.get(`api/ChainDetails/getChainDetail/${id}`)
 }

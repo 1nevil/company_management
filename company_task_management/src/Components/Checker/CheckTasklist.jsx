@@ -17,15 +17,21 @@ import VisibilityIcon from "@mui/icons-material/Visibility"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { updateapprovedTask } from "../../Slices/TaskSlice"
-import { getCompletedTaskDataForChecker } from "../../Slices/AssignToTask"
+import {
+  approveDisapprove,
+  getCompletedTaskDataForChecker,
+} from "../../Slices/AssignToTask"
 import WarningAmberIcon from "@mui/icons-material/WarningAmber"
 
 function CheckTaskList() {
   const [open, setOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState(null)
+  const [message, setMessage] = useState("")
   const dispatch = useDispatch()
-  const { pendding, tasks, error } = useSelector((state) => state.AssignToTask)
-  const { Position: positionId } = useSelector(
+  const { pendding, checkerTaskList, error } = useSelector(
+    (state) => state.AssignToTask
+  )
+  const { id: employeeId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
   )
   useEffect(() => {
@@ -34,10 +40,19 @@ function CheckTaskList() {
 
   const handleDisapprove = (TaskId) => {
     setOpen(true)
+    console.log(TaskId)
     setSelectedTask(TaskId)
   }
 
-  const handleSubmit = () => {
+  const handleDisapproveSubmit = () => {
+    dispatch(
+      approveDisapprove({
+        TaskAssId: selectedTask,
+        CheckerId: employeeId,
+        IsApprove: false,
+        Message: message,
+      })
+    )
     setOpen(false)
     setSelectedTask(null)
   }
@@ -47,13 +62,20 @@ function CheckTaskList() {
   }
 
   const handleApprove = (empTaskId) => {
-    const rowData = tasks.find((row) => row.empTaskId === empTaskId)
-    if (rowData) {
-      const taskId = rowData.taskId
-      dispatch(updateapprovedTask(taskId))
-    } else {
-      console.error("Row data not found for empTaskId:", empTaskId)
-    }
+    dispatch(
+      approveDisapprove({
+        TaskAssId: empTaskId,
+        CheckerId: employeeId,
+        IsApprove: true,
+      })
+    )
+
+    // if (rowData) {
+    //   const taskId = rowData.taskId
+    //   dispatch(updateapprovedTask(taskId))
+    // } else {
+    //   console.error("Row data not found for empTaskId:", empTaskId)
+    // }
   }
 
   const columns = [
@@ -85,7 +107,7 @@ function CheckTaskList() {
       width: 120,
       renderCell: (params) => (
         <IconButton
-          onClick={() => handleDisapprove(params.row.id)}
+          onClick={() => handleDisapprove(params.row.empTaskId)}
           title="Disapprove"
         >
           <CancelOutlinedIcon sx={{ color: "red" }} />
@@ -130,7 +152,7 @@ function CheckTaskList() {
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
         loading={pendding}
-        rows={tasks}
+        rows={checkerTaskList}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5, 10, 20]}
@@ -155,13 +177,15 @@ function CheckTaskList() {
               label=""
               name="taskName"
               multiline
+              required
+              onChange={(e) => setMessage(e.target.value)}
               fullWidth
               rows={6}
             />
             <Box sx={{ display: "flex", mt: 2, justifyContent: "center" }}>
               <Button
                 variant="contained"
-                onClick={handleSubmit}
+                onClick={handleDisapproveSubmit}
                 color="primary"
                 sx={{ width: "300px" }}
               >

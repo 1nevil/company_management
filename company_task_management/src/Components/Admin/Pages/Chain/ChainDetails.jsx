@@ -1,43 +1,45 @@
-import { Form, Link, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
-import Stack from "@mui/material/Stack";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Check from "@mui/icons-material/Check";
-import SettingsIcon from "@mui/icons-material/Settings";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import VideoLabelIcon from "@mui/icons-material/VideoLabel";
+import { Form, Link, useParams } from "react-router-dom"
+import PropTypes from "prop-types"
+import { styled } from "@mui/material/styles"
+import Stack from "@mui/material/Stack"
+import Stepper from "@mui/material/Stepper"
+import Step from "@mui/material/Step"
+import StepLabel from "@mui/material/StepLabel"
+import Check from "@mui/icons-material/Check"
+import SettingsIcon from "@mui/icons-material/Settings"
+import GroupAddIcon from "@mui/icons-material/GroupAdd"
+import VideoLabelIcon from "@mui/icons-material/VideoLabel"
 import StepConnector, {
   stepConnectorClasses,
-} from "@mui/material/StepConnector";
-import { Grid } from "@mui/material";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getChainDetailsByChainId } from "../../../../Slices/ChainDetailsSlice";
-import { getPositionsByIds } from "../../../../Slices/PositionSlice";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import CameraIcon from "@mui/icons-material/Camera";
-import ComputerIcon from "@mui/icons-material/Computer";
+} from "@mui/material/StepConnector"
+import { Grid, Box, Typography, Alert } from "@mui/material"
+import { Skeleton } from "@mui/material"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getChainDetailsByChainId } from "../../../../Slices/ChainDetailsSlice"
+import { getPositionsByIds } from "../../../../Slices/PositionSlice"
+import EngineeringIcon from "@mui/icons-material/Engineering"
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium"
+import ComputerIcon from "@mui/icons-material/Computer"
+import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft"
+import CallMadeIcon from "@mui/icons-material/CallMade"
+import EastIcon from "@mui/icons-material/East"
 
-// "chainId": 8,
-// "checkerId": 5,
-// "chainFlow": null,
+// Define the number of steps per row
+const stepsPerRow = 5
 
+// Styled component for the step icon in Qonto style
 const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   color: theme.palette.mode === "dark" ? theme.palette.grey[700] : "#eaeaf0",
   display: "flex",
   height: 22,
   alignItems: "center",
-  ...(ownerState.active && {
-    color: "#784af4",
-  }),
+  backgroundImage: "linear-gradient( 95deg, #00bcd4 0%, #3f51b5 100%)",
+  "-webkit-background-clip": "text",
+  "-webkit-text-fill-color": "transparent",
   "& .QontoStepIcon-completedIcon": {
-    color: "#784af4",
     zIndex: 1,
-    fontSize: 18,
+    fontSize: 20,
   },
   "& .QontoStepIcon-circle": {
     width: 8,
@@ -45,10 +47,11 @@ const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     borderRadius: "50%",
     backgroundColor: "currentColor",
   },
-}));
+}))
 
+// Custom step icon component for Qonto style
 function QontoStepIcon(props) {
-  const { active, completed, className } = props;
+  const { active, completed, className } = props
 
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
@@ -58,29 +61,28 @@ function QontoStepIcon(props) {
         <div className="QontoStepIcon-circle" />
       )}
     </QontoStepIconRoot>
-  );
+  )
 }
 
 QontoStepIcon.propTypes = {
   active: PropTypes.bool,
   className: PropTypes.string,
   completed: PropTypes.bool,
-};
+}
 
+// Styled component for the step connector with Colorlib style
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 22,
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+      backgroundImage: "linear-gradient( 95deg, #00bcd4 0%, #3f51b5 100%)",
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+      backgroundImage: "linear-gradient( 95deg, #00bcd4 0%, #3f51b5 100%)",
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
@@ -90,11 +92,10 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
       theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
     borderRadius: 1,
   },
-}));
+}))
 
+// Styled component for the step icon with Colorlib style
 const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
   zIndex: 1,
   color: "#fff",
   width: 50,
@@ -103,19 +104,13 @@ const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
   borderRadius: "50%",
   justifyContent: "center",
   alignItems: "center",
-  ...(ownerState.active && {
-    backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
-    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
-  }),
-  ...(ownerState.completed && {
-    backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
-  }),
-}));
+  backgroundImage: "linear-gradient( 136deg, #00bcd4 0%, #3f51b5 100%)",
+  boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+}))
 
+// Custom step icon component for Colorlib style
 function ColorlibStepIcon(props) {
-  const { active, completed, className } = props;
+  const { active, completed, className } = props
 
   const icons = {
     1: <SettingsIcon />,
@@ -125,7 +120,7 @@ function ColorlibStepIcon(props) {
     5: <WorkspacePremiumIcon />,
     6: <EngineeringIcon />,
     7: <ComputerIcon />,
-  };
+  }
 
   return (
     <ColorlibStepIconRoot
@@ -134,7 +129,7 @@ function ColorlibStepIcon(props) {
     >
       {icons[String(props.icon)]}
     </ColorlibStepIconRoot>
-  );
+  )
 }
 
 ColorlibStepIcon.propTypes = {
@@ -142,67 +137,95 @@ ColorlibStepIcon.propTypes = {
   className: PropTypes.string,
   completed: PropTypes.bool,
   icon: PropTypes.node,
-};
+}
 
+// Main component for displaying chain details
 function ChainDetails() {
-  let { chainid } = useParams();
+  let { chainid } = useParams()
   const {
     pending: chainPending,
     chainFlow,
     error: chainError,
-  } = useSelector((state) => state.ChainDetail);
-  console.log("🚀 ~ ChainDetails ~ chainFlow:", chainFlow);
-
-  const { chainPositions } = useSelector((state) => state.Position);
-  console.log("🚀 ~ ChainDetails ~ positions:", chainPositions);
-
-  const dispatch = useDispatch();
+  } = useSelector((state) => state.ChainDetail)
+  const { chainPositions } = useSelector((state) => state.Position)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getChainDetailsByChainId(chainid));
-    dispatch(getPositionsByIds(chainFlow));
-  }, [chainid, dispatch, chainFlow]);
+    dispatch(getChainDetailsByChainId(chainid))
+    dispatch(getPositionsByIds(chainFlow))
+  }, [chainid, dispatch, chainFlow])
 
-  if (chainPending) {
-    return `loading.. `;
+  // Function to chunk the array into smaller arrays for each row of steps
+  const chunkArray = (array, chunkSize) => {
+    const chunks = []
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize))
+    }
+    return chunks
   }
 
-  if (chainFlow === "") {
+  // Chunk the positions array into smaller arrays for each row
+  const stepChunks = chunkArray(chainPositions, stepsPerRow)
+
+  // Render loading skeleton if data is pending
+  if (chainPending) {
+    return <Skeleton variant="rectangular" width="100%" height={60} />
+  }
+
+  // Render error message if chain details are not found
+  if (chainError) {
     return (
       <>
-        {chainError}
-        <h1>Chain Details is not created </h1>
-        <Link to="/admin/Chain">Create chain Details</Link>
+        <Alert variant="filled" severity="error">
+          {chainError}
+        </Alert>
+        <Box mt={2}>
+          <Link
+            style={{ color: "blue", textDecoration: "none" }}
+            to="/admin/Chain"
+          >
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <CallMadeIcon /> Go back to chain page !!
+            </Box>
+          </Link>
+        </Box>
       </>
-    );
+    )
   }
 
+  // Render the chain details with stepper
   return (
     <Form>
-      <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vw" } }}>
-        {chainPositions &&
-          chainPositions.map((p, index) => (
-            <h1 key={index}> {p.positionName}</h1>
+      <Grid container justifyContent="center">
+        <Box sx={{ width: "90%", mt: "30px" }}>
+          {stepChunks.map((chunk, index) => (
+            <Box key={index} sx={{ mb: 4 }}>
+              <Stepper alternativeLabel connector={<ColorlibConnector />}>
+                {chunk.map((position, posIndex) => (
+                  <Step key={position.id}>
+                    <StepLabel StepIconComponent={ColorlibStepIcon}>
+                      <Typography sx={{ fontWeight: 500 }} variant="body2">
+                        {position.positionName}
+                      </Typography>
+                    </StepLabel>
+                    {/* Render arrow icon for last step in each row */}
+                    {posIndex === stepsPerRow - 1 &&
+                      index !== stepChunks.length - 1 && (
+                        <StepLabel icon={<SubdirectoryArrowLeftIcon />} />
+                      )}
+                    {JSON.stringify()}
+                    {posIndex === 0 && index === stepChunks.length - 1 && (
+                      <StepLabel icon={<EastIcon />} />
+                    )}
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
           ))}
-        <Stack sx={{ width: "90%", mt: "30px" }} spacing={4}>
-          <Stepper
-            alternativeLabel
-            activeStep={chainPositions.length}
-            connector={<ColorlibConnector />}
-          >
-            {chainPositions.map((position) => (
-              <Step key={position}>
-                <StepLabel StepIconComponent={ColorlibStepIcon}>
-                  {position.positionName}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Stack>
+        </Box>
       </Grid>
-      {/* {JSON.stringify(positions)} */}
     </Form>
-  );
+  )
 }
 
-export default ChainDetails;
+export default ChainDetails

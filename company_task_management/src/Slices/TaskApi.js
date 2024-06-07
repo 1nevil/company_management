@@ -15,8 +15,7 @@ export const getTaskByPostionId = (positionId) => {
 }
 
 export const addTaskToAssignById = (Assigntask) => {
-  console.log(Assigntask)
-  return axiosInstance.post("api/EmpTaskAssignments", Assigntask)
+  return axiosInstance.post("api/EmpTaskAssignments/pickTask", Assigntask)
 }
 
 export const GetTaskFromAssignTaskByEmpId = (empID) => {

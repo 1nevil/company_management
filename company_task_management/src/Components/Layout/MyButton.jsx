@@ -9,7 +9,7 @@ function MyButton({ children, type, onSmash, fullWidth }) {
       onClick={onSmash}
       variant="contained"
       fullWidth={fullWidth}
-      sx={{ margin: ".5rem" }}
+      sx={{ margin: "0 0 0.7rem 0" }}
     >
       {children}
     </Button>

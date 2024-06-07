@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Card,
   CardActionArea,
@@ -51,6 +52,7 @@ function AdminTaskDeatil(params) {
   const [showMoreChecklist, setShowMoreChecklist] = useState(false);
   const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -58,6 +60,8 @@ function AdminTaskDeatil(params) {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  const { error, pending } = useSelector((state) => state.Tasks);
 
   const {
     taskMaster,
@@ -76,70 +80,27 @@ function AdminTaskDeatil(params) {
     ? positionGuidelines
     : positionGuidelines?.slice(0, 2);
 
-  console.log(
-    taskMaster,
-    chainMaster,
-    chainDetails,
-    positionMaster,
-    positionGuidelines,
-    checklistMasters,
-    history
-  );
-
-  const { error } = useSelector((state) => state.Tasks);
-
-  //   const { Position: positionId } = useSelector(
-  //     (state) => state.Auth.authicatedUser
-  //   );
-
-  // useEffect(() => {
-  //   if (chainDetails) {
-  //     const flow = chainDetails[0]?.chainFlow?.split(",");
-  //     setChainFlow(flow);
-  //     const currentPostion = taskMaster?.currentPostion;
-  //     const indexOfPostion = flow?.indexOf(currentPostion);
-
-  //     setCurrentPostionIndex(indexOfPostion);
-  //     console.log("indx" + indexOfPostion);
-  //     console.log("current postion" + currentPostion);
-  //     console.log("flow" + flow);
-  //   }
-  // }, [chainDetails, chainMaster, currentPostionIndex, taskMaster]);
-
   const { chainPositions } = useSelector((state) => state.Position);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (chainDetails) {
       const chainFlow = chainDetails[0]?.chainFlow;
-      const flowarray = chainFlow.split(",");
+      const flowarray = chainFlow?.split(",");
       setChainFlow(flowarray);
       const currentPostion = taskMaster?.currentPostion;
-      const stringposition = currentPostion.toString();
-      console.log(stringposition);
+      const stringposition = currentPostion?.toString();
       const indexOfPostion = flowarray?.indexOf(stringposition);
       setCurrentPostionIndex(indexOfPostion);
-      // setCurrentPostionIndex(indexOfPostion);
-      // const flow = chainDetails[0]?.chainFlow?.split(",");
-      // setChainFlow(flow);
-      // console.log("chainDetails:", chainDetails[0].chainFlow);
-      // console.log("indx" + indexOfPostion);
-      // console.log("current postion" + currentPostion);
-      // console.log("flow" + flow);
       dispatch(getPositionsByIds(chainFlow));
     }
   }, [chainDetails, taskMaster, dispatch]);
 
   const { taskId } = useParams();
-  // console.log(chainDetails[0]?.chainFlow?.split(","));
-  // console.log(
-  //   chainDetails[0]?.chainFlow?.split(",")?.indexOf(taskMaster?.currentPostion)
-  // );
-  // console.log(taskMaster.currentPostion);
   useEffect(() => {
-    //1 is postion id for validation
-    //task ID : for getting task
     dispatch(getTaskUsingTaskId(taskId));
   }, [dispatch, taskId]);
+
   const columns = [
     { field: "empTaskHistoryId", headerName: "TaskHistory Id", width: 90 },
     {
@@ -164,6 +125,7 @@ function AdminTaskDeatil(params) {
       ),
     },
   ];
+
   const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     color: theme.palette.mode === "dark" ? theme.palette.grey[700] : "#eaeaf0",
     display: "flex",
@@ -284,220 +246,221 @@ function AdminTaskDeatil(params) {
 
   return (
     <div>
-      <Grid container>
-        <Grid item xs={4} sx={{ margin: "auto" }}>
-          <Box
-            p={1}
-            pt={0}
-            sx={{
-              border: "2px solid gray",
-              borderRadius: "10px",
-              mr: "50px",
-              // textAlign: "center",
-            }}
-          >
-            <Typography
-              variant="h6"
-              mt={3}
-              sx={{ textAlign: "center", fontWeight: "bold" }}
-            >
-              Check List
-            </Typography>
-            <FormGroup sx={{ mt: 2 }}>
-              {displayedChecklist?.map((checklist) => (
-                <Box
-                  key={checklist.checklistId}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4",
-                    lineHeight: "43px",
-                  }}
-                >
-                  <Typography
-                    variant="p"
-                    gutterBottom
-                    textTransform="capitalize"
-                    ml={3}
-                    sx={{ m: "auto" }}
-                  >
-                    {checklist.taskMessage}
-                  </Typography>
-                </Box>
-              ))}
-              {checklistMasters?.length > 3 && (
+      {error !== null ? (
+        <Alert variant="filled" severity="error">
+          {error}
+        </Alert>
+      ) : pending ? ( // Check if data is being fetched
+        <Skeleton variant="rectangular" animation="wave" height={200} /> // Display skeleton effect
+      ) : (
+        <>
+          <Grid container>
+            <Grid item xs={4}>
+              <Box
+                p={1}
+                pt={0}
+                sx={{
+                  border: "2px solid gray",
+                  borderRadius: "10px",
+                  mr: "50px",
+                }}
+              >
                 <Typography
-                  variant="body2"
-                  color="primary"
-                  sx={{ cursor: "pointer", textAlign: "end" }}
-                  onClick={handleOpenModal}
+                  variant="h6"
+                  mt={3}
+                  sx={{ textAlign: "center", fontWeight: "bold" }}
                 >
-                  See More
+                  Check List
                 </Typography>
-              )}
-            </FormGroup>
-          </Box>
+                <FormGroup sx={{ mt: 2 }}>
+                  {displayedChecklist?.map((checklist) => (
+                    <Box
+                      key={checklist.checklistId}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4",
+                        lineHeight: "43px",
+                      }}
+                    >
+                      <Typography
+                        variant="p"
+                        gutterBottom
+                        textTransform="capitalize"
+                        ml={3}
+                        sx={{ m: "auto" }}
+                      >
+                        {checklist.taskMessage}
+                      </Typography>
+                    </Box>
+                  ))}
+                  {checklistMasters?.length > 3 && (
+                    <Typography
+                      variant="body2"
+                      color="primary"
+                      sx={{ cursor: "pointer", textAlign: "end" }}
+                      onClick={handleOpenModal}
+                    >
+                      See More
+                    </Typography>
+                  )}
+                </FormGroup>
+              </Box>
 
-          <Box
-            p={2}
-            pt={0}
-            sx={{
-              border: "2px solid gray",
-              borderRadius: "10px",
-              mr: "50px",
-              mt: 3,
-            }}
-          >
-            <Typography
-              variant="h6"
-              mt={3}
-              sx={{ textAlign: "center", fontWeight: "bold" }}
+              <Box
+                p={2}
+                pt={0}
+                sx={{
+                  border: "2px solid gray",
+                  borderRadius: "10px",
+                  mr: "50px",
+                  mt: 3,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  mt={3}
+                  sx={{ textAlign: "center", fontWeight: "bold" }}
+                >
+                  Position Guidelines
+                </Typography>
+                <FormGroup sx={{ mt: 2 }}>
+                  {displayedGuidelines?.map((guideline) => (
+                    <Box
+                      key={guideline.positionGuidelineId}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4",
+                        lineHeight: "43px",
+                      }}
+                    >
+                      <Typography
+                        variant="p"
+                        gutterBottom
+                        textTransform="capitalize"
+                        ml={4}
+                        sx={{ m: "auto" }}
+                      >
+                        {guideline.positionGuidline}
+                      </Typography>
+                    </Box>
+                  ))}
+                  {positionGuidelines?.length > 3 && (
+                    <Typography
+                      variant="body2"
+                      color="primary"
+                      sx={{ cursor: "pointer", textAlign: "end" }}
+                      onClick={handleOpenModal}
+                    >
+                      See More
+                    </Typography>
+                  )}
+                </FormGroup>
+              </Box>
+            </Grid>
+            <Divider orientation="vertical" flexItem />
+            <Grid
+              item
+              xs={7}
+              sx={{ textAlign: "center", margin: "auto", ml: 10 }}
             >
-              Position Guidelines
-            </Typography>
-            <FormGroup sx={{ mt: 2 }}>
-              {displayedGuidelines?.map((guideline) => (
+              <Grid xs={12}>
+                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                  Task Detail
+                </Typography>
                 <Box
-                  key={guideline.positionGuidelineId}
+                  mt={5}
+                  p={4}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4",
-                    lineHeight: "43px",
+                    border: "2px solid gray",
+                    boxShadow: "2px 2px 10px 1px black",
                   }}
                 >
-                  <Typography
-                    variant="p"
-                    gutterBottom
-                    textTransform="capitalize"
-                    ml={4}
-                    sx={{ m: "auto" }}
-                  >
-                    {guideline.positionGuidline}
-                  </Typography>
+                  {taskMaster ? (
+                    <>
+                      <Card
+                        sx={{
+                          border: "2px solid gray",
+                          boxShadow: "2px 2px 10px black",
+                        }}
+                      >
+                        <CardHeader
+                          title={`Task Name: ${taskMaster.taskName}`}
+                          subheader={
+                            <>
+                              {taskMaster.startDate && taskMaster.endDate ? (
+                                <>
+                                  <Typography component="span" variant="body2">
+                                    Start Date: {taskMaster.startDate}
+                                  </Typography>
+                                  <br />
+                                  <Typography component="span" variant="body2">
+                                    End Date: {taskMaster.endDate}
+                                  </Typography>
+                                </>
+                              ) : (
+                                <>
+                                  <Typography component="span" variant="body2">
+                                    Duration: {taskMaster.durationNum}{" "}
+                                    {taskMaster.durationType}
+                                  </Typography>
+                                </>
+                              )}
+                            </>
+                          }
+                        />
+                        <CardActionArea>
+                          <CardContent>
+                            <Typography variant="body2" color="text.secondary">
+                              <Typography
+                                sx={{
+                                  variant: "p",
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Description
+                              </Typography>{" "}
+                              {taskMaster.description}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </>
+                  ) : error ? (
+                    <Typography variant="h5" gutterBottom>
+                      {error}
+                    </Typography>
+                  ) : (
+                    <Typography variant="h5" gutterBottom>
+                      Loading...
+                      <Skeleton animation="wave" />
+                    </Typography>
+                  )}
                 </Box>
-              ))}
-              {positionGuidelines?.length > 3 && (
-                <Typography
-                  variant="body2"
-                  color="primary"
-                  sx={{ cursor: "pointer", textAlign: "end" }}
-                  onClick={handleOpenModal}
-                >
-                  See More
-                </Typography>
-              )}
-            </FormGroup>
-          </Box>
-        </Grid>
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{
-            display: {
-              lg: "block",
-              md: "display",
-              xs: "none",
-            },
-          }}
-        />
-        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto", ml: 10 }}>
-          <Grid xs={12}>
-            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-              Task Detail
-            </Typography>
-            <Box
-              mt={5}
-              p={4}
-              sx={{
-                border: "2px solid gray",
-                boxShadow: "2px 2px 10px 1px black",
-              }}
-            >
-              {taskMaster ? (
-                <>
-                  <Card
-                    sx={{
-                      border: "2px solid gray",
-                      boxShadow: "2px 2px 10px black",
-                    }}
-                  >
-                    <CardHeader
-                      title={`Task Name: ${taskMaster.taskName}`}
-                      subheader={
-                        <>
-                          {taskMaster.startDate && taskMaster.endDate ? (
-                            <>
-                              <Typography component="span" variant="body2">
-                                Start Date: {taskMaster.startDate}
-                              </Typography>
-                              <br />
-                              <Typography component="span" variant="body2">
-                                End Date: {taskMaster.endDate}
-                              </Typography>
-                            </>
-                          ) : (
-                            <>
-                              <Typography component="span" variant="body2">
-                                Duration: {taskMaster.durationNum}{" "}
-                                {taskMaster.durationType}
-                              </Typography>
-                            </>
-                          )}
-                        </>
-                      }
-                    />
-                    <CardActionArea>
-                      <CardContent>
-                        <Typography variant="body2" color="text.secondary">
-                          <Typography
-                            sx={{
-                              variant: "p",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Description
-                          </Typography>{" "}
-                          {taskMaster.description}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </>
-              ) : error ? (
-                <Typography variant="h5" gutterBottom>
-                  {error}
-                </Typography>
-              ) : (
-                <Typography variant="h5" gutterBottom>
-                  Loading...
-                  <Skeleton animation="wave" />
-                </Typography>
-              )}
-            </Box>
+              </Grid>
+            </Grid>
+            {/* <Divider orientation="vertical" flexItem /> */}
           </Grid>
-        </Grid>
-        {/* <Divider orientation="vertical" flexItem /> */}
-      </Grid>
-      <Divider sx={{ mt: 4 }} orientation="horizontal" flexItem />
-      <Typography
-        variant="p"
-        sx={{
-          fontWeight: "bold",
-          display: "flex",
-          justifyContent: "center",
-          mt: 4,
-        }}
-      >
-        Chain For Task
-      </Typography>
-      <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vw" } }}>
-        {chainDetails &&
-          chainDetails[0]?.chainFlow
-            ?.split(",")
-            ?.map((c, index) => <h1 key={index}> {c.chainName}</h1>)}
-        <Stack sx={{ width: "90%", mt: "30px" }} spacing={4}>
-          {/* <Stepper
+          <Divider sx={{ mt: 4 }} orientation="horizontal" flexItem />
+          <Typography
+            variant="p"
+            sx={{
+              fontWeight: "bold",
+              display: "flex",
+              justifyContent: "center",
+              mt: 4,
+            }}
+          >
+            Chain For Task
+          </Typography>
+          <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vw" } }}>
+            {chainDetails &&
+              chainDetails[0]?.chainFlow
+                ?.split(",")
+                ?.map((c, index) => <h1 key={index}> {c.chainName}</h1>)}
+            <Stack sx={{ width: "90%", mt: "30px" }} spacing={4}>
+              {/* <Stepper
               alternativeLabel
               activeStep={chainDetails?.length}
               connector={<ColorlibConnector />}
@@ -511,84 +474,87 @@ function AdminTaskDeatil(params) {
               ))}
             </Stepper> */}
 
-          <Stepper
-            alternativeLabel
-            activeStep={currentPostionIndex}
-            connector={<ColorlibConnector />}
-          >
-            {chainPositions.map((position) => (
-              <Step key={position}>
-                <StepLabel StepIconComponent={ColorlibStepIcon}>
-                  {position.positionName}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Stack>
-      </Grid>
-      {history && (
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              fontWeight: "bold",
-              display: "flex  ",
-              justifyContent: "center",
-              p: 4,
-            }}
-          >
-            Task History
-          </Typography>
-          <DataGrid
-            slots={{ toolbar: GridToolbar }}
-            rows={history}
-            columns={columns}
-            getRowId={(row) => row.taskId}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5]}
-            disableRowSelectionOnClick
-          />
-        </Box>
+              <Stepper
+                alternativeLabel
+                activeStep={currentPostionIndex}
+                connector={<ColorlibConnector />}
+              >
+                {chainPositions.map((position) => (
+                  <Step key={position}>
+                    <StepLabel StepIconComponent={ColorlibStepIcon}>
+                      {position.positionName}
+                    </StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Stack>
+          </Grid>
+          {history && (
+            <Box>
+              <Typography
+                variant="p"
+                sx={{
+                  fontWeight: "bold",
+                  display: "flex  ",
+                  justifyContent: "center",
+                  p: 4,
+                }}
+              >
+                Task History
+              </Typography>
+              <DataGrid
+                slots={{ toolbar: GridToolbar }}
+                rows={history}
+                columns={columns}
+                getRowId={(row) => row.taskId}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                }}
+                pageSizeOptions={[5]}
+                disableRowSelectionOnClick
+              />
+            </Box>
+          )}
+          <Dialog open={openModal} onClose={handleCloseModal}>
+            <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                <Typography variant="h6">Checklist Items</Typography>
+                {checklistMasters?.map((checklist) => (
+                  <Typography
+                    key={checklist.checklistId}
+                    variant="body1"
+                    gutterBottom
+                  >
+                    {checklist.taskMessage}
+                  </Typography>
+                ))}
+                <Typography variant="h6" sx={{ mt: 2 }}>
+                  Position Guidelines
+                </Typography>
+                {positionGuidelines?.map((guideline) => (
+                  <Typography
+                    key={guideline.positionGuidelineId}
+                    variant="body1"
+                    gutterBottom
+                  >
+                    {guideline.positionGuidline}
+                  </Typography>
+                ))}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseModal}>Close</Button>
+            </DialogActions>
+          </Dialog>
+        </>
       )}
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <Typography variant="h6">Checklist Items</Typography>
-            {checklistMasters?.map((checklist) => (
-              <Typography
-                key={checklist.checklistId}
-                variant="body1"
-                gutterBottom
-              >
-                {checklist.taskMessage}
-              </Typography>
-            ))}
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Position Guidelines
-            </Typography>
-            {positionGuidelines?.map((guideline) => (
-              <Typography
-                key={guideline.positionGuidelineId}
-                variant="body1"
-                gutterBottom
-              >
-                {guideline.positionGuidline}
-              </Typography>
-            ))}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal}>Close</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
+
 export default AdminTaskDeatil;

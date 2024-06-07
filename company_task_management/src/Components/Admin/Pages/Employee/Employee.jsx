@@ -13,24 +13,24 @@ import "react-toastify/dist/ReactToastify.css";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function Employee() {
-  const dispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
-  const employeess = useSelector((state) => state.Employee.employees) || [];
+  const dispatch = useDispatch()
+  const [searchTerm, setSearchTerm] = useState("") // State to store search term
+  const employeess = useSelector((state) => state.Employee.employees) || []
 
   useEffect(() => {
-    dispatch(fetchEmp());
-  }, [dispatch]);
+    dispatch(fetchEmp())
+  }, [dispatch])
 
   const handleDelete = (id, name) => {
-    dispatch(deleteEmp(id));
-    notify(name);
-  };
+    dispatch(deleteEmp(id))
+    notify(name)
+  }
 
   const handleEdit = (id) => {
-    alert(id);
-  };
+    alert(id)
+  }
 
-  const notify = (name) => toast(name + " is deleted !");
+  const notify = (name) => toast(name + " is deleted !")
 
   // Filtered rows based on search term
   // const filteredRows = employeess?.filter((row) =>
@@ -48,12 +48,12 @@ function Employee() {
             value.toString().toLowerCase().includes(searchTerm.toLowerCase())
         )
       )
-    : [];
+    : []
 
   // Sort filtered rows by dateOfJoining in descending order
   const sortedRows = filteredRows.sort(
     (a, b) => new Date(b.dateOfJoining) - new Date(a.dateOfJoining)
-  );
+  )
 
   const columns = [
     {
@@ -117,7 +117,7 @@ function Employee() {
       headerName: "Role",
       width: 140,
     },
-  ];
+  ]
 
   return (
     <>
@@ -127,45 +127,46 @@ function Employee() {
             <ToastContainer />
             <EmployeeForm />
 
-            <Box mt={2}>
-              <TextField
-                label="Search"
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                fullWidth
-              />
-            </Box>
-            <Typography
-              variant="h6"
-              component="h6"
-              textAlign="center"
-              color="primary"
-              mb={2}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              Employees
-            </Typography>
-
-            <DataGrid
-              rows={sortedRows} // Pass sorted rows to DataGrid
-              getRowId={(row) => row.employeeId}
-              columns={columns}
-              slots={{ toolbar: GridToolbar }}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 50,
-                  },
+        <Box mt={2}>
+          {/* Search input field */}
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            fullWidth
+          />
+        </Box>
+        <Typography
+          variant="h6"
+          component="h6"
+          textAlign="center"
+          color="primary"
+          mb={2}
+        >
+          Employees
+        </Typography>
+        <Box style={{ height: "50%", width: "100%" }}>
+          <DataGrid
+            rows={sortedRows} // Pass sorted rows to DataGrid
+            getRowId={(row) => row.employeeId}
+            columns={columns}
+            slots={{ toolbar: GridToolbar }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 50,
                 },
-              }}
-              pageSizeOptions={[5, 15, 10, 25, 50, 100, 200]}
-            />
+              },
+            }}
+            pageSizeOptions={[ 10,25, 50, 100, 200]}
+          />
+        </Box>
           </Grid>
         </Grid>
       </Box>
     </>
-  );
+  )
 }
 
-export default Employee;
+export default Employee

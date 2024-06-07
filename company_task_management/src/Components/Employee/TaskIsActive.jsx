@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   getTaskFromHistoryUsingEmpId,
-  updateTaskWithCompeletedate,
-} from "../../Slices/AssignToTask";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+  // updateTaskWithCompeletedate,
+} from "../../Slices/AssignToTask"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { Alert } from "@mui/material"
 
 function TaskIsActive(params) {
   const { pendding, tasks, error } = useSelector((state) => state.AssignToTask);
@@ -48,14 +49,14 @@ function TaskIsActive(params) {
 
   return (
     <div>
-      {/* {JSON.stringify(task)} */}
-      {pendding ? (
-        <>Loading</>
-      ) : error ? (
-        <>{error}</>
+      {error ? (
+        <>
+          <Alert severity="error">{error}</Alert>
+        </>
       ) : (
         <Box>
           <DataGrid
+            loading={pendding}
             slots={{ toolbar: GridToolbar }}
             rows={tasks}
             columns={columns}

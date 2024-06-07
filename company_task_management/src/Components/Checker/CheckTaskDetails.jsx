@@ -29,8 +29,9 @@ import { useNavigate } from "react-router-dom"
 // import { approveDisapproveTask } from "../../Slices/TaskSlice"
 import {
   getTaskAssignDataForChecker,
-  updateTaskWithCompeletedate,
+  // updateTaskWithCompeletedate,
   approveDisapprove,
+  getCompletedTaskDataForChecker,
 } from "../../Slices/AssignToTask"
 
 function CheckerTaskDetails() {
@@ -38,7 +39,9 @@ function CheckerTaskDetails() {
     (state) => state.AssignToTask.taskGuidlinesChecker
   )
 
-  const { id: employeeId } = useSelector((state) => state.Auth.authicatedUser)
+  const { id: employeeId, Position: positionId } = useSelector(
+    (state) => state.Auth.authicatedUser
+  )
   // console.table(user)
   const { taskId } = useParams()
   const [open, setOpen] = useState(false)
@@ -122,7 +125,7 @@ function CheckerTaskDetails() {
       fileUpload,
       isActive: "2",
     }
-    dispatch(updateTaskWithCompeletedate(updatedAssign))
+    // dispatch(updateTaskWithCompeletedate(updatedAssign))
   }
 
   const handleCheckboxChange = (id, isChecked, type) => {
@@ -161,6 +164,7 @@ function CheckerTaskDetails() {
         IsApprove: true,
       })
     )
+    dispatch(getCompletedTaskDataForChecker(positionId))
     navigate("CheckTaskList")
   }
 
@@ -185,6 +189,7 @@ function CheckerTaskDetails() {
         Message: message,
       })
     )
+    dispatch(getCompletedTaskDataForChecker(positionId))
     setOpen(false)
     navigate("/Checker/CheckTaskList")
   }

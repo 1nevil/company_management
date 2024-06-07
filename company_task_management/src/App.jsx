@@ -22,6 +22,9 @@ import DisapprovedAdmins from "./Components/Superadmin/DisapprovedAdmins";
 import Position from "./Components/Admin/Pages/Position/Position";
 import StreetviewIcon from "@mui/icons-material/Streetview";
 //import Chain from "./Components/Admin/Pages/Chain/Chain";
+import ManageHistoryIcon from "@mui/icons-material/ManageHistory"
+import FlakyIcon from "@mui/icons-material/Flaky"
+import NotChecked from "./Components/Employee/NotChecked"
 import ChainDetails from "./Components/Admin/Pages/Chain/ChainDetails";
 import Chain from "./Components/Admin/Pages/Chain/Chain";
 import CheckTaskList from "./Components/Checker/CheckTasklist";
@@ -55,8 +58,13 @@ function App() {
       sidebar: ["CheckTaskList", "CheckerTaskIsActive"],
     },
     employee: {
-      icons: [dashboard, BadgeIcon, RunningWithErrorsIcon],
-      sidebar: ["EmployeeDashboard", "TaskHistory", "TaskIsActive"],
+      icons: [dashboard, ManageHistoryIcon, RunningWithErrorsIcon, FlakyIcon],
+      sidebar: [
+        "EmployeeDashboard",
+        "TaskHistory",
+        "TaskIsActive",
+        "notChecked",
+      ],
     },
     superviser: {
       icons: [dashboard],
@@ -214,6 +222,10 @@ function App() {
             {
               path: "TaskIsActiveDeatils/:taskId",
               element: <TaskIsActiveDeatils />,
+            },
+            {
+              path: "notChecked",
+              element: <NotChecked />,
             },
             // ,{
             //   path:"dashboard",

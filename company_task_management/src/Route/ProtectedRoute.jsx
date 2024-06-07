@@ -4,31 +4,18 @@ import { useSelector, useDispatch } from "react-redux"
 import { Outlet, Link } from "react-router-dom"
 import { Box, Typography, Button } from "@mui/material"
 import ErrorIcon from "@mui/icons-material/Error"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { setUserToken } from "../Slices/AuthenticationSlice"
+import Breadcrumb from "../Components/Layout/Breadcrumb"
 
 function ProtectedRoute({ role }) {
-  console.log("🚀 ~ ProtectedRoute ~ role:", role)
-  console.log("Protected route re-render")
   const { isAuthenticate, authicatedUser } = useSelector((state) => state.Auth)
   const dispatch = useDispatch()
-  const [roleOfUser, setRoleOfUser] = useState(null)
+
   useEffect(() => {
     dispatch(setUserToken())
   }, [dispatch])
-  console.log(authicatedUser)
 
-  // if (!isAuthenticate) {
-  //   // User is not authenticated, redirect to login page
-  //   return <Navigate to="/login" />
-  // }
-
-  console.log(
-    !isAuthenticate ||
-      authicatedUser[
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-      ] !== role
-  )
   return !isAuthenticate ||
     authicatedUser[
       "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
@@ -63,6 +50,7 @@ function ProtectedRoute({ role }) {
     </Box>
   ) : (
     <>
+      <Breadcrumb />
       <Outlet />
     </>
   )

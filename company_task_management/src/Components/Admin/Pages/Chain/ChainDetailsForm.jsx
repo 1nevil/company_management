@@ -27,7 +27,6 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const [checklistItems, setChecklistItems] = useState([])
   const dispatch = useDispatch()
 
-  const checkers = useSelector((state) => state.Employee.checkers)
   const Positions = useSelector((state) => state.Position.positions)
 
   useEffect(() => {
@@ -38,34 +37,25 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const handleSubmit = () => {
     // console.log(chainid)
     handleCloseDetails()
-    console.log(checker)
     console.log(checklistItems)
 
     console.log({
       //   chainId: Number(chainid),
-      checkerId: checker,
       chainFlow: checklistItems.toString(),
     })
 
     const chainDetails = {
       chainId: Number(chainId),
-      checkerId: checker,
       chainFlow: checklistItems.toString(),
     }
 
     dispatch(insertChainDetails(chainDetails))
   }
 
-  const [checker, setChecker] = useState()
-
   const handleChange = (index) => (event) => {
     const newChecklistItems = [...checklistItems]
     newChecklistItems[index] = event.target.value
     setChecklistItems(newChecklistItems)
-  }
-
-  const handleChangeChecker = (event) => {
-    setChecker(event.target.value)
   }
 
   const handleAddInput = () => {
@@ -91,38 +81,9 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
       <Box sx={{ width: "30rem", padding: "3rem 3rem" }}>
         <Box>
           <Typography variant="h6" component="h2" textAlign="center">
-            Enter Chain details-{chainId}
+            Enter Flow of Position
           </Typography>
-          <Divider width="100%" sx={{ padding: ".5rem" }} />
-          <Box mt={1}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="demo-simple-select-label">
-                Select Checker
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                size="small"
-                value={checker}
-                label="Select Checker"
-                onChange={handleChangeChecker}
-                // onBlur={handleBlur}
-                name="chainId"
-              >
-                {checkers?.map((c) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <MenuItem key={c.employeeId} value={c.employeeId}>
-                    {c.employeeName}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {/* {errors.chainId && touched.chainId ? (
-                  <Typography variant="caption" color="error">
-                    {errors.chainId}
-                  </Typography>
-                ) : null} */}
-          </Box>
+          <Divider width="100%" sx={{ m: "1.5rem 0rem" }} />
         </Box>
         <Box mt={1} sx={{ lineHeight: ".5px" }}>
           {showAdditionalInputs && (
@@ -178,7 +139,7 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
               onClick={handleAddInput}
               startIcon={<AddIcon />}
             >
-              Add Positions To Chain
+              Add Flow of Position
             </Button>
           </Box>
         </Box>
