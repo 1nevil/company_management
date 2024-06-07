@@ -39,11 +39,46 @@ export const deleteEmp = createAsyncThunk("emps/deleteEmp", async (id) => {
   await deleteEmpById(id);
   return id;
 });
-
-export const insertEmp = createAsyncThunk("emps/insertEmp", async (emp) => {
-  const res = await createEmp(emp);
-  return res.data;
-});
+// export const insertEmp = createAsyncThunk("emps/insertEmp", async (emp) => {
+//   const res = await createEmp(emp);
+//   return res.data;
+// });
+export const insertEmp = createAsyncThunk(
+  "emps/insertEmp",
+  async (emp, { rejectWithValue }) => {
+    try {
+      const res = await createEmp(emp);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        // Extract custom message from backend response
+        const errorMessage = error.response.data.message;
+        return rejectWithValue(errorMessage);
+      } else {
+        return rejectWithValue("An unexpected error occurred");
+      }
+    }
+  }
+);
+// export const insertChainMater = createAsyncThunk(
+//   "emps/insertChain",
+//   async (chainName, { rejectWithValue }) => {
+//     try {
+//       const response = await createChainName(chainName);
+//       return response.data; // Assuming your backend returns the data directly
+//     } catch (error) {
+//       console.log(error);
+//       if (error.response) {
+//         // Extract custom message from backend response
+//         const errorMessage = error.response.data.message;
+//         return rejectWithValue(errorMessage);
+//       } else {
+//         return rejectWithValue("An unexpected error occurred");
+//       }
+//     }
+//   }
+// );
 
 export const allApproveEmps = createAsyncThunk("emps/approvedEmp", async () => {
   const response = await approvedEmps();

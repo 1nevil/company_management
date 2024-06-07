@@ -24,44 +24,44 @@ import {
   Typography,
   stepConnectorClasses,
   styled,
-} from '@mui/material'
-import { Box } from '@mui/system'
-import { Link, useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
-import { getTaskUsingTaskId } from '../../../../Slices/TaskSlice'
-import SettingsIcon from '@mui/icons-material/Settings'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import VideoLabelIcon from '@mui/icons-material/VideoLabel'
-import EngineeringIcon from '@mui/icons-material/Engineering'
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium'
-import ComputerIcon from '@mui/icons-material/Computer'
-import Check from '@mui/icons-material/Check'
-import PropTypes from 'prop-types'
-import { getPositionsByIds } from '../../../../Slices/PositionSlice'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+} from "@mui/material";
+import { Box } from "@mui/system";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getTaskUsingTaskId } from "../../../../Slices/TaskSlice";
+import SettingsIcon from "@mui/icons-material/Settings";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import VideoLabelIcon from "@mui/icons-material/VideoLabel";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import ComputerIcon from "@mui/icons-material/Computer";
+import Check from "@mui/icons-material/Check";
+import PropTypes from "prop-types";
+import { getPositionsByIds } from "../../../../Slices/PositionSlice";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function AdminTaskDeatil(params) {
-  const [chainFlow, setChainFlow] = useState([])
-  const [currentPostionIndex, setCurrentPostionIndex] = useState(-1)
+  const [chainFlow, setChainFlow] = useState([]);
+  const [currentPostionIndex, setCurrentPostionIndex] = useState(-1);
   const message = useSelector(
     (state) => state.Tasks.completeTaskDetailForAdmin.message
-  )
+  );
 
-  const [showMoreChecklist, setShowMoreChecklist] = useState(false)
-  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
+  const [showMoreChecklist, setShowMoreChecklist] = useState(false);
+  const [showMoreGuidelines, setShowMoreGuidelines] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = () => {
-    setOpenModal(true)
-  }
+    setOpenModal(true);
+  };
 
   const handleCloseModal = () => {
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
-  const { error, pending } = useSelector((state) => state.Tasks)
+  const { error, pending } = useSelector((state) => state.Tasks);
 
   const {
     taskMaster,
@@ -71,17 +71,17 @@ function AdminTaskDeatil(params) {
     positionGuidelines,
     checklistMasters,
     history,
-  } = useSelector((state) => state.Tasks.completeTaskDetailForAdmin)
+  } = useSelector((state) => state.Tasks.completeTaskDetailForAdmin);
   const displayedChecklist = showMoreChecklist
     ? checklistMasters
-    : checklistMasters?.slice(0, 2)
+    : checklistMasters?.slice(0, 2);
 
   const displayedGuidelines = showMoreGuidelines
     ? positionGuidelines
-    : positionGuidelines?.slice(0, 2)
+    : positionGuidelines?.slice(0, 2);
 
-  const { chainPositions } = useSelector((state) => state.Position)
-  const dispatch = useDispatch()
+  const { chainPositions } = useSelector((state) => state.Position);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (chainDetails) {
@@ -94,12 +94,12 @@ function AdminTaskDeatil(params) {
       setCurrentPostionIndex(indexOfPostion)
       dispatch(getPositionsByIds(chainFlow))
     }
-  }, [chainDetails, taskMaster, dispatch])
+  }, [chainDetails, taskMaster, dispatch]);
 
-  const { taskId } = useParams()
+  const { taskId } = useParams();
   useEffect(() => {
-    dispatch(getTaskUsingTaskId(taskId))
-  }, [dispatch, taskId])
+    dispatch(getTaskUsingTaskId(taskId));
+  }, [dispatch, taskId]);
 
   const columns = [
     { field: 'empTaskHistoryId', headerName: 'TaskHistory Id', width: 90 },
@@ -124,7 +124,7 @@ function AdminTaskDeatil(params) {
         </Link>
       ),
     },
-  ]
+  ];
 
   const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
     color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
@@ -145,10 +145,10 @@ function AdminTaskDeatil(params) {
       borderRadius: '50%',
       backgroundColor: 'currentColor',
     },
-  }))
+  }));
 
   function QontoStepIcon(props) {
-    const { active, completed, className } = props
+    const { active, completed, className } = props;
 
     return (
       <QontoStepIconRoot ownerState={{ active }} className={className}>
@@ -158,14 +158,14 @@ function AdminTaskDeatil(params) {
           <div className="QontoStepIcon-circle" />
         )}
       </QontoStepIconRoot>
-    )
+    );
   }
 
   QontoStepIcon.propTypes = {
     active: PropTypes.bool,
     className: PropTypes.string,
     completed: PropTypes.bool,
-  }
+  };
 
   const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -190,7 +190,7 @@ function AdminTaskDeatil(params) {
         theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
       borderRadius: 1,
     },
-  }))
+  }));
 
   const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
     backgroundColor:
@@ -212,10 +212,10 @@ function AdminTaskDeatil(params) {
       backgroundImage:
         'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
     }),
-  }))
+  }));
 
   function ColorlibStepIcon(props) {
-    const { active, completed, className } = props
+    const { active, completed, className } = props;
 
     const icons = {
       1: <SettingsIcon />,
@@ -225,7 +225,7 @@ function AdminTaskDeatil(params) {
       5: <WorkspacePremiumIcon />,
       6: <EngineeringIcon />,
       7: <ComputerIcon />,
-    }
+    };
 
     return (
       <ColorlibStepIconRoot
@@ -234,7 +234,7 @@ function AdminTaskDeatil(params) {
       >
         {icons[String(props.icon)]}
       </ColorlibStepIconRoot>
-    )
+    );
   }
 
   ColorlibStepIcon.propTypes = {
@@ -242,7 +242,7 @@ function AdminTaskDeatil(params) {
     className: PropTypes.string,
     completed: PropTypes.bool,
     icon: PropTypes.node,
-  }
+  };
 
   return (
     <div>
@@ -554,7 +554,7 @@ function AdminTaskDeatil(params) {
         </>
       )}
     </div>
-  )
+  );
 }
 
-export default AdminTaskDeatil
+export default AdminTaskDeatil;

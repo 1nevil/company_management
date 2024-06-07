@@ -1,37 +1,40 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import React, { useEffect } from "react"
-import Box from "@mui/material/Box"
-import { Grid, IconButton } from "@mui/material"
-import { Delete, Edit } from "@mui/icons-material"
-import { Typography } from "@mui/material"
-import { useDispatch, useSelector } from "react-redux"
-import { ToastContainer, toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import PositionForm from "./PositionForm"
-import { deletePosition, fetchPosition } from "../../../../Slices/PositionSlice"
-import { useMediaQuery } from "@mui/material"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, { useEffect } from "react";
+import Box from "@mui/material/Box";
+import { Grid, IconButton } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PositionForm from "./PositionForm";
+import {
+  deletePosition,
+  fetchPosition,
+} from "../../../../Slices/PositionSlice";
+import { useMediaQuery } from "@mui/material";
 
 function Position() {
-  const isMobile = useMediaQuery("(max-width:600px)")
-  const isTablet = useMediaQuery("(min-width:601px) and (max-width:1024px)")
-  const isLaptop = useMediaQuery("(min-width:1025px) and (max-width:1440px)")
-  const isDesktop = useMediaQuery("(min-width:1441px)")
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const isTablet = useMediaQuery("(min-width:601px) and (max-width:1024px)");
+  const isLaptop = useMediaQuery("(min-width:1025px) and (max-width:1440px)");
+  const isDesktop = useMediaQuery("(min-width:1441px)");
 
   const getPageSize = () => {
-    if (isMobile) return 5
-    if (isTablet) return 10
-    if (isLaptop) return 15
-    return 20 // Default for larger screens
-  }
+    if (isMobile) return 5;
+    if (isTablet) return 10;
+    if (isLaptop) return 15;
+    return 20; // Default for larger screens
+  };
 
   const getGridWidth = () => {
-    if (isMobile) return "100%"
-    if (isTablet) return "90%"
-    if (isLaptop) return "80%"
-    return "70%" // Default for larger screens
-  }
-  const dispatch = useDispatch()
-  const Positions = useSelector((state) => state.Position.positions)
+    if (isMobile) return "100%";
+    if (isTablet) return "90%";
+    if (isLaptop) return "80%";
+    return "70%"; // Default for larger screens
+  };
+  const dispatch = useDispatch();
+  const Positions = useSelector((state) => state.Position.positions);
 
   const handleDelete = (id, position) => {
     dispatch(deletePosition(id));
@@ -102,6 +105,10 @@ function Position() {
     },
   ];
 
+  // Sort positions by createdAt field in descending order
+  const sortedPositions = Positions.slice().sort(
+    (a, b) => b.positionId - a.positionId
+  );
   return (
     <>
       <Box style={{ width: getGridWidth(), margin: "auto" }}>
@@ -119,11 +126,14 @@ function Position() {
         <Grid container>
           <Grid item xs={11} sm={12} md={12} sx={{ margin: "auto" }}>
             <DataGrid
-              rows={Positions}
+              rows={sortedPositions}
               getRowId={(row) => row.positionId}
               columns={columns}
               slots={{ toolbar: GridToolbar }}
               initialState={{
+                sorting: {
+                  sortModel: [{ field: "createdAt", sort: "desc" }],
+                },
                 pagination: {
                   paginationModel: {
                     pageSize: 20,
