@@ -7,6 +7,7 @@ import {
   Modal,
   Box,
   IconButton,
+  Alert,
 } from "@mui/material"
 import { Stack } from "@mui/system"
 import { useEffect, useState } from "react"
@@ -32,7 +33,9 @@ const style = {
 }
 
 function TaskHistory(params) {
-  const { pendding, taskHistory } = useSelector((state) => state.AssignToTask)
+  const { error, pendding, taskHistory } = useSelector(
+    (state) => state.AssignToTask
+  )
   const dispatch = useDispatch()
   const { id: empId } = useSelector((state) => state.Auth.authicatedUser)
   const [open, setOpen] = useState(false)
@@ -105,46 +108,52 @@ function TaskHistory(params) {
   ]
 
   return (
-    <Box>
-      <DataGrid
-        slots={{ toolbar: GridToolbar }}
-        loading={pendding}
-        rows={taskHistory}
-        columns={columns}
-        getRowId={(row) => row.empTaskHistoryId}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
+    <>
+      {error !== null ? (
+        <Alert severity="error">{error}</Alert>
+      ) : (
+        <DataGrid
+          slots={{ toolbar: GridToolbar }}
+          loading={pendding}
+          rows={taskHistory}
+          columns={columns}
+          getRowId={(row) => row.empTaskHistoryId}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
             },
-          },
-        }}
-        pageSizeOptions={[10, 25, 50, 100, 200]}
-        disableRowSelectionOnClick
-      />
+          }}
+          pageSizeOptions={[10, 25, 50, 100, 200]}
+          disableRowSelectionOnClick
+        />
+      )}
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <Box>
-          {" "}
-          <Box sx={style}>
-            <Typography id="modal-title" variant="h6" component="h2">
-              Disapproval Message
-            </Typography>
-            <Typography id="modal-description" sx={{ mt: 2 }}>
-              {disapprovalMessage}
-            </Typography>
-            <Button onClick={handleClose} sx={{ mt: 2 }}>
-              Close
-            </Button>
+      <Box>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+        >
+          <Box>
+            {" "}
+            <Box sx={style}>
+              <Typography id="modal-title" variant="h6" component="h2">
+                Disapproval Message
+              </Typography>
+              <Typography id="modal-description" sx={{ mt: 2 }}>
+                {disapprovalMessage}
+              </Typography>
+              <Button onClick={handleClose} sx={{ mt: 2 }}>
+                Close
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
-    </Box>
+        </Modal>
+      </Box>
+    </>
   )
 }
 export default TaskHistory

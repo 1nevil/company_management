@@ -10,6 +10,7 @@ import Breadcrumb from "../Components/Layout/Breadcrumb"
 
 function ProtectedRoute({ role }) {
   const { isAuthenticate, authicatedUser } = useSelector((state) => state.Auth)
+  console.table(authicatedUser)
   const dispatch = useDispatch()
 
   useEffect(() => {

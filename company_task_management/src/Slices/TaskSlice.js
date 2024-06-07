@@ -60,10 +60,19 @@ export const insertTask = createAsyncThunk(
 //getTaskByPostionId;
 export const getPositionWiseTask = createAsyncThunk(
   "task/getPositionWiseTask",
-  async (positionId) => {
-    const response = await getTaskByPostionId(positionId)
-    console.log(response)
-    return response.data
+  async (positionId, { rejectWithValue }) => {
+    try {
+      const response = await getTaskByPostionId(positionId)
+      console.log(response)
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
   }
 )
 //getAllTasks

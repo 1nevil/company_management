@@ -18,27 +18,13 @@ function EmployeeDashboard() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(positionId)
     dispatch(getPositionWiseTask(positionId))
   }, [dispatch, positionId])
 
   const handleClick = (id) => {
-    var currentDate = new Date()
-
-    // Extract day, month, and year
-    var day = currentDate.getDate()
-    var month = currentDate.getMonth() + 1
-    var year = currentDate.getFullYear()
-
-    day = day < 10 ? "0" + day : day
-    month = month < 10 ? "0" + month : month
-
-    var formattedDate = day + "/" + month + "/" + year
-
     const insertData = {
       empId: Number(empId),
       taskId: id,
-      assignedAt: formattedDate,
       isActive: "1",
     }
     dispatch(addAssignTask(insertData))
@@ -83,25 +69,33 @@ function EmployeeDashboard() {
 
   return (
     <Box>
-      <Box mb={1}>
-        {error !== null && <Alert severity="error">{error}</Alert>}
-      </Box>
-      <DataGrid
-        slots={{ toolbar: GridToolbar }}
-        // rows={filteredTasksByPosition}
-        rows={tasks}
-        columns={columns}
-        getRowId={(row) => row.taskId}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-      />
+      {error === "Their is not task for Your Position!!!" ? (
+        <Box mb={1}>
+          {" "}
+          <Alert severity="warning">{error}</Alert>{" "}
+        </Box>
+      ) : (
+        <>
+          {error !== null && <Alert severity="error">{error}</Alert>}
+          <DataGrid
+            slots={{ toolbar: GridToolbar }}
+            // rows={filteredTasksByPosition}
+            rows={tasks}
+            columns={columns}
+            getRowId={(row) => row.taskId}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+          />
+        </>
+      )}
+
       {/* <ChainDetailsForm
         handleCloseDetails={handleCloseChainDetail}
         chainDetails={TaskDetails}

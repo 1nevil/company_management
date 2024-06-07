@@ -120,28 +120,9 @@ export default function EmployeeForm() {
           SignatureImage: values.signImage,
           employeeResume: values.employeeResume,
           employeeImage: values.employeeImage,
-          isActive: "0",
+          isActive: "1",
         })
       );
-      console.log({
-        employeeName:
-          values.surname + " " + values.firstName + " " + values.lastName,
-        dob: values.dob,
-        addressEmployee: values.addressEmployee,
-        xender: values.xender,
-        dateOfJoining: values.dateOfJoining,
-        employeeEmail: values.employeeEmail,
-        adharNumber: values.adharNumber,
-        altmobileNumber: values.altmobileNumber,
-        mobileNumber: values.mobileNumber,
-
-        roleId: values.roleId,
-        accountHolderName: values.accountHolderName,
-        bankName: values.bankName,
-        ifscCode: values.ifscCode,
-        branchName: values.branchName,
-        upiId: values.upiId,
-      });
     },
   });
   const calculateAge = (dob) => {

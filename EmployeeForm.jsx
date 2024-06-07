@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import NavigationIcon from "@mui/icons-material/Navigation";
+import React, { useEffect, useState } from "react"
+import DeleteIcon from "@mui/icons-material/Delete"
+import NavigationIcon from "@mui/icons-material/Navigation"
 
-import AddIcon from "@mui/icons-material/Add";
+import AddIcon from "@mui/icons-material/Add"
 import {
   TextField,
   Button,
@@ -23,13 +23,13 @@ import {
   Box,
   Input,
   Autocomplete,
-} from "@mui/material";
-import styled from "@emotion/styled";
-import { EmployeeSchema } from "../../../Validation/validationSchema";
-import { useFormik } from "formik";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosition } from "../../../../Slices/PositionSlice";
-import { insertEmp } from "../../../../Slices/EmployeeSlice";
+} from "@mui/material"
+import styled from "@emotion/styled"
+import { EmployeeSchema } from "../../../Validation/validationSchema"
+import { useFormik } from "formik"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { insertEmp } from "../../../../Slices/EmployeeSlice"
 // const Positions = ["Engineering", "Marketing", "Finance", "HR"];
 
 const VisuallyHiddenInput = styled("input")({
@@ -42,16 +42,16 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
 export default function EmployeeForm() {
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
-  const Positions = useSelector((state) => state.Position.positions);
+  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false)
+  const Positions = useSelector((state) => state.Position.positions)
 
   useEffect(() => {
-    dispatch(fetchPosition());
-  }, [dispatch]);
+    dispatch(fetchPosition())
+  }, [dispatch])
 
   const initValue = {
     firstName: "",
@@ -80,7 +80,7 @@ export default function EmployeeForm() {
     signImage: "",
     adharImage: "",
     isActive: "",
-  };
+  }
 
   const {
     errors,
@@ -94,8 +94,8 @@ export default function EmployeeForm() {
     initialValues: initValue,
     validationSchema: EmployeeSchema,
     onSubmit: (values) => {
-      alert("clicked");
-      console.log(values);
+      alert("clicked")
+      console.log(values)
       dispatch(
         insertEmp({
           employeeName:
@@ -125,7 +125,7 @@ export default function EmployeeForm() {
           employeeImage: values.employeeImage,
           isActive: "0",
         })
-      );
+      )
       console.log({
         employeeName:
           values.surname + " " + values.firstName + " " + values.lastName,
@@ -144,38 +144,38 @@ export default function EmployeeForm() {
         ifscCode: values.ifscCode,
         branchName: values.branchName,
         upiId: values.upiId,
-      });
+      })
     },
-  });
+  })
   const calculateAge = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob);
-    let ageDiff = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const today = new Date()
+    const birthDate = new Date(dob)
+    let ageDiff = today.getFullYear() - birthDate.getFullYear()
+    const monthDiff = today.getMonth() - birthDate.getMonth()
 
     if (
       monthDiff < 0 ||
       (monthDiff === 0 && today.getDate() < birthDate.getDate())
     ) {
-      ageDiff--;
+      ageDiff--
     }
 
-    setFieldValue("employeeAge", ageDiff.toString()); // Update age
-  };
+    setFieldValue("employeeAge", ageDiff.toString()) // Update age
+  }
 
   const handleDateChange = (event) => {
-    const { value } = event.target;
-    handleChange(event); // Update formik state with new value
-    calculateAge(value); // Calculate and update age
-  };
+    const { value } = event.target
+    handleChange(event) // Update formik state with new value
+    calculateAge(value) // Calculate and update age
+  }
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <div>
@@ -399,7 +399,7 @@ export default function EmployeeForm() {
                         <MenuItem value={position.positionId}>
                           {position.positionName}
                         </MenuItem>
-                      );
+                      )
                     })}
                   </Select>
                 </FormControl>
@@ -605,7 +605,7 @@ export default function EmployeeForm() {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
 //

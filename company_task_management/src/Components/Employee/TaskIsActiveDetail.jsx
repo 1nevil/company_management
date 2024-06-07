@@ -7,22 +7,15 @@ import {
   CardActionArea,
   CardContent,
   CardHeader,
-  CardMedia,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
-  FormControl,
   FormGroup,
-  FormHelperText,
   Grid,
-  Input,
   InputLabel,
-  MenuItem,
-  Select,
   Skeleton,
   TextField,
   Typography,
@@ -35,7 +28,7 @@ import { useEffect, useState } from "react"
 import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice"
 import { styled } from "@mui/material/styles"
 import Button from "@mui/material/Button"
-// import { updateTaskWithCompeletedate } from "../../Slices/AssignToTask"
+import { updateTaskWithCompletedDate } from "../../Slices/AssignToTask"
 import Modal from "@mui/material/Modal"
 
 const VisuallyHiddenInput = styled("input")({
@@ -59,13 +52,10 @@ function TaskIsActiveDeatils() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const navigate = useNavigate()
-
   const { task, guidelines, checklist } = getActiveTaskDetail
 
   const [completedGuidelines, setCompletedGuidelines] = useState([])
   const [incompleteGuidelines, setIncompleteGuidelines] = useState([])
-  const [fileUpload, setFileUpload] = useState("")
   const { taskId } = useParams()
   const [showMoreChecklist, setShowMoreChecklist] = useState(false)
   const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
@@ -107,29 +97,6 @@ function TaskIsActiveDeatils() {
     setCompletedGuidelines(storedCompletedGuidelines)
     setIncompleteGuidelines(storedIncompleteGuidelines)
   }, [taskId])
-
-  const handleUploadWork = () => {
-    var currentDate = new Date()
-
-    var day = currentDate.getDate()
-    var month = currentDate.getMonth() + 1
-    var year = currentDate.getFullYear()
-
-    day = day < 10 ? "0" + day : day
-    month = month < 10 ? "0" + month : month
-
-    var completedAt = day + "/" + month + "/" + year
-    const updatedAssign = {
-      taskId: Number(taskId),
-      empId,
-      completedAt,
-      fileUpload,
-      isActive: "2",
-    }
-
-    // dispatch(updateTaskWithCompeletedate(updatedAssign))
-    navigate("/employee/EmployeeDashboard")
-  }
 
   const handleCheckboxChange = (guidelineId, isChecked) => {
     if (isChecked) {
@@ -333,7 +300,12 @@ function TaskIsActiveDeatils() {
                 {/* <Box p={2}>
                 
                 </Box> */}
-                <UploadFileTaskDetails open={open} handleClose={handleClose} />
+                <UploadFileTaskDetails
+                  taskId={taskId}
+                  empId={empId}
+                  open={open}
+                  handleClose={handleClose}
+                />
                 <Box p={2}>
                   <Button
                     // onClick={handleUploadWork}
@@ -386,11 +358,13 @@ function TaskIsActiveDeatils() {
 }
 export default TaskIsActiveDeatils
 
-const UploadFileTaskDetails = ({ open, handleClose }) => {
-  const [rate, setRate] = useState("")
-  const [unit, setUnit] = useState("")
-  const [unitName, setUnitName] = useState("")
+const UploadFileTaskDetails = ({ taskId, empId, open, handleClose }) => {
+  const [rate, setRate] = useState()
+  const [quantity, setQuantity] = useState()
+  const [quantityName, setQuantityName] = useState()
   const [FileUpload, setFileUpload] = useState("")
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const style = {
     position: "absolute",
@@ -402,6 +376,33 @@ const UploadFileTaskDetails = ({ open, handleClose }) => {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
+  }
+
+  const handleSubmitWork = () => {
+    var currentDate = new Date()
+
+    var day = currentDate.getDate()
+    var month = currentDate.getMonth() + 1
+    var year = currentDate.getFullYear()
+
+    day = day < 10 ? "0" + day : day
+    month = month < 10 ? "0" + month : month
+
+    var completedAt = day + "/" + month + "/" + year
+    const updatedAssign = {
+      taskId: Number(taskId),
+      empId: Number(empId),
+      completedAt,
+      isActive: "2",
+      rate: Number(rate),
+      quantity: Number(quantity),
+      quantityName,
+      fileUpload: FileUpload,
+    }
+
+    console.log(updatedAssign)
+    dispatch(updateTaskWithCompletedDate(updatedAssign))
+    navigate("/employee/EmployeeDashboard")
   }
 
   return (
@@ -420,9 +421,11 @@ const UploadFileTaskDetails = ({ open, handleClose }) => {
             <Box mt={1}>
               <TextField
                 fullWidth
+                type="number"
                 label="Enter Rate"
-                name="positionName"
+                name="rate"
                 value={rate}
+                required
                 onChange={(e) => setRate(e.target.value)}
                 // onBlur={handleBlur}
               />
@@ -430,35 +433,32 @@ const UploadFileTaskDetails = ({ open, handleClose }) => {
             <Box mt={1}>
               <TextField
                 fullWidth
-                label="Enter Unit"
-                name="positionName"
-                value={unit}
-                onChange={(e) => setUnit(e.target.value)}
+                type="number"
+                label="Enter Quantity"
+                name="quantity"
+                required
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
                 // onBlur={handleBlur}
               />
             </Box>
             <Box mt={1}>
-              <FormControl fullWidth>
-                <InputLabel>Duration Type</InputLabel>
-                <Select name="durationType" onChange={(e) => e.target.value}>
-                  <MenuItem value="">
-                    <em>Select Duration Type</em>
-                  </MenuItem>
-                  <MenuItem value="Minutes">Minutes</MenuItem>
-                  <MenuItem value="Hours">Hours</MenuItem>
-                  <MenuItem value="Days">Days</MenuItem>
-                  <MenuItem value="Weeks">Weeks</MenuItem>
-                  <MenuItem value="Month">Month</MenuItem>
-                  <MenuItem value="Year">Year</MenuItem>
-                </Select>
-              </FormControl>
+              <TextField
+                fullWidth
+                label="Enter Quantity Name"
+                name="quantityName"
+                required
+                value={quantityName}
+                onChange={(e) => setQuantityName(e.target.value)}
+                // onBlur={handleBlur}
+              />
             </Box>
             <Box mt={1}>
               <TextField
                 type="file"
                 fullWidth
-                name="employeeAdharImage"
-                value={FileUpload}
+                required
+                name="FileUpload"
                 onChange={(e) => setFileUpload(e.target.value)}
               />
               <VisuallyHiddenInput id="employee-adhar-file" type="file" />
@@ -467,7 +467,7 @@ const UploadFileTaskDetails = ({ open, handleClose }) => {
               </InputLabel>
             </Box>
             <Box mt={1}>
-              <Button variant="contained" fullWidth>
+              <Button variant="contained" onClick={handleSubmitWork} fullWidth>
                 Upload Your Work
               </Button>
             </Box>

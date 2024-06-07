@@ -31,14 +31,13 @@ const initialState = {
   },
 }
 
-// export const
-//  updateTaskWithCompletedDate = createAsyncThunk(
-//   "tasks/updateTaskSubmission",
-//   async (updatedAssign) => {
-//     const response = await updateTaskSubmission(updatedAssign)
-//     return response.data
-//   }
-// )
+export const updateTaskWithCompletedDate = createAsyncThunk(
+  "tasks/updateTaskSubmission",
+  async (updatedAssign) => {
+    const response = await updateTaskSubmission(updatedAssign)
+    return response.data
+  }
+)
 
 export const getCompletedTaskDataForChecker = createAsyncThunk(
   "tasks/getCompletedTaskDataForChecker",
@@ -67,9 +66,18 @@ export const getTaskAssignDataForChecker = createAsyncThunk(
 
 export const getTaskFromHistoryByEmpId = createAsyncThunk(
   "tasks/getTaskFromHistoryByEmpId",
-  async (empid) => {
-    const response = await GetTaskHistoryByEmpID(empid)
-    return response.data
+  async (empid, { rejectWithValue }) => {
+    try {
+      const response = await GetTaskHistoryByEmpID(empid)
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
   }
 )
 
@@ -153,18 +161,18 @@ export const AssignToTaskSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      // .addCase(updateTaskWithCompletedDate.pending, (state) => {
-      //   state.error = null
-      //   state.pendding = true
-      // })
-      // .addCase(updateTaskWithCompletedDate.fulfilled, (state, action) => {
-      //   state.employees = action.payload
-      //   state.pendding = false
-      // })
-      // .addCase(updateTaskWithCompletedDate.rejected, (state, action) => {
-      //   state.pendding = false
-      //   state.error = action.payload
-      // })
+      .addCase(updateTaskWithCompletedDate.pending, (state) => {
+        state.error = null
+        state.pendding = true
+      })
+      .addCase(updateTaskWithCompletedDate.fulfilled, (state, action) => {
+        state.employees = action.payload
+        state.pendding = false
+      })
+      .addCase(updateTaskWithCompletedDate.rejected, (state, action) => {
+        state.pendding = false
+        state.error = action.payload
+      })
       .addCase(getCompletedTaskDataForChecker.pending, (state) => {
         state.tasks = []
         state.error = null

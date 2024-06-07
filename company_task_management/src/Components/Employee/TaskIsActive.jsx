@@ -1,9 +1,9 @@
-import { Box } from "@mui/system";
+import { Box } from "@mui/system"
 
-import { Link } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { Link } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
 import {
   getTaskFromHistoryUsingEmpId,
   // updateTaskWithCompeletedate,
@@ -12,11 +12,11 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Alert } from "@mui/material"
 
 function TaskIsActive(params) {
-  const { pendding, tasks, error } = useSelector((state) => state.AssignToTask);
-  console.table(tasks);
-  const { id: empId } = useSelector((state) => state.Auth.authicatedUser);
+  const { pendding, tasks, error } = useSelector((state) => state.AssignToTask)
+  console.table(tasks)
+  const { id: empId } = useSelector((state) => state.Auth.authicatedUser)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const columns = [
     {
       field: "taskName",
@@ -39,13 +39,13 @@ function TaskIsActive(params) {
         </Link>
       ),
     },
-  ];
+  ]
 
   useEffect(() => {
     //1 is postion id for validation
     //task ID : for getting task
-    dispatch(getTaskFromHistoryUsingEmpId(empId));
-  }, [dispatch, empId]);
+    dispatch(getTaskFromHistoryUsingEmpId(empId))
+  }, [dispatch, empId])
 
   return (
     <div>
@@ -79,6 +79,6 @@ function TaskIsActive(params) {
         </Box>
       )}
     </div>
-  );
+  )
 }
-export default TaskIsActive;
+export default TaskIsActive

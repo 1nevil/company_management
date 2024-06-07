@@ -24,23 +24,23 @@ import {
   Typography,
   stepConnectorClasses,
   styled,
-} from "@mui/material"
-import { Box } from "@mui/system"
-import { Link, useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import { getTaskUsingTaskId } from "../../../../Slices/TaskSlice"
-import SettingsIcon from "@mui/icons-material/Settings"
-import GroupAddIcon from "@mui/icons-material/GroupAdd"
-import VideoLabelIcon from "@mui/icons-material/VideoLabel"
-import EngineeringIcon from "@mui/icons-material/Engineering"
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium"
-import ComputerIcon from "@mui/icons-material/Computer"
-import Check from "@mui/icons-material/Check"
-import PropTypes from "prop-types"
-import { getPositionsByIds } from "../../../../Slices/PositionSlice"
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import VisibilityIcon from "@mui/icons-material/Visibility"
+} from '@mui/material'
+import { Box } from '@mui/system'
+import { Link, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { getTaskUsingTaskId } from '../../../../Slices/TaskSlice'
+import SettingsIcon from '@mui/icons-material/Settings'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import VideoLabelIcon from '@mui/icons-material/VideoLabel'
+import EngineeringIcon from '@mui/icons-material/Engineering'
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium'
+import ComputerIcon from '@mui/icons-material/Computer'
+import Check from '@mui/icons-material/Check'
+import PropTypes from 'prop-types'
+import { getPositionsByIds } from '../../../../Slices/PositionSlice'
+import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
 function AdminTaskDeatil(params) {
   const [chainFlow, setChainFlow] = useState([])
@@ -86,7 +86,7 @@ function AdminTaskDeatil(params) {
   useEffect(() => {
     if (chainDetails) {
       const chainFlow = chainDetails[0]?.chainFlow
-      const flowarray = chainFlow?.split(",")
+      const flowarray = chainFlow?.split(',')
       setChainFlow(flowarray)
       const currentPostion = taskMaster?.currentPostion
       const stringposition = currentPostion?.toString()
@@ -102,22 +102,22 @@ function AdminTaskDeatil(params) {
   }, [dispatch, taskId])
 
   const columns = [
-    { field: "empTaskHistoryId", headerName: "TaskHistory Id", width: 90 },
+    { field: 'empTaskHistoryId', headerName: 'TaskHistory Id', width: 90 },
     {
-      field: "taskName",
-      headerName: "Task Name",
+      field: 'taskName',
+      headerName: 'Task Name',
       width: 500,
       editable: true,
     },
     {
-      field: "seeDetails",
-      headerName: "See Details",
-      description: "Task details",
+      field: 'seeDetails',
+      headerName: 'See Details',
+      description: 'Task details',
       sortable: false,
       width: 160,
       renderCell: (params) => (
         <Link
-          style={{ color: "gray" }}
+          style={{ color: 'gray' }}
           to={`/admin/TaskHistoryDetailForAdmin/${params.row.empTaskHistoryId}`}
         >
           <VisibilityIcon />
@@ -126,24 +126,24 @@ function AdminTaskDeatil(params) {
     },
   ]
 
-  const QontoStepIconRoot = styled("div")(({ theme, ownerState }) => ({
-    color: theme.palette.mode === "dark" ? theme.palette.grey[700] : "#eaeaf0",
-    display: "flex",
+  const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+    color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
+    display: 'flex',
     height: 22,
-    alignItems: "center",
+    alignItems: 'center',
     ...(ownerState.active && {
-      color: "#784af4",
+      color: '#784af4',
     }),
-    "& .QontoStepIcon-completedIcon": {
-      color: "#784af4",
+    '& .QontoStepIcon-completedIcon': {
+      color: '#784af4',
       zIndex: 1,
       fontSize: 18,
     },
-    "& .QontoStepIcon-circle": {
+    '& .QontoStepIcon-circle': {
       width: 8,
       height: 8,
-      borderRadius: "50%",
-      backgroundColor: "currentColor",
+      borderRadius: '50%',
+      backgroundColor: 'currentColor',
     },
   }))
 
@@ -174,43 +174,43 @@ function AdminTaskDeatil(params) {
     [`&.${stepConnectorClasses.active}`]: {
       [`& .${stepConnectorClasses.line}`]: {
         backgroundImage:
-          "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+          'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
       },
     },
     [`&.${stepConnectorClasses.completed}`]: {
       [`& .${stepConnectorClasses.line}`]: {
         backgroundImage:
-          "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+          'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
       },
     },
     [`& .${stepConnectorClasses.line}`]: {
       height: 3,
       border: 0,
       backgroundColor:
-        theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
+        theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
       borderRadius: 1,
     },
   }))
 
-  const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
     backgroundColor:
-      theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
+      theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
     zIndex: 1,
-    color: "#fff",
+    color: '#fff',
     width: 50,
     height: 50,
-    display: "flex",
-    borderRadius: "50%",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
     ...(ownerState.active && {
       backgroundImage:
-        "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
-      boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+        'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+      boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
     }),
     ...(ownerState.completed && {
       backgroundImage:
-        "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+        'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
     }),
   }))
 
@@ -260,15 +260,15 @@ function AdminTaskDeatil(params) {
                 p={1}
                 pt={0}
                 sx={{
-                  border: "2px solid gray",
-                  borderRadius: "10px",
-                  mr: "50px",
+                  border: '2px solid gray',
+                  borderRadius: '10px',
+                  mr: '50px',
                 }}
               >
                 <Typography
                   variant="h6"
                   mt={3}
-                  sx={{ textAlign: "center", fontWeight: "bold" }}
+                  sx={{ textAlign: 'center', fontWeight: 'bold' }}
                 >
                   Check List
                 </Typography>
@@ -277,10 +277,10 @@ function AdminTaskDeatil(params) {
                     <Box
                       key={checklist.checklistId}
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4",
-                        lineHeight: "43px",
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4',
+                        lineHeight: '43px',
                       }}
                     >
                       <Typography
@@ -288,7 +288,7 @@ function AdminTaskDeatil(params) {
                         gutterBottom
                         textTransform="capitalize"
                         ml={3}
-                        sx={{ m: "auto" }}
+                        sx={{ m: 'auto' }}
                       >
                         {checklist.taskMessage}
                       </Typography>
@@ -298,7 +298,7 @@ function AdminTaskDeatil(params) {
                     <Typography
                       variant="body2"
                       color="primary"
-                      sx={{ cursor: "pointer", textAlign: "end" }}
+                      sx={{ cursor: 'pointer', textAlign: 'end' }}
                       onClick={handleOpenModal}
                     >
                       See More
@@ -311,16 +311,16 @@ function AdminTaskDeatil(params) {
                 p={2}
                 pt={0}
                 sx={{
-                  border: "2px solid gray",
-                  borderRadius: "10px",
-                  mr: "50px",
+                  border: '2px solid gray',
+                  borderRadius: '10px',
+                  mr: '50px',
                   mt: 3,
                 }}
               >
                 <Typography
                   variant="h6"
                   mt={3}
-                  sx={{ textAlign: "center", fontWeight: "bold" }}
+                  sx={{ textAlign: 'center', fontWeight: 'bold' }}
                 >
                   Position Guidelines
                 </Typography>
@@ -329,10 +329,10 @@ function AdminTaskDeatil(params) {
                     <Box
                       key={guideline.positionGuidelineId}
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4",
-                        lineHeight: "43px",
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4',
+                        lineHeight: '43px',
                       }}
                     >
                       <Typography
@@ -340,7 +340,7 @@ function AdminTaskDeatil(params) {
                         gutterBottom
                         textTransform="capitalize"
                         ml={4}
-                        sx={{ m: "auto" }}
+                        sx={{ m: 'auto' }}
                       >
                         {guideline.positionGuidline}
                       </Typography>
@@ -350,7 +350,7 @@ function AdminTaskDeatil(params) {
                     <Typography
                       variant="body2"
                       color="primary"
-                      sx={{ cursor: "pointer", textAlign: "end" }}
+                      sx={{ cursor: 'pointer', textAlign: 'end' }}
                       onClick={handleOpenModal}
                     >
                       See More
@@ -363,26 +363,26 @@ function AdminTaskDeatil(params) {
             <Grid
               item
               xs={7}
-              sx={{ textAlign: "center", margin: "auto", ml: 10 }}
+              sx={{ textAlign: 'center', margin: 'auto', ml: 10 }}
             >
               <Grid xs={12}>
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                   Task Detail
                 </Typography>
                 <Box
                   mt={5}
                   p={4}
                   sx={{
-                    border: "2px solid gray",
-                    boxShadow: "2px 2px 10px 1px black",
+                    border: '2px solid gray',
+                    boxShadow: '2px 2px 10px 1px black',
                   }}
                 >
                   {taskMaster ? (
                     <>
                       <Card
                         sx={{
-                          border: "2px solid gray",
-                          boxShadow: "2px 2px 10px black",
+                          border: '2px solid gray',
+                          boxShadow: '2px 2px 10px black',
                         }}
                       >
                         <CardHeader
@@ -402,7 +402,7 @@ function AdminTaskDeatil(params) {
                               ) : (
                                 <>
                                   <Typography component="span" variant="body2">
-                                    Duration: {taskMaster.durationNum}{" "}
+                                    Duration: {taskMaster.durationNum}{' '}
                                     {taskMaster.durationType}
                                   </Typography>
                                 </>
@@ -415,12 +415,12 @@ function AdminTaskDeatil(params) {
                             <Typography variant="body2" color="text.secondary">
                               <Typography
                                 sx={{
-                                  variant: "p",
-                                  fontWeight: "bold",
+                                  variant: 'p',
+                                  fontWeight: 'bold',
                                 }}
                               >
                                 Description
-                              </Typography>{" "}
+                              </Typography>{' '}
                               {taskMaster.description}
                             </Typography>
                           </CardContent>
@@ -446,20 +446,20 @@ function AdminTaskDeatil(params) {
           <Typography
             variant="p"
             sx={{
-              fontWeight: "bold",
-              display: "flex",
-              justifyContent: "center",
+              fontWeight: 'bold',
+              display: 'flex',
+              justifyContent: 'center',
               mt: 4,
             }}
           >
             Chain For Task
           </Typography>
-          <Grid sx={{ "& .MuiTextField-root": { m: 1, width: "100vw" } }}>
+          <Grid sx={{ '& .MuiTextField-root': { m: 1, width: '100vw' } }}>
             {chainDetails &&
               chainDetails[0]?.chainFlow
-                ?.split(",")
+                ?.split(',')
                 ?.map((c, index) => <h1 key={index}> {c.chainName}</h1>)}
-            <Stack sx={{ width: "90%", mt: "30px" }} spacing={4}>
+            <Stack sx={{ width: '90%', mt: '30px' }} spacing={4}>
               {/* <Stepper
               alternativeLabel
               activeStep={chainDetails?.length}
@@ -494,9 +494,9 @@ function AdminTaskDeatil(params) {
               <Typography
                 variant="p"
                 sx={{
-                  fontWeight: "bold",
-                  display: "flex  ",
-                  justifyContent: "center",
+                  fontWeight: 'bold',
+                  display: 'flex  ',
+                  justifyContent: 'center',
                   p: 4,
                 }}
               >
