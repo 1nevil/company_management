@@ -1,21 +1,21 @@
-import * as React from "react"
-import Avatar from "@mui/material/Avatar"
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
 //import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline"
-import TextField from "@mui/material/TextField"
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
 //import FormControlLabel from "@mui/material/FormControlLabel";
 //import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link"
-import Paper from "@mui/material/Paper"
-import Box from "@mui/material/Box"
-import Grid from "@mui/material/Grid"
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
-import Typography from "@mui/material/Typography"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { useFormik } from "formik"
-import { EmployeeSchema } from "./Validation/validationSchema"
-import DeleteIcon from "@mui/icons-material/Delete"
-import AddIcon from "@mui/icons-material/Add"
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useFormik } from "formik";
+import { EmployeeSchema } from "./Validation/validationSchema";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
   Divider,
@@ -26,9 +26,9 @@ import {
   MenuItem,
   NativeSelect,
   styled,
-} from "@mui/material"
-import NavigationIcon from "@mui/icons-material/Navigation"
-import { useState } from "react"
+} from "@mui/material";
+import NavigationIcon from "@mui/icons-material/Navigation";
+import { useState } from "react";
 
 //import { useFormik } from 'formik';
 
@@ -52,11 +52,11 @@ import { useState } from "react"
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
-const defaultTheme = createTheme()
+const defaultTheme = createTheme();
 
 export default function Register() {
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
-  const [additionalInputCount, setAdditionalInputCount] = useState(0)
+  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false);
+  const [additionalInputCount, setAdditionalInputCount] = useState(0);
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -76,17 +76,17 @@ export default function Register() {
     left: 0,
     whiteSpace: "nowrap",
     width: 1,
-  })
+  });
   const handleAddInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount + 1)
-    setShowAdditionalInputs(true)
-  }
+    setAdditionalInputCount((prevCount) => prevCount + 1);
+    setShowAdditionalInputs(true);
+  };
 
   const handleDeleteInput = () => {
-    setAdditionalInputCount((prevCount) => prevCount - 1)
-  }
+    setAdditionalInputCount((prevCount) => prevCount - 1);
+  };
 
-  const Positions = ["Engineering", "Marketing", "Finance", "HR"]
+  const Positions = ["Engineering", "Marketing", "Finance", "HR"];
 
   const initValue = {
     firstName: "",
@@ -115,17 +115,17 @@ export default function Register() {
     ServiceCategoryName: "",
     employeeSign: "",
     employeeAdharImage: "",
-  }
+  };
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       // validationSchema: EmployeeSchema,
       onSubmit: (data) => {
-        alert("Form Submitted!")
-        console.log(data)
+        alert("Form Submitted!");
+        console.log(data);
       },
     }
-  )
+  );
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -303,8 +303,8 @@ export default function Register() {
                       onInput={(e) => {
                         e.target.value = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 12)
-                        handleChange(e)
+                          .slice(0, 12);
+                        handleChange(e);
                       }}
                       onKeyDown={(e) => {
                         if (
@@ -316,7 +316,7 @@ export default function Register() {
                             e.keyCode === 46
                           )
                         ) {
-                          e.preventDefault()
+                          e.preventDefault();
                         }
                       }}
                       onChange={handleChange}
@@ -353,8 +353,8 @@ export default function Register() {
                       onInput={(e) => {
                         e.target.value = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 10)
-                        handleChange(e)
+                          .slice(0, 10);
+                        handleChange(e);
                       }}
                       onKeyDown={(e) => {
                         if (
@@ -366,7 +366,7 @@ export default function Register() {
                             e.keyCode === 46
                           )
                         ) {
-                          e.preventDefault()
+                          e.preventDefault();
                         }
                       }}
                       // value={employeeData.mobileNo}
@@ -388,8 +388,8 @@ export default function Register() {
                       onInput={(e) => {
                         e.target.value = e.target.value
                           .replace(/\D/g, "")
-                          .slice(0, 10)
-                        handleChange(e)
+                          .slice(0, 10);
+                        handleChange(e);
                       }}
                       onKeyDown={(e) => {
                         if (
@@ -401,7 +401,7 @@ export default function Register() {
                             e.keyCode === 46
                           )
                         ) {
-                          e.preventDefault()
+                          e.preventDefault();
                         }
                       }}
                       // value={employeeData.alternateMobileNo}
@@ -748,5 +748,5 @@ export default function Register() {
         </Grid>
       </Grid>
     </ThemeProvider>
-  )
+  );
 }

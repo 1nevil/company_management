@@ -18,7 +18,7 @@ import {
 import { useFormik } from "formik";
 import { PositionSchema } from "../../../Validation/validationSchema";
 import { insertPosition } from "../../../../Slices/PositionSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -87,7 +87,7 @@ const PositionForm = () => {
       },
     }
   );
-
+  const error = useSelector((state) => state.Position.error);
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleOpen}>
@@ -112,6 +112,11 @@ const PositionForm = () => {
                     {errors.positionName}
                   </Typography>
                 ) : null}
+                {error && (
+                  <Typography variant="caption" color="error">
+                    {error}
+                  </Typography>
+                )}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField

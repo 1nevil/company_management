@@ -285,7 +285,7 @@ function AdminTaskDeatil(params) {
   return (
     <div>
       <Grid container>
-        <Grid item xs={4}>
+        <Grid item xs={4} sx={{ margin: "auto" }}>
           <Box
             p={1}
             pt={0}
@@ -293,6 +293,7 @@ function AdminTaskDeatil(params) {
               border: "2px solid gray",
               borderRadius: "10px",
               mr: "50px",
+              // textAlign: "center",
             }}
           >
             <Typography
@@ -389,7 +390,17 @@ function AdminTaskDeatil(params) {
             </FormGroup>
           </Box>
         </Grid>
-        <Divider orientation="vertical" flexItem />
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{
+            display: {
+              lg: "block",
+              md: "display",
+              xs: "none",
+            },
+          }}
+        />
         <Grid item xs={7} sx={{ textAlign: "center", margin: "auto", ml: 10 }}>
           <Grid xs={12}>
             <Typography variant="h5" sx={{ fontWeight: "bold" }}>

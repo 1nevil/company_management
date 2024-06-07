@@ -175,6 +175,7 @@ export default function EmployeeForm() {
     setOpen(true);
     setFormOpen(true); // Open the form
   };
+  const error = useSelector((state) => state.Employee.error);
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleOpen}>
@@ -375,6 +376,11 @@ export default function EmployeeForm() {
                     {errors.employeeEmail}
                   </Typography>
                 ) : null}
+                {error && (
+                  <Typography variant="caption" color="error">
+                    {error}
+                  </Typography>
+                )}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
