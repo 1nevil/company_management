@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 import {
   TextField,
   Button,
@@ -14,14 +14,16 @@ import {
   DialogActions,
   Typography,
   Input,
-} from "@mui/material";
-import styled from "@emotion/styled";
-import { EmployeeSchema } from "../../../Validation/validationSchema";
-import { useFormik } from "formik";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosition } from "../../../../Slices/PositionSlice";
-import { insertEmp } from "../../../../Slices/EmployeeSlice";
-import Alert from "@mui/material/Alert";
+} from "@mui/material"
+import LoadingButton from "@mui/lab/LoadingButton"
+import styled from "@emotion/styled"
+import { EmployeeSchema } from "../../../Validation/validationSchema"
+import { useFormik } from "formik"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { insertEmp } from "../../../../Slices/EmployeeSlice"
+import Alert from "@mui/material/Alert"
+import { toast } from "react-toastify"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -33,21 +35,23 @@ const VisuallyHiddenInput = styled("input")({
   left: 0,
   whiteSpace: "nowrap",
   width: 1,
-});
+})
 
 export default function EmployeeForm() {
-  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
-  const [showPositionDropdown, setShowPositionDropdown] = useState(false);
-  const [formOpen, setFormOpen] = useState(false); // State variable to track form open/close
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false)
+  const [selectedRole, setSelectedRole] = useState("")
+  const { error, pending } = useSelector((state) => state.Employee) || []
 
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
-  const Positions = useSelector((state) => state.Position.positions);
+  const [showPositionDropdown, setShowPositionDropdown] = useState(false)
+  const [formOpen, setFormOpen] = useState(false) // State variable to track form open/close
+
+  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false)
+  const Positions = useSelector((state) => state.Position.positions)
 
   useEffect(() => {
-    dispatch(fetchPosition());
-  }, [dispatch]);
+    dispatch(fetchPosition())
+  }, [dispatch])
 
   const initValue = {
     firstName: "",
@@ -76,7 +80,7 @@ export default function EmployeeForm() {
     signImage: "",
     adharImage: "",
     isActive: "",
-  };
+  }
 
   const {
     errors,
@@ -90,8 +94,8 @@ export default function EmployeeForm() {
     initialValues: initValue,
     validationSchema: EmployeeSchema,
     onSubmit: (values) => {
-      setSuccessAlertOpen(true);
-      console.log(values);
+      setSuccessAlertOpen(true)
+      console.log(values)
       dispatch(
         insertEmp({
           employeeName:
@@ -122,41 +126,48 @@ export default function EmployeeForm() {
           employeeImage: values.employeeImage,
           isActive: "1",
         })
-      );
+      )
+
+      if (error === null && !pending) {
+        handleClose()
+      }
+      notifySubmit()
     },
-  });
+  })
+
+  const notifySubmit = () => toast.success("Employee Submitted successfully..")
+
   const calculateAge = (dob) => {
-    const today = new Date();
-    const birthDate = new Date(dob);
-    let ageDiff = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const today = new Date()
+    const birthDate = new Date(dob)
+    let ageDiff = today.getFullYear() - birthDate.getFullYear()
+    const monthDiff = today.getMonth() - birthDate.getMonth()
 
     if (
       monthDiff < 0 ||
       (monthDiff === 0 && today.getDate() < birthDate.getDate())
     ) {
-      ageDiff--;
+      ageDiff--
     }
 
-    setFieldValue("employeeAge", ageDiff.toString()); // Update age
-  };
+    setFieldValue("employeeAge", ageDiff.toString()) // Update age
+  }
 
   const handleDateChange = (event) => {
-    const { value } = event.target;
-    handleChange(event); // Update formik state with new value
-    calculateAge(value); // Calculate and update age
-  };
+    const { value } = event.target
+    handleChange(event) // Update formik state with new value
+    calculateAge(value) // Calculate and update age
+  }
 
   const handleClose = () => {
-    setOpen(false);
-    setFormOpen(false); // Close the form
-  };
+    setOpen(false)
+    setFormOpen(false) // Close the form
+  }
 
   const handleOpen = () => {
-    setOpen(true);
-    setFormOpen(true); // Open the form
-  };
-  const error = useSelector((state) => state.Employee.error);
+    setOpen(true)
+    setFormOpen(true) // Open the form
+  }
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleOpen}>
@@ -167,9 +178,6 @@ export default function EmployeeForm() {
         {/* Disable closing when form is open */}
         <DialogTitle>Add Employee</DialogTitle>
         <DialogContent>
-          {successAlertOpen && (
-            <Alert severity="success">Form submitted successfully!</Alert>
-          )}
           <form style={{ paddingTop: "10px" }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -403,10 +411,10 @@ export default function EmployeeForm() {
                       name="roleId"
                       value={values.roleId} // Make sure to assign the value from formik's values object
                       onChange={(event) => {
-                        handleChange(event); // Update formik's state
-                        setSelectedRole(event.target.value);
+                        handleChange(event) // Update formik's state
+                        setSelectedRole(event.target.value)
                         // Toggle position dropdown based on selected role
-                        setShowPositionDropdown(event.target.value === "3"); // Assuming "Employee" role ID is "3"
+                        setShowPositionDropdown(event.target.value === "3") // Assuming "Employee" role ID is "3"
                       }}
                       onBlur={handleBlur}
                     >
@@ -439,7 +447,7 @@ export default function EmployeeForm() {
                           <MenuItem value={position.positionId}>
                             {position.positionName}
                           </MenuItem>
-                        );
+                        )
                       })}
                     </Select>
                   </FormControl>
@@ -639,12 +647,13 @@ export default function EmployeeForm() {
               mt={5}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <Button variant="contained" type="submit">
+              <LoadingButton
+                loading={pending}
+                variant="contained"
+                type="submit"
+              >
                 Submit
-              </Button>
-              {successAlertOpen && (
-                <Alert severity="success">Form submitted successfully!</Alert>
-              )}
+              </LoadingButton>
             </Grid>
           </form>
         </DialogContent>
@@ -655,7 +664,7 @@ export default function EmployeeForm() {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
 //

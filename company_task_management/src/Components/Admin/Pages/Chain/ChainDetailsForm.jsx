@@ -19,6 +19,7 @@ import {
   Typography,
 } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
+import { toast } from "react-toastify"
 
 function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
@@ -37,12 +38,16 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const handleSubmit = () => {
     // console.log(chainid)
     handleCloseDetails()
+    notifySubmit()
     console.log(checklistItems)
 
     console.log({
       //   chainId: Number(chainid),
       chainFlow: checklistItems.toString(),
     })
+
+    const notifySubmit = () =>
+      toast.success("Chain Details Created successfully..")
 
     const chainDetails = {
       chainId: Number(chainId),

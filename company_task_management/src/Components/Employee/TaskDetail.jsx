@@ -69,7 +69,7 @@ function EmpTaskDetail() {
     : guidelines?.slice(0, 3)
 
   return (
-    <>
+    <div>
       {error !== null ? (
         <Alert variant="filled" severity="error">
           {error}
@@ -97,17 +97,12 @@ function EmpTaskDetail() {
               </>
             )}
           </Box>
-          <Grid container>
-            <Grid item xs={4}>
-              {/* Checklist */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
               <Box
                 p={2}
                 pt={0}
-                sx={{
-                  border: "2px solid gray",
-                  borderRadius: "10px",
-                  mr: "50px",
-                }}
+                sx={{ border: "2px solid gray", borderRadius: "10px" }}
               >
                 <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
                   Checklist
@@ -162,16 +157,10 @@ function EmpTaskDetail() {
                   </>
                 )}
               </Box>
-              {/* Position Guidelines */}
               <Box
                 p={2}
                 pt={0}
-                sx={{
-                  border: "2px solid gray",
-                  borderRadius: "10px",
-                  mr: "50px",
-                  mt: 3,
-                }}
+                sx={{ border: "2px solid gray", borderRadius: "10px", mt: 3 }}
               >
                 <Typography
                   variant="h6"
@@ -223,14 +212,19 @@ function EmpTaskDetail() {
                 )}
               </Box>
             </Grid>
-            <Divider orientation="vertical" flexItem />
-            <Grid
-              item
-              xs={7}
-              sx={{ textAlign: "center", margin: "auto", ml: 10 }}
-            >
-              {/* Task Detail */}
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            <Divider
+              orientation="vertical"
+              sx={{
+                padding: "10px",
+                display: { lg: "block", md: "block", xs: "none" },
+              }}
+              flexItem
+            />
+            <Grid item xs={12} md={7}>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "bold", textAlign: "center" }}
+              >
                 Task Detail
               </Typography>
               <Box
@@ -306,7 +300,6 @@ function EmpTaskDetail() {
               </Box>
             </Grid>
           </Grid>
-          {/* Modal */}
           <Dialog open={openModal} onClose={handleCloseModal}>
             <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
             <DialogContent>
@@ -345,72 +338,9 @@ function EmpTaskDetail() {
               <Button onClick={handleCloseModal}>Close</Button>
             </DialogActions>
           </Dialog>
-          {/* Checked By */}
-          <Box mt={5}>
-            <Typography
-              variant="h5"
-              textAlign="center"
-              mb={3}
-              sx={{ fontWeight: "bold" }}
-            >
-              Checked By
-            </Typography>
-            <Box
-              sx={{
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Box
-                p={4}
-                sx={{
-                  border: "2px solid gray",
-                  borderRadius: "20px",
-                  boxShadow: "5px 5px 10px gray",
-                }}
-              >
-                {pending ? (
-                  <Skeleton animation="wave" height={150} />
-                ) : (
-                  <Typography
-                    variant="body1"
-                    textAlign="center"
-                    textTransform="capitalize"
-                  >
-                    {checker ? (
-                      <p>{JSON.stringify(checker)}</p>
-                    ) : (
-                      // checker?.map((checker, index) => (
-                      //   <Typography
-                      //     key={index}
-                      //     variant="body1"
-                      //     textTransform="capitalize"
-                      //     sx={{
-                      //       display: "inline",
-                      //       "&::after":
-                      //         index !== checker.length - 1 ? ", " : "",
-                      //     }}
-                      //   >
-                      //     {checker}
-                      //   </Typography>
-                      // ))
-                      <Typography
-                        variant="body1"
-                        textAlign="center"
-                        color="error"
-                      >
-                        No checker found
-                      </Typography>
-                    )}
-                  </Typography>
-                )}
-              </Box>
-            </Box>
-          </Box>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

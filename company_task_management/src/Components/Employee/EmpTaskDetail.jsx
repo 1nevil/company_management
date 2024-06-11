@@ -81,17 +81,12 @@ function EmpTaskDetail() {
         </Alert>
       ) : (
         <>
-          {" "}
-          <Grid container>
-            <Grid item xs={4}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={4}>
               <Box
                 p={2}
                 pt={0}
-                sx={{
-                  border: "2px solid gray",
-                  borderRadius: "10px",
-                  mr: "50px",
-                }}
+                sx={{ border: "2px solid gray", borderRadius: "10px" }}
               >
                 <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
                   Checklist
@@ -99,11 +94,7 @@ function EmpTaskDetail() {
                 {displayedChecklist?.map((checklist) => (
                   <Box
                     key={checklist.checklistId}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4",
-                    }}
+                    sx={{ display: "flex", alignItems: "center", gap: "4" }}
                   >
                     <Typography
                       variant="p"
@@ -126,16 +117,10 @@ function EmpTaskDetail() {
                   </Typography>
                 )}
               </Box>
-
               <Box
                 p={2}
                 pt={0}
-                sx={{
-                  border: "2px solid gray",
-                  borderRadius: "10px",
-                  mr: "50px",
-                  mt: 3,
-                }}
+                sx={{ border: "2px solid gray", borderRadius: "10px", mt: 3 }}
               >
                 <Typography
                   variant="h6"
@@ -179,15 +164,20 @@ function EmpTaskDetail() {
                 </FormGroup>
               </Box>
             </Grid>
-            <Divider orientation="vertical" flexItem />
-
-            <Grid
-              item
-              xs={7}
-              sx={{ textAlign: "center", margin: "auto", ml: 10 }}
-            >
+            <Divider
+              orientation="vertical"
+              sx={{
+                padding: "10px",
+                display: { lg: "block", md: "block", xs: "none" },
+              }}
+              flexItem
+            />
+            <Grid item xs={12} md={7}>
               <Grid xs={12}>
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", textAlign: "center" }}
+                >
                   Task Detail
                 </Typography>
                 <Box
@@ -199,59 +189,53 @@ function EmpTaskDetail() {
                   }}
                 >
                   {task ? (
-                    <>
-                      <Card
-                        sx={{
-                          border: "2px solid gray",
-                          boxShadow: "2px 2px 10px black",
-                        }}
-                      >
-                        <CardHeader
-                          title={`Task Name: ${task.taskName}`}
-                          subheader={
-                            <>
-                              {task.startDate && task.endDate ? (
-                                <>
-                                  <Typography component="span" variant="body2">
-                                    Start Date: {task.startDate}
-                                  </Typography>
-                                  <br />
-                                  <Typography component="span" variant="body2">
-                                    End Date: {task.endDate}
-                                  </Typography>
-                                </>
-                              ) : (
-                                <>
-                                  <Typography component="span" variant="body2">
-                                    Duration: {task.durationNum}{" "}
-                                    {task.durationType}
-                                  </Typography>
-                                </>
-                              )}
-                            </>
-                          }
-                        />
-                        <CardActionArea>
-                          <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                              <Typography
-                                sx={{
-                                  variant: "p",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Description
-                              </Typography>{" "}
-                              {task.description}
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </>
+                    <Card
+                      sx={{
+                        border: "2px solid gray",
+                        boxShadow: "2px 2px 10px black",
+                      }}
+                    >
+                      <CardHeader
+                        title={`Task Name: ${task.taskName}`}
+                        subheader={
+                          <>
+                            {task.startDate && task.endDate ? (
+                              <>
+                                <Typography component="span" variant="body2">
+                                  Start Date: {task.startDate}
+                                </Typography>
+                                <br />
+                                <Typography component="span" variant="body2">
+                                  End Date: {task.endDate}
+                                </Typography>
+                              </>
+                            ) : (
+                              <>
+                                <Typography component="span" variant="body2">
+                                  Duration: {task.durationNum}{" "}
+                                  {task.durationType}
+                                </Typography>
+                              </>
+                            )}
+                          </>
+                        }
+                      />
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography variant="body2" color="text.secondary">
+                            <Typography
+                              sx={{ variant: "p", fontWeight: "bold" }}
+                            >
+                              Description
+                            </Typography>{" "}
+                            {task.description}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
                   ) : (
                     <Typography variant="h5" gutterBottom>
-                      Loading...
-                      <Skeleton animation="wave" />
+                      Loading... <Skeleton animation="wave" />
                     </Typography>
                   )}
                 </Box>
