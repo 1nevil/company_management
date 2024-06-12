@@ -170,13 +170,13 @@ function CheckerTaskIsActiveDeatils() {
           </>
         )}
       </Box>
-      <Grid container>
-        <Grid item xs={4}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={4}>
           {/* Checklist */}
           <Box
             p={2}
             pt={0}
-            sx={{ border: "2px solid gray", borderRadius: "10px", mr: "50px" }}
+            sx={{ border: "2px solid gray", borderRadius: "10px", mb: 3 }}
           >
             <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
               Checklist
@@ -189,11 +189,10 @@ function CheckerTaskIsActiveDeatils() {
                   displayedChecklist?.map((checklist) => (
                     <Box
                       key={checklist.checklistId}
-                      sx={{ display: "flex", alignItems: "center", gap: "4" }}
+                      sx={{ display: "flex", alignItems: "center", gap: 2 }}
                     >
                       <Typography
-                        variant="p"
-                        gutterBottom
+                        variant="body2"
                         textTransform="capitalize"
                         ml={3}
                       >
@@ -223,17 +222,11 @@ function CheckerTaskIsActiveDeatils() {
           <Box
             p={2}
             pt={0}
-            sx={{
-              border: "2px solid gray",
-              borderRadius: "10px",
-              mr: "50px",
-              mt: 3,
-            }}
+            sx={{ border: "2px solid gray", borderRadius: "10px" }}
           >
             <Typography
               variant="h6"
-              mt={3}
-              sx={{ textAlign: "center", fontWeight: "bold" }}
+              sx={{ textAlign: "center", fontWeight: "bold", mt: 3 }}
             >
               Position Guidelines
             </Typography>
@@ -247,16 +240,14 @@ function CheckerTaskIsActiveDeatils() {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "4",
+                      gap: 2,
                       lineHeight: "43px",
                     }}
                   >
                     <Typography
-                      variant="p"
-                      gutterBottom
+                      variant="body2"
                       textTransform="capitalize"
                       ml={4}
-                      sx={{ m: "auto" }}
                     >
                       {guideline.positionGuidline}
                     </Typography>
@@ -276,84 +267,92 @@ function CheckerTaskIsActiveDeatils() {
             )}
           </Box>
         </Grid>
-        <Divider orientation="vertical" flexItem />
-        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto", ml: 10 }}>
+        <Divider
+          orientation="vertical"
+          sx={{
+            padding: "10px",
+            display: { lg: "block", md: "block", xs: "none" },
+          }}
+          flexItem
+        />
+        <Grid item xs={12} md={7}>
           {/* Task Detail */}
-          <Grid xs={12}>
-            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-              Task Detail
-            </Typography>
-            <Box
-              mt={5}
-              p={4}
-              sx={{
-                border: "2px solid gray",
-                boxShadow: "2px 2px 10px 1px black",
-              }}
-            >
-              {pending ? (
-                <Skeleton animation="wave" />
-              ) : (
-                <>
-                  {taskDetails ? (
-                    <Card
-                      sx={{
-                        border: "2px solid gray",
-                        boxShadow: "2px 2px 10px black",
-                      }}
-                    >
-                      <CardHeader
-                        title={`Task Name: ${taskDetails.taskName}`}
-                        subheader={
-                          <>
-                            {taskDetails.startDate && taskDetails.endDate ? (
-                              <>
-                                <Typography component="span" variant="body2">
-                                  Start Date: {taskDetails.startDate}
-                                </Typography>
-                                <br />
-                                <Typography component="span" variant="body2">
-                                  End Date: {taskDetails.endDate}
-                                </Typography>
-                              </>
-                            ) : (
-                              <>
-                                <Typography component="span" variant="body2">
-                                  Duration: {taskDetails.durationNum}{" "}
-                                  {taskDetails.durationType}
-                                </Typography>
-                              </>
-                            )}
-                          </>
-                        }
-                      />
-                      <CardActionArea>
-                        <CardContent>
-                          <Typography variant="body2" color="text.secondary">
-                            <Typography
-                              sx={{ variant: "p", fontWeight: "bold" }}
-                            >
-                              Description
-                            </Typography>{" "}
-                            {taskDetails.description}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  ) : error ? (
-                    <Typography variant="h5" gutterBottom>
-                      {error}
-                    </Typography>
-                  ) : (
-                    <Typography variant="h5" gutterBottom>
-                      Loading...
-                      <Skeleton animation="wave" />
-                    </Typography>
-                  )}
-                </>
-              )}
-            </Box>
-          </Grid>
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}
+          >
+            Task Detail
+          </Typography>
+          <Box
+            p={4}
+            sx={{
+              border: "2px solid gray",
+              boxShadow: "2px 2px 10px 1px black",
+              mb: 3,
+            }}
+          >
+            {pending ? (
+              <Skeleton animation="wave" />
+            ) : (
+              <>
+                {taskDetails ? (
+                  <Card
+                    sx={{
+                      border: "2px solid gray",
+                      boxShadow: "2px 2px 10px black",
+                    }}
+                  >
+                    <CardHeader
+                      title={`Task Name: ${taskDetails.taskName}`}
+                      subheader={
+                        <>
+                          {taskDetails.startDate && taskDetails.endDate ? (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Start Date: {taskDetails.startDate}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                End Date: {taskDetails.endDate}
+                              </Typography>
+                            </>
+                          ) : (
+                            <>
+                              <Typography component="span" variant="body2">
+                                Duration: {taskDetails.durationNum}{" "}
+                                {taskDetails.durationType}
+                              </Typography>
+                            </>
+                          )}
+                        </>
+                      }
+                    />
+                    <CardActionArea>
+                      <CardContent>
+                        <Typography variant="body2" color="text.secondary">
+                          <Typography
+                            sx={{ variant: "body2", fontWeight: "bold" }}
+                          >
+                            Description
+                          </Typography>{" "}
+                          {taskDetails.description}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                ) : error ? (
+                  <Typography variant="h5" gutterBottom>
+                    {error}
+                  </Typography>
+                ) : (
+                  <Typography variant="h5" gutterBottom>
+                    Loading...
+                    <Skeleton animation="wave" />
+                  </Typography>
+                )}
+              </>
+            )}
+          </Box>
         </Grid>
       </Grid>
       {/* Modal */}
@@ -395,13 +394,12 @@ function CheckerTaskIsActiveDeatils() {
           <Button onClick={handleCloseModal}>Close</Button>
         </DialogActions>
       </Dialog>
-      {/* Checked By */}
+      {/* Completed By */}
       <Box mt={5}>
         <Typography variant="h5" sx={{ fontWeight: "bold" }}>
           Completed By
         </Typography>
         <Box
-          mt={2}
           p={4}
           sx={{
             border: "2px solid gray",

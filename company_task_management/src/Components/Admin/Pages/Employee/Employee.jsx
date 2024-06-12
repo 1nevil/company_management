@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import Box from "@mui/material/Box";
-import { Grid, IconButton, TextField } from "@mui/material"; // Import TextField for search input
-import { Link } from "react-router-dom";
-import { Delete, Edit } from "@mui/icons-material";
-import { Typography } from "@mui/material";
-import EmployeeForm from "./EmployeeForm";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import React, { useEffect, useState } from "react"
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import Box from "@mui/material/Box"
+import { Grid, IconButton, TextField } from "@mui/material" // Import TextField for search input
+import { Link } from "react-router-dom"
+import { Delete, Edit } from "@mui/icons-material"
+import { Typography } from "@mui/material"
+import EmployeeForm from "./EmployeeForm"
+import { useDispatch, useSelector } from "react-redux"
+import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import VisibilityIcon from "@mui/icons-material/Visibility"
 
 function Employee() {
   const dispatch = useDispatch()
@@ -30,7 +30,7 @@ function Employee() {
     alert(id)
   }
 
-  const notify = (name) => toast(name + " is deleted !")
+  const notify = (name) => toast.success(name + " is deleted !")
 
   // Filtered rows based on search term
   // const filteredRows = employeess?.filter((row) =>
@@ -124,44 +124,43 @@ function Employee() {
       <Box>
         <Grid container>
           <Grid item xs={12} sm={12} md={12} lg={12}>
-            <ToastContainer />
             <EmployeeForm />
 
-        <Box mt={2}>
-          {/* Search input field */}
-          <TextField
-            label="Search"
-            variant="outlined"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            fullWidth
-          />
-        </Box>
-        <Typography
-          variant="h6"
-          component="h6"
-          textAlign="center"
-          color="primary"
-          mb={2}
-        >
-          Employees
-        </Typography>
-        <Box style={{ height: "50%", width: "100%" }}>
-          <DataGrid
-            rows={sortedRows} // Pass sorted rows to DataGrid
-            getRowId={(row) => row.employeeId}
-            columns={columns}
-            slots={{ toolbar: GridToolbar }}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 50,
-                },
-              },
-            }}
-            pageSizeOptions={[ 10,25, 50, 100, 200]}
-          />
-        </Box>
+            <Box mt={2}>
+              {/* Search input field */}
+              <TextField
+                label="Search"
+                variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                fullWidth
+              />
+            </Box>
+            <Typography
+              variant="h6"
+              component="h6"
+              textAlign="center"
+              color="primary"
+              mb={2}
+            >
+              Employees
+            </Typography>
+            <Box style={{ width: "100%" }}>
+              <DataGrid
+                rows={sortedRows} // Pass sorted rows to DataGrid
+                getRowId={(row) => row.employeeId}
+                columns={columns}
+                slots={{ toolbar: GridToolbar }}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 50,
+                    },
+                  },
+                }}
+                pageSizeOptions={[10, 25, 50, 100, 200]}
+              />
+            </Box>
           </Grid>
         </Grid>
       </Box>

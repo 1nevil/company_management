@@ -32,6 +32,7 @@ import { insertTask } from "../../../../Slices/TaskSlice"
 import CheckList from "./Checklist"
 import { Link } from "react-router-dom"
 import CallMadeIcon from "@mui/icons-material/CallMade"
+import { toast } from "react-toastify"
 
 const AddTask = ({ handleCloseForm }) => {
   const [showOpenForm, setshowOpenForm] = useState(false)
@@ -44,7 +45,7 @@ const AddTask = ({ handleCloseForm }) => {
   const dispatch = useDispatch()
 
   const chainMaster = useSelector((state) => state.Chain.chainMaster)
-  const { pending, error } = useSelector((state) => state.Tasks)
+  const { pending, error } = useSelector((state) => state.Tasks) || []
 
   const initValue = {
     taskName: "",
@@ -65,13 +66,13 @@ const AddTask = ({ handleCloseForm }) => {
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
-      // validationSchema: TaskSchema,
+      validationSchema: TaskSchema,
       onSubmit: (data) => {
         console.log(error)
         error === null && handleCloseForm()
+        notifySubmit()
         let TaskStatus = "Pending"
         data.durationNum = String(data.durationNum)
-
         dispatch(
           insertTask({
             ...data,
@@ -83,6 +84,7 @@ const AddTask = ({ handleCloseForm }) => {
       },
     }
   )
+  const notifySubmit = () => toast.success("Task Created successfully..")
 
   const [checkListData, setCheckListData] = useState(null)
 

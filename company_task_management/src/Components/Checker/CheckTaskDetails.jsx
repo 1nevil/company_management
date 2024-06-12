@@ -212,17 +212,18 @@ function CheckerTaskDetails() {
           handleSubmitClose={handleSubmitClose}
           message={message}
           setMessage={setMessage}
-        ></OpenModel>
+        />
       </Box>
-      <Grid container>
-        <Grid item xs={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={4}>
           <Box
             p={4}
             pt={0}
             sx={{
               border: "2px solid gray",
               borderRadius: "10px",
-              mr: "50px",
+              mb: { xs: 2, md: 0 },
+              mr: { md: "50px" },
             }}
           >
             <FormGroup>
@@ -239,11 +240,11 @@ function CheckerTaskDetails() {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "4",
+                    gap: 1,
                   }}
                 >
                   <Typography
-                    variant="p"
+                    variant="body1"
                     gutterBottom
                     textTransform="capitalize"
                     ml={3}
@@ -271,7 +272,7 @@ function CheckerTaskDetails() {
             sx={{
               border: "2px solid gray",
               borderRadius: "10px",
-              mr: "50px",
+              mr: { md: "50px" },
             }}
           >
             <Typography
@@ -281,65 +282,13 @@ function CheckerTaskDetails() {
             >
               Position Guidelines
             </Typography>
-            {/* {guidelines ? (
-              guidelines.map((guideline) => (
-                <Box
-                  key={guideline.positionGuidelineId}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4",
-                  }}
-                >
-                  <Checkbox
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
-                    checked={completedGuidelines.includes(
-                      guideline.positionGuidelineId
-                    )}
-                    onChange={(e) =>
-                      handleCheckboxChange(
-                        guideline.positionGuidelineId,
-                        e.target.checked
-                      )
-                    }
-                  />
-                  <Typography
-                    variant="h5"
-                    gutterBottom
-                    textTransform="capitalize"
-                    ml={3}
-                  >
-                    {guideline.positionGuidline}
-                  </Typography>
-                </Box>
-              ))
-            ) : (
-              <Typography variant="h5" gutterBottom>
-                No Guideline Available
-              </Typography>
-            )}
-            {guidelines && (
-              <>
-                <Typography
-                  variant="h5"
-                  gutterBottom
-                  textTransform="capitalize"
-                  ml={3}
-                >
-                  completed guideline
-                </Typography>
-                {completedGuidelines.map((guidelineId) => (
-                  <Typography key={guidelineId}>{guidelineId}</Typography>
-                ))}
-              </>
-            )} */}
             {displayedGuidelines?.map((guideline) => (
               <Box
                 key={guideline.positionGuidelineId}
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "4",
+                  gap: 1,
                   lineHeight: "43px",
                 }}
               >
@@ -356,7 +305,7 @@ function CheckerTaskDetails() {
                   }
                 />
                 <Typography
-                  variant="p"
+                  variant="body1"
                   gutterBottom
                   textTransform="capitalize"
                   ml={4}
@@ -376,44 +325,16 @@ function CheckerTaskDetails() {
                 See More
               </Typography>
             )}
-
-            {/* {displayedGuidelines?.map((guideline) => (
-              <Box
-                key={guideline.positionGuidelineId}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4",
-                  lineHeight: "43px",
-                }}
-              >
-                <Typography
-                  variant="p"
-                  gutterBottom
-                  textTransform="capitalize"
-                  ml={4}
-                  sx={{ m: "auto" }}
-                >
-                  {guideline.positionGuidline}
-                </Typography>
-              </Box>
-            ))}
-            {guidelines?.length > 3 && (
-              <Typography
-                variant="body2"
-                color="primary"
-                sx={{ cursor: "pointer", textAlign: "end" }}
-                onClick={handleOpenModal}
-              >
-                See More
-              </Typography>
-            )} */}
           </Box>
         </Grid>
 
-        <Divider orientation="vertical" flexItem />
-        <Grid item xs={7} sx={{ textAlign: "center", margin: "auto" }}>
-          <Grid xs={12}>
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{ display: { xs: "none", md: "block" } }}
+        />
+        <Grid item xs={12} md={7} sx={{ textAlign: "center", margin: "auto" }}>
+          <Grid item xs={12}>
             <Typography variant="h5">Task Detail</Typography>
             <Box
               mt={5}
@@ -424,54 +345,51 @@ function CheckerTaskDetails() {
               }}
             >
               {task ? (
-                <>
-                  <Card
-                    sx={{
-                      border: "2px solid gray",
-                      boxShadow: "2px 2px 10px black",
-                    }}
-                  >
-                    <CardHeader
-                      title={`Task Name: ${task.taskName}`}
-                      subheader={
-                        <>
-                          {task.startDate && task.endDate ? (
-                            <>
-                              <Typography component="span" variant="body2">
-                                Start Date: {task.startDate}
-                              </Typography>
-                              <br />
-                              <Typography component="span" variant="body2">
-                                End Date: {task.endDate}
-                              </Typography>
-                            </>
-                          ) : (
-                            <>
-                              <Typography component="span" variant="body2">
-                                Duration: {task.durationNum} {task.durationType}
-                              </Typography>
-                            </>
-                          )}
-                        </>
-                      }
-                    />
-                    <CardActionArea>
-                      <CardContent>
-                        <Typography variant="body2" color="text.secondary">
-                          <Typography
-                            sx={{
-                              variant: "p",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Description
-                          </Typography>{" "}
-                          {task.description}
+                <Card
+                  sx={{
+                    border: "2px solid gray",
+                    boxShadow: "2px 2px 10px black",
+                  }}
+                >
+                  <CardHeader
+                    title={`Task Name: ${task.taskName}`}
+                    subheader={
+                      <>
+                        {task.startDate && task.endDate ? (
+                          <>
+                            <Typography component="span" variant="body2">
+                              Start Date: {task.startDate}
+                            </Typography>
+                            <br />
+                            <Typography component="span" variant="body2">
+                              End Date: {task.endDate}
+                            </Typography>
+                          </>
+                        ) : (
+                          <>
+                            <Typography component="span" variant="body2">
+                              Duration: {task.durationNum} {task.durationType}
+                            </Typography>
+                          </>
+                        )}
+                      </>
+                    }
+                  />
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography variant="body2" color="text.secondary">
+                        <Typography
+                          sx={{
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Description
                         </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </>
+                        {task.description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
               ) : (
                 <Typography variant="h5" gutterBottom>
                   Loading...
@@ -479,34 +397,6 @@ function CheckerTaskDetails() {
                 </Typography>
               )}
             </Box>
-            {/* <Box p={2}>
-              <TextField
-                type="file"
-                fullWidth
-                name="employeeAdharImage"
-                // value={employeeData.employeeResume}
-                onChange={(e) => setFileUpload(e.target.value)}
-                // onBlur={handleBlur}
-              />
-              <VisuallyHiddenInput id="employee-adhar-file" type="file" />
-              <InputLabel htmlFor="employee-adhar-file">
-                Upload Your File
-              </InputLabel>
-            </Box> */}
-
-            {/* {JSON.stringify(emp)}
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            {JSON.stringify(empTaskAssignment)}
-            <br />
-            {JSON.stringify(empTaskAssignment?.taskName)}
-            <br />
-            {JSON.stringify(empTaskAssignment?.fileUpload)} */}
             <Box
               p={2}
               sx={{
@@ -546,7 +436,7 @@ function CheckerTaskDetails() {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "4",
+                  gap: 1,
                 }}
               >
                 <Checkbox
@@ -579,7 +469,7 @@ function CheckerTaskDetails() {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "4",
+                  gap: 1,
                 }}
               >
                 <Checkbox

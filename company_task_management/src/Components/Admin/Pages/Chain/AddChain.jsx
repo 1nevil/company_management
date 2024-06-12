@@ -4,6 +4,7 @@ import { useFormik } from "formik"
 import { ChainSchema } from "../../../Validation/validationSchema"
 import { useDispatch, useSelector } from "react-redux"
 import { insertChainMater } from "../../../../Slices/ChainSliceMaster"
+import { toast } from "react-toastify"
 
 // eslint-disable-next-line react/prop-types
 const AddChain = ({ closeform }) => {
@@ -20,10 +21,12 @@ const AddChain = ({ closeform }) => {
       validationSchema: ChainSchema,
       onSubmit: (data) => {
         closeform()
+        notifySubmit()
         dispatch(insertChainMater(data))
       },
     }
   )
+  const notifySubmit = () => toast.success("Chain Created successfully..")
 
   return (
     <Stack
