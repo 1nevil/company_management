@@ -15,8 +15,6 @@ export function updateEmployeeData(id) {
 }
 
 export function createEmp(formData) {
-  console.log("api  ")
-  console.log(formData)
   return axiosInstance.post(`api/Employees`, formData, {
     headers: {
       "Content-Type": "multipart/form-data", // Important for FormData

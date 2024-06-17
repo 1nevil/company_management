@@ -2,20 +2,65 @@
 // import { jwtDecode } from "jwt-decode"
 import { useSelector, useDispatch } from "react-redux"
 import { Outlet, Link } from "react-router-dom"
-import { Box, Typography, Button } from "@mui/material"
+import { Box, Typography, Button, Skeleton } from "@mui/material"
 import ErrorIcon from "@mui/icons-material/Error"
 import { useEffect } from "react"
 import { setUserToken } from "../Slices/AuthenticationSlice"
 import Breadcrumb from "../Components/Layout/Breadcrumb"
 
 function ProtectedRoute({ role }) {
-  const { isAuthenticate, authicatedUser } = useSelector((state) => state.Auth)
+  const { isAuthenticate, authicatedUser, initialPending } = useSelector(
+    (state) => state.Auth
+  )
   console.table(authicatedUser)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(setUserToken())
   }, [dispatch])
+
+  if (initialPending) {
+    return (
+      <>
+        <Skeleton
+          variant="rectangular"
+          width={1200}
+          height={20}
+          animation="wave"
+        />
+        <Skeleton
+          variant="rectangular"
+          width={1000}
+          height={20}
+          animation="wave"
+          sx={{ marginTop: "10px" }}
+        />
+        <Skeleton
+          variant="rectangular"
+          width={800}
+          height={20}
+          animation="wave"
+          sx={{ marginTop: "10px" }}
+        />
+        <Skeleton
+          variant="rectangular"
+          width={600}
+          height={20}
+          animation="wave"
+          sx={{ marginTop: "10px" }}
+        />
+
+        <Skeleton
+          variant="rectangular"
+          width={500}
+          height={20}
+          animation="wave"
+          sx={{ marginTop: "10px" }}
+        />
+      </>
+    )
+  }
 
   return !isAuthenticate ||
     authicatedUser[
@@ -46,7 +91,7 @@ function ProtectedRoute({ role }) {
         underline="none"
         sx={{ marginTop: 2, textDecoration: "none" }}
       >
-        Login
+        Go to Your Home page
       </Link>
     </Box>
   ) : (

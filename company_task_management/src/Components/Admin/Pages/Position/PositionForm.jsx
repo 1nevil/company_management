@@ -59,9 +59,6 @@ const PositionForm = () => {
   const initValue = {
     positionName: "",
     duration: "",
-    unit: "",
-    unitName: "",
-    rate: "",
     durationType: "",
   }
 
@@ -148,62 +145,14 @@ const PositionForm = () => {
                     <MenuItem value="">
                       <em>Select Duration Type</em>
                     </MenuItem>
-                    <MenuItem value="Minutes">Minutes</MenuItem>
+                    {/* <MenuItem value="Minutes">Minutes</MenuItem> */}
                     <MenuItem value="Hours">Hours</MenuItem>
-                    <MenuItem value="Days">Days</MenuItem>
-                    <MenuItem value="Weeks">Weeks</MenuItem>
-                    <MenuItem value="Month">Month</MenuItem>
-                    <MenuItem value="Year">Year</MenuItem>
+                    {/* <MenuItem value="Days">Days</MenuItem> */}
+                    {/* <MenuItem value="Weeks">Weeks</MenuItem> */}
+                    {/* <MenuItem value="Month">Month</MenuItem> */}
+                    {/* <MenuItem value="Year">Year</MenuItem> */}
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Unit"
-                  name="unit"
-                  //value={employeeData.Unit}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  autoComplete="off"
-                />
-                {errors.unit && touched.unit ? (
-                  <Typography variant="caption" color="error">
-                    {errors.unit}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Unit Name"
-                  name="unitName"
-                  //value={employeeData.Unit}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  autoComplete="off"
-                />
-                {errors.unitName && touched.unitName ? (
-                  <Typography variant="caption" color="error">
-                    {errors.unitName}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Rate Per Unit"
-                  name="rate"
-                  // value={employeeData.Rate}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  autoComplete="off"
-                />
-                {errors.rate && touched.rate ? (
-                  <Typography variant="caption" color="error">
-                    {errors.rate}
-                  </Typography>
-                ) : null}
               </Grid>
             </Grid>
             <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>

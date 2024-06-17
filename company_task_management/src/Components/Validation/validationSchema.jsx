@@ -116,9 +116,7 @@ export const TaskSchema = Yup.object({
 export const PositionSchema = Yup.object({
   positionName: Yup.string().required("**PositionName name is required"),
   duration: Yup.string().required("**only number are allow "),
-  unit: Yup.string().required("**unit is required"),
-  unitName: Yup.string().required("**Unitname name is required"),
-  rate: Yup.number().required("**Rate name is required"),
+  durationType: Yup.string().required("**Duration Type is required"),
 })
 
 export const ChainSchema = Yup.object({

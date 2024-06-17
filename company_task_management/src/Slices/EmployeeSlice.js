@@ -152,8 +152,7 @@ export const EmployeeSlice = createSlice({
       })
       .addCase(insertEmp.fulfilled, (state, action) => {
         state.pendding = false
-
-        state.employees.push(action.payload)
+        state.employees = [action.payload, ...state.employees]
       })
       .addCase(insertEmp.rejected, (state, action) => {
         state.pendding = false

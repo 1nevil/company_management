@@ -107,62 +107,6 @@ function Task() {
       width: 150,
       editable: true,
     },
-    // {
-    //   field: "instructions",
-    //   headerName: "Instructions",
-    //   width: 200,
-    //   editable: true,
-    // },
-    // {
-    //   field: "durationNum",
-    //   headerName: "Duration Day",
-    //   width: 150,
-    //   editable: true,
-    //   textAlign: "center",
-    // },
-    // {
-    //   field: "startDate",
-    //   headerName: "Start Date",
-    //   width: 150,
-    //   editable: true,
-    // },
-    // {
-    //   field: "endDate",
-    //   headerName: "End Date Increase Time",
-    //   width: 200,
-    //   editable: true,
-    // },
-    // {
-    //   field: "description",
-    //   headerName: "Description",
-    //   width: 200,
-    //   editable: true,
-    // },
-    // {
-    //   field: "taskStatus",
-    //   headerName: "Task Status",
-    //   width: 150,
-    //   editable: true,
-    // },
-    // {
-    //   field: "duration",
-    //   headerName: "Duration",
-    //   width: 120,
-    //   editable: true,
-    // },
-
-    // {
-    //   field: "set_Reminder",
-    //   headerName: "Set Reminder",
-    //   width: 150,
-    //   editable: true,
-    // },
-    // {
-    //   field: "chainId",
-    //   headerName: "Team Name",
-    //   width: 150,
-    //   editable: true,
-    // },
   ]
 
   const handleDelete = (id) => {

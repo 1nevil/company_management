@@ -60,20 +60,9 @@ function Position() {
       width: 140,
     },
     {
-      field: "unit",
-      headerName: "Unit",
+      field: "durationType",
+      headerName: "Duration Type",
       width: 140,
-    },
-    {
-      field: "unitName",
-      headerName: "Unit Name",
-      width: 140,
-    },
-    {
-      field: "rate",
-      headerName: "Rate Per Unit",
-      width: 140,
-      valueFormatter: (params) => `${params.value} Rs`,
     },
     {
       field: "Action",

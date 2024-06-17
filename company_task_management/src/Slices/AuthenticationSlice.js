@@ -3,7 +3,8 @@ import { loginAuthUser } from "./AuthenticationApi"
 import { jwtDecode } from "jwt-decode"
 
 const initialState = {
-  pending: "",
+  initialPending: true,
+  pending: false,
   token: null,
   error: null,
   authicatedUser: null,
@@ -50,6 +51,7 @@ export const AuthenticationSlice = createSlice({
         state.isAuthenticate = false
         state.authicatedUser = null
       }
+      state.initialPending = false
     },
     clearUserToken: (state) => {
       state.isAuthenticate = false

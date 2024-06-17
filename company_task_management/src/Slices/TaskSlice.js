@@ -90,7 +90,6 @@ export const addAssignTask = createAsyncThunk(
       console.log("🚀 ~ response:", response)
       return response.data
     } catch (error) {
-      console.log(error.response.data)
       if (error.response) {
         const errorMessage = error.response.data
         return rejectWithValue(errorMessage)
@@ -196,6 +195,7 @@ const TaskSlice = createSlice({
       })
       .addCase(insertTask.rejected, (state, action) => {
         state.pending = false
+        console.log(action.payload)
         state.error = action.payload
       })
       //addAssignTask

@@ -38,6 +38,7 @@ import InputAdornment from "@mui/material/InputAdornment"
 import { insertEmp } from "../Slices/EmployeeSlice"
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
+import { useNavigate } from "react-router-dom"
 const defaultTheme = createTheme()
 
 export default function Register() {
@@ -151,6 +152,7 @@ export default function Register() {
     calculateAge(value) // Calculate and update age
   }
 
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = React.useState(false)
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const {
@@ -167,7 +169,6 @@ export default function Register() {
       console.table(values)
       console.table(inputFields)
       console.log("submited")
-      alert("df")
 
       const formData = new FormData()
       formData.append(
@@ -201,6 +202,7 @@ export default function Register() {
       formData.append("PreviousCompanyDetails", JSON.stringify(inputFields))
 
       dispatch(insertEmp(formData))
+      navigate("/")
     },
   })
 
@@ -214,7 +216,6 @@ export default function Register() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {/* {JSON.stringify(errors)} */}
       <Grid container component="main">
         <CssBaseline />
 

@@ -41,11 +41,13 @@ const AddTask = ({ handleCloseForm }) => {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
   const [additionalInputCount, setAdditionalInputCount] = useState(0)
   const [inputs, setInputs] = useState([])
+  const [isSubmitted, setIssubmited] = useState(false)
 
   const dispatch = useDispatch()
 
   const chainMaster = useSelector((state) => state.Chain.chainMaster)
-  const { pending, error } = useSelector((state) => state.Tasks) || []
+  const { pending, error } = useSelector((state) => state.Tasks)
+  console.log(error)
 
   const initValue = {
     taskName: "",
@@ -67,12 +69,13 @@ const AddTask = ({ handleCloseForm }) => {
     {
       initialValues: initValue,
       validationSchema: TaskSchema,
+
       onSubmit: (data) => {
         console.log(error)
-        // error === null && handleCloseForm()
         // notifySubmit()
         let TaskStatus = "Pending"
         data.durationNum = String(data.durationNum)
+
         dispatch(
           insertTask({
             ...data,
@@ -82,6 +85,34 @@ const AddTask = ({ handleCloseForm }) => {
           })
         )
       },
+      // onSubmit: (data) => {
+      //   let TaskStatus = "Pending"
+      //   data.durationNum = String(data.durationNum)
+
+      // dispatch(
+      //   insertTask({
+      //     ...data,
+      //     durationType,
+      //     taskStatus: TaskStatus,
+      //     checklists: inputs,
+      //   })
+      // )
+
+      // if (error) {
+      //   alert("not closed")
+      // } else {
+      //   alert("clossed")
+      // }
+
+      // console.log(error)
+      // console.log(pending === false)
+      // console.log(error === null)
+
+      // if (pending === false && error === null) {
+      //   notifySubmit()
+      //   handleCloseForm()
+      // }
+      //  },
     }
   )
   // const notifySubmit = () => toast.success("Task Created successfully..")
@@ -130,23 +161,20 @@ const AddTask = ({ handleCloseForm }) => {
 
   return (
     <div>
-      {error !== null && (
-        <Snackbar
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert
-            onClose={handleClose}
-            severity="error"
-            variant="filled"
-            sx={{ width: "30rem" }}
-          >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItem: "center",
+          mb: "10px",
+        }}
+      >
+        {error ? (
+          <Alert severity="error" variant="filled" sx={{ width: "auto" }}>
             {error}
           </Alert>
-        </Snackbar>
-      )}
+        ) : null}
+      </Box>
       {/* {JSON.stringify(chainMaster)} */}
       <form onSubmit={handleSubmit} style={{ width: "100vh" }}>
         <div style={{ textAlign: "center" }}>
