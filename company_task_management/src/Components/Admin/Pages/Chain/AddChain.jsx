@@ -21,12 +21,12 @@ const AddChain = ({ closeform }) => {
       validationSchema: ChainSchema,
       onSubmit: (data) => {
         closeform()
-        notifySubmit()
+        // notifySubmit()
         dispatch(insertChainMater(data))
       },
     }
   )
-  const notifySubmit = () => toast.success("Chain Created successfully..")
+  // const notifySubmit = () => toast.success("Chain Created successfully..")
 
   return (
     <Stack

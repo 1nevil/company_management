@@ -41,12 +41,14 @@ function Employee() {
   //   )
   // );
   const filteredRows = Array.isArray(employeess)
-    ? employeess.filter((row) =>
-        Object.values(row).some(
-          (value) =>
-            value &&
-            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-        )
+    ? employeess.filter(
+        (row) =>
+          !["super_admin"].includes(row.rolename) &&
+          Object.values(row).some(
+            (value) =>
+              value &&
+              value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+          )
       )
     : []
 
@@ -58,7 +60,7 @@ function Employee() {
   const columns = [
     {
       field: "checklist",
-      headerName: "", // Empty header name
+      headerName: "Employee Details", // Empty header name
       description: "details",
       sortable: false,
       width: 60,

@@ -45,9 +45,9 @@ export const deleteEmp = createAsyncThunk("emps/deleteEmp", async (id) => {
 // });
 export const insertEmp = createAsyncThunk(
   "emps/insertEmp",
-  async (emp, { rejectWithValue }) => {
+  async (formdata, { rejectWithValue }) => {
     try {
-      const res = await createEmp(emp)
+      const res = await createEmp(formdata)
       return res.data
     } catch (error) {
       console.log(error)

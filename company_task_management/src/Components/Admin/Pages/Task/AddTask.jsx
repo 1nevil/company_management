@@ -69,8 +69,8 @@ const AddTask = ({ handleCloseForm }) => {
       validationSchema: TaskSchema,
       onSubmit: (data) => {
         console.log(error)
-        error === null && handleCloseForm()
-        notifySubmit()
+        // error === null && handleCloseForm()
+        // notifySubmit()
         let TaskStatus = "Pending"
         data.durationNum = String(data.durationNum)
         dispatch(
@@ -84,7 +84,7 @@ const AddTask = ({ handleCloseForm }) => {
       },
     }
   )
-  const notifySubmit = () => toast.success("Task Created successfully..")
+  // const notifySubmit = () => toast.success("Task Created successfully..")
 
   const [checkListData, setCheckListData] = useState(null)
 

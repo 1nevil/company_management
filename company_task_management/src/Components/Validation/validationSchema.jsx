@@ -22,11 +22,10 @@ export const TeamSchema = Yup.object({
 
 export const EmployeeSchema = Yup.object({
   firstName: Yup.string().required("**First Name is required"),
-  employeeImage: Yup.string().required("**required field"),
-  employeeResume: Yup.string().required("**required field"),
-  adharImage: Yup.string().required("**required field"),
-  signImage: Yup.string().required("**required field"),
-
+  //employeeImage: Yup.string().required("**required field"),
+  //employeeResume: Yup.string().required("**required field"),
+  //adharImage: Yup.string().required("**required field"),
+  //signImage: Yup.string().required("**required field"),
 
   lastName: Yup.string().required("**Last Name is required"),
   surname: Yup.string().required("**SurName is required"),
@@ -37,10 +36,11 @@ export const EmployeeSchema = Yup.object({
     "**Account  Holder Name is required"
   ),
   accountNo: Yup.string()
-  .matches(/^\d+$/, "Account number must contain only digits")
-  .required("Account Number is required"),
-  employeePassword: Yup.string().required("**Password  is required"),
-  dob: Yup.string().required("**Date of birth  is required"),
+    .matches(/^\d+$/, "Account number must contain only digits")
+    .required("Account Number is required"),
+  employeePassword: Yup.string()
+    .min(8, "Password must be at least 8 characters")
+    .required("**Password  is required"),
 
   dateOfJoining: Yup.string().required("**Date of joining  is required"),
   positionId: Yup.string().required("**Position  is required"),
@@ -49,13 +49,22 @@ export const EmployeeSchema = Yup.object({
   xender: Yup.string().required("**select your gender"),
 
   ifscCode: Yup.string()
-  .matches(/^\w{4}0\w{6}$/, "Invalid IFSC code format")
-  .required("IFSC is required"),
-branchName: Yup.string().required("**Branch Name is required"),
+    .matches(/^\w{4}0\w{6}$/, "Invalid IFSC code format")
+    .required("IFSC is required"),
+  branchName: Yup.string().required("**Branch Name is required"),
   upiId: Yup.string()
     .matches(/^[\w.-]+@[\w.-]+$/, "Invalid UPI ID format")
     .required("UPI ID is required"),
-
+  additionalInputs: Yup.array().of(
+    Yup.object().shape({
+      ClientCompanyName: Yup.string().required("Required"),
+      ServiceCategoryName: Yup.string().required("Required"),
+      PhoneNumber: Yup.string().required("Required"),
+    })
+  ),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("employeePassword"), null], "Passwords must match")
+    .required("Confirm Password is required"),
   adharNumber: Yup.string()
     .matches(/^[0-9]{12}$/, "Adhar No must be 12 digits")
     .required("Adhar No is required"),
@@ -68,11 +77,11 @@ branchName: Yup.string().required("**Branch Name is required"),
   altmobileNumber: Yup.string()
     .matches(/^[0-9]{10}$/, "Mobile No must be 10 digits")
     .required("only number is required"),
-    employeeAge: Yup.number()
-    .required("**Age is Required")
-    .typeError("**Only enter number")
-    .min(18, "**Employee must be at least 18 years old"),
-});
+  // employeeAge: Yup.number()
+  //   .required("**Age is Required")
+  //   .typeError("**Only enter number")
+  //   .min(18, "**Employee must be at least 18 years old"),
+})
 
 export const TaskSchema = Yup.object({
   taskName: Yup.string().required("**Task Name is required"),

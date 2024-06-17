@@ -63,9 +63,9 @@ export default function EmployeeForm() {
     roleId: "",
     dateOfJoining: "",
     employeeEmail: "",
-    mobileNumber: 0,
-    adharNumber: 0,
-    altmobileNumber: 0,
+    mobileNumber: "",
+    adharNumber: "",
+    altmobileNumber: "",
     employeeImage: "",
     employeeResume: "",
     positionId: "",
@@ -75,7 +75,7 @@ export default function EmployeeForm() {
     ifscCode: "",
     branchName: "",
     upiId: "",
-    employeeAge: 0,
+    employeeAge: "",
     employeePassword: "",
     signImage: "",
     adharImage: "",
@@ -93,49 +93,120 @@ export default function EmployeeForm() {
   } = useFormik({
     initialValues: initValue,
     validationSchema: EmployeeSchema,
-    onSubmit: (values) => {
-      setSuccessAlertOpen(true)
+    // onSubmit: (values) => {
+    //   setSuccessAlertOpen(true)
+    //   // console.log(values)
+
+    //   let empvalues = {
+    //     EmployeeName:
+    //       values.surname + " " + values.firstName + " " + values.lastName,
+    //     Dob: values.dob,
+    //     AddressEmployee: values.addressEmployee,
+    //     xender: values.xender,
+    //     roleId: values.roleId,
+    //     dateOfJoining: values.dateOfJoining,
+    //     EmployeeEmail: values.employeeEmail,
+    //     AdharNumber: values.adharNumber,
+    //     altmobileNumber: values.altmobileNumber,
+    //     MobileNumber: values.mobileNumber,
+
+    //     accountHolderName: values.accountHolderName,
+    //     ifscCode: values.ifscCode,
+    //     accountNo: values.accountNo,
+    //     bankName: values.bankName,
+    //     branchName: values.branchName,
+
+    //     employeeAge: values.employeeAge,
+    //     upiId: values.upiId,
+    //     EmployeePassword: values.employeePassword,
+    //     positionId: String(values.positionId),
+    //     adharImage: values.adharImage,
+    //     SignatureImage: values.signImage,
+    //     employeeResume: values.employeeResume,
+    //     employeeImage: values.employeeImage,
+    //     isActive: "1",
+    //   }
+    //   console.log(empvalues)
+    //   dispatch(insertEmp(empvalues))
+    //   if (error === null && !pending) {
+    //     handleClose()
+    //   }
+    //   notifySubmit()
+    //     .unwrap()
+    //     .then((res) => {
+    //       toast.success("Employee Submitted successfully.")
+    //       handleClose()
+    //     })
+    //     .catch((err) => {
+    //       toast.error("Submission failed. Please try again.")
+    //     })
+    // },
+    onSubmit: async (values, { setSubmitting }) => {
+      console.log(errors)
       console.log(values)
-      dispatch(
-        insertEmp({
-          employeeName:
-            values.surname + " " + values.firstName + " " + values.lastName,
-          dob: values.dob,
-          addressEmployee: values.addressEmployee,
-          xender: values.xender,
-          roleId: values.roleId,
-          dateOfJoining: values.dateOfJoining,
-          employeeEmail: values.employeeEmail,
-          adharNumber: values.adharNumber,
-          altmobileNumber: values.altmobileNumber,
-          mobileNumber: values.mobileNumber,
 
-          accountHolderName: values.accountHolderName,
-          ifscCode: values.ifscCode,
-          accountNo: values.accountNo,
-          bankName: values.bankName,
-          branchName: values.branchName,
+      const formData = new FormData()
+      formData.append("he", "he")
+      try {
+        formData.append(
+          "EmployeeName",
+          `${values.surname} ${values.firstName} ${values.lastName}`
+        )
+        formData.append("Dob", values.dob)
+        formData.append("AddressEmployee", values.addressEmployee)
+        formData.append("Xender", values.xender)
+        formData.append("RoleId", values.roleId)
+        formData.append("DateOfJoining", values.dateOfJoining)
+        formData.append("EmployeeEmail", values.employeeEmail)
+        formData.append("AdharNumber", values.adharNumber)
+        formData.append("AltmobileNumber", values.altmobileNumber)
+        formData.append("MobileNumber", values.mobileNumber)
+        formData.append("AccountHolderName", values.accountHolderName)
+        formData.append("IfscCode", values.ifscCode)
+        formData.append("BranchName", values.branchName)
+        formData.append("UpiId", values.upiId)
+        formData.append("EmployeeAge", values.employeeAge)
+        formData.append("EmployeePassword", values.employeePassword)
+        formData.append("BankName", values.bankName)
+        formData.append("IsActive", "0")
+        formData.append("PositionId", values.positionId)
+        formData.append("EmployeeImage", values.employeeImage)
+        formData.append("SignImage", values.signImage)
+        formData.append("EmployeeResume", values.employeeResume)
+        formData.append("AdharImage", values.adharImage)
 
-          employeeAge: values.employeeAge,
-          upiId: values.upiId,
-          employeePassword: values.employeePassword,
-          positionId: String(values.positionId),
-          adharImage: values.adharImage,
-          SignatureImage: values.signImage,
-          employeeResume: values.employeeResume,
-          employeeImage: values.employeeImage,
-          isActive: "1",
-        })
-      )
+        console.log(formData) // Check if formData has correct data
 
-      if (error === null && !pending) {
-        handleClose()
+        // Dispatch the insertEmp action with formData
+        dispatch(insertEmp(values))
+
+        // Reset form state or handle any UI updates after dispatching action
+        setSubmitting(false)
+      } catch (error) {
+        console.error("Error submitting form:", error)
+        setSubmitting(false)
       }
-      notifySubmit()
+      console.log(formData) // Verify FormData structure in console
+      dispatch(
+        insertEmp(formData)
+        // ).then((res) => {
+        //     if (res.payload?.EmployeeId) {
+        //       toast.success("Employee added successfully!")
+        //     } else {
+        //       toast.error("Failed to add employee.")
+        //     }
+        //     setSubmitting(false)
+        //     setOpen(false)
+        //   }
+      )
     },
   })
+  const handleFileChange = (event) => {
+    const { name, files } = event.target
+    setFieldValue(name, files[0])
+  }
 
-  const notifySubmit = () => toast.success("Employee Submitted successfully..")
+  // const notifySubmit = () => toast.success("Employee Submitted successfully..")
 
   const calculateAge = (dob) => {
     const today = new Date()
@@ -168,6 +239,8 @@ export default function EmployeeForm() {
     setOpen(true)
     setFormOpen(true) // Open the form
   }
+
+  console.log(errors)
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleOpen}>
@@ -563,7 +636,7 @@ export default function EmployeeForm() {
               <Typography variant="h6" component="h6" textAlign="">
                 Employee Image
               </Typography>
-              <Input
+              {/* <Input
                 type="file"
                 fullWidth
                 name="employeeImage"
@@ -580,14 +653,40 @@ export default function EmployeeForm() {
                 <Typography variant="caption" color="error">
                   {errors.employeeImage}
                 </Typography>
-              ) : null}
+              ) : null} */}
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="employeeImage"
+                name="employeeImage"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="employeeImage">
+                <Button
+                  variant="contained"
+                  component="span"
+                  color={
+                    touched.employeeImage && Boolean(errors.employeeImage)
+                      ? "error"
+                      : "primary"
+                  }
+                >
+                  Upload Image
+                </Button>
+                {touched.employeeImage && errors.employeeImage && (
+                  <Typography variant="caption" color="error">
+                    {errors.employeeImage}
+                  </Typography>
+                )}
+              </label>
             </Grid>
             <br></br>
             <Grid item xs={12}>
               <Typography variant="h6" component="h6" textAlign="">
                 Employee Resume
               </Typography>
-              <Input
+              {/* <Input
                 type="file"
                 fullWidth
                 name="employeeResume"
@@ -600,14 +699,40 @@ export default function EmployeeForm() {
                 <Typography variant="caption" color="error">
                   {errors.employeeResume}
                 </Typography>
-              ) : null}
+              ) : null} */}
+              <input
+                accept=".pdf"
+                style={{ display: "none" }}
+                id="employeeResume"
+                name="employeeResume"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="employeeResume">
+                <Button
+                  variant="contained"
+                  component="span"
+                  color={
+                    touched.employeeResume && Boolean(errors.employeeResume)
+                      ? "error"
+                      : "primary"
+                  }
+                >
+                  Upload Resume
+                </Button>
+                {touched.employeeResume && errors.employeeResume && (
+                  <Typography variant="caption" color="error">
+                    {errors.employeeResume}
+                  </Typography>
+                )}
+              </label>
             </Grid>
             <br></br>
             <Grid item xs={12}>
               <Typography variant="h6" component="h6" textAlign="">
                 Adhar Upload
               </Typography>
-              <Input
+              {/* <Input
                 type="file"
                 fullWidth
                 name="adharImage"
@@ -620,14 +745,40 @@ export default function EmployeeForm() {
                 <Typography variant="caption" color="error">
                   {errors.adharImage}
                 </Typography>
-              ) : null}
+              ) : null} */}
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="adharImage"
+                name="adharImage"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="adharImage">
+                <Button
+                  variant="contained"
+                  component="span"
+                  color={
+                    touched.adharImage && Boolean(errors.adharImage)
+                      ? "error"
+                      : "primary"
+                  }
+                >
+                  Upload Adhar Image
+                </Button>
+                {touched.adharImage && errors.adharImage && (
+                  <Typography variant="caption" color="error">
+                    {errors.adharImage}
+                  </Typography>
+                )}
+              </label>
             </Grid>
             <br></br>
             <Grid item xs={12}>
               <Typography variant="h6" component="h6" textAlign="">
                 Employee Sign
               </Typography>
-              <Input
+              {/* <Input
                 type="file"
                 fullWidth
                 name="signImage"
@@ -639,7 +790,33 @@ export default function EmployeeForm() {
                 <Typography variant="caption" color="error">
                   {errors.signImage}
                 </Typography>
-              ) : null}
+              ) : null} */}
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="signImage"
+                name="signImage"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="signImage">
+                <Button
+                  variant="contained"
+                  component="span"
+                  color={
+                    touched.signImage && Boolean(errors.signImage)
+                      ? "error"
+                      : "primary"
+                  }
+                >
+                  Upload Signature
+                </Button>
+                {touched.signImage && errors.signImage && (
+                  <Typography variant="caption" color="error">
+                    {errors.signImage}
+                  </Typography>
+                )}
+              </label>
             </Grid>
             <Grid
               item

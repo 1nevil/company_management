@@ -7,6 +7,8 @@ import {
   allApproveEmps,
   approveDisapproveEmp,
 } from "../../Slices/EmployeeSlice"
+import { Link } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
 
 function ApprovedAdmins() {
   const dispatch = useDispatch()
@@ -21,6 +23,21 @@ function ApprovedAdmins() {
   }
 
   const columns = [
+    {
+      field: "checklist",
+      headerName: "Employee Details", // Empty header name
+      description: "details",
+      sortable: false,
+      width: 90,
+      renderCell: (params) => (
+        <Link
+          style={{ color: "gray" }}
+          to={`/admin/EmployeeCard/${params.row.employeeId}`}
+        >
+          <VisibilityIcon />
+        </Link>
+      ),
+    },
     {
       field: "Reject",
       headerName: "Reject",
