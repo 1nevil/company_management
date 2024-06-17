@@ -6,6 +6,7 @@ import ChainDetailsReducer from "../Slices/ChainDetailsSlice"
 import TaskReducer from "../Slices/TaskSlice"
 import AssignToTaskReducer from "../Slices/AssignToTask"
 import AuthenticationReducer from "../Slices/AuthenticationSlice"
+import DashboardReducer from "../Slices/DashboardSlice"
 
 export default configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export default configureStore({
     Tasks: TaskReducer,
     ChainDetail: ChainDetailsReducer,
     AssignToTask: AssignToTaskReducer,
+    DashBord: DashboardReducer,
   },
 })

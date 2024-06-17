@@ -35,6 +35,9 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
     dispatch(checkersEmp())
   }, [dispatch])
 
+  const notifySubmit = () =>
+    toast.success("Chain Details Created successfully..")
+
   const handleSubmit = () => {
     // console.log(chainid)
     handleCloseDetails()
@@ -45,9 +48,6 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
       //   chainId: Number(chainid),
       chainFlow: checklistItems.toString(),
     })
-
-    const notifySubmit = () =>
-      toast.success("Chain Details Created successfully..")
 
     const chainDetails = {
       chainId: Number(chainId),
