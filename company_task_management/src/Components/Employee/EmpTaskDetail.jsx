@@ -76,9 +76,7 @@ function EmpTaskDetail() {
   return (
     <div>
       {error !== null ? (
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
+        <Alert severity="error">{error}</Alert>
       ) : (
         <>
           <Grid container spacing={3}>

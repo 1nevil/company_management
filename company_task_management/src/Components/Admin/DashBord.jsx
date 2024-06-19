@@ -5,11 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Card, Grid } from "@mui/material"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Link } from "react-router-dom"
-import {
-  Box,
-  CardHeader,
-  Divider,
-} from "@mui/material"
+import { Box, CardHeader, Divider } from "@mui/material"
 
 const columnsEmployee = [
   {

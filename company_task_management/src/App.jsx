@@ -49,32 +49,41 @@ function App() {
     // admin started
     admin: {
       icons: [Dashboard, AddTask, LinkIcon, PeopleIcon, StreetviewIcon],
-      sidebar: ["dashbord", "Task", "chain", "Employee", "Position"],
+      sidebar: [
+        { name: "Dashboard ", url: "dashbord" },
+        { name: "Task", url: "Task" },
+        { name: "Chains", url: "chain" },
+        { name: "Positions", url: "Position" },
+      ],
     },
     checker: {
       icons: [AddTask, RunningWithErrorsIcon],
-      sidebar: ["CheckTaskList", "CheckerTaskIsActive"],
-    },
-    employee: {
-      icons: [dashboard, ManageHistoryIcon, RunningWithErrorsIcon, FlakyIcon],
       sidebar: [
-        "EmployeeDashboard",
-        "TaskHistory",
-        "TaskIsActive",
-        "notChecked",
+        { name: "Task List ", url: "CheckTaskList" },
+        { name: "Active Task List ", url: "CheckerTaskIsActive" },
       ],
     },
-    superviser: {
-      icons: [dashboard],
-      sidebar: ["dashboard"],
+    employee: {
+      icons: [dashboard, RunningWithErrorsIcon, ManageHistoryIcon, FlakyIcon],
+      sidebar: [
+        { name: "Dashboard ", url: "EmployeeDashboard" },
+        { name: "Active Task ", url: "TaskIsActive" },
+        { name: "History ", url: "TaskHistory" },
+        { name: "Not Approved ", url: "notChecked" },
+      ],
     },
+
     superadmin: {
       icons: [dashboard, CheckCircleOutlinedIcon, CancelOutlinedIcon],
-      sidebar: ["dashboard", "Approved", "Disapproved"],
+      sidebar: [
+        { name: "Dashboard ", url: "dashboard" },
+        { name: "Apprved Employee ", url: "Approved" },
+        { name: "Disapproved Employee", url: "Disapproved" },
+      ],
     },
   }
 
-  const { admin, checker, employee, superviser, superadmin } = iconSiderbar
+  const { admin, checker, employee, superadmin } = iconSiderbar
 
   const router = createBrowserRouter([
     {
@@ -244,26 +253,7 @@ function App() {
         element: <SignIn />,
       }
     }),
-    {
-      path: "/superviser",
-      element: (
-        <Header
-          link="superviser"
-          icons={superviser.icons}
-          sidebarNames={superviser.sidebar}
-        />
-      ),
-      children: [
-        {
-          index: true,
-          element: <h1>Hello</h1>,
-        },
-        {
-          path: "checker",
-          element: <CheckSuperViser />,
-        },
-      ],
-    },
+
     // superadmin start
     {
       path: "/superadmin",

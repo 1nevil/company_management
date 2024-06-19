@@ -33,7 +33,7 @@ function EmpTaskDetail() {
         ) : (
           <>
             {empTaskHistory?.isApprove === "0" ? (
-              <Alert variant="filled" severity="error">
+              <Alert severity="error">
                 {messages.map((message, index) => (
                   <Typography key={index} variant="body2">
                     {message}
@@ -41,7 +41,7 @@ function EmpTaskDetail() {
                 ))}
               </Alert>
             ) : (
-              <Alert variant="filled" severity="success">
+              <Alert  severity="success">
                 Approved
               </Alert>
             )}

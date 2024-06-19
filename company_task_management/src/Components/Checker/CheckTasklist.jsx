@@ -9,6 +9,8 @@ import {
   Button,
   Skeleton,
   Typography,
+  Alert,
+  Grid,
 } from "@mui/material"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
@@ -22,6 +24,8 @@ import {
   getCompletedTaskDataForChecker,
 } from "../../Slices/AssignToTask"
 import WarningAmberIcon from "@mui/icons-material/WarningAmber"
+import AdminCard from "../Layout/AdminCard"
+import { getCheckerDashBoardDatas } from "../../Slices/DashboardSlice"
 
 function CheckTaskList() {
   const [open, setOpen] = useState(false)
@@ -34,9 +38,11 @@ function CheckTaskList() {
   const { id: employeeId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
   )
+
   useEffect(() => {
     dispatch(getCompletedTaskDataForChecker(positionId))
-  }, [dispatch, positionId])
+    dispatch(getCheckerDashBoardDatas(employeeId))
+  }, [dispatch, employeeId, positionId])
 
   const handleDisapprove = (TaskId) => {
     setOpen(true)
@@ -140,65 +146,82 @@ function CheckTaskList() {
           mt: 3,
         }}
       >
-        <WarningAmberIcon color="error" sx={{ mr: 1 }} />
-        <Typography variant="body1" color="error">
+        <Alert severity="error" sx={{ width: "100%" }}>
           {error}
-        </Typography>
+        </Alert>
       </Box>
     )
   }
+  const LinkStyle = {
+    textDecoration: "none",
+  }
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
-        loading={pendding}
-        rows={checkerTaskList}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5, 10, 20]}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-        getRowId={(row) => row.empTaskId}
-        pagination
-      />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          mt: 2,
-        }}
-      >
-        <Dialog open={open}>
-          <DialogTitle>Remarks</DialogTitle>
-          <DialogContent>
-            <TextField
-              size="small"
-              label=""
-              name="taskName"
-              multiline
-              required
-              onChange={(e) => setMessage(e.target.value)}
-              fullWidth
-              rows={6}
-            />
-            <Box sx={{ display: "flex", mt: 2, justifyContent: "center" }}>
-              <Button
-                variant="contained"
-                onClick={handleDisapproveSubmit}
-                color="primary"
-                sx={{ width: "300px" }}
-              >
-                Submit
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", mt: 2, justifyContent: "right" }}>
-              <Button onClick={handleClose}>Close</Button>
-            </Box>
-          </DialogContent>
-        </Dialog>
-      </Box>
-    </div>
+    <>
+      <Grid container columnSpacing={2} rowSpacing={2} mt={1} mb={2}>
+        <Grid item xs={12} sm={6}>
+          <Link to="/employee/TaskIsActive" style={LinkStyle}>
+            <AdminCard name="Active Tasks" value={0} textColor="red" />
+          </Link>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          ``
+          <Link to="/employee/TaskIsActive" style={LinkStyle}>
+            <AdminCard name="Active Tasks" value={0} textColor="green" />
+          </Link>
+        </Grid>
+      </Grid>
+      <div style={{ height: 400, width: "100%" }}>
+        <DataGrid
+          loading={pendding}
+          rows={checkerTaskList}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5, 10, 20]}
+          components={{
+            Toolbar: GridToolbar,
+          }}
+          getRowId={(row) => row.empTaskId}
+          pagination
+        />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 2,
+          }}
+        >
+          <Dialog open={open}>
+            <DialogTitle>Remarks</DialogTitle>
+            <DialogContent>
+              <TextField
+                size="small"
+                label=""
+                name="taskName"
+                multiline
+                required
+                onChange={(e) => setMessage(e.target.value)}
+                fullWidth
+                rows={6}
+              />
+              <Box sx={{ display: "flex", mt: 2, justifyContent: "center" }}>
+                <Button
+                  variant="contained"
+                  onClick={handleDisapproveSubmit}
+                  color="primary"
+                  sx={{ width: "300px" }}
+                >
+                  Submit
+                </Button>
+              </Box>
+              <Box sx={{ display: "flex", mt: 2, justifyContent: "right" }}>
+                <Button onClick={handleClose}>Close</Button>
+              </Box>
+            </DialogContent>
+          </Dialog>
+        </Box>
+      </div>
+    </>
   )
 }
 

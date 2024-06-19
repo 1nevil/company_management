@@ -126,7 +126,7 @@ export default function SignIn() {
       if (userRole) {
         console.log("🚀 ~ React.useEffect ~ userRole:", userRole)
         if (userRole === "super_admin") {
-          navigate("/superadmin/approved")
+          navigate("/superadmin/dashboard")
         } else if (userRole === "admin") {
           navigate("/admin/dashbord")
         } else if (userRole === "employee") {

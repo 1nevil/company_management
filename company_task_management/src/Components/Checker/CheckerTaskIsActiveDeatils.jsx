@@ -155,7 +155,7 @@ function CheckerTaskIsActiveDeatils() {
         ) : (
           <>
             {empTaskHistory?.isApprove === "0" ? (
-              <Alert variant="filled" severity="error">
+              <Alert severity="error">
                 {messages.map((message, index) => (
                   <Typography key={index} variant="body2">
                     {message}
@@ -163,9 +163,7 @@ function CheckerTaskIsActiveDeatils() {
                 ))}
               </Alert>
             ) : (
-              <Alert variant="filled" severity="success">
-                Approved
-              </Alert>
+              <Alert severity="success">Approved</Alert>
             )}
           </>
         )}

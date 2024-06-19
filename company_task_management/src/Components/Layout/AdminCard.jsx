@@ -9,7 +9,7 @@ import { ArrowDown as ArrowDownIcon } from "@phosphor-icons/react/dist/ssr/Arrow
 import { ArrowUp as ArrowUpIcon } from "@phosphor-icons/react/dist/ssr/ArrowUp"
 import { CurrencyDollar as CurrencyDollarIcon } from "@phosphor-icons/react/dist/ssr/CurrencyDollar"
 
-function AdminCard({ name, value }) {
+function AdminCard({ name, value, textColor }) {
   return (
     <>
       <Card sx={{ width: 400, margin: "auto", border: "1px solid gray" }}>
@@ -24,7 +24,12 @@ function AdminCard({ name, value }) {
                 <Typography color="text.secondary" variant="overline">
                   {name}
                 </Typography>
-                <Typography variant="h4">{value}</Typography>
+                <Typography
+                  variant="h4"
+                  style={textColor ? { color: textColor } : {}}
+                >
+                  {value}
+                </Typography>
               </Stack>
               <Avatar
                 sx={{

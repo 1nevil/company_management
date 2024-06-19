@@ -106,7 +106,7 @@ const loginLink = {
 }
 // eslint-disable-next-line react/prop-types
 function Header({ link, icons, sidebarNames }) {
-  
+  console.log(sidebarNames)
   const isAuthenticate = useSelector((state) => state.Auth.isAuthenticate)
 
   const navigate = useNavigate()
@@ -220,11 +220,15 @@ function Header({ link, icons, sidebarNames }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {sidebarNames?.map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {sidebarNames?.map(({ name, url }, index) => (
+            <ListItem
+              key={URLSearchParams}
+              disablePadding
+              sx={{ display: "block" }}
+            >
               <ListItemButton
                 component={Link}
-                to={`/${link}/${text}`}
+                to={`/${link}/${url}`}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -240,7 +244,7 @@ function Header({ link, icons, sidebarNames }) {
                 >
                   {React.createElement(icons[index % icons.length])}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}

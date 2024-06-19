@@ -83,9 +83,18 @@ export const getTaskFromHistoryByEmpId = createAsyncThunk(
 
 export const getCheckerTaskHistoryByCheckerId = createAsyncThunk(
   "tasks/getCheckerTaskHistoryByCheckerId",
-  async (checkerId) => {
-    const response = await getCheckerTaskHistory(checkerId)
-    return response.data
+  async (checkerId, { rejectWithValue }) => {
+    try {
+      const response = await getCheckerTaskHistory(checkerId)
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
   }
 )
 
