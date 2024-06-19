@@ -17,7 +17,7 @@ import {
 } from "@mui/material"
 import LoadingButton from "@mui/lab/LoadingButton"
 import styled from "@emotion/styled"
-import { EmployeeSchema } from "../../../Validation/validationSchema"
+import { AddEmployeeSchema } from "../../../Validation/validationSchema"
 import { useFormik } from "formik"
 import { useSelector, useDispatch } from "react-redux"
 import { fetchPosition } from "../../../../Slices/PositionSlice"
@@ -92,7 +92,7 @@ export default function EmployeeForm() {
     values,
   } = useFormik({
     initialValues: initValue,
-    validationSchema: EmployeeSchema,
+    validationSchema: AddEmployeeSchema,
     // onSubmit: (values) => {
     //   setSuccessAlertOpen(true)
     //   // console.log(values)

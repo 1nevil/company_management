@@ -60,7 +60,7 @@ function EmployeeCard() {
               margin: "0 auto",
             }}
             alt="profile"
-            src={`http://localhost:5036/Images/${employee?.employeeImage}`}
+            src={`http://localhost:5036/Images/${employee?.employee?.employeeImage}`}
           />
         </Box>
       </Grid>
@@ -77,7 +77,7 @@ function EmployeeCard() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography variant="body1">
-                  {employee?.employeeName}
+                  {employee?.employee?.employeeName}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -85,7 +85,7 @@ function EmployeeCard() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography variant="body1">
-                  {employee?.employeeEmail}
+                  {employee?.employee?.employeeEmail}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -93,7 +93,7 @@ function EmployeeCard() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography variant="body1">
-                  {employee?.positionName}
+                  {employee?.employee?.positionName}
                 </Typography>
               </Grid>
 
@@ -103,14 +103,16 @@ function EmployeeCard() {
                     <Typography variant="subtitle1">Gender :</Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="body1">{employee?.xender}</Typography>
+                    <Typography variant="body1">
+                      {employee?.employee?.xender}
+                    </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="subtitle1">Phone no:</Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee?.mobileNumber}
+                      {employee?.employee?.mobileNumber}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -118,7 +120,7 @@ function EmployeeCard() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee?.altmobileNumber}
+                      {employee?.employee?.altmobileNumber}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -126,7 +128,7 @@ function EmployeeCard() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee?.adharNumber}
+                      {employee?.employee?.adharNumber}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -134,7 +136,7 @@ function EmployeeCard() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee?.rolename}
+                      {employee?.employee?.rolename}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -142,7 +144,7 @@ function EmployeeCard() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee?.addressEmployee}
+                      {employee?.employee?.addressEmployee}
                     </Typography>
                   </Grid>
                 </>
@@ -168,19 +170,25 @@ function EmployeeCard() {
                 <Typography variant="subtitle1">Bank Name :</Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Typography variant="body1">{employee?.bankName}</Typography>
+                <Typography variant="body1">
+                  {employee?.employee?.bankName}
+                </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography variant="subtitle1">Branch Name :</Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Typography variant="body1">{employee?.branchName}</Typography>
+                <Typography variant="body1">
+                  {employee?.employee?.branchName}
+                </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography variant="subtitle1">IFSC :</Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Typography variant="body1">{employee?.ifscCode}</Typography>
+                <Typography variant="body1">
+                  {employee?.employee?.ifscCode}
+                </Typography>
               </Grid>
               {showMore2 && (
                 <>
@@ -191,7 +199,7 @@ function EmployeeCard() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee?.accountHolderName}
+                      {employee?.employee?.accountHolderName}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -199,14 +207,16 @@ function EmployeeCard() {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee?.accountNo}
+                      {employee?.employee?.accountNo}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="subtitle1">UPI ID :</Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="body1">{employee?.upiId}</Typography>
+                    <Typography variant="body1">
+                      {employee?.employee?.upiId}
+                    </Typography>
                   </Grid>
                 </>
               )}
@@ -220,6 +230,43 @@ function EmployeeCard() {
             {/* Add other sections of employee details */}
           </Paper>
         </Box>
+        {employee?.previousClients?.length > 0 && (
+          <>
+            <Grid item xs={12}>
+              <Typography variant="h6">Previous Clients:</Typography>
+            </Grid>
+            {employee?.previousClients?.map((client, index) => (
+              <React.Fragment key={index}>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">Client Name :</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">{client.clientName}</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">Service Name :</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">{client.serviceName}</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    Client Phone Number :
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body1">
+                    {client.clientPhoneNumber}
+                  </Typography>
+                </Grid>
+                {/* Add additional fields here as needed */}
+                <Grid item xs={12}>
+                  <hr />
+                </Grid>
+              </React.Fragment>
+            ))}
+          </>
+        )}
       </Grid>
     </Grid>
   )

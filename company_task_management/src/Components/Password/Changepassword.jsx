@@ -17,7 +17,9 @@ import IconButton from "@mui/material/IconButton"
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import { useFormik } from "formik"
+import { useSelector, useDispatch } from "react-redux"
 import * as Yup from "yup"
+import { resetPasswordEmp } from "../../Slices/EmployeeSlice"
 
 function Copyright(props) {
   return (
@@ -50,11 +52,13 @@ const validationSchema = Yup.object({
 
 export default function ChangePassword() {
   const [showPassword, setShowPassword] = React.useState(false)
-
+  const { authicatedUser } = useSelector((state) => state.Auth)
   const handleClickShowPassword = () => setShowPassword(!showPassword)
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
+
+  const dispatch = useDispatch()
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +67,16 @@ export default function ChangePassword() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      console.log(authicatedUser.id)
       console.log("Password reset:", values)
+      dispatch(
+        resetPasswordEmp({
+          empId: authicatedUser.id,
+          newPassword: values.newPassword,
+          oldPassword: values.oldPassword,
+        })
+      )
+      console.log(formik.errors)
       // Add your password reset logic here
     },
   })

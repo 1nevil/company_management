@@ -14,6 +14,12 @@ export function updateEmployeeData(id) {
   return axiosInstance.put(`api/Employees/${id}`)
 }
 
+export function resetPassword(employeeForm) {
+  return axiosInstance.put(
+    `api/Employees/updatePassword/${employeeForm.empId}/${employeeForm.oldPassword}/${employeeForm.newPassword}`
+  )
+}
+
 export function createEmp(formData) {
   return axiosInstance.post(`api/Employees`, formData, {
     headers: {

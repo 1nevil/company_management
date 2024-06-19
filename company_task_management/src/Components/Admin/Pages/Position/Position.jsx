@@ -52,7 +52,7 @@ function Position() {
     {
       field: "positionName",
       headerName: "Position Name",
-      width: 140,
+      width: 240,
     },
     {
       field: "duration",

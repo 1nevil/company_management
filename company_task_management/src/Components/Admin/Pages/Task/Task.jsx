@@ -67,26 +67,26 @@ function Task() {
   }
 
   const columns = [
-    {
-      field: "Action",
-      headerName: "Action",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
-      renderCell: (params) => (
-        <>
-          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
-            <Edit />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDelete(params.row.id)}
-            title="Delete"
-          >
-            <Delete sx={{ color: "red" }} />
-          </IconButton>
-        </>
-      ),
-    },
+    // {
+    //   field: "Action",
+    //   headerName: "Action",
+    //   description: "This column has a value getter and is not sortable.",
+    //   sortable: false,
+    //   width: 160,
+    //   renderCell: (params) => (
+    //     <>
+    //       <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+    //         <Edit />
+    //       </IconButton>
+    //       <IconButton
+    //         onClick={() => handleDelete(params.row.id)}
+    //         title="Delete"
+    //       >
+    //         <Delete sx={{ color: "red" }} />
+    //       </IconButton>
+    //     </>
+    //   ),
+    // },
     {
       field: "TaskDetail",
       headerName: "TaskDetail",
@@ -104,7 +104,7 @@ function Task() {
     {
       field: "taskName",
       headerName: "Task Name",
-      width: 150,
+      width: 500,
       editable: true,
     },
   ]

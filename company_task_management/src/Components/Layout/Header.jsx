@@ -144,9 +144,7 @@ function Header({ link, icons, sidebarNames }) {
       navigate("/login")
       dispatch(clearUserToken())
     } else if (settingName === "Changepassword") {
-      localStorage.removeItem("token")
       navigate("/Changepassword")
-      dispatch(clearUserToken())
     } else if (settingName === "Profile") {
       navigate("profile")
     }

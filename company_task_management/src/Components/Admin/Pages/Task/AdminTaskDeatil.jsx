@@ -26,7 +26,7 @@ import {
   styled,
 } from "@mui/material"
 import { Box } from "@mui/system"
-import { Link, useParams } from "react-router-dom"
+import { Link, json, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { getTaskUsingTaskId } from "../../../../Slices/TaskSlice"
@@ -343,7 +343,7 @@ function AdminTaskDeatil(params) {
                       </Typography>
                     </Box>
                   ))}
-                  {positionGuidelines?.length > 3 && (
+                  {positionGuidelines?.length >= 3 && (
                     <Typography
                       variant="body2"
                       color="primary"
