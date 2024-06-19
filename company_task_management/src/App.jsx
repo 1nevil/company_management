@@ -57,6 +57,7 @@ function App() {
         { name: "Task", url: "Task" },
         { name: "Chains", url: "chain" },
         { name: "Positions", url: "Position" },
+        { name: "Employee", url: "employee" },
       ],
     },
     checker: {
@@ -298,6 +299,10 @@ function App() {
             {
               path: "disapproved",
               element: <DisapprovedAdmins />,
+            },
+            {
+              path: "EmployeeCard/:employeeId",
+              element: <EmployeeCard />,
             },
           ],
         },

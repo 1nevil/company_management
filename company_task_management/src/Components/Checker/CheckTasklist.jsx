@@ -161,13 +161,12 @@ function CheckTaskList() {
       <Grid container columnSpacing={2} rowSpacing={2} mt={1} mb={2}>
         <Grid item xs={12} sm={6}>
           <Link to="/employee/TaskIsActive" style={LinkStyle}>
-            <AdminCard name="Active Tasks" value={0} textColor="red" />
+            <AdminCard name="Not Approved Task" value={0} textColor="red" />
           </Link>
         </Grid>
         <Grid item xs={12} sm={6}>
-          ``
           <Link to="/employee/TaskIsActive" style={LinkStyle}>
-            <AdminCard name="Active Tasks" value={0} textColor="green" />
+            <AdminCard name="Approved Task" value={0} textColor="green" />
           </Link>
         </Grid>
       </Grid>
