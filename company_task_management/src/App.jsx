@@ -43,6 +43,9 @@ import CheckerTaskIsActiveDeatils from "./Components/Checker/CheckerTaskIsActive
 import CheckerTaskIsActive from "./Components/Checker/CheckerTaskIsActive"
 import TaskHistoryDetailForAdmin from "./Components/Admin/Pages/Task/TaskHistoryDetailForAdmin"
 import { ToastContainer } from "react-toastify"
+import TestEmployeeFrom from "./Components/Admin/Pages/Employee/TestEmployeeFrom"
+import Changepassword from "./Components/Password/Changepassword"
+import Profile from "./Components/Employee/Profile"
 
 function App() {
   const iconSiderbar = {
@@ -139,6 +142,10 @@ function App() {
               path: "TaskHistoryDetailForAdmin/:taskId",
               element: <TaskHistoryDetailForAdmin />,
             },
+            {
+              path: "TestEmployeeFrom",
+              element: <TestEmployeeFrom />,
+            },
           ],
         },
         {
@@ -234,6 +241,10 @@ function App() {
               path: "notChecked",
               element: <NotChecked />,
             },
+            {
+              path: "profile",
+              element: <Profile />,
+            },
             // ,{
             //   path:"dashboard",
             //   element:<DashBoard/>
@@ -246,6 +257,10 @@ function App() {
     {
       path: "Register",
       element: <Register />,
+    },
+    {
+      path: "Changepassword",
+      element: <Changepassword />,
     },
     ...["/", "/login"].map((path) => {
       return {

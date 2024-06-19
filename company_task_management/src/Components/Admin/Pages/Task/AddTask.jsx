@@ -71,6 +71,8 @@ const AddTask = ({ handleCloseForm }) => {
       validationSchema: TaskSchema,
 
       onSubmit: (data) => {
+        console.log(error)
+        // notifySubmit()
         let TaskStatus = "Pending"
         data.durationNum = String(data.durationNum)
 
@@ -113,16 +115,7 @@ const AddTask = ({ handleCloseForm }) => {
       //  },
     }
   )
-
-  useEffect(() => {
-    if (isSubmitted && error === null) {
-      notifySubmit() // Uncomment if you want to show notification
-      handleCloseForm() // Uncomment if you want to close the form/modal
-      setIssubmited(false)
-    }
-  }, [error, handleCloseForm])
-
-  const notifySubmit = () => toast.success("Task Created successfully..")
+  // const notifySubmit = () => toast.success("Task Created successfully..")
 
   const [checkListData, setCheckListData] = useState(null)
 

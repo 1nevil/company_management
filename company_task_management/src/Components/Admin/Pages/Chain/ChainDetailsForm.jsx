@@ -1,16 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react"
-
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Select from "@mui/material/Select"
-import MenuItem from "@mui/material/MenuItem"
-import DeleteIcon from "@mui/icons-material/Delete"
-import { useSelector, useDispatch } from "react-redux"
-import { fetchPosition } from "../../../../Slices/PositionSlice"
-import { checkersEmp } from "../../../../Slices/EmployeeSlice"
-import { insertChainDetails } from "../../../../Slices/ChainDetailsSlice"
 import {
+  Box,
+  Button,
+  Select,
+  MenuItem,
   Dialog,
   DialogActions,
   Divider,
@@ -18,17 +12,21 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material"
+import DeleteIcon from "@mui/icons-material/Delete"
 import AddIcon from "@mui/icons-material/Add"
+import { useSelector, useDispatch } from "react-redux"
+import { fetchPosition } from "../../../../Slices/PositionSlice"
+import { checkersEmp } from "../../../../Slices/EmployeeSlice"
+import { insertChainDetails } from "../../../../Slices/ChainDetailsSlice"
 import { toast } from "react-toastify"
 
 function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
   const [additionalInputCount, setAdditionalInputCount] = useState(0)
-
   const [checklistItems, setChecklistItems] = useState([])
-  const dispatch = useDispatch()
 
-  const Positions = useSelector((state) => state.Position.positions)
+  const dispatch = useDispatch()
+  const positions = useSelector((state) => state.Position.positions)
 
   useEffect(() => {
     dispatch(fetchPosition())
@@ -39,7 +37,6 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
     toast.success("Chain Details Created successfully..")
 
   const handleSubmit = () => {
-    // console.log(chainid)
     handleCloseDetails()
     notifySubmit()
     console.log(checklistItems)
@@ -53,7 +50,6 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
       chainId: Number(chainId),
       chainFlow: checklistItems.toString(),
     }
-
     dispatch(insertChainDetails(chainDetails))
   }
 
@@ -66,7 +62,7 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const handleAddInput = () => {
     setAdditionalInputCount(additionalInputCount + 1)
     setShowAdditionalInputs(true)
-    setChecklistItems([...checklistItems, null])
+    setChecklistItems([...checklistItems, ""])
   }
 
   const handleDeleteInput = (index) => () => {
@@ -81,8 +77,6 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
 
   return (
     <Dialog open={chainDetails} onClose={handleCloseDetails}>
-      {/* <AddChain></AddChain> */}
-
       <Box sx={{ width: "30rem", padding: "3rem 3rem" }}>
         <Box>
           <Typography variant="h6" component="h2" textAlign="center">
@@ -104,9 +98,7 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
                   }}
                 >
                   <FormControl fullWidth size="small">
-                    <InputLabel id="demo-simple-select-label">
-                      Select Position
-                    </InputLabel>
+                    <InputLabel>Select Position</InputLabel>
                     <Select
                       labelId={`select-label-${index}`}
                       id={`select-${index}`}
@@ -117,9 +109,11 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
                       <MenuItem value="" disabled>
                         Select Position
                       </MenuItem>
-                      {Positions.map((position) => (
-                        // eslint-disable-next-line react/jsx-key
-                        <MenuItem value={position.positionId}>
+                      {positions.map((position) => (
+                        <MenuItem
+                          key={position.positionId}
+                          value={position.positionId}
+                        >
                           {position.positionName}
                         </MenuItem>
                       ))}

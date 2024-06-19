@@ -315,7 +315,7 @@ function CheckerTaskDetails() {
                 </Typography>
               </Box>
             ))}
-            {guidelines?.length > 3 && (
+            {guidelines?.length >= 3 && (
               <Typography
                 variant="body2"
                 color="primary"

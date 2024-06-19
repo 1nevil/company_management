@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
 //import FormControlLabel from "@mui/material/FormControlLabel";
 //import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link"
+import { Link } from "react-router-dom"
 import Paper from "@mui/material/Paper"
 import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
@@ -216,7 +216,6 @@ export default function Register() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      {JSON.stringify(errors)}
       <Grid container component="main">
         <CssBaseline />
 
@@ -874,7 +873,7 @@ export default function Register() {
             </Box>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="/" variant="body2">
                   Log In
                 </Link>
               </Grid>

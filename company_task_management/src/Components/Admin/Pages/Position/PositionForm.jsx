@@ -80,13 +80,13 @@ const PositionForm = () => {
 
         console.log("🚀 ~ PositionForm ~ data:", positionWithGuidlines)
         handleClose()
-        notifySubmit()
+        // notifySubmit()
         dispatch(insertPosition(positionWithGuidlines))
         setAdditionalInputCount(0)
       },
     }
   )
-  const notifySubmit = () => toast.success("Position Submitted successfully..")
+  // const notifySubmit = () => toast.success("Position Submitted successfully..")
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleOpen}>
@@ -105,6 +105,7 @@ const PositionForm = () => {
                   //value={employeeData.firstName}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  autoComplete="off"
                 />
                 {errors.positionName && touched.positionName ? (
                   <Typography variant="caption" color="error">
@@ -125,6 +126,7 @@ const PositionForm = () => {
                   // value={employeeData.Duration}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  autoComplete="off"
                 />
                 {errors.duration && touched.duration ? (
                   <Typography variant="caption" color="error">

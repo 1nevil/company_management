@@ -95,7 +95,13 @@ const Drawer = styled(MuiDrawer, {
   }),
 }))
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"]
+const settings = [
+  { link: "Profile", text: "Profile" },
+  { link: "Account", text: "Account" },
+  { link: "Dashboard", text: "DashBoard" },
+  { link: "Changepassword", text: "Change Password" },
+  { link: "Logout", text: "Logout" },
+]
 
 const loginLink = {
   color: "#575656",
@@ -106,8 +112,8 @@ const loginLink = {
 }
 // eslint-disable-next-line react/prop-types
 function Header({ link, icons, sidebarNames }) {
-  console.log(sidebarNames)
-  const isAuthenticate = useSelector((state) => state.Auth.isAuthenticate)
+  const { isAuthenticate, authicatedUser } = useSelector((state) => state.Auth)
+  const employee = useSelector((state) => state.Employee.employee)
 
   const navigate = useNavigate()
 
@@ -125,11 +131,28 @@ function Header({ link, icons, sidebarNames }) {
     setAnchorElUser(event.currentTarget)
   }
 
+  // const handleCloseUserMenu = (settingName) => {
+  //   if (settingName === "Logout") {
+  //     localStorage.removeItem("token")
+  //     navigate("/login")
+  //     dispatch(clearUserToken())
+  //   }
+  //   setAnchorElUser(null)
+  //   if (settingName === "Changepassword") {
+  //     localStorage.removeItem("token")
+  //     navigate("/Changepassword")
+  //     dispatch(clearUserToken())
+  //   }
+  // }
   const handleCloseUserMenu = (settingName) => {
     if (settingName === "Logout") {
       localStorage.removeItem("token")
       navigate("/login")
       dispatch(clearUserToken())
+    } else if (settingName === "Changepassword") {
+      navigate("/Changepassword")
+    } else if (settingName === "Profile") {
+      navigate("profile")
     }
     setAnchorElUser(null)
   }
@@ -140,6 +163,10 @@ function Header({ link, icons, sidebarNames }) {
   const handleDrawerClose = () => {
     setOpen(false)
   }
+  console.log(
+    "Employee Image URL:",
+    `http://localhost:5036/Images/${employee?.employeeImage}`
+  )
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -169,8 +196,8 @@ function Header({ link, icons, sidebarNames }) {
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
+                      alt={authicatedUser?.userName || "Employee"}
+                      src={`http://localhost:5036/Images/${authicatedUser?.employeeImage}`}
                     />
                   </IconButton>
                 </Tooltip>
@@ -192,10 +219,10 @@ function Header({ link, icons, sidebarNames }) {
                 >
                   {settings.map((setting) => (
                     <MenuItem
-                      key={setting}
-                      onClick={() => handleCloseUserMenu(setting)}
+                      key={setting.link}
+                      onClick={() => handleCloseUserMenu(setting.link)}
                     >
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Typography textAlign="center">{setting.text}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>

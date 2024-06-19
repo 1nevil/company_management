@@ -9,6 +9,7 @@ import {
   checkersEmps,
   updateEmployeeData,
   fetchEmployeeDataById,
+  resetPassword,
 } from "./EmployeeApi"
 
 const initialState = {
@@ -43,11 +44,30 @@ export const deleteEmp = createAsyncThunk("emps/deleteEmp", async (id) => {
 //   const res = await createEmp(emp);
 //   return res.data;
 // });
+export const resetPasswordEmp = createAsyncThunk(
+  "emps/resetPasswordEmp",
+  async (employeeForm, { rejectWithValue }) => {
+    try {
+      const res = await resetPassword(employeeForm)
+      return res.data
+    } catch (error) {
+      console.log(error)
+      if (error.response) {
+        // Extract custom message from backend response
+        const errorMessage = error.response.data.message
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
+  }
+)
+
 export const insertEmp = createAsyncThunk(
   "emps/insertEmp",
-  async (emp, { rejectWithValue }) => {
+  async (formdata, { rejectWithValue }) => {
     try {
-      const res = await createEmp(emp)
+      const res = await createEmp(formdata)
       return res.data
     } catch (error) {
       console.log(error)
@@ -119,6 +139,18 @@ export const EmployeeSlice = createSlice({
         state.pendding = false
       })
       .addCase(fetchEmp.rejected, (state, action) => {
+        state.pendding = false
+        state.error = action.payload
+      })
+      .addCase(resetPasswordEmp.pending, (state) => {
+        state.error = null
+        state.pendding = true
+      })
+      .addCase(resetPasswordEmp.fulfilled, (state, action) => {
+        state.pendding = false
+        console.log(action.payload)
+      })
+      .addCase(resetPasswordEmp.rejected, (state, action) => {
         state.pendding = false
         state.error = action.payload
       })

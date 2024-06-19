@@ -67,26 +67,26 @@ function Task() {
   }
 
   const columns = [
-    {
-      field: "Action",
-      headerName: "Action",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
-      renderCell: (params) => (
-        <>
-          <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
-            <Edit />
-          </IconButton>
-          <IconButton
-            onClick={() => handleDelete(params.row.id)}
-            title="Delete"
-          >
-            <Delete sx={{ color: "red" }} />
-          </IconButton>
-        </>
-      ),
-    },
+    // {
+    //   field: "Action",
+    //   headerName: "Action",
+    //   description: "This column has a value getter and is not sortable.",
+    //   sortable: false,
+    //   width: 160,
+    //   renderCell: (params) => (
+    //     <>
+    //       <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+    //         <Edit />
+    //       </IconButton>
+    //       <IconButton
+    //         onClick={() => handleDelete(params.row.id)}
+    //         title="Delete"
+    //       >
+    //         <Delete sx={{ color: "red" }} />
+    //       </IconButton>
+    //     </>
+    //   ),
+    // },
     {
       field: "TaskDetail",
       headerName: "TaskDetail",
@@ -104,39 +104,7 @@ function Task() {
     {
       field: "taskName",
       headerName: "Task Name",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "durationNum",
-      headerName: "Duration Day",
-      width: 150,
-      editable: true,
-      textAlign: "center",
-    },
-    {
-      field: "startDate",
-      headerName: "Start Date",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "endDate",
-      headerName: "End Date Increase Time",
-      width: 200,
-      editable: true,
-    },
-    {
-      field: "duration",
-      headerName: "Duration",
-      width: 120,
-      editable: true,
-    },
-
-    {
-      field: "chainId",
-      headerName: "Team Name",
-      width: 150,
+      width: 500,
       editable: true,
     },
   ]
