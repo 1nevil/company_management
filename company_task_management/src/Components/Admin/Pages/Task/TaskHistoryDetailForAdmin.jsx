@@ -64,9 +64,7 @@ function EmpTaskDetail() {
                 ))}
               </Alert>
             ) : (
-              <Alert  severity="success">
-                Approved
-              </Alert>
+              <Alert severity="success">Approved</Alert>
             )}
           </>
         )}

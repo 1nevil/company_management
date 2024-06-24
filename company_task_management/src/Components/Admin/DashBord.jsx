@@ -54,22 +54,38 @@ function DashBord() {
       <Grid container rowSpacing={3} columnSpacing={3}>
         <Grid item xs={12} sm={6}>
           <Link to="/admin/employee" style={LinkStyle}>
-            <AdminCard name="employeess" value={dashBoardData?.empsCount} />
+            <AdminCard
+              name="employeess"
+              value={dashBoardData?.empsCount}
+              Pending={pending}
+            />
           </Link>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Link to="/admin/employee" style={LinkStyle}>
-            <AdminCard name="Checkers" value={dashBoardData?.checkerCount} />
+            <AdminCard
+              name="Checkers"
+              value={dashBoardData?.checkerCount}
+              Pending={pending}
+            />
           </Link>
         </Grid>{" "}
         <Grid item xs={12} sm={6}>
           <Link to="/admin/chain" style={LinkStyle}>
-            <AdminCard name="Chains" value={dashBoardData?.chainCount} />
+            <AdminCard
+              name="Chains"
+              value={dashBoardData?.chainCount}
+              Pending={pending}
+            />
           </Link>
         </Grid>{" "}
         <Grid item xs={12} sm={6}>
           <Link to="/admin/task" style={LinkStyle}>
-            <AdminCard name="Tasks" value={dashBoardData?.taskCount} />
+            <AdminCard
+              name="Tasks"
+              value={dashBoardData?.taskCount}
+              Pending={pending}
+            />
           </Link>
         </Grid>
         <Grid mt={2} item xs={12} sm={6} md={6}>

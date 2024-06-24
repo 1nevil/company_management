@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import { Delete, Edit } from "@mui/icons-material"
-import { Button, IconButton } from "@mui/material"
+
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
@@ -12,15 +11,13 @@ import AddIcon from "@mui/icons-material/Add"
 import MyButton from "../../../Layout/MyButton"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { Link } from "react-router-dom"
-import CheckList from "./Checklist"
-import { useFormik } from "formik"
-import { EmployeeSchema } from "../../../Validation/validationSchema"
+
 import { useDispatch, useSelector } from "react-redux"
 import { getAllTasks } from "../../../../Slices/TaskSlice"
+import { Button } from "@mui/material"
 
 function Task() {
   const [open, setOpen] = React.useState(false)
-  const [openchecklist, setopenchecklist] = React.useState(false)
   const [scroll, setScroll] = React.useState("paper")
   const dispatch = useDispatch()
   const allTask = useSelector((state) => state.Tasks.tasks)
@@ -34,8 +31,12 @@ function Task() {
     setScroll(scrollType)
   }
 
-  const handleClose = () => {
-    setOpen(false)
+  const handleClose = (reason, event) => {
+    if (event === "backdropClick") {
+      setOpen(true)
+    } else {
+      setOpen(false)
+    }
   }
 
   const descriptionElementRef = React.useRef(null)
@@ -47,24 +48,6 @@ function Task() {
       }
     }
   }, [open])
-
-  const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
-    {
-      //initialValues: initValue,
-      validationSchema: EmployeeSchema,
-      onSubmit: (data) => {
-        alert("Form Submitted!")
-        console.log(data)
-      },
-    }
-  )
-  const handleopenchecklist = () => {
-    setopenchecklist(true)
-  }
-
-  const handleClosechecklist = () => {
-    setopenchecklist(false)
-  }
 
   const columns = [
     // {
@@ -87,6 +70,13 @@ function Task() {
     //     </>
     //   ),
     // },
+
+    {
+      field: "taskName",
+      headerName: "Task Name",
+      width: 500,
+      editable: true,
+    },
     {
       field: "TaskDetail",
       headerName: "TaskDetail",
@@ -102,20 +92,17 @@ function Task() {
       ),
     },
     {
-      field: "taskName",
-      headerName: "Task Name",
-      width: 500,
-      editable: true,
+      field: "task Checklist",
+      headerName: "Task Checklist",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <Link to={`/admin/checklists/${params.row.taskId}`}>
+          <VisibilityIcon></VisibilityIcon>
+        </Link>
+      ),
     },
   ]
-
-  const handleDelete = (id) => {
-    alert(id)
-  }
-
-  const handleEdit = (id) => {
-    alert(id)
-  }
 
   return (
     <>

@@ -25,7 +25,11 @@ import {
 } from "../../Slices/AssignToTask"
 import WarningAmberIcon from "@mui/icons-material/WarningAmber"
 import AdminCard from "../Layout/AdminCard"
-import { getCheckerDashBoardDatas } from "../../Slices/DashboardSlice"
+import {
+  getCheckerDashBoardDatas,
+  incrementApproveTaskChecker,
+  incrementNotApproveTaskChecker,
+} from "../../Slices/DashboardSlice"
 
 function CheckTaskList() {
   const [open, setOpen] = useState(false)
@@ -37,6 +41,10 @@ function CheckTaskList() {
   )
   const { id: employeeId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
+  )
+
+  const { notApprovedTaskCount, approvedTaskCount } = useSelector(
+    (state) => state.DashBord.checkerDashBoard
   )
 
   useEffect(() => {
@@ -59,6 +67,7 @@ function CheckTaskList() {
         Message: message,
       })
     )
+    dispatch(incrementNotApproveTaskChecker())
     setOpen(false)
     setSelectedTask(null)
   }
@@ -75,6 +84,7 @@ function CheckTaskList() {
         IsApprove: true,
       })
     )
+    dispatch(incrementApproveTaskChecker())
 
     // if (rowData) {
     //   const taskId = rowData.taskId
@@ -136,22 +146,22 @@ function CheckTaskList() {
     },
   ]
 
-  if (error) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          mt: 3,
-        }}
-      >
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {error}
-        </Alert>
-      </Box>
-    )
-  }
+  // if (error) {
+  //   return (
+  //     <Box
+  //       sx={{
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //         mt: 3,
+  //       }}
+  //     >
+  //       <Alert severity="error" sx={{ width: "100%" }}>
+  //         {error}
+  //       </Alert>
+  //     </Box>
+  //   )
+  // }
   const LinkStyle = {
     textDecoration: "none",
   }
@@ -160,66 +170,89 @@ function CheckTaskList() {
     <>
       <Grid container columnSpacing={2} rowSpacing={2} mt={1} mb={2}>
         <Grid item xs={12} sm={6}>
-          <Link to="/employee/TaskIsActive" style={LinkStyle}>
-            <AdminCard name="Not Approved Task" value={0} textColor="red" />
+          <Link to="/checker/CheckerTaskIsActive" style={LinkStyle}>
+            <AdminCard
+              name="Not Approved Task"
+              value={notApprovedTaskCount}
+              textColor="red"
+            />
           </Link>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Link to="/employee/TaskIsActive" style={LinkStyle}>
-            <AdminCard name="Approved Task" value={0} textColor="green" />
+          <Link to="/checker/CheckerTaskIsActive" style={LinkStyle}>
+            <AdminCard
+              name="Approved Task"
+              value={approvedTaskCount}
+              textColor="green"
+            />
           </Link>
         </Grid>
       </Grid>
-      <div style={{ height: 400, width: "100%" }}>
-        <DataGrid
-          loading={pendding}
-          rows={checkerTaskList}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5, 10, 20]}
-          components={{
-            Toolbar: GridToolbar,
-          }}
-          getRowId={(row) => row.empTaskId}
-          pagination
-        />
+      {error || checkerTaskList.length < 0 ? (
         <Box
           sx={{
             display: "flex",
+            alignItems: "center",
             justifyContent: "center",
-            mt: 2,
+            mt: 3,
           }}
         >
-          <Dialog open={open}>
-            <DialogTitle>Remarks</DialogTitle>
-            <DialogContent>
-              <TextField
-                size="small"
-                label=""
-                name="taskName"
-                multiline
-                required
-                onChange={(e) => setMessage(e.target.value)}
-                fullWidth
-                rows={6}
-              />
-              <Box sx={{ display: "flex", mt: 2, justifyContent: "center" }}>
-                <Button
-                  variant="contained"
-                  onClick={handleDisapproveSubmit}
-                  color="primary"
-                  sx={{ width: "300px" }}
-                >
-                  Submit
-                </Button>
-              </Box>
-              <Box sx={{ display: "flex", mt: 2, justifyContent: "right" }}>
-                <Button onClick={handleClose}>Close</Button>
-              </Box>
-            </DialogContent>
-          </Dialog>
+          <Alert severity="error" sx={{ width: "100%" }}>
+            {error}
+          </Alert>
         </Box>
-      </div>
+      ) : (
+        <div style={{ height: 400, width: "100%" }}>
+          <DataGrid
+            loading={pendding}
+            rows={checkerTaskList}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5, 10, 20]}
+            components={{
+              Toolbar: GridToolbar,
+            }}
+            getRowId={(row) => row.empTaskId}
+            pagination
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+            }}
+          >
+            <Dialog open={open}>
+              <DialogTitle>Remarks</DialogTitle>
+              <DialogContent>
+                <TextField
+                  size="small"
+                  label=""
+                  name="taskName"
+                  multiline
+                  required
+                  onChange={(e) => setMessage(e.target.value)}
+                  fullWidth
+                  rows={6}
+                />
+                <Box sx={{ display: "flex", mt: 2, justifyContent: "center" }}>
+                  <Button
+                    variant="contained"
+                    onClick={handleDisapproveSubmit}
+                    color="primary"
+                    sx={{ width: "300px" }}
+                  >
+                    Submit
+                  </Button>
+                </Box>
+                <Box sx={{ display: "flex", mt: 2, justifyContent: "right" }}>
+                  <Button onClick={handleClose}>Close</Button>
+                </Box>
+              </DialogContent>
+            </Dialog>
+          </Box>
+        </div>
+      )}
     </>
   )
 }

@@ -15,18 +15,22 @@ const AddChain = ({ closeform }) => {
   }
 
   const dispatch = useDispatch()
+  const notifySubmit = () => toast.success("ChainName Submitted successfully..")
+
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: ChainSchema,
       onSubmit: (data) => {
-        closeform()
-        // notifySubmit()
-        dispatch(insertChainMater(data))
+        dispatch(insertChainMater(data)).then((action) => {
+          if (action.meta.requestStatus === "fulfilled") {
+            closeform()
+            notifySubmit()
+          }
+        })
       },
     }
   )
-  // const notifySubmit = () => toast.success("Chain Created successfully..")
 
   return (
     <Stack
@@ -39,7 +43,11 @@ const AddChain = ({ closeform }) => {
         justifyContent: "space-around",
       }}
     >
-      <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        style={{ textAlign: "center" }}
+      >
         <Typography variant="h5" color="#7986cb" component="h5">
           Enter Chain Name
         </Typography>
@@ -73,7 +81,7 @@ const AddChain = ({ closeform }) => {
             Submit
           </Button>
         </Box>
-      </form>
+      </Box>
     </Stack>
   )
 }

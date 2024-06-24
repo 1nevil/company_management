@@ -7,12 +7,14 @@ import {
   CardActionArea,
   CardContent,
   CardHeader,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
+  FormControlLabel,
   FormGroup,
   Grid,
   InputLabel,
@@ -151,17 +153,38 @@ function TaskIsActiveDeatils() {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "4",
+                      justifyContent: "center",
+                      lineHeight: "43px",
+                      mb: 1,
                     }}
                   >
-                    <Typography
-                      variant="p"
-                      gutterBottom
-                      textTransform="capitalize"
-                      ml={3}
-                    >
-                      {checklist.taskMessage}
-                    </Typography>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked={
+                            checklist?.status === "1" ? true : false
+                          }
+                          disabled
+                          sx={{
+                            color: "rgba(0, 0, 0, 0.87) !important", // Keep the checkbox looking enabled when disabled
+                            "&.Mui-disabled": {
+                              color: "rgba(0, 0, 0, 0.87)",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography
+                          sx={{
+                            color: checklist?.Status
+                              ? "rgba(0, 0, 0, 0.87)"
+                              : "text.secondary", // Darkish gray if checked, default gray if not
+                          }}
+                        >
+                          {checklist.taskMessage}
+                        </Typography>
+                      }
+                    />
                   </Box>
                 ))}
                 {checklist?.length > 3 && (
@@ -322,14 +345,38 @@ function TaskIsActiveDeatils() {
             <DialogContent>
               <DialogContentText>
                 <Typography variant="h6">Checklist Items</Typography>
-                {checklist?.map((checklist) => (
-                  <Typography
-                    key={checklist.checklistId}
-                    variant="body1"
-                    gutterBottom
-                  >
-                    {checklist.taskMessage}
-                  </Typography>
+                {checklist?.map((checklist, index) => (
+                  <>
+                    <FormControlLabel
+                      key={index}
+                      control={
+                        <Checkbox
+                          defaultChecked={
+                            checklist?.status === "0" ? false : true
+                          }
+                          disabled
+                          sx={{
+                            color: "rgba(0, 0, 0, 0.87) !important", // Keep the checkbox looking enabled when disabled
+                            "&.Mui-disabled": {
+                              color: "rgba(0, 0, 0, 0.87)",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography
+                          sx={{
+                            color: checklist?.Status
+                              ? "rgba(0, 0, 0, 0.87)"
+                              : "text.secondary", // Darkish gray if checked, default gray if not
+                          }}
+                        >
+                          {checklist.taskMessage}
+                        </Typography>
+                      }
+                    />
+                    <br />
+                  </>
                 ))}
                 <Typography variant="h6" sx={{ mt: 2 }}>
                   Position Guidelines

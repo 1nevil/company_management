@@ -108,6 +108,17 @@ export const getSuperAdminDashBoardDatas = createAsyncThunk(
 const DashBoardSlice = createSlice({
   name: "dashBoard",
   initialState,
+  reducers: {
+    incrementApproveTaskChecker: (state) => {
+      state.checkerDashBoard.approvedTaskCount += 1
+    },
+    incrementNotApproveTaskChecker: (state) => {
+      state.checkerDashBoard.notApprovedTaskCount += 1
+    },
+    incrementNotApproveTaskEmployee: (state) => {
+      state.employeeDashBoard.activeTask += 1
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDashBoardDatas.pending, (state) => {
@@ -165,4 +176,9 @@ const DashBoardSlice = createSlice({
   },
 })
 
+export const {
+  incrementApproveTaskChecker,
+  incrementNotApproveTaskChecker,
+  incrementNotApproveTaskEmployee,
+} = DashBoardSlice.actions
 export default DashBoardSlice.reducer

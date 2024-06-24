@@ -182,6 +182,14 @@ export const PositionSchema = Yup.object({
   durationType: Yup.string().required("**Duration Type is required"),
 })
 
+export const GuidlineSchema = Yup.object({
+  guidline: Yup.string().required("**Guidline  is required"),
+})
+
+export const checklistSchema = Yup.object({
+  checklist: Yup.string().required("**Guidline  is required"),
+})
+
 export const ChainSchema = Yup.object({
   ChainName: Yup.string().required("**Chainname name is required"),
 })

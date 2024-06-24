@@ -10,7 +10,11 @@ import { addAssignTask, getPositionWiseTask } from "../../Slices/TaskSlice"
 import Alert from "@mui/material/Alert"
 import AdminCard from "../Layout/AdminCard"
 import { Grid } from "@mui/material"
-import { getemployeeDashBoardDatas } from "../../Slices/DashboardSlice.js"
+import {
+  getemployeeDashBoardDatas,
+  incrementNotApproveTaskEmployee,
+} from "../../Slices/DashboardSlice.js"
+import { toast } from "react-toastify"
 
 const LinkStyle = {
   textDecoration: "none",
@@ -32,13 +36,21 @@ function EmployeeDashboard() {
     dispatch(getemployeeDashBoardDatas(empId))
   }, [dispatch, empId, positionId])
 
+  const successfullyPickTask = () =>
+    toast.success("Chain Details Created successfully..")
+
   const handleClick = (id) => {
     const insertData = {
       empId: Number(empId),
       taskId: id,
       isActive: "1",
     }
-    dispatch(addAssignTask(insertData))
+    dispatch(addAssignTask(insertData)).then((action) => {
+      if (action.meta.requestStatus === "fulfilled") {
+        dispatch(incrementNotApproveTaskEmployee())
+        successfullyPickTask()
+      }
+    })
   }
 
   const columns = [

@@ -1,27 +1,16 @@
 /* eslint-disable react/prop-types */
 import {
-  Box,
   Button,
-  DialogActions,
   Divider,
-  FormControl,
-  FormControlLabel,
   Grid,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material"
 import React, { useState } from "react"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddIcon from "@mui/icons-material/Add"
-import MyButton from "../../../Layout/MyButton"
-import { ErrorMessage, Field, Form, Formik, useFormik } from "formik"
+import { useFormik } from "formik"
 import { TaskSchema } from "../../../Validation/validationSchema"
 
 const CheckList = ({ onSubmit }) => {
@@ -69,6 +58,7 @@ const CheckList = ({ onSubmit }) => {
             >
               Checklist
             </Typography>
+
             <Divider width="100%" sx={{ marginBottom: ".5rem" }} />
             {showAdditionalInputs && (
               <div>

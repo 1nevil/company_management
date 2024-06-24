@@ -34,9 +34,19 @@ export const insertChainMater = createAsyncThunk(
 export const ChainSliceMaster = createSlice({
   name: "ChainSlice",
   initialState,
+  reducers: {
+    addChainFlow: (state, action) => {
+      const chainId = action.payload.chainId
+      const chainFlow = action.payload.chainFlow
+
+      const ch = state.chainMaster.find((chain) => chain.chainId === chainId)
+      ch.chainFlow = chainFlow
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchChainMater.pending, (state) => {
+        state.error = true
         state.pendding = true
       })
       .addCase(fetchChainMater.fulfilled, (state, action) => {
@@ -48,6 +58,7 @@ export const ChainSliceMaster = createSlice({
         state.error = action.payload
       })
       .addCase(insertChainMater.pending, (state) => {
+        state.error = null
         state.pendding = true
       })
       .addCase(insertChainMater.fulfilled, (state, action) => {
@@ -62,4 +73,5 @@ export const ChainSliceMaster = createSlice({
   },
 })
 
+export const { addChainFlow } = ChainSliceMaster.actions
 export default ChainSliceMaster.reducer

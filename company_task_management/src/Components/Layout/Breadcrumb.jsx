@@ -13,7 +13,7 @@ function Breadcrumb() {
           const to = `/${pathnames.slice(0, index + 1).join("/")}`
 
           return last ? (
-            <Typography color="text.primary" key={to}>
+            <Typography color="text.secondary" key={to}>
               {value.charAt(0).toUpperCase() + value.slice(1)}
             </Typography>
           ) : (

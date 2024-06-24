@@ -19,6 +19,7 @@ import { fetchPosition } from "../../../../Slices/PositionSlice"
 import { checkersEmp } from "../../../../Slices/EmployeeSlice"
 import { insertChainDetails } from "../../../../Slices/ChainDetailsSlice"
 import { toast } from "react-toastify"
+import { addChainFlow } from "../../../../Slices/ChainSliceMaster"
 
 function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
@@ -36,21 +37,30 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
   const notifySubmit = () =>
     toast.success("Chain Details Created successfully..")
 
+  const clearFormValues = () => {
+    setChecklistItems([])
+    setAdditionalInputCount(0)
+    setShowAdditionalInputs(false)
+  }
+
   const handleSubmit = () => {
-    handleCloseDetails()
-    notifySubmit()
-    console.log(checklistItems)
-
-    console.log({
-      //   chainId: Number(chainid),
-      chainFlow: checklistItems.toString(),
-    })
-
     const chainDetails = {
       chainId: Number(chainId),
       chainFlow: checklistItems.toString(),
     }
-    dispatch(insertChainDetails(chainDetails))
+    dispatch(insertChainDetails(chainDetails)).then((action) => {
+      if (action.meta.requestStatus === "fulfilled") {
+        handleCloseDetails()
+        notifySubmit()
+        clearFormValues()
+        dispatch(
+          addChainFlow({
+            chainId: Number(chainId),
+            chainFlow: checklistItems.toString(),
+          })
+        )
+      }
+    })
   }
 
   const handleChange = (index) => (event) => {

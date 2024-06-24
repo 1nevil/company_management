@@ -5,37 +5,26 @@ import { Grid, IconButton } from "@mui/material"
 import { Delete, Edit } from "@mui/icons-material"
 import { Typography } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
-import { ToastContainer, toast } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import PositionForm from "./PositionForm"
 import { deletePosition, fetchPosition } from "../../../../Slices/PositionSlice"
-import { useMediaQuery } from "@mui/material"
+import useAlert from "../../../../Hooks/useAlert"
+import { Link } from "react-router-dom"
+import VisibilityIcon from "@mui/icons-material/Visibility"
 
 function Position() {
-  const isMobile = useMediaQuery("(max-width:600px)")
-  const isTablet = useMediaQuery("(min-width:601px) and (max-width:1024px)")
-  const isLaptop = useMediaQuery("(min-width:1025px) and (max-width:1440px)")
-  const isDesktop = useMediaQuery("(min-width:1441px)")
-
-  const getPageSize = () => {
-    if (isMobile) return 5
-    if (isTablet) return 10
-    if (isLaptop) return 15
-    return 20 // Default for larger screens
-  }
-
-  const getGridWidth = () => {
-    if (isMobile) return "100%"
-    if (isTablet) return "90%"
-    if (isLaptop) return "80%"
-    return "70%" // Default for larger screens
-  }
   const dispatch = useDispatch()
-  const Positions = useSelector((state) => state.Position.positions)
+  const { positions, error } = useSelector((state) => state.Position)
+
+  const deletePositionAlert = useAlert(
+    deletePosition,
+    "Position Deleted Successfully..."
+  )
 
   const handleDelete = (id, position) => {
-    dispatch(deletePosition(id))
-    notify(position)
+    deletePositionAlert(id, error)
+    // notify(position)
   }
 
   const handleEdit = (id) => {
@@ -45,8 +34,6 @@ function Position() {
   useEffect(() => {
     dispatch(fetchPosition())
   }, [dispatch])
-
-  const notify = (position) => toast(position + " is deleted !")
 
   const columns = [
     {
@@ -65,6 +52,17 @@ function Position() {
       width: 140,
     },
     {
+      field: "Position guidlines",
+      headerName: "Position guidlines",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <Link to={`/admin/Positionguidlines/${params.row.positionId}`}>
+          <VisibilityIcon></VisibilityIcon>
+        </Link>
+      ),
+    },
+    {
       field: "Action",
       headerName: "Action",
       description: "This column has a value getter and is not sortable.",
@@ -78,26 +76,26 @@ function Position() {
           >
             <Edit />
           </IconButton>
-          {/* <IconButton
+          <IconButton
             onClick={() =>
               handleDelete(params.row.positionId, params.row.positionName)
             }
             title="Delete"
           >
             <Delete sx={{ color: "red" }} />
-          </IconButton> */}
+          </IconButton>
         </>
       ),
     },
   ]
 
   // Sort positions by createdAt field in descending order
-  const sortedPositions = Positions.slice().sort(
-    (a, b) => b.positionId - a.positionId
-  )
+  const sortedPositions = positions
+    .slice()
+    .sort((a, b) => b.positionId - a.positionId)
   return (
     <>
-      <Box style={{ width: getGridWidth(), margin: "auto" }}>
+      <Box style={{ margin: "auto" }}>
         <ToastContainer />
         <PositionForm></PositionForm>
         <Typography

@@ -11,7 +11,6 @@ import Task from "./Components/Admin/Pages/Task/Task"
 import DashBord from "./Components/Admin/DashBord"
 import BucketTest from "./Components/Admin/BucketTest"
 import { Dashboard } from "@mui/icons-material"
-import CheckSuperViser from "./Components/Superviser/CheckSuperViser"
 import Register from "./Components/Register"
 import Superadmin from "./Components/Superadmin/Superadmin"
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
@@ -46,12 +45,14 @@ import { ToastContainer } from "react-toastify"
 import TestEmployeeFrom from "./Components/Admin/Pages/Employee/TestEmployeeFrom"
 import Changepassword from "./Components/Password/Changepassword"
 import Profile from "./Components/Employee/Profile"
+import PositionGuidline from "./Components/Admin/Pages/Position/PositionGuidline"
+import ChecklistBoard from "./Components/Admin/Pages/Task/ChecklistBoard"
 
 function App() {
   const iconSiderbar = {
     // admin started
     admin: {
-      icons: [Dashboard, AddTask, LinkIcon, PeopleIcon, StreetviewIcon],
+      icons: [Dashboard, AddTask, LinkIcon, StreetviewIcon, PeopleIcon],
       sidebar: [
         { name: "Dashboard ", url: "dashbord" },
         { name: "Task", url: "Task" },
@@ -96,10 +97,6 @@ function App() {
         <Header link="admin" icons={admin.icons} sidebarNames={admin.sidebar} />
       ),
       children: [
-        // {
-        //   index: true,
-        //   element: <DashBord />,
-        // },
         {
           element: <ProtectedRoute role="admin" />,
           children: [
@@ -112,12 +109,20 @@ function App() {
               element: <Position />,
             },
             {
+              path: "Positionguidlines/:positionid",
+              element: <PositionGuidline />,
+            },
+            {
               path: "employee",
               element: <Employee />,
             },
             {
               path: "task",
               element: <Task />,
+            },
+            {
+              path: "checklists/:taskid",
+              element: <ChecklistBoard />,
             },
             {
               path: "chain",
@@ -165,10 +170,6 @@ function App() {
         />
       ),
       children: [
-        // {
-        //   index: true,
-        //   element: <h1>Hello</h1>,
-        // },
         {
           element: <ProtectedRoute role="checker" />,
           children: [
@@ -208,10 +209,6 @@ function App() {
       ),
       children: [
         {
-          index: true,
-          element: <h1>Hello</h1>,
-        },
-        {
           element: <ProtectedRoute role="employee" />,
           children: [
             {
@@ -246,10 +243,6 @@ function App() {
               path: "profile",
               element: <Profile />,
             },
-            // ,{
-            //   path:"dashboard",
-            //   element:<DashBoard/>
-            // }
           ],
         },
       ],
@@ -281,10 +274,6 @@ function App() {
         />
       ),
       children: [
-        {
-          index: true,
-          element: <Superadmin />,
-        },
         {
           element: <ProtectedRoute role="super_admin" />,
           children: [

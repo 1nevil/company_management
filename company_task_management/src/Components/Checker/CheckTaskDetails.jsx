@@ -218,7 +218,8 @@ function CheckerTaskDetails() {
         <Grid item xs={12} md={4}>
           <Box
             p={4}
-            pt={0}
+            pt={1}
+            pb={1}
             sx={{
               border: "2px solid gray",
               borderRadius: "10px",
@@ -227,40 +228,74 @@ function CheckerTaskDetails() {
             }}
           >
             <FormGroup>
-              <Typography
-                variant="h6"
-                mt={3}
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-              >
-                Checklist
-              </Typography>
-              {displayedChecklist?.map((checklist) => (
-                <Box
-                  key={checklist.checklistId}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                  }}
-                >
+              {checklist?.length < 0 ? (
+                <>
                   <Typography
-                    variant="body1"
-                    gutterBottom
-                    textTransform="capitalize"
-                    ml={3}
+                    variant="h6"
+                    mt={3}
+                    sx={{ textAlign: "center", fontWeight: "bold" }}
                   >
-                    {checklist.taskMessage}
+                    Checklist
                   </Typography>
-                </Box>
-              ))}
-              {checklist?.length > 3 && (
+                  {displayedChecklist?.map((checklist) => (
+                    <Box
+                      key={checklist.checklistId}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        lineHeight: "43px",
+                        mb: 1,
+                      }}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            defaultChecked={
+                              checklist?.status === "1" ? true : false
+                            }
+                            disabled
+                            sx={{
+                              color: "rgba(0, 0, 0, 0.87) !important", // Keep the checkbox looking enabled when disabled
+                              "&.Mui-disabled": {
+                                color: "rgba(0, 0, 0, 0.87)",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography
+                            sx={{
+                              color: checklist?.Status
+                                ? "rgba(0, 0, 0, 0.87)"
+                                : "text.secondary", // Darkish gray if checked, default gray if not
+                            }}
+                          >
+                            {checklist.taskMessage}
+                          </Typography>
+                        }
+                      />
+                    </Box>
+                  ))}
+                  {checklist?.length > 3 && (
+                    <Typography
+                      variant="body2"
+                      color="primary"
+                      sx={{ cursor: "pointer", textAlign: "end" }}
+                      onClick={handleOpenModal}
+                    >
+                      See More
+                    </Typography>
+                  )}
+                </>
+              ) : (
                 <Typography
-                  variant="body2"
-                  color="primary"
-                  sx={{ cursor: "pointer", textAlign: "end" }}
-                  onClick={handleOpenModal}
+                  textAlign="center"
+                  color="red"
+                  variant="subtitle1"
+                  gutterBottom
                 >
-                  See More
+                  No Checklist available Follow the Guidlines
                 </Typography>
               )}
             </FormGroup>
@@ -326,6 +361,35 @@ function CheckerTaskDetails() {
               </Typography>
             )}
           </Box>
+          {empTaskAssignment?.quantityName &&
+            empTaskAssignment?.quantity &&
+            empTaskAssignment?.rate && (
+              <Box
+                mt={5}
+                p={2}
+                sx={{
+                  border: "2px solid gray",
+                  borderRadius: "10px",
+                  mr: { md: "50px" },
+                }}
+              >
+                <Typography variant="subtitle1" gutterBottom>
+                  {empTaskAssignment?.quantityName
+                    ? `Quantity Name: ${empTaskAssignment?.quantityName}`
+                    : ""}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  {empTaskAssignment?.quantity
+                    ? `Quantity: ${empTaskAssignment?.quantity}`
+                    : ""}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  {empTaskAssignment?.rate
+                    ? `Rate: ${empTaskAssignment?.rate}`
+                    : ""}
+                </Typography>
+              </Box>
+            )}
         </Grid>
 
         <Divider
@@ -396,6 +460,16 @@ function CheckerTaskDetails() {
                   <Skeleton animation="wave" />
                 </Typography>
               )}
+            </Box>
+            <Box p={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                onClick={() => alert("Task file Download .....")}
+              >
+                Download File
+              </Button>
             </Box>
             <Box
               p={2}

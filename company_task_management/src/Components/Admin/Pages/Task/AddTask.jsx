@@ -12,24 +12,19 @@ import {
   Radio,
   RadioGroup,
   Select,
-  Stack,
   TextField,
   Typography,
   IconButton,
-  Snackbar,
   Alert,
 } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddIcon from "@mui/icons-material/Add"
-import MyButton from "../../../Layout/MyButton"
 import { useFormik } from "formik"
 import { TaskSchema } from "../../../Validation/validationSchema"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchChainMater } from "../../../../Slices/ChainSliceMaster"
-import { fetchPosition } from "../../../../Slices/PositionSlice"
 import { insertTask } from "../../../../Slices/TaskSlice"
-import CheckList from "./Checklist"
 import { Link } from "react-router-dom"
 import CallMadeIcon from "@mui/icons-material/CallMade"
 import { toast } from "react-toastify"
@@ -41,7 +36,6 @@ const AddTask = ({ handleCloseForm }) => {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
   const [additionalInputCount, setAdditionalInputCount] = useState(0)
   const [inputs, setInputs] = useState([])
-  const [isSubmitted, setIssubmited] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -65,14 +59,14 @@ const AddTask = ({ handleCloseForm }) => {
     // dispatch(fetchPosition())
   }, [dispatch])
 
+  const notifySubmit = () => toast.success("Task Created successfully..")
+
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
       validationSchema: TaskSchema,
 
       onSubmit: (data) => {
-        console.log(error)
-        // notifySubmit()
         let TaskStatus = "Pending"
         data.durationNum = String(data.durationNum)
 
@@ -83,46 +77,15 @@ const AddTask = ({ handleCloseForm }) => {
             taskStatus: TaskStatus,
             checklists: inputs,
           })
-        )
+        ).then((action) => {
+          if (action.meta.requestStatus === "fulfilled") {
+            notifySubmit()
+            handleCloseForm()
+          }
+        })
       },
-      // onSubmit: (data) => {
-      //   let TaskStatus = "Pending"
-      //   data.durationNum = String(data.durationNum)
-
-      // dispatch(
-      //   insertTask({
-      //     ...data,
-      //     durationType,
-      //     taskStatus: TaskStatus,
-      //     checklists: inputs,
-      //   })
-      // )
-
-      // if (error) {
-      //   alert("not closed")
-      // } else {
-      //   alert("clossed")
-      // }
-
-      // console.log(error)
-      // console.log(pending === false)
-      // console.log(error === null)
-
-      // if (pending === false && error === null) {
-      //   notifySubmit()
-      //   handleCloseForm()
-      // }
-      //  },
     }
   )
-  // const notifySubmit = () => toast.success("Task Created successfully..")
-
-  const [checkListData, setCheckListData] = useState(null)
-
-  const handleCheckListSubmit = (data) => {
-    // Update the state in the parent component with the checklist data
-    setCheckListData(data)
-  }
 
   const handleAddInput = () => {
     setShowAdditionalInputs(true)
@@ -145,19 +108,6 @@ const AddTask = ({ handleCloseForm }) => {
     setshowOpenForm(value === "open")
     setShowClosedForm(value === "closed")
   }
-
-  const [open, setOpen] = React.useState(true)
-
-  const handleClick = () => {
-    setOpen(true)
-  }
-
-  const handleClose = React.useCallback((event, reason) => {
-    if (reason === "clickaway") {
-      return
-    }
-    setOpen(false)
-  }, [])
 
   return (
     <div>
@@ -381,7 +331,6 @@ const AddTask = ({ handleCloseForm }) => {
                         onChange={(event) =>
                           handleGuildlineChange(event, index)
                         }
-                        // onBlur={handleBlur}
                       />
                       <IconButton
                         aria-label="delete"

@@ -42,7 +42,7 @@ import { getPositionsByIds } from "../../../../Slices/PositionSlice"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 
-function AdminTaskDeatil(params) {
+function AdminTaskDeatil() {
   const [chainFlow, setChainFlow] = useState([])
   const [currentPostionIndex, setCurrentPostionIndex] = useState(-1)
   const message = useSelector(
@@ -277,18 +277,38 @@ function AdminTaskDeatil(params) {
                       sx={{
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "center",
                         lineHeight: "43px",
+                        mb: 1,
                       }}
                     >
-                      <Typography
-                        variant="body1"
-                        gutterBottom
-                        textTransform="capitalize"
-                        ml={3}
-                        sx={{ m: "auto" }}
-                      >
-                        {checklist.taskMessage}
-                      </Typography>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            defaultChecked={
+                              checklist?.status === "1" ? true : false
+                            }
+                            disabled
+                            sx={{
+                              color: "rgba(0, 0, 0, 0.87) !important", // Keep the checkbox looking enabled when disabled
+                              "&.Mui-disabled": {
+                                color: "rgba(0, 0, 0, 0.87)",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography
+                            sx={{
+                              color: checklist?.Status
+                                ? "rgba(0, 0, 0, 0.87)"
+                                : "text.secondary", // Darkish gray if checked, default gray if not
+                            }}
+                          >
+                            {checklist.taskMessage}
+                          </Typography>
+                        }
+                      />
                     </Box>
                   ))}
                   {checklistMasters?.length > 3 && (
@@ -498,14 +518,38 @@ function AdminTaskDeatil(params) {
             <DialogContent>
               <DialogContentText>
                 <Typography variant="h6">Checklist Items</Typography>
-                {checklistMasters?.map((checklist) => (
-                  <Typography
-                    key={checklist.checklistId}
-                    variant="body1"
-                    gutterBottom
-                  >
-                    {checklist.taskMessage}
-                  </Typography>
+                {checklistMasters?.map((checklist, index) => (
+                  <>
+                    <FormControlLabel
+                      key={index}
+                      control={
+                        <Checkbox
+                          defaultChecked={
+                            checklist?.status === "0" ? false : true
+                          }
+                          disabled
+                          sx={{
+                            color: "rgba(0, 0, 0, 0.87) !important", // Keep the checkbox looking enabled when disabled
+                            "&.Mui-disabled": {
+                              color: "rgba(0, 0, 0, 0.87)",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography
+                          sx={{
+                            color: checklist?.Status
+                              ? "rgba(0, 0, 0, 0.87)"
+                              : "text.secondary", // Darkish gray if checked, default gray if not
+                          }}
+                        >
+                          {checklist.taskMessage}
+                        </Typography>
+                      }
+                    />
+                    <br />
+                  </>
                 ))}
                 <Typography variant="h6" sx={{ mt: 2 }}>
                   Position Guidelines

@@ -168,6 +168,7 @@ export const approveDisapprove = createAsyncThunk(
 export const AssignToTaskSlice = createSlice({
   name: "AssignToTaskSlice",
   initialState,
+
   extraReducers: (builder) => {
     builder
       .addCase(updateTaskWithCompletedDate.pending, (state) => {
@@ -248,10 +249,11 @@ export const AssignToTaskSlice = createSlice({
         state.pendding = true
       })
       .addCase(approveDisapprove.fulfilled, (state, action) => {
-        state.pending = false
+        state.pendding = false
+        console.log(action.payload)
         state.taskCompletedButNotChecked =
           state.taskCompletedButNotChecked.filter(
-            (task) => task.AssignToTaskSlice !== action.payload
+            (task) => task.empTaskId !== action.payload
           )
       })
       .addCase(approveDisapprove.rejected, (state, action) => {

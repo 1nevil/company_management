@@ -26,12 +26,20 @@ function Chain() {
     setChainDetails(true)
   }
 
-  const handleCloseChainDetail = () => {
-    setChainDetails(false)
+  const handleCloseChainDetail = (reason, event) => {
+    if (event === "backdropClick") {
+      setChainDetails(true)
+    } else {
+      setChainDetails(false)
+    }
   }
 
-  const handleCloseChain = () => {
-    setChain(false)
+  const handleCloseChain = (reason, event) => {
+    if (event === "backdropClick") {
+      setChain(true)
+    } else {
+      setChain(false)
+    }
   }
 
   const handleOpenChain = () => {
@@ -59,7 +67,10 @@ function Chain() {
       width: 160,
       renderCell: (params) => (
         <Link
-          style={{ color: "gray" }}
+          style={{
+            color: params.row.chainFlow ? "gray" : "lightgray",
+            pointerEvents: params.row.chainFlow ? "auto" : "none",
+          }}
           to={`/admin/chaindetails/${params.row.chainId}`}
         >
           <VisibilityIcon />
@@ -73,17 +84,25 @@ function Chain() {
       sortable: false,
       width: 160,
       renderCell: (params) => (
-        <IconButton aria-label="add Details">
-          <AddIcon
-            onClick={() => {
+        <IconButton
+          aria-label="add Details"
+          style={{
+            color: params.row.chainFlow ? "lightgray" : "gray",
+            pointerEvents: params.row.chainFlow ? "none" : "auto",
+          }}
+          onClick={() => {
+            if (!params.row.chainFlow) {
               handleOpenChainDetail()
               setSelectedRow(params.row.chainId)
-            }}
-          />
+            }
+          }}
+        >
+          <AddIcon />
         </IconButton>
       ),
     },
   ]
+
   return (
     <Box>
       <Button

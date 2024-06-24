@@ -33,7 +33,7 @@ export const getChainDetailsByChainId = createAsyncThunk(
 const initialState = {
   pending: false,
   chainDetails: [],
-  error: "",
+  error: null,
   chainDetail: {},
   chainFlow: "",
 }
@@ -44,6 +44,7 @@ export const ChainSliceMaster = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(insertChainDetails.pending, (state) => {
+        state.error = null
         state.pending = true
       })
       .addCase(insertChainDetails.fulfilled, (state, action) => {

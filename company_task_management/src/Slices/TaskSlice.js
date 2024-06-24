@@ -231,7 +231,7 @@ const TaskSlice = createSlice({
       })
       .addCase(addAssignTask.fulfilled, (state, action) => {
         state.error = null
-        console.log(action.payload)
+        state.pending = false
         state.tasks = state.tasks.filter(
           (t) => t.taskId !== action.payload.taskId
         )

@@ -184,20 +184,7 @@ function CheckerTaskIsActiveDeatils() {
             ) : (
               <>
                 {displayedChecklist?.length > 0 ? (
-                  displayedChecklist?.map((checklist) => (
-                    <Box
-                      key={checklist.checklistId}
-                      sx={{ display: "flex", alignItems: "center", gap: 2 }}
-                    >
-                      <Typography
-                        variant="body2"
-                        textTransform="capitalize"
-                        ml={3}
-                      >
-                        {checklist.taskMessage}
-                      </Typography>
-                    </Box>
-                  ))
+                  displayedChecklist
                 ) : (
                   <Typography variant="body2" textAlign="center" color="error">
                     No position Found !!

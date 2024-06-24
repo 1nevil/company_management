@@ -82,6 +82,8 @@ export default function EmployeeForm() {
     isActive: "",
   }
 
+  const notifySubmit = () => toast.success("Employee Submitted successfully..")
+
   const {
     errors,
     touched,
@@ -93,63 +95,12 @@ export default function EmployeeForm() {
   } = useFormik({
     initialValues: initValue,
     validationSchema: AddEmployeeSchema,
-    // onSubmit: (values) => {
-    //   setSuccessAlertOpen(true)
-    //   // console.log(values)
 
-    //   let empvalues = {
-    //     EmployeeName:
-    //       values.surname + " " + values.firstName + " " + values.lastName,
-    //     Dob: values.dob,
-    //     AddressEmployee: values.addressEmployee,
-    //     xender: values.xender,
-    //     roleId: values.roleId,
-    //     dateOfJoining: values.dateOfJoining,
-    //     EmployeeEmail: values.employeeEmail,
-    //     AdharNumber: values.adharNumber,
-    //     altmobileNumber: values.altmobileNumber,
-    //     MobileNumber: values.mobileNumber,
-
-    //     accountHolderName: values.accountHolderName,
-    //     ifscCode: values.ifscCode,
-    //     accountNo: values.accountNo,
-    //     bankName: values.bankName,
-    //     branchName: values.branchName,
-
-    //     employeeAge: values.employeeAge,
-    //     upiId: values.upiId,
-    //     EmployeePassword: values.employeePassword,
-    //     positionId: String(values.positionId),
-    //     adharImage: values.adharImage,
-    //     SignatureImage: values.signImage,
-    //     employeeResume: values.employeeResume,
-    //     employeeImage: values.employeeImage,
-    //     isActive: "1",
-    //   }
-    //   console.log(empvalues)
-    //   dispatch(insertEmp(empvalues))
-    //   if (error === null && !pending) {
-    //     handleClose()
-    //   }
-    //   notifySubmit()
-    //     .unwrap()
-    //     .then((res) => {
-    //       toast.success("Employee Submitted successfully.")
-    //       handleClose()
-    //     })
-    //     .catch((err) => {
-    //       toast.error("Submission failed. Please try again.")
-    //     })
-    // },
     onSubmit: async (values, { setSubmitting }) => {
-      console.log(errors)
-      console.log(values)
-
       const formData = new FormData()
-      formData.append("he", "he")
       try {
         formData.append(
-          "EmployeeName",
+          "employeeName",
           `${values.surname} ${values.firstName} ${values.lastName}`
         )
         formData.append("Dob", values.dob)
@@ -178,7 +129,12 @@ export default function EmployeeForm() {
         console.log(formData) // Check if formData has correct data
 
         // Dispatch the insertEmp action with formData
-        dispatch(insertEmp(values))
+        dispatch(insertEmp(formData)).then((action) => {
+          if (action.meta.requestStatus === "fulfilled") {
+            notifySubmit()
+            handleClose()
+          }
+        })
 
         // Reset form state or handle any UI updates after dispatching action
         setSubmitting(false)
@@ -187,26 +143,12 @@ export default function EmployeeForm() {
         setSubmitting(false)
       }
       console.log(formData) // Verify FormData structure in console
-      dispatch(
-        insertEmp(formData)
-        // ).then((res) => {
-        //     if (res.payload?.EmployeeId) {
-        //       toast.success("Employee added successfully!")
-        //     } else {
-        //       toast.error("Failed to add employee.")
-        //     }
-        //     setSubmitting(false)
-        //     setOpen(false)
-        //   }
-      )
     },
   })
   const handleFileChange = (event) => {
     const { name, files } = event.target
     setFieldValue(name, files[0])
   }
-
-  // const notifySubmit = () => toast.success("Employee Submitted successfully..")
 
   const calculateAge = (dob) => {
     const today = new Date()
@@ -240,7 +182,6 @@ export default function EmployeeForm() {
     setFormOpen(true) // Open the form
   }
 
-  console.log(errors)
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleOpen}>

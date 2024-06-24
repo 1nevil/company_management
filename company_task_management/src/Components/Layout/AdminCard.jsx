@@ -8,8 +8,9 @@ import Typography from "@mui/material/Typography"
 import { ArrowDown as ArrowDownIcon } from "@phosphor-icons/react/dist/ssr/ArrowDown"
 import { ArrowUp as ArrowUpIcon } from "@phosphor-icons/react/dist/ssr/ArrowUp"
 import { CurrencyDollar as CurrencyDollarIcon } from "@phosphor-icons/react/dist/ssr/CurrencyDollar"
+import { Skeleton } from "@mui/material"
 
-function AdminCard({ name, value, textColor }) {
+function AdminCard({ name, value, textColor, Pending }) {
   return (
     <>
       <Card sx={{ width: 400, margin: "auto", border: "1px solid gray" }}>
@@ -28,7 +29,11 @@ function AdminCard({ name, value, textColor }) {
                   variant="h4"
                   style={textColor ? { color: textColor } : {}}
                 >
-                  {value}
+                  {Pending ? (
+                    <Skeleton variant="rectangular" width={50} height={30} />
+                  ) : (
+                    value
+                  )}
                 </Typography>
               </Stack>
               <Avatar

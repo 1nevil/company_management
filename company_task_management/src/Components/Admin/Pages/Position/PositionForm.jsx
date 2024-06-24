@@ -14,6 +14,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Box,
 } from "@mui/material"
 import { useFormik } from "formik"
 import { PositionSchema } from "../../../Validation/validationSchema"
@@ -31,14 +32,18 @@ const PositionForm = () => {
   const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
   const [additionalInputCount, setAdditionalInputCount] = useState(0)
   const [inputs, setInputs] = useState([])
-  const { error, pending } = useSelector((state) => state.Position) || []
+  const { error, pendding } = useSelector((state) => state.Position) || []
 
   const handleOpen = () => {
     setOpen(true)
   }
 
-  const handleClose = () => {
-    setOpen(false)
+  const handleClose = (reason, event) => {
+    if (event === "backdropClick") {
+      setOpen(true)
+    } else {
+      setOpen(false)
+    }
   }
   const handleAddInput = () => {
     setShowAdditionalInputs(true)
@@ -71,6 +76,7 @@ const PositionForm = () => {
   //   setAdditionalInputCount((prevCount) => prevCount - 1);
   // };
 
+  const notifySubmit = () => toast.success("Position Submitted successfully..")
   const { errors, touched, handleChange, handleSubmit, handleBlur } = useFormik(
     {
       initialValues: initValue,
@@ -79,14 +85,17 @@ const PositionForm = () => {
         const positionWithGuidlines = { ...data, positionGuidelines: inputs }
 
         console.log("🚀 ~ PositionForm ~ data:", positionWithGuidlines)
-        handleClose()
         // notifySubmit()
-        dispatch(insertPosition(positionWithGuidlines))
+        dispatch(insertPosition(positionWithGuidlines)).then((action) => {
+          if (action.meta.requestStatus === "fulfilled") {
+            handleClose()
+            notifySubmit()
+          }
+        })
         setAdditionalInputCount(0)
       },
     }
   )
-  // const notifySubmit = () => toast.success("Position Submitted successfully..")
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleOpen}>
@@ -95,7 +104,11 @@ const PositionForm = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Enter Position</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmit} style={{ paddingTop: "10px" }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            style={{ paddingTop: "10px" }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -202,7 +215,7 @@ const PositionForm = () => {
               >
                 Add Guideline
               </Button>
-              {/* <Button
+              {/*= <Button
                 variant="outlined"
                 onClick={handleLogData}
                 sx={{ width: "97%", margin: "0.5rem 0 0 0.5rem" }}
@@ -215,10 +228,12 @@ const PositionForm = () => {
               variant="contained"
               color="primary"
               style={{ marginTop: "20px" }}
+              loading={pendding}
+              loadingPosition="start"
             >
               Add Position
             </Button>
-          </form>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
