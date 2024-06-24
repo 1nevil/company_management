@@ -16,7 +16,7 @@ const initialState = {
   pendding: false,
   employees: [],
   checkers: [],
-  error: "",
+  error: null,
 }
 
 export const updateEmp = createAsyncThunk("emps/updateEmp", async (id) => {
@@ -36,10 +36,23 @@ export const fetchEmpById = createAsyncThunk(
   }
 )
 
-export const deleteEmp = createAsyncThunk("emps/deleteEmp", async (id) => {
-  await deleteEmpById(id)
-  return id
-})
+export const deleteEmp = createAsyncThunk(
+  "emps/deleteEmp",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await deleteEmpById(id)
+      return res.data
+    } catch (error) {
+      if (error.response) {
+        // Extract custom message from backend response
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
+  }
+)
 // export const insertEmp = createAsyncThunk("emps/insertEmp", async (emp) => {
 //   const res = await createEmp(emp);
 //   return res.data;
@@ -51,10 +64,10 @@ export const resetPasswordEmp = createAsyncThunk(
       const res = await resetPassword(employeeForm)
       return res.data
     } catch (error) {
-      console.log(error)
+      console.log(error.response.data)
       if (error.response) {
         // Extract custom message from backend response
-        const errorMessage = error.response.data.message
+        const errorMessage = error.response.data
         return rejectWithValue(errorMessage)
       } else {
         return rejectWithValue("An unexpected error occurred")
@@ -132,6 +145,7 @@ export const EmployeeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchEmp.pending, (state) => {
+        state.error = null
         state.pendding = true
       })
       .addCase(fetchEmp.fulfilled, (state, action) => {
@@ -155,6 +169,7 @@ export const EmployeeSlice = createSlice({
         state.error = action.payload
       })
       .addCase(updateEmp.pending, (state) => {
+        state.error = null
         state.pendding = true
       })
       .addCase(updateEmp.fulfilled, (state, action) => {
@@ -167,6 +182,7 @@ export const EmployeeSlice = createSlice({
         state.error = action.payload
       })
       .addCase(deleteEmp.pending, (state) => {
+        state.error = null
         state.pendding = true
       })
       .addCase(deleteEmp.fulfilled, (state, action) => {
@@ -192,6 +208,8 @@ export const EmployeeSlice = createSlice({
         state.error = action.payload
       })
       .addCase(allApproveEmps.pending, (state) => {
+        state.error = null
+
         state.pendding = true
       })
       .addCase(allApproveEmps.fulfilled, (state, action) => {
@@ -203,6 +221,7 @@ export const EmployeeSlice = createSlice({
         state.error = action.payload
       })
       .addCase(allDisapproveEmps.pending, (state, action) => {
+        state.error = null
         state.pendding = true
       })
       .addCase(allDisapproveEmps.fulfilled, (state, action) => {
@@ -210,9 +229,12 @@ export const EmployeeSlice = createSlice({
         state.employees = action.payload
       })
       .addCase(allDisapproveEmps.rejected, (state, action) => {
+        state.pendding = false
         state.error = action.payload
       })
       .addCase(approveDisapproveEmp.pending, (state, action) => {
+        state.error = null
+
         state.pendding = action.payload
       })
       .addCase(approveDisapproveEmp.fulfilled, (state, action) => {
@@ -223,8 +245,10 @@ export const EmployeeSlice = createSlice({
       })
       .addCase(approveDisapproveEmp.rejected, (state, action) => {
         state.error = action.payload
+        state.pendding = false
       })
       .addCase(checkersEmp.pending, (state, action) => {
+        state.error = null
         state.pendding = action.payload
       })
       .addCase(checkersEmp.fulfilled, (state, action) => {
@@ -233,9 +257,12 @@ export const EmployeeSlice = createSlice({
       })
       .addCase(checkersEmp.rejected, (state, action) => {
         state.error = action.payload
+        state.pendding = false
       })
       //fetchEmpById
       .addCase(fetchEmpById.pending, (state) => {
+        state.error = null
+
         state.pendding = true
       })
       .addCase(fetchEmpById.fulfilled, (state, action) => {

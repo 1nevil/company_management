@@ -132,7 +132,7 @@ export default function EmployeeForm() {
         formData.append("EmployeeAge", values.employeeAge)
         formData.append("EmployeePassword", values.employeePassword)
         formData.append("BankName", values.bankName)
-        formData.append("IsActive", "0")
+        formData.append("IsActive", "1")
         formData.append("PositionId", values.positionId)
         formData.append("EmployeeImage", values.employeeImage)
         formData.append("SignImage", values.signImage)
