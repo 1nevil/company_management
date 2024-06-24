@@ -44,7 +44,6 @@ function TaskHistory(params) {
   }
 
   const columns = [
-    { field: "empTaskHistoryId", headerName: "empTaskHistoryId", width: 100 },
     {
       field: "taskName",
       headerName: "Task Name",

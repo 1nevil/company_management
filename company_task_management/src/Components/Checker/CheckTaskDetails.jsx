@@ -228,7 +228,7 @@ function CheckerTaskDetails() {
             }}
           >
             <FormGroup>
-              {checklist?.length < 0 ? (
+              {checklist?.length > 0 ? (
                 <>
                   <Typography
                     variant="h6"
@@ -254,7 +254,7 @@ function CheckerTaskDetails() {
                             defaultChecked={
                               checklist?.status === "1" ? true : false
                             }
-                            disabled
+                            // disabled
                             sx={{
                               color: "rgba(0, 0, 0, 0.87) !important", // Keep the checkbox looking enabled when disabled
                               "&.Mui-disabled": {

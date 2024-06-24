@@ -4,7 +4,6 @@ import {
   CardActionArea,
   CardContent,
   CardHeader,
-  CardMedia,
   Checkbox,
   Dialog,
   DialogActions,
@@ -49,7 +48,7 @@ function CheckerTaskIsActiveDeatils() {
     guidelines,
     checklist,
     empTaskHistory,
-  } = useSelector((state) => state.AssignToTask.getHistoryDetail)
+  } = useSelector((state) => state.AssignToTask.getHistoryDetail) || {}
 
   const navigate = useNavigate()
   const { id: checkerId } = useSelector((state) => state.Auth.authicatedUser)
@@ -184,7 +183,11 @@ function CheckerTaskIsActiveDeatils() {
             ) : (
               <>
                 {displayedChecklist?.length > 0 ? (
-                  displayedChecklist
+                  displayedChecklist.map((item) => (
+                    <Typography key={item.checklistId} variant="body2">
+                      {item.taskMessage}
+                    </Typography>
+                  ))
                 ) : (
                   <Typography variant="body2" textAlign="center" color="error">
                     No position Found !!
@@ -338,102 +341,64 @@ function CheckerTaskIsActiveDeatils() {
               </>
             )}
           </Box>
+          {/* Employee Detail */}
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: "bold", textAlign: "center", mb: 3 }}
+          >
+            Employee Details
+          </Typography>
+          <Box
+            p={4}
+            sx={{
+              border: "2px solid gray",
+              boxShadow: "2px 2px 10px 1px black",
+            }}
+          >
+            {pending ? (
+              <Skeleton animation="wave" />
+            ) : (
+              <>
+                {employee ? (
+                  <>
+                    <Typography variant="body1">
+                      <strong>Employee ID:</strong> {employee.employeeId}
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>Employee Name:</strong> {employee.employeeName}
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>Employee Email:</strong> {employee.employeeEmail}
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>Employee Age:</strong> {employee.employeeAge}
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>Mobile Number:</strong> {employee.mobileNumber}
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>Alternate Mobile Number:</strong>{" "}
+                      {employee.altmobileNumber}
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>DOB:</strong> {employee.dob}
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>Address:</strong> {employee.addressEmployee}
+                    </Typography>
+                  </>
+                ) : (
+                  <Typography variant="h5" gutterBottom>
+                    {error}
+                  </Typography>
+                )}
+              </>
+            )}
+          </Box>
         </Grid>
       </Grid>
-      {/* Modal */}
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>All Checklist Items and Guidelines</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <Typography variant="h6">Checklist Items</Typography>
-            {checklist?.length > 0 ? (
-              checklist?.map((checklist) => (
-                <Typography
-                  key={checklist.checklistId}
-                  variant="body1"
-                  gutterBottom
-                >
-                  {checklist.taskMessage}
-                </Typography>
-              ))
-            ) : (
-              <Typography variant="body2" textAlign="center" color="error">
-                No position Found !!
-              </Typography>
-            )}
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Position Guidelines
-            </Typography>
-            {guidelines?.map((guideline) => (
-              <Typography
-                key={guideline.positionGuidelineId}
-                variant="body1"
-                gutterBottom
-              >
-                {guideline.positionGuidline}
-              </Typography>
-            ))}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal}>Close</Button>
-        </DialogActions>
-      </Dialog>
-      {/* Completed By */}
-      <Box mt={5}>
-        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-          Completed By
-        </Typography>
-        <Box
-          p={4}
-          sx={{
-            border: "2px solid gray",
-            borderRadius: "10px",
-            boxShadow: "2px 2px 10px 1px black",
-          }}
-        >
-          {pending ? (
-            <Skeleton animation="wave" />
-          ) : (
-            <>
-              {employee ? (
-                <>
-                  <Typography variant="body1">
-                    <strong>Employee ID:</strong> {employee.employeeId}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Employee Name:</strong> {employee.employeeName}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Employee Email:</strong> {employee.employeeEmail}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Employee Age:</strong> {employee.employeeAge}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Mobile Number:</strong> {employee.mobileNumber}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Alternate Mobile Number:</strong>{" "}
-                    {employee.altmobileNumber}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>DOB:</strong> {employee.dob}
-                  </Typography>
-                  <Typography variant="body1">
-                    <strong>Address:</strong> {employee.addressEmployee}
-                  </Typography>
-                </>
-              ) : (
-                <Typography variant="h5" gutterBottom>
-                  {error}
-                </Typography>
-              )}
-            </>
-          )}
-        </Box>
-      </Box>
     </div>
   )
 }
+
 export default CheckerTaskIsActiveDeatils

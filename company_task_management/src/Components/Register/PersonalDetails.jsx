@@ -71,7 +71,7 @@ export default function PersonalDetails() {
     confirmPassword: "",
     adharImage: "",
     signImage: "",
-    roleId: 3,
+    roleId: 8,
     employeePassword: "",
   }
 

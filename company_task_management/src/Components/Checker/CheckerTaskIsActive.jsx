@@ -47,12 +47,6 @@ function CheckerTaskIsActive() {
   const dispatch = useDispatch()
   const columns = [
     {
-      field: "empTaskHistoryId",
-      headerName: "empTaskHistoryId",
-      width: 200,
-      editable: true,
-    },
-    {
       field: "taskName",
       headerName: "Task Name",
       width: 500,

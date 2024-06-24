@@ -39,7 +39,7 @@ function Position() {
     {
       field: "positionName",
       headerName: "Position Name",
-      width: 240,
+      width: 300,
     },
     {
       field: "duration",
@@ -49,7 +49,7 @@ function Position() {
     {
       field: "durationType",
       headerName: "Duration Type",
-      width: 140,
+      width: 190,
     },
     {
       field: "Position guidlines",
@@ -70,12 +70,12 @@ function Position() {
       width: 160,
       renderCell: (params) => (
         <>
-          <IconButton
+          {/* <IconButton
             onClick={() => handleEdit(params.row.positionId)}
             title="Edit"
           >
             <Edit />
-          </IconButton>
+          </IconButton> */}
           <IconButton
             onClick={() =>
               handleDelete(params.row.positionId, params.row.positionName)

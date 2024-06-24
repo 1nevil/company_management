@@ -24,11 +24,41 @@ function DisapprovedAdmins() {
 
   const columns = [
     {
+      field: "employeeName",
+      headerName: "Name",
+      width: 220,
+    },
+    {
+      field: "employeeEmail",
+      headerName: "Email",
+      width: 200,
+    },
+    {
+      field: "employeeAge",
+      headerName: "Age",
+      width: 80,
+    },
+    {
+      field: "mobileNumber",
+      headerName: "MobileNumber",
+      width: 140,
+    },
+    {
+      field: "altmobileNumber",
+      headerName: "Alt Mobile No",
+      width: 140,
+    },
+    {
+      field: "adharNumber",
+      headerName: "Adhar Number",
+      width: 140,
+    },
+    {
       field: "checklist",
-      headerName: "Employee Details", // Empty header name
+      headerName: "Details", // Empty header name
       description: "details",
       sortable: false,
-      width: 90,
+      width: 80,
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
@@ -43,7 +73,7 @@ function DisapprovedAdmins() {
       headerName: "Approve",
       description: "Approve",
       sortable: false,
-      width: 160,
+      width: 80,
       renderCell: (params) => (
         <IconButton
           onClick={() => handleClick(params.row.employeeId)}
@@ -52,52 +82,6 @@ function DisapprovedAdmins() {
           <CheckCircleOutlinedIcon sx={{ color: "green" }} />
         </IconButton>
       ),
-    },
-    {
-      field: "employeeName",
-      headerName: "Name",
-      width: 140,
-    },
-    {
-      field: "employeeEmail",
-      headerName: "Email",
-      width: 180,
-    },
-    {
-      field: "employeeAge",
-      headerName: "Age",
-      width: 140,
-    },
-    {
-      field: "mobileNumber",
-      headerName: "MobileNumber",
-      width: 140,
-    },
-    {
-      field: "altmobileNumber",
-      headerName: "Birth date",
-      width: 140,
-    },
-
-    {
-      field: "dob",
-      headerName: "AdharNumber",
-      width: 140,
-    },
-    {
-      field: "adharNumber",
-      headerName: "Image",
-      width: 140,
-    },
-    {
-      field: "employeeImage",
-      headerName: "Resume",
-      width: 140,
-    },
-    {
-      field: "employeeResume",
-      headerName: "Resume",
-      width: 140,
     },
   ]
 

@@ -297,12 +297,12 @@ function Profile() {
     //     )}
     //   </Grid>
     // </Grid>
-    <Box maxWidth="lg" sx={{ py: 2 }}>
+    <Box maxWidth="lg" sx={{ py: 2, px: 2 }}>
       <Box
         sx={{
           position: "relative",
           backgroundColor: "#000000",
-          backgroundImage: `url('https://www.desktopbackground.org/download/2520x1080/2010/06/02/26959_download-wallpapers-3840x1200-computer-keyboard-mouse-laptop_3840x1200_h.jpg')`,
+          backgroundImage: `url('https://ns328286.ip-37-187-113.eu/ew/wallpapers/800x480/06371_800x480.jpg')`,
           backgroundSize: "cover", // Ensure the background image covers the entire area
           backgroundPosition: "center",
           borderRadius: 2,
@@ -314,8 +314,13 @@ function Profile() {
           <Grid item xs={12} md={3}>
             <Box
               sx={{
-                position: "absolute",
-                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: { xs: 4, md: 0 },
+                position: { md: "absolute" },
+                top: { md: "50%" },
+                transform: { md: "translateY(-50%)" },
               }}
             >
               <img
@@ -325,13 +330,10 @@ function Profile() {
                   borderRadius: "20%",
                   padding: "3px",
                   background: "linear-gradient(#e66465, #565656)",
-                  height: "200px",
-                  width: "200px",
+                  height: "160px",
+                  width: "160px",
                   objectFit: "cover",
-                  position: "relative",
-                  marginTop: "125px",
-
-                  textAlign: "center",
+                  marginTop: "110px",
                 }}
               />
             </Box>
@@ -342,7 +344,8 @@ function Profile() {
               spacing={2}
               sx={{
                 textAlign: "center",
-                marginTop: { xs: "230px", md: "80px" },
+                // marginTop: { xs: "230px", md: "80px" },
+                mt: { xs: 4, md: 0 },
               }}
             >
               <Grid item xs={12}>

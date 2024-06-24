@@ -59,42 +59,6 @@ function Employee() {
 
   const columns = [
     {
-      field: "checklist",
-      headerName: "Employee Details", // Empty header name
-      description: "details",
-      sortable: false,
-      width: 60,
-      renderCell: (params) => (
-        <Link
-          style={{ color: "gray" }}
-          to={`/admin/EmployeeCard/${params.row.employeeId}`}
-        >
-          <VisibilityIcon />
-        </Link>
-      ),
-    },
-
-    {
-      field: "Action",
-      headerName: "",
-      description: "delete",
-      sortable: false,
-      width: 60,
-      renderCell: (params) => (
-        <>
-          <IconButton
-            onClick={() =>
-              handleDelete(params.row.employeeId, params.row.employeeName)
-            }
-            title="Delete"
-          >
-            <Delete sx={{ color: "red" }} />
-          </IconButton>
-        </>
-      ),
-    },
-
-    {
       field: "employeeName",
       headerName: "Name",
       width: 140,
@@ -118,6 +82,51 @@ function Employee() {
       field: "rolename",
       headerName: "Role",
       width: 140,
+    },
+    {
+      field: "mobileNumber",
+      headerName: "Mobile Number",
+      width: 150,
+    },
+    {
+      field: "altmobileNumber",
+      headerName: "Alt Mobile No",
+      width: 150,
+    },
+    {
+      field: "checklist",
+      headerName: "Details", // Empty header name
+      description: "details",
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <Link
+          style={{ color: "gray" }}
+          to={`/admin/EmployeeCard/${params.row.employeeId}`}
+        >
+          <VisibilityIcon />
+        </Link>
+      ),
+    },
+
+    {
+      field: "Action",
+      headerName: "Delete",
+      description: "delete",
+      sortable: false,
+      width: 100,
+      renderCell: (params) => (
+        <>
+          <IconButton
+            onClick={() =>
+              handleDelete(params.row.employeeId, params.row.employeeName)
+            }
+            title="Delete"
+          >
+            <Delete sx={{ color: "red" }} />
+          </IconButton>
+        </>
+      ),
     },
   ]
 
