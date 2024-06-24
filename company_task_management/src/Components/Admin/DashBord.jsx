@@ -1,15 +1,14 @@
 import React, { useEffect } from "react"
-import AdminCard from "../Layout/AdminCard"
-import { getDashBoardDatas } from "../../Slices/DashboardSlice"
 import { useSelector, useDispatch } from "react-redux"
-import { Card, Grid } from "@mui/material"
+import { getDashBoardDatas } from "../../Slices/DashboardSlice"
+import { Grid, Card, Box, CardHeader, Divider } from "@mui/material"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Link } from "react-router-dom"
-import { Box, CardHeader, Divider } from "@mui/material"
+import ChartCard from "./ChartCard"
 
 const columnsEmployee = [
   {
-    field: "positionName",
+    field: "positionName",  
     headerName: "Position Name",
     width: 250,
   },
@@ -41,10 +40,6 @@ function DashBord() {
   const dispatch = useDispatch()
   const { pending, dashBoardData } = useSelector((state) => state.DashBord)
 
-  console.log({
-    dashBoardData,
-  })
-
   useEffect(() => {
     dispatch(getDashBoardDatas())
   }, [dispatch])
@@ -52,39 +47,39 @@ function DashBord() {
   return (
     <>
       <Grid container rowSpacing={3} columnSpacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/employee" style={LinkStyle}>
-            <AdminCard
-              name="employeess"
+            <ChartCard
+              name="Employees"
               value={dashBoardData?.empsCount}
-              Pending={pending}
+              color="#8884d8"
             />
           </Link>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/employee" style={LinkStyle}>
-            <AdminCard
+            <ChartCard
               name="Checkers"
               value={dashBoardData?.checkerCount}
-              Pending={pending}
+              color="#82ca9d"
             />
           </Link>
-        </Grid>{" "}
-        <Grid item xs={12} sm={6}>
+        </Grid>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/chain" style={LinkStyle}>
-            <AdminCard
+            <ChartCard
               name="Chains"
               value={dashBoardData?.chainCount}
-              Pending={pending}
+              color="#ffc658"
             />
           </Link>
-        </Grid>{" "}
-        <Grid item xs={12} sm={6}>
+        </Grid>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/task" style={LinkStyle}>
-            <AdminCard
+            <ChartCard
               name="Tasks"
               value={dashBoardData?.taskCount}
-              Pending={pending}
+              color="#d0ed57"
             />
           </Link>
         </Grid>

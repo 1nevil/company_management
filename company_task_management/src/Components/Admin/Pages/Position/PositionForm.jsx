@@ -152,12 +152,10 @@ const PositionForm = () => {
                   <InputLabel>Duration Type</InputLabel>
                   <Select
                     name="durationType"
+                    label="Duration Type"
                     onChange={handleChange}
                     onBlur={handleBlur}
                   >
-                    <MenuItem value="">
-                      <em>Select Duration Type</em>
-                    </MenuItem>
                     {/* <MenuItem value="Minutes">Minutes</MenuItem> */}
                     <MenuItem value="Hours">Hours</MenuItem>
                     {/* <MenuItem value="Days">Days</MenuItem> */}

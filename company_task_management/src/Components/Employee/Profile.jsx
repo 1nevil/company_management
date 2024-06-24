@@ -52,150 +52,384 @@ function Profile() {
 
   console.log(previousClients)
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={12} md={3}>
-        <Box p={[0, "3rem"]}>
-          <img
-            width={"70%"}
-            style={{
-              borderRadius: "10%",
-              objectFit: "cover",
-              padding: "6px",
-              background: "linear-gradient(#e66465, #565656)",
-              height: "300px",
-              width: "300px",
-              display: "block",
-              margin: "0 auto",
-            }}
-            alt="profile"
-            src={`http://localhost:5036/Images/${employee.employee?.employeeImage}`}
-          />
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={9}>
-        <Box p={2}>
-          <Paper elevation={3} style={{ padding: "20px" }}>
+    // <Grid container spacing={1}>
+    //   <Grid item xs={12} md={3}>
+    //     <Box p={[0, "3rem"]}>
+    //       <img
+    //         width={"70%"}
+    //         style={{
+    //           borderRadius: "10%",
+    //           objectFit: "cover",
+    //           padding: "6px",
+    //           background: "linear-gradient(#e66465, #565656)",
+    //           height: "300px",
+    //           width: "300px",
+    //           display: "block",
+    //           margin: "0 auto",
+    //         }}
+    //         alt="profile"
+    //         src={`http://localhost:5036/Images/${employee.employee?.employeeImage}`}
+    //       />
+    //     </Box>
+    //   </Grid>
+    //   <Grid item xs={12} md={9}>
+    //     <Box p={2}>
+    //       <Paper elevation={3} style={{ padding: "20px" }}>
+    //         <Typography variant="h5" gutterBottom>
+    //           Employee Profile
+    //         </Typography>
+    //         <hr />
+    //         <Grid container spacing={2}>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="subtitle1">Name :</Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="body1">
+    //               {employee.employee?.employeeName}
+    //             </Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="subtitle1">Email :</Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="body1">
+    //               {employee.employee?.employeeEmail}
+    //             </Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="subtitle1">Position :</Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="body1">
+    //               {employee.employee?.positionName}
+    //             </Typography>
+    //           </Grid>
+
+    //           {showMore && (
+    //             <>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">Gender :</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.xender}
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">Phone no:</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.mobileNumber}
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">Alt Phone :</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.altmobileNumber}
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">Adhar No :</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.adharNumber}
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">Role :</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.rolename}
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">Address :</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.addressEmployee}
+    //                 </Typography>
+    //               </Grid>
+    //             </>
+    //           )}
+
+    //           {/* Add other details similarly */}
+    //         </Grid>
+    //         <Button onClick={handleShowMore}>
+    //           {showMore ? "Show Less" : "Read More"}
+    //         </Button>
+    //         <hr />
+    //         {/* Add other sections of employee details */}
+    //       </Paper>
+    //     </Box>
+    //     <Box p={2}>
+    //       <Paper elevation={3} style={{ padding: "20px" }}>
+    //         <Typography variant="h5" gutterBottom>
+    //           Bank Details
+    //         </Typography>
+    //         <hr />
+    //         <Grid container spacing={2}>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="subtitle1">Bank Name :</Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="body1">
+    //               {employee.employee?.bankName}
+    //             </Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="subtitle1">Branch Name :</Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="body1">
+    //               {employee.employee?.branchName}
+    //             </Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="subtitle1">IFSC :</Typography>
+    //           </Grid>
+    //           <Grid item xs={12} md={6}>
+    //             <Typography variant="body1">
+    //               {employee.employee?.ifscCode}
+    //             </Typography>
+    //           </Grid>
+    //           {showMore2 && (
+    //             <>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">
+    //                   Acc Holder Name:
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.accountHolderName}
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">Acc No :</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.accountNo}
+    //                 </Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="subtitle1">UPI ID :</Typography>
+    //               </Grid>
+    //               <Grid item xs={12} md={6}>
+    //                 <Typography variant="body1">
+    //                   {employee.employee?.upiId}
+    //                 </Typography>
+    //               </Grid>
+    //             </>
+    //           )}
+
+    //           {/* Add other details similarly */}
+    //         </Grid>
+    //         <Button onClick={handleShowMore2}>
+    //           {showMore2 ? "Show Less" : "Read More"}
+    //         </Button>
+    //         <hr />
+    //         {/* Add other sections of employee details */}
+    //       </Paper>
+    //     </Box>
+    //     {/* Render previous clients */}
+    //     {previousClients?.length > 0 && (
+    //       <>
+    //         <Grid item xs={12}>
+    //           <Typography variant="h6">Previous Clients:</Typography>
+    //         </Grid>
+    //         {previousClients?.map((client, index) => (
+    //           <React.Fragment key={index}>
+    //             <Box p={2}>
+    //               <Paper elevation={3} style={{ padding: "20px" }}>
+    //                 <Typography variant="h5" gutterBottom>
+    //                   previous Clients / Company
+    //                 </Typography>
+    //                 <hr />
+    //                 <Grid container spacing={2}>
+    //                   <Grid item xs={12} md={6}>
+    //                     <Typography variant="subtitle1">
+    //                       Client Name :
+    //                     </Typography>
+    //                   </Grid>
+    //                   <Grid item xs={12} md={6}>
+    //                     <Typography variant="body1">
+    //                       {client?.clientName}
+    //                     </Typography>
+    //                   </Grid>
+    //                   <Grid item xs={12} md={6}>
+    //                     <Typography variant="subtitle1">
+    //                       service Name :
+    //                     </Typography>
+    //                   </Grid>
+    //                   <Grid item xs={12} md={6}>
+    //                     <Typography variant="body1">
+    //                       {client.serviceName}
+    //                     </Typography>
+    //                   </Grid>
+    //                   <Grid item xs={12} md={6}>
+    //                     <Typography variant="subtitle1">
+    //                       client PhoneNumber
+    //                     </Typography>
+    //                   </Grid>
+    //                   <Grid item xs={12} md={6}>
+    //                     <Typography variant="body1">
+    //                       {client.clientPhoneNumber}
+    //                     </Typography>
+    //                   </Grid>
+
+    //                   {/* Add other details similarly */}
+    //                 </Grid>
+
+    //                 <hr />
+    //                 {/* Add other sections of employee details */}
+    //               </Paper>
+    //             </Box>
+    //           </React.Fragment>
+    //         ))}
+    //       </>
+    //     )}
+    //   </Grid>
+    // </Grid>
+    <Box maxWidth="lg" sx={{ py: 2 }}>
+      <Box
+        sx={{
+          position: "relative",
+          backgroundColor: "#000000",
+          backgroundImage: `url('https://www.desktopbackground.org/download/2520x1080/2010/06/02/26959_download-wallpapers-3840x1200-computer-keyboard-mouse-laptop_3840x1200_h.jpg')`,
+          backgroundSize: "cover", // Ensure the background image covers the entire area
+          backgroundPosition: "center",
+          borderRadius: 2,
+          p: 3,
+          color: "#ffffff",
+        }}
+      >
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={3}>
+            <Box
+              sx={{
+                position: "absolute",
+                textAlign: "center",
+              }}
+            >
+              <img
+                src={`http://localhost:5036/Images/${employee?.employee?.employeeImage}`}
+                alt="Profile"
+                style={{
+                  borderRadius: "20%",
+                  padding: "3px",
+                  background: "linear-gradient(#e66465, #565656)",
+                  height: "200px",
+                  width: "200px",
+                  objectFit: "cover",
+                  position: "relative",
+                  marginTop: "125px",
+
+                  textAlign: "center",
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                textAlign: "center",
+                marginTop: { xs: "230px", md: "80px" },
+              }}
+            >
+              <Grid item xs={12}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: "cursive",
+                    width: "100%",
+                  }}
+                  fontSize={{
+                    lg: "45px",
+                    md: "40px",
+                    sm: "35px",
+                    xs: "25px",
+                  }}
+                >
+                  {employee?.employee?.employeeName}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontFamily: "cursive",
+                    width: "100%",
+                  }}
+                  fontSize={{
+                    lg: "30px",
+                    md: "25px",
+                    sm: "20px",
+                    xs: "20px",
+                  }}
+                >
+                  {employee?.employee?.positionName}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+      <Grid container spacing={3} mt={5}>
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper elevation={3} sx={{ p: 3, borderRadius: "20px" }}>
             <Typography variant="h5" gutterBottom>
               Employee Profile
             </Typography>
-            <hr />
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1">Name :</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <Typography variant="body1">
-                  {employee.employee?.employeeName}
+                  {employee?.employee?.employeeEmail}
                 </Typography>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1">Email :</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <Typography variant="body1">
-                  {employee.employee?.employeeEmail}
+                  Mo. {employee?.employee?.mobileNumber}
                 </Typography>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1">Position :</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <Typography variant="body1">
-                  {employee.employee?.positionName}
+                  Alt Mo. {employee?.employee?.altmobileNumber}
                 </Typography>
               </Grid>
-
-              {showMore && (
-                <>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Gender :</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="body1">
-                      {employee.employee?.xender}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Phone no:</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="body1">
-                      {employee.employee?.mobileNumber}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Alt Phone :</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="body1">
-                      {employee.employee?.altmobileNumber}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Adhar No :</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="body1">
-                      {employee.employee?.adharNumber}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Role :</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="body1">
-                      {employee.employee?.rolename}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Address :</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="body1">
-                      {employee.employee?.addressEmployee}
-                    </Typography>
-                  </Grid>
-                </>
-              )}
-
-              {/* Add other details similarly */}
             </Grid>
-            <Button onClick={handleShowMore}>
-              {showMore ? "Show Less" : "Read More"}
-            </Button>
-            <hr />
-            {/* Add other sections of employee details */}
           </Paper>
-        </Box>
-        <Box p={2}>
-          <Paper elevation={3} style={{ padding: "20px" }}>
+        </Grid>
+        <Grid item xs={12} md={6} lg={5}>
+          <Paper elevation={3} sx={{ p: 3, borderRadius: "20px" }}>
             <Typography variant="h5" gutterBottom>
               Bank Details
             </Typography>
-            <hr />
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1">Bank Name :</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
+                <Typography variant="subtitle1">Bank Name:</Typography>
                 <Typography variant="body1">
-                  {employee.employee?.bankName}
+                  {employee?.employee?.bankName}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1">Branch Name :</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
+                <Typography variant="subtitle1">Branch Name:</Typography>
                 <Typography variant="body1">
-                  {employee.employee?.branchName}
+                  {employee?.employee?.branchName}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1">IFSC :</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
+                <Typography variant="subtitle1">IFSC:</Typography>
                 <Typography variant="body1">
-                  {employee.employee?.ifscCode}
+                  {employee?.employee?.ifscCode}
                 </Typography>
               </Grid>
               {showMore2 && (
@@ -204,99 +438,73 @@ function Profile() {
                     <Typography variant="subtitle1">
                       Acc Holder Name:
                     </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
                     <Typography variant="body1">
-                      {employee.employee?.accountHolderName}
+                      {employee?.employee?.accountHolderName}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Acc No :</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
+                    <Typography variant="subtitle1">Acc No:</Typography>
                     <Typography variant="body1">
-                      {employee.employee?.accountNo}
+                      {employee?.employee?.accountNo}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">UPI ID :</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
+                    <Typography variant="subtitle1">UPI ID:</Typography>
                     <Typography variant="body1">
-                      {employee.employee?.upiId}
+                      {employee?.employee?.upiId}
                     </Typography>
                   </Grid>
                 </>
               )}
-
-              {/* Add other details similarly */}
             </Grid>
-            <Button onClick={handleShowMore2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleShowMore2}
+              sx={{ mt: 2 }}
+            >
               {showMore2 ? "Show Less" : "Read More"}
             </Button>
-            <hr />
-            {/* Add other sections of employee details */}
           </Paper>
-        </Box>
-        {/* Render previous clients */}
-        {previousClients?.length > 0 && (
-          <>
-            <Grid item xs={12}>
+        </Grid>
+        {employee?.previousClients?.length > 0 && (
+          <Grid item xs={12} lg={4}>
+            <Paper elevation={3} sx={{ p: 3, borderRadius: "20px" }}>
               <Typography variant="h6">Previous Clients:</Typography>
-            </Grid>
-            {previousClients?.map((client, index) => (
-              <React.Fragment key={index}>
-                <Box p={2}>
-                  <Paper elevation={3} style={{ padding: "20px" }}>
-                    <Typography variant="h5" gutterBottom>
-                      previous Clients / Company
-                    </Typography>
-                    <hr />
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} md={6}>
-                        <Typography variant="subtitle1">
-                          Client Name :
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Typography variant="body1">
-                          {client?.clientName}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Typography variant="subtitle1">
-                          service Name :
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Typography variant="body1">
-                          {client.serviceName}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Typography variant="subtitle1">
-                          client PhoneNumber
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Typography variant="body1">
-                          {client.clientPhoneNumber}
-                        </Typography>
-                      </Grid>
-
-                      {/* Add other details similarly */}
+              {employee?.previousClients?.map((client, index) => (
+                <React.Fragment key={index}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="subtitle1">Client Name:</Typography>
+                      <Typography variant="body1">
+                        {client.clientName}
+                      </Typography>
                     </Grid>
-
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="subtitle1">Service Name:</Typography>
+                      <Typography variant="body1">
+                        {client.serviceName}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="subtitle1">
+                        Client Phone Number:
+                      </Typography>
+                      <Typography variant="body1">
+                        {client.clientPhoneNumber}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Box sx={{ my: 2 }}>
                     <hr />
-                    {/* Add other sections of employee details */}
-                  </Paper>
-                </Box>
-              </React.Fragment>
-            ))}
-          </>
+                  </Box>
+                </React.Fragment>
+              ))}
+            </Paper>
+          </Grid>
         )}
       </Grid>
-    </Grid>
+    </Box>
   )
 }
 export default Profile

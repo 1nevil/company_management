@@ -111,10 +111,16 @@ function ChainDetailsForm({ handleCloseDetails, chainDetails, chainId }) {
                     <InputLabel>Select Position</InputLabel>
                     <Select
                       labelId={`select-label-${index}`}
+                      label="Select Position"
+                      name="Select Position"
                       id={`select-${index}`}
                       value={checklistItems[index] || ""}
                       onChange={handleChange(index)}
                       fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                        id: "select",
+                      }}
                     >
                       <MenuItem value="" disabled>
                         Select Position

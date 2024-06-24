@@ -2,21 +2,16 @@ import * as React from "react"
 import Avatar from "@mui/material/Avatar"
 import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
-import { Link } from "react-router-dom"
-import Paper from "@mui/material/Paper"
-import Box from "@mui/material/Box"
-import Grid from "@mui/material/Grid"
+
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Typography from "@mui/material/Typography"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { useFormik } from "formik"
-import { EmployeeSchema } from "./Validation/validationSchema"
-import DeleteIcon from "@mui/icons-material/Delete"
-import AddIcon from "@mui/icons-material/Add"
+
 import {
-  Button,
-  Divider,
+  Box,
   FormControl,
+  Grid,
   IconButton,
   InputLabel,
   MenuItem,
@@ -26,37 +21,19 @@ import {
 import { useState } from "react"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { fetchPosition } from "../Slices/PositionSlice"
 import { useSelector } from "react-redux"
 import InputAdornment from "@mui/material/InputAdornment"
-import { insertEmp } from "../Slices/EmployeeSlice"
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import { useNavigate } from "react-router-dom"
+import { insertEmp } from "../../Slices/EmployeeSlice"
+import { fetchPosition } from "../../Slices/PositionSlice"
+import { EmployeeSchema } from "../Validation/validationSchema"
 const defaultTheme = createTheme()
 
-export default function Register() {
+export default function PersonalDetails() {
   const dispatch = useDispatch()
   const Positions = useSelector((state) => state.Position.positions)
-
-  const [additionalInputCount, setAdditionalInputCount] = useState(0)
-  const [showAdditionalInputs, setShowAdditionalInputs] = useState(false)
-  const [inputFields, setInputFields] = useState([])
-
-  const handleChangeCompanyInputs = (index, field) => (event) => {
-    const newInputFields = [...inputFields]
-    newInputFields[index][field] = event.target.value
-    setInputFields(newInputFields)
-  }
-
-  const handleAddInput = () => {
-    setAdditionalInputCount(additionalInputCount + 1)
-    setShowAdditionalInputs(true)
-    setInputFields([
-      ...inputFields,
-      { ClientName: "", ServiceName: "", ClientPhoneNumber: "" },
-    ])
-  }
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -69,16 +46,6 @@ export default function Register() {
     whiteSpace: "nowrap",
     width: 1,
   })
-
-  const handleDeleteInput = (index) => () => {
-    const newInputFields = [...inputFields]
-    newInputFields.splice(index, 1)
-    setInputFields(newInputFields)
-    setAdditionalInputCount(additionalInputCount - 1)
-    if (additionalInputCount === 1) {
-      setShowAdditionalInputs(false)
-    }
-  }
 
   const initValue = {
     firstName: "",
@@ -151,16 +118,15 @@ export default function Register() {
   const {
     errors,
     touched,
-    handleChange,
     handleBlur,
     handleSubmit,
     setFieldValue,
+    handleChange,
   } = useFormik({
     initialValues: initValue,
     validationSchema: EmployeeSchema,
     onSubmit: (values) => {
       console.table(values)
-      console.table(inputFields)
       console.log("submited")
 
       const formData = new FormData()
@@ -177,13 +143,7 @@ export default function Register() {
       formData.append("AdharNumber", values.adharNumber)
       formData.append("AltmobileNumber", values.altmobileNumber)
       formData.append("MobileNumber", values.mobileNumber)
-      formData.append("AccountHolderName", values.accountHolderName)
-      formData.append("IfscCode", values.ifscCode)
-      formData.append("AccountNo", values.accountNo)
-      formData.append("BankName", values.bankName)
-      formData.append("BranchName", values.branchName)
       formData.append("EmployeeAge", values.employeeAge)
-      formData.append("UpiId", values.upiId)
       formData.append("EmployeePassword", values.employeePassword)
       formData.append("PositionId", String(values.positionId))
       formData.append("AdharImage", images.adharImage)
@@ -191,9 +151,6 @@ export default function Register() {
       formData.append("EmployeeResume", images.employeeResume)
       formData.append("EmployeeImage", images.employeeImage)
       formData.append("IsActive", "0")
-
-      formData.append("PreviousCompanyDetails", JSON.stringify(inputFields))
-
       dispatch(insertEmp(formData))
       navigate("/")
     },
@@ -211,29 +168,36 @@ export default function Register() {
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main">
         <CssBaseline />
-
         <Grid
           item
-          xs={12}
+          xs={11}
           sm={8}
-          md={5}
+          md={9}
+          lg={6}
           sx={{ margin: "auto" }}
-          component={Paper}
-          elevation={6}
-          square
+          //   component={Paper}
+          //   elevation={6}
+          //   square
         >
           <Box
             sx={{
-              my: 8,
-              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "end",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Employee Registeration Form
-            </Typography>
+            <Box sx={{ textAlign: "center", gap: "20px" }}>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main", margin: "auto" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography
+                component="h1"
+                variant="h5"
+                sx={{ lineHeight: "35px" }}
+              >
+                Employee Registeration Form
+              </Typography>
+            </Box>
             <Box
               component="form"
               noValidate
@@ -395,7 +359,7 @@ export default function Register() {
                     </Typography>
                   ) : null}
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item lg={6} xs={12}>
                   <FormControl fullWidth size="small">
                     <InputLabel>Gender</InputLabel>
                     <Select
@@ -415,7 +379,7 @@ export default function Register() {
                     ) : null}
                   </FormControl>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item lg={6} xs={12} md={6}>
                   <TextField
                     size="small"
                     fullWidth
@@ -438,7 +402,7 @@ export default function Register() {
                     </Typography>
                   ) : null}
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item lg={6} xs={12} md={6}>
                   <TextField
                     size="small"
                     fullWidth
@@ -473,7 +437,7 @@ export default function Register() {
                     </Typography>
                   ) : null}
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item lg={6} xs={12} md={6}>
                   <TextField
                     size="small"
                     fullWidth
@@ -489,7 +453,7 @@ export default function Register() {
                     </Typography>
                   ) : null}
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item lg={6} xs={12} md={6}>
                   <TextField
                     size="small"
                     fullWidth
@@ -525,7 +489,7 @@ export default function Register() {
                     </Typography>
                   ) : null}
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item lg={6} xs={12} md={6}>
                   <TextField
                     size="small"
                     fullWidth
@@ -595,309 +559,89 @@ export default function Register() {
                     </Typography>
                   ) : null}
                 </Grid>
-              </Grid>
-              <Typography
-                variant="h6"
-                sx={{ m: "1rem 0rem 1rem 0rem" }}
-                component="h6"
-              >
-                Bank Details
-              </Typography>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="Bank Name"
-                  name="bankName"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.bankName && touched.bankName ? (
-                  <Typography variant="caption" color="error">
-                    {errors.bankName}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Account Holder Name"
-                  size="small"
-                  name="accountHolderName"
-                  // value={employeeData.alternateMobileNo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.accountHolderName && touched.accountHolderName ? (
-                  <Typography variant="caption" color="error">
-                    {errors.accountHolderName}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Account number"
-                  size="small"
-                  name="accountNo"
-                  // value={employeeData.alternateMobileNo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.accountNo && touched.accountNo ? (
-                  <Typography variant="caption" color="error">
-                    {errors.accountNo}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="IFSC"
-                  size="small"
-                  name="ifscCode"
-                  // value={employeeData.alternateMobileNo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.ifscCode && touched.ifscCode ? (
-                  <Typography variant="caption" color="error">
-                    {errors.ifscCode}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Branch Name"
-                  size="small"
-                  name="branchName"
-                  // value={employeeData.alternateMobileNo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.branchName && touched.branchName ? (
-                  <Typography variant="caption" color="error">
-                    {errors.branchName}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Upi Id"
-                  size="small"
-                  name="upiId"
-                  // value={employeeData.alternateMobileNo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.upiId && touched.upiId ? (
-                  <Typography variant="caption" color="error">
-                    {errors.upiId}
-                  </Typography>
-                ) : null}
-              </Grid>
-              <br></br>
-              <h2>Mention Previous Clients/Companies </h2>
-
-              <div style={{ textAlign: "center" }}>
-                <Grid sx={{ "& .MuiTextField-root": { m: 1 } }}>
-                  <Typography
-                    variant="h6"
-                    component="h6"
-                    color="#7986cb"
-                    textAlign="center"
-                  ></Typography>
-
-                  {showAdditionalInputs && (
-                    <div>
-                      {[...Array(additionalInputCount)].map((_, index) => (
-                        <div key={index} style={{ alignItems: "center" }}>
-                          <Box sx={{ display: "flex", gap: "15px" }}>
-                            <Grid container spacing={2} xs={10}>
-                              <Grid item xs={12}>
-                                <TextField
-                                  label={`Client/Company Name ${index + 1}`}
-                                  size="small"
-                                  fullWidth
-                                  name={`ClientName ${index + 1}`}
-                                  value={inputFields[index]?.ClientName || ""}
-                                  onChange={handleChangeCompanyInputs(
-                                    index,
-                                    "ClientName"
-                                  )}
-                                />
-                              </Grid>
-                              <Grid item xs={12}>
-                                <TextField
-                                  label={`Service Category Name ${index + 1}`}
-                                  size="small"
-                                  fullWidth
-                                  name={`ServiceName ${index + 1}`}
-                                  value={inputFields[index]?.ServiceName || ""}
-                                  onChange={handleChangeCompanyInputs(
-                                    index,
-                                    "ServiceName"
-                                  )}
-                                />
-                              </Grid>
-                              <Grid item xs={12}>
-                                <TextField
-                                  label={`Phone 
-                                  Number ${index + 1}`}
-                                  size="small"
-                                  fullWidth
-                                  name={`ClientPhoneNumber ${index + 1}`}
-                                  value={
-                                    inputFields[index]?.ClientPhoneNumber || ""
-                                  }
-                                  onChange={handleChangeCompanyInputs(
-                                    index,
-                                    "ClientPhoneNumber"
-                                  )}
-                                />
-                              </Grid>
-                              <Grid item xs={12}>
-                                <Divider width="100%" sx={{ color: "black" }} />
-                              </Grid>
-                            </Grid>
-                            <Grid sx={{ display: "flex" }} xs={2}>
-                              <IconButton
-                                sx={{ m: "auto" }}
-                                aria-label="delete"
-                                color="error"
-                                onClick={handleDeleteInput(index)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Grid>
-                          </Box>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <Box mt={2}>
-                    <Button
-                      variant="outlined"
+                <Grid item lg={12} xs={12}>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="file"
                       size="small"
                       fullWidth
-                      onClick={handleAddInput}
-                      startIcon={<AddIcon />}
+                      name="employeeImage"
+                      // value={employeeData.employeeImage}
+                      onChange={(e) => handleImageChange(e)}
+                    />
+                    <VisuallyHiddenInput
+                      id="employee-image-file"
+                      type="file"
+                      name="employeeImage"
+                    />
+                    <InputLabel
+                      htmlFor="employee-image-file"
+                      style={{ marginTop: "5px" }}
                     >
-                      Add Feilds
-                    </Button>
-                  </Box>
+                      Upload Employee Image
+                    </InputLabel>
+                  </Grid>
+                  <br></br>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="file"
+                      size="small"
+                      fullWidth
+                      name="employeeResume"
+                      // value={employeeData.employeeResume}
+                      onChange={handleImageChange}
+                    />
+                    <VisuallyHiddenInput
+                      id="employee-resume-file"
+                      type="file"
+                    />
+                    <InputLabel
+                      htmlFor="employee-resume-file"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Upload Employee Resume
+                    </InputLabel>
+                  </Grid>
+                  <br></br>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="file"
+                      size="small"
+                      fullWidth
+                      name="adharImage"
+                      // value={employeeData.employeeResume}
+                      onChange={handleImageChange}
+                    />
+                    <VisuallyHiddenInput id="employee-adhar-file" type="file" />
+                    <InputLabel
+                      htmlFor="employee-adhar-file"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Upload Adhar Image
+                    </InputLabel>
+                  </Grid>
+                  <br></br>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="file"
+                      size="small"
+                      fullWidth
+                      name="signImage"
+                      // value={employeeData.employeeResume}
+                      onChange={handleImageChange}
+                    />
+                    <InputLabel
+                      htmlFor="employee-sign-file"
+                      style={{ marginTop: "5px" }}
+                    >
+                      Upload Signature
+                    </InputLabel>
 
-                  {/* Render button to add input */}
+                    <VisuallyHiddenInput id="employee-sign-file" type="file" />
+                  </Grid>
                 </Grid>
-              </div>
-
-              <br></br>
-
-              <Grid item xs={12}>
-                <TextField
-                  type="file"
-                  size="small"
-                  fullWidth
-                  name="employeeImage"
-                  // value={employeeData.employeeImage}
-                  onChange={(e) => handleImageChange(e)}
-                />
-                <VisuallyHiddenInput
-                  id="employee-image-file"
-                  type="file"
-                  name="employeeImage"
-                />
-                <InputLabel
-                  htmlFor="employee-image-file"
-                  style={{ marginTop: "5px" }}
-                >
-                  Upload Employee Image
-                </InputLabel>
               </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  type="file"
-                  size="small"
-                  fullWidth
-                  name="employeeResume"
-                  // value={employeeData.employeeResume}
-                  onChange={handleImageChange}
-                />
-                <VisuallyHiddenInput id="employee-resume-file" type="file" />
-                <InputLabel
-                  htmlFor="employee-resume-file"
-                  style={{ marginTop: "5px" }}
-                >
-                  Upload Employee Resume
-                </InputLabel>
-              </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  type="file"
-                  size="small"
-                  fullWidth
-                  name="adharImage"
-                  // value={employeeData.employeeResume}
-                  onChange={handleImageChange}
-                />
-                <VisuallyHiddenInput id="employee-adhar-file" type="file" />
-                <InputLabel
-                  htmlFor="employee-adhar-file"
-                  style={{ marginTop: "5px" }}
-                >
-                  Upload Adhar Image
-                </InputLabel>
-              </Grid>
-              <br></br>
-              <Grid item xs={12}>
-                <TextField
-                  type="file"
-                  size="small"
-                  fullWidth
-                  name="signImage"
-                  // value={employeeData.employeeResume}
-                  onChange={handleImageChange}
-                />
-                <InputLabel
-                  htmlFor="employee-sign-file"
-                  style={{ marginTop: "5px" }}
-                >
-                  Upload Signature
-                </InputLabel>
-
-                <VisuallyHiddenInput id="employee-sign-file" type="file" />
-              </Grid>
-              <br></br>
-              <Grid
-                item
-                xs={12}
-                style={{ display: "flex", justifyContent: "center" }}
-              ></Grid>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                style={{ marginTop: "20px" }}
-              >
-                Register Employee
-              </Button>
             </Box>
-            <Grid container>
-              <Grid item>
-                <Link to="/" variant="body2">
-                  Log In
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Grid>
       </Grid>

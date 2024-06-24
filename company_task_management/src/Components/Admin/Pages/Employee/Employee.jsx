@@ -136,18 +136,11 @@ function Employee() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 fullWidth
+                size="small"
               />
             </Box>
-            <Typography
-              variant="h6"
-              component="h6"
-              textAlign="center"
-              color="primary"
-              mb={2}
-            >
-              Employees
-            </Typography>
-            <Box style={{ width: "100%" }}>
+
+            <Box style={{ width: "100%" }} sx={{ mt: 1 }}>
               <DataGrid
                 rows={sortedRows} // Pass sorted rows to DataGrid
                 getRowId={(row) => row.employeeId}
