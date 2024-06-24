@@ -36,8 +36,7 @@ function EmployeeDashboard() {
     dispatch(getemployeeDashBoardDatas(empId))
   }, [dispatch, empId, positionId])
 
-  const successfullyPickTask = () =>
-    toast.success("Chain Details Created successfully..")
+  const successfullyPickTask = () => toast.success("Task Picked successfully..")
 
   const handleClick = (id) => {
     const insertData = {

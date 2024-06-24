@@ -7,12 +7,14 @@ import {
   CardActionArea,
   CardContent,
   CardHeader,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
+  FormControlLabel,
   FormGroup,
   Grid,
   Skeleton,
@@ -85,24 +87,52 @@ function EmpTaskDetail() {
                 p={2}
                 pt={0}
                 sx={{ border: "2px solid gray", borderRadius: "10px" }}
+                pl={5}
               >
                 <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
                   Checklist
                 </Typography>
                 {displayedChecklist?.map((checklist) => (
-                  <Box
-                    key={checklist.checklistId}
-                    sx={{ display: "flex", alignItems: "center", gap: "4" }}
-                  >
-                    <Typography
-                      variant="p"
-                      gutterBottom
-                      textTransform="capitalize"
-                      ml={3}
+                  <>
+                    <Box
+                      key={checklist.checklistId}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "start",
+                        lineHeight: "43px",
+                        mb: 1,
+                      }}
                     >
-                      {checklist.taskMessage}
-                    </Typography>
-                  </Box>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            defaultChecked={
+                              checklist?.status === "1" ? true : false
+                            }
+                            disabled
+                            sx={{
+                              color: "rgba(0, 0, 0, 0.87) !important", // Keep the checkbox looking enabled when disabled
+                              "&.Mui-disabled": {
+                                color: "rgba(0, 0, 0, 0.87)",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography
+                            sx={{
+                              color: checklist?.Status
+                                ? "rgba(0, 0, 0, 0.87)"
+                                : "text.secondary", // Darkish gray if checked, default gray if not
+                            }}
+                          >
+                            {checklist.taskMessage}
+                          </Typography>
+                        }
+                      />
+                    </Box>
+                  </>
                 ))}
                 {checklist?.length > 3 && (
                   <Typography

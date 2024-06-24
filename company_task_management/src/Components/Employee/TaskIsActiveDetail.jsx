@@ -32,6 +32,7 @@ import { styled } from "@mui/material/styles"
 import Button from "@mui/material/Button"
 import { updateTaskWithCompletedDate } from "../../Slices/AssignToTask"
 import Modal from "@mui/material/Modal"
+import { toast } from "react-toastify"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -142,6 +143,7 @@ function TaskIsActiveDeatils() {
                   border: "2px solid gray",
                   borderRadius: "10px",
                   mr: "50px",
+                  pl: 5,
                 }}
               >
                 <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
@@ -153,7 +155,6 @@ function TaskIsActiveDeatils() {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
                       lineHeight: "43px",
                       mb: 1,
                     }}
@@ -423,6 +424,8 @@ const UploadFileTaskDetails = ({ taskId, empId, open, handleClose }) => {
     p: 4,
   }
 
+  const notifySubmit = () => toast.success("Task Uploaded successfully..")
+
   const handleSubmitWork = () => {
     var currentDate = new Date()
 
@@ -446,7 +449,12 @@ const UploadFileTaskDetails = ({ taskId, empId, open, handleClose }) => {
     }
 
     console.log(updatedAssign)
-    dispatch(updateTaskWithCompletedDate(updatedAssign))
+    dispatch(updateTaskWithCompletedDate(updatedAssign)).then((action) => {
+      if (action.meta.requestStatus === "fulfilled") {
+        notifySubmit()
+        handleClose()
+      }
+    })
     navigate("/employee/EmployeeDashboard")
   }
 

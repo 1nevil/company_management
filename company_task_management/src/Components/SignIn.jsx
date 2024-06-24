@@ -35,10 +35,7 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
+      {"Copyright © Inc Corp "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -254,12 +251,16 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs={12}>
-                <Link href="#" variant="body2">
+                <Link style={{ textDecoration: "none" }} to="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
-              <Grid item={12}>
-                <Link to="Register" variant="body2">
+              <Grid mt={2} item={12}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to="Register"
+                  variant="body2"
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

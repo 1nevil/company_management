@@ -104,7 +104,7 @@ export default function Register() {
     confirmPassword: "",
     adharImage: "",
     signImage: "",
-    roleId: 3,
+    roleId: 8,
     employeePassword: "",
   }
 
@@ -149,6 +149,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = React.useState(false)
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const {
+    values,
     errors,
     touched,
     handleChange,
@@ -318,6 +319,7 @@ export default function Register() {
                     <TextField
                       size="small"
                       fullwidth
+                      value={values.employeePassword}
                       label="password"
                       id="outlined-adornment-password"
                       type={showPassword ? "text" : "password"}

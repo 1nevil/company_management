@@ -84,7 +84,7 @@ function AdminTaskDeatil() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (chainDetails) {
+    if (chainDetails[0]?.chainFlow) {
       const chainFlow = chainDetails[0]?.chainFlow
       const flowarray = chainFlow?.split(",")
       setChainFlow(flowarray)
@@ -94,7 +94,7 @@ function AdminTaskDeatil() {
       setCurrentPostionIndex(indexOfPostion)
       dispatch(getPositionsByIds(chainFlow))
     }
-  }, [chainDetails, taskMaster, dispatch])
+  }, [taskMaster, dispatch, chainDetails])
 
   const { taskId } = useParams()
   useEffect(() => {
@@ -270,14 +270,14 @@ function AdminTaskDeatil() {
                 >
                   Check List
                 </Typography>
-                <FormGroup sx={{ mt: 2 }}>
+                <FormGroup sx={{ mt: 2, pl: 5 }}>
                   {displayedChecklist?.map((checklist) => (
                     <Box
                       key={checklist.checklistId}
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
+                        justifyContent: "start",
                         lineHeight: "43px",
                         mb: 1,
                       }}
@@ -311,7 +311,7 @@ function AdminTaskDeatil() {
                       />
                     </Box>
                   ))}
-                  {checklistMasters?.length > 3 && (
+                  {checklistMasters?.length >= 3 && (
                     <Typography
                       variant="body2"
                       color="primary"

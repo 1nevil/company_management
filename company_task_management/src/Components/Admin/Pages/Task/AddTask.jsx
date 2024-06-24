@@ -222,6 +222,7 @@ const AddTask = ({ handleCloseForm }) => {
                   <InputLabel>Duration Type</InputLabel>
                   <Select
                     name="durationType"
+                    label="Duration Type"
                     value={durationType}
                     onChange={(e) => setDurationType(e.target.value)}
                     onBlur={handleBlur}

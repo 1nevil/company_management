@@ -143,8 +143,8 @@ function EmpTaskDetail() {
                           objectFit: "cover",
                           padding: "6px",
                           background: "linear-gradient(#e66465, #565656)",
-                          height: "300px",
-                          width: "300px",
+                          height: "200px",
+                          width: "200px",
                           display: "block",
                           margin: "0 auto",
                         }}
@@ -218,8 +218,8 @@ function EmpTaskDetail() {
                           objectFit: "cover",
                           padding: "6px",
                           background: "linear-gradient(#e66465, #565656)",
-                          height: "300px",
-                          width: "300px",
+                          height: "200px",
+                          width: "200px",
                           display: "block",
                           margin: "0 auto",
                         }}

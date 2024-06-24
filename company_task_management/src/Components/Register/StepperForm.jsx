@@ -387,6 +387,7 @@ const StepperForm = () => {
                     </InputLabel> */}
                           <TextField
                             size="small"
+                            value={values.employeePassword}
                             fullwidth
                             label="password"
                             id="outlined-adornment-password"
@@ -430,6 +431,8 @@ const StepperForm = () => {
                             name="confirmPassword"
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            label="Confirm Password"
+                            value={values.confirmPassword}
                             endAdornment={
                               <InputAdornment position="end">
                                 <IconButton
@@ -446,7 +449,6 @@ const StepperForm = () => {
                                 </IconButton>
                               </InputAdornment>
                             }
-                            label="Confirm Password"
                           />
                           {errors.confirmPassword && touched.confirmPassword ? (
                             <Typography variant="caption" color="error">
