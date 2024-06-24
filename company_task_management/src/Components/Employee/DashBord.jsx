@@ -53,7 +53,6 @@ function EmployeeDashboard() {
   }
 
   const columns = [
-    { field: "taskId", headerName: "task ID", width: 90 },
     {
       field: "taskName",
       headerName: "Task Name",

@@ -332,13 +332,13 @@ function App() {
     },
   ])
   return (
-    <>
+    <div style={{ fontfamily: "Times New Roman" }}>
       {/* <GlobalStyle /> */}
       <ToastContainer />
       {/* <ProtectedRoute> */}
       <RouterProvider router={router} />
       {/* </ProtectedRoute> */}
-    </>
+    </div>
   )
 }
 

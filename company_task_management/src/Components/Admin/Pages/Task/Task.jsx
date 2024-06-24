@@ -78,6 +78,12 @@ function Task() {
       editable: true,
     },
     {
+      field: "taskStatus",
+      headerName: "Task Status",
+      width: 200,
+      editable: true,
+    },
+    {
       field: "TaskDetail",
       headerName: "TaskDetail",
       description: "TaskDetail",

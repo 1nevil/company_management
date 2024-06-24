@@ -963,7 +963,9 @@ const StepperForm = () => {
                     sx={{ mt: 1 }}
                     onSubmit={handleSubmit}
                   >
-                    <h2>Mention Previous Clients/Companies </h2>
+                    <h2 style={{ textAlign: "center" }}>
+                      Mention Previous Clients/Companies{" "}
+                    </h2>
 
                     <Grid container spacing={2}>
                       <Grid item lg={12} xs={12}>
@@ -1081,25 +1083,25 @@ const StepperForm = () => {
 
                         <br></br>
 
-                        <Button
+                        {/* <Button
                           type="submit"
                           variant="contained"
                           color="primary"
                           style={{ marginTop: "20px" }}
                         >
                           Register Employee
-                        </Button>
+                        </Button> */}
                       </Grid>
                     </Grid>
                   </Box>
-                  <Grid container>
-                    <Grid item>
-                      <Link to="/" variant="body2">
-                        Log In
-                      </Link>
-                    </Grid>
-                  </Grid>
                 </Box>
+                <Grid container>
+                  <Grid item>
+                    <Link to="/" variant="body2">
+                      Log In
+                    </Link>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </ThemeProvider>

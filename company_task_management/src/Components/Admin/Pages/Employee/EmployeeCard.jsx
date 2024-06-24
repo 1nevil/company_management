@@ -24,16 +24,16 @@ function EmployeeCard() {
   }
 
   return (
-    <Box maxWidth="lg" sx={{ py: 2 }}>
+    <Box maxWidth="lg" sx={{ py: 2, px: 2 }}>
       <Box
         sx={{
           position: "relative",
           backgroundColor: "#000000",
           backgroundImage: `url('https://www.desktopbackground.org/download/2520x1080/2010/06/02/26959_download-wallpapers-3840x1200-computer-keyboard-mouse-laptop_3840x1200_h.jpg')`,
-          backgroundSize: "cover", // Ensure the background image covers the entire area
+          backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: 2,
-          p: 3,
+          p: 5,
           color: "#ffffff",
         }}
       >
@@ -41,8 +41,13 @@ function EmployeeCard() {
           <Grid item xs={12} md={3}>
             <Box
               sx={{
-                position: "absolute",
-                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: { xs: 4, md: 0 },
+                position: { md: "absolute" },
+                top: { md: "50%" },
+                transform: { md: "translateY(-50%)" },
               }}
             >
               <img
@@ -52,13 +57,10 @@ function EmployeeCard() {
                   borderRadius: "20%",
                   padding: "3px",
                   background: "linear-gradient(#e66465, #565656)",
-                  height: "200px",
-                  width: "200px",
+                  height: "160px",
+                  width: "160px",
                   objectFit: "cover",
-                  position: "relative",
-                  marginTop: "125px",
-
-                  textAlign: "center",
+                  marginTop: "130px",
                 }}
               />
             </Box>
@@ -69,21 +71,20 @@ function EmployeeCard() {
               spacing={2}
               sx={{
                 textAlign: "center",
-                marginTop: { xs: "230px", md: "80px" },
+                mt: { xs: 4, md: 0 },
               }}
             >
               <Grid item xs={12}>
                 <Typography
-                  variant="body1"
+                  variant="h4"
                   sx={{
                     fontFamily: "cursive",
-                    width: "100%",
-                  }}
-                  fontSize={{
-                    lg: "45px",
-                    md: "40px",
-                    sm: "35px",
-                    xs: "25px",
+                    fontSize: {
+                      xs: "25px",
+                      sm: "35px",
+                      md: "40px",
+                      lg: "45px",
+                    },
                   }}
                 >
                   {employee?.employee?.employeeName}
@@ -91,16 +92,15 @@ function EmployeeCard() {
               </Grid>
               <Grid item xs={12}>
                 <Typography
-                  variant="body1"
+                  variant="h5"
                   sx={{
                     fontFamily: "cursive",
-                    width: "100%",
-                  }}
-                  fontSize={{
-                    lg: "30px",
-                    md: "25px",
-                    sm: "20px",
-                    xs: "20px",
+                    fontSize: {
+                      xs: "20px",
+                      sm: "20px",
+                      md: "25px",
+                      lg: "30px",
+                    },
                   }}
                 >
                   {employee?.employee?.positionName}

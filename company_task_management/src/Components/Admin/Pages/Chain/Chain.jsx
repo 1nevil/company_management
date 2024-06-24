@@ -52,7 +52,6 @@ function Chain() {
   // const handleDelete = () => {}
 
   const columns = [
-    { field: "chainId", headerName: "Chain ID", width: 90 },
     {
       field: "chainName",
       headerName: "Chain Name",
