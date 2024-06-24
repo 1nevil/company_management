@@ -52,6 +52,19 @@ export default function EmployeeForm() {
   useEffect(() => {
     dispatch(fetchPosition())
   }, [dispatch])
+  const [images, setImage] = useState({
+    adharImage: "",
+    employeeImage: "",
+    employeeResume: "",
+    signImage: "",
+  })
+  const handleImageChange = (e) => {
+    const { name, files } = e.target
+    setImage({
+      ...images,
+      [name]: files[0],
+    })
+  }
 
   const initValue = {
     firstName: "",
@@ -178,7 +191,7 @@ export default function EmployeeForm() {
         console.log(formData) // Check if formData has correct data
 
         // Dispatch the insertEmp action with formData
-        dispatch(insertEmp(values))
+        // dispatch(insertEmp(values))
 
         // Reset form state or handle any UI updates after dispatching action
         setSubmitting(false)
@@ -314,17 +327,20 @@ export default function EmployeeForm() {
                 ) : null}
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="h6" component="h6" textAlign="">
+                {/* <Typography variant="h6" component="h6" textAlign="">
                   Date Of Birth
-                </Typography>
+                </Typography> */}
                 <TextField
                   fullWidth
                   type="date"
                   name="dob"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   //value={employeeData.dob}
                   onChange={handleDateChange}
                   onBlur={handleBlur}
-                  //label="Date of Birth"
+                  label="Date of Birth"
                 />
                 {errors.dob && touched.dob ? (
                   <Typography variant="caption" color="error">
@@ -332,7 +348,7 @@ export default function EmployeeForm() {
                   </Typography>
                 ) : null}
               </Grid>
-              <Grid item xs={12} sm={6} mt={4}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   inputProps={{ readOnly: true }}
                   fullWidth
@@ -366,16 +382,23 @@ export default function EmployeeForm() {
                 ) : null}
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="h6" component="h6" textAlign="">
-                  Gender
-                </Typography>
                 {
-                  <FormControl fullWidth>
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    error={errors.xender && touched.xender}
+                  >
+                    <InputLabel htmlFor="xender">Gender</InputLabel>
                     <Select
                       name="xender"
                       // value={employeeData.gender}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      label="Gender"
+                      // InputLabelProps={{
+                      //   shrink: true,
+                      //   id: "xender",
+                      // }}
                     >
                       <MenuItem value="Male">Male</MenuItem>
                       <MenuItem value="Female">Female</MenuItem>
@@ -390,14 +413,14 @@ export default function EmployeeForm() {
                 ) : null}
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="h6" component="h6" textAlign="">
-                  Date Of Joining
-                </Typography>
                 <TextField
                   fullWidth
-                  label=""
                   type="date"
                   name="dateOfJoining"
+                  label="Date Of Joining"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   // value={employeeData.dateOfJoining}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -475,14 +498,22 @@ export default function EmployeeForm() {
                 ) : null}
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="h6" component="h6" textAlign="">
-                  Role
-                </Typography>
                 {
-                  <FormControl fullWidth>
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    error={errors.roleId && touched.roleId}
+                  >
+                    <InputLabel htmlFor="xender">Role</InputLabel>
                     <Select
                       name="roleId"
-                      value={values.roleId} // Make sure to assign the value from formik's values object
+                      value={values.roleId}
+                      label="Role" // Make sure to assign the value from formik's values object
+                      InputLabelProps={{
+                        shrink: true,
+                        id: "roleId",
+                      }}
+                      ss
                       onChange={(event) => {
                         handleChange(event) // Update formik's state
                         setSelectedRole(event.target.value)
@@ -505,15 +536,16 @@ export default function EmployeeForm() {
               </Grid>
               {showPositionDropdown && (
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="h6" component="h6">
-                    Position
-                  </Typography>
                   <FormControl fullWidth>
-                    <InputLabel></InputLabel>
+                    <InputLabel>position</InputLabel>
                     <Select
                       name="positionId"
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      label="Position"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                     >
                       {Positions?.map((position) => {
                         return (
@@ -632,191 +664,90 @@ export default function EmployeeForm() {
                 ) : null}
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6" component="h6" textAlign="">
-                Employee Image
-              </Typography>
-              {/* <Input
-                type="file"
-                fullWidth
-                name="employeeImage"
-                // value={employeeData.employeeImage}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              <VisuallyHiddenInput
-                id="employee-image-file"
-                type="file"
-                name="employeeImage"
-              />
-              {errors.employeeImage && touched.employeeImage ? (
-                <Typography variant="caption" color="error">
-                  {errors.employeeImage}
-                </Typography>
-              ) : null} */}
-              <input
-                accept="image/*"
-                style={{ display: "none" }}
-                id="employeeImage"
-                name="employeeImage"
-                type="file"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="employeeImage">
-                <Button
-                  variant="contained"
-                  component="span"
-                  color={
-                    touched.employeeImage && Boolean(errors.employeeImage)
-                      ? "error"
-                      : "primary"
-                  }
+            <Grid item lg={12} xs={12}>
+              <Grid item xs={12}>
+                <TextField
+                  type="file"
+                  size="small"
+                  fullWidth
+                  // value={values.employeeImage}
+                  name="employeeImage"
+                  // value={employeeData.employeeImage}
+                  onChange={(e) => handleImageChange(e)}
+                />
+                <VisuallyHiddenInput
+                  id="employee-image-file"
+                  type="file"
+                  name="employeeImage"
+                />
+                <InputLabel
+                  value={values.employeeImage}
+                  htmlFor="employee-image-file"
+                  style={{ marginTop: "5px" }}
                 >
-                  Upload Image
-                </Button>
-                {touched.employeeImage && errors.employeeImage && (
-                  <Typography variant="caption" color="error">
-                    {errors.employeeImage}
-                  </Typography>
-                )}
-              </label>
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <Typography variant="h6" component="h6" textAlign="">
-                Employee Resume
-              </Typography>
-              {/* <Input
-                type="file"
-                fullWidth
-                name="employeeResume"
-                // value={employeeData.employeeResume}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              <VisuallyHiddenInput id="employee-resume-file" type="file" />
-              {errors.employeeResume && touched.employeeResume ? (
-                <Typography variant="caption" color="error">
-                  {errors.employeeResume}
-                </Typography>
-              ) : null} */}
-              <input
-                accept=".pdf"
-                style={{ display: "none" }}
-                id="employeeResume"
-                name="employeeResume"
-                type="file"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="employeeResume">
-                <Button
-                  variant="contained"
-                  component="span"
-                  color={
-                    touched.employeeResume && Boolean(errors.employeeResume)
-                      ? "error"
-                      : "primary"
-                  }
+                  Upload Employee Image
+                </InputLabel>
+              </Grid>
+              <br></br>
+              <Grid item xs={12}>
+                <TextField
+                  type="file"
+                  size="small"
+                  fullWidth
+                  // value={values.employeeResume}
+                  name="employeeResume"
+                  // value={employeeData.employeeResume}
+                  onChange={handleImageChange}
+                />
+                <VisuallyHiddenInput id="employee-resume-file" type="file" />
+                <InputLabel
+                  value={values.employeeResume}
+                  htmlFor="employee-resume-file"
+                  style={{ marginTop: "5px" }}
                 >
-                  Upload Resume
-                </Button>
-                {touched.employeeResume && errors.employeeResume && (
-                  <Typography variant="caption" color="error">
-                    {errors.employeeResume}
-                  </Typography>
-                )}
-              </label>
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <Typography variant="h6" component="h6" textAlign="">
-                Adhar Upload
-              </Typography>
-              {/* <Input
-                type="file"
-                fullWidth
-                name="adharImage"
-                // value={employeeData.employeeResume}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              <VisuallyHiddenInput id="employee-adhar-file" type="file" />
-              {errors.adharImage && touched.adharImage ? (
-                <Typography variant="caption" color="error">
-                  {errors.adharImage}
-                </Typography>
-              ) : null} */}
-              <input
-                accept="image/*"
-                style={{ display: "none" }}
-                id="adharImage"
-                name="adharImage"
-                type="file"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="adharImage">
-                <Button
-                  variant="contained"
-                  component="span"
-                  color={
-                    touched.adharImage && Boolean(errors.adharImage)
-                      ? "error"
-                      : "primary"
-                  }
+                  Upload Employee Resume
+                </InputLabel>
+              </Grid>
+              <br></br>
+              <Grid item xs={12}>
+                <TextField
+                  type="file"
+                  size="small"
+                  fullWidth
+                  name="adharImage"
+                  // value={employeeData.employeeResume}
+                  onChange={handleImageChange}
+                />
+                <VisuallyHiddenInput id="employee-adhar-file" type="file" />
+                <InputLabel
+                  value={values.adharImage}
+                  htmlFor="employee-adhar-file"
+                  style={{ marginTop: "5px" }}
                 >
                   Upload Adhar Image
-                </Button>
-                {touched.adharImage && errors.adharImage && (
-                  <Typography variant="caption" color="error">
-                    {errors.adharImage}
-                  </Typography>
-                )}
-              </label>
-            </Grid>
-            <br></br>
-            <Grid item xs={12}>
-              <Typography variant="h6" component="h6" textAlign="">
-                Employee Sign
-              </Typography>
-              {/* <Input
-                type="file"
-                fullWidth
-                name="signImage"
-                // value={employeeData.employeeResume}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.signImage && touched.signImage ? (
-                <Typography variant="caption" color="error">
-                  {errors.signImage}
-                </Typography>
-              ) : null} */}
-              <input
-                accept="image/*"
-                style={{ display: "none" }}
-                id="signImage"
-                name="signImage"
-                type="file"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="signImage">
-                <Button
-                  variant="contained"
-                  component="span"
-                  color={
-                    touched.signImage && Boolean(errors.signImage)
-                      ? "error"
-                      : "primary"
-                  }
+                </InputLabel>
+              </Grid>
+              <br></br>
+              <Grid item xs={12}>
+                <TextField
+                  type="file"
+                  size="small"
+                  fullWidth
+                  name="signImage"
+                  // value={employeeData.employeeResume}
+
+                  onChange={handleImageChange}
+                />
+                <InputLabel
+                  value={values.signImage}
+                  htmlFor="employee-sign-file"
+                  style={{ marginTop: "5px" }}
                 >
                   Upload Signature
-                </Button>
-                {touched.signImage && errors.signImage && (
-                  <Typography variant="caption" color="error">
-                    {errors.signImage}
-                  </Typography>
-                )}
-              </label>
+                </InputLabel>
+
+                <VisuallyHiddenInput id="employee-sign-file" type="file" />
+              </Grid>
             </Grid>
             <Grid
               item

@@ -1,15 +1,10 @@
 import React, { useEffect } from "react"
-import AdminCard from "../Layout/AdminCard"
-import { getDashBoardDatas } from "../../Slices/DashboardSlice"
 import { useSelector, useDispatch } from "react-redux"
-import { Card, Grid } from "@mui/material"
+import { getDashBoardDatas } from "../../Slices/DashboardSlice"
+import { Grid, Card, Box, CardHeader, Divider } from "@mui/material"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
 import { Link } from "react-router-dom"
-import {
-  Box,
-  CardHeader,
-  Divider,
-} from "@mui/material"
+import ChartCard from "./ChartCard"
 
 const columnsEmployee = [
   {
@@ -45,10 +40,6 @@ function DashBord() {
   const dispatch = useDispatch()
   const { pending, dashBoardData } = useSelector((state) => state.DashBord)
 
-  console.log({
-    dashBoardData,
-  })
-
   useEffect(() => {
     dispatch(getDashBoardDatas())
   }, [dispatch])
@@ -56,24 +47,40 @@ function DashBord() {
   return (
     <>
       <Grid container rowSpacing={3} columnSpacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/employee" style={LinkStyle}>
-            <AdminCard name="employeess" value={dashBoardData?.empsCount} />
+            <ChartCard
+              name="Employees"
+              value={dashBoardData?.empsCount}
+              color="#8884d8"
+            />
           </Link>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/employee" style={LinkStyle}>
-            <AdminCard name="Checkers" value={dashBoardData?.checkerCount} />
+            <ChartCard
+              name="Checkers"
+              value={dashBoardData?.checkerCount}
+              color="#82ca9d"
+            />
           </Link>
-        </Grid>{" "}
-        <Grid item xs={12} sm={6}>
+        </Grid>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/chain" style={LinkStyle}>
-            <AdminCard name="Chains" value={dashBoardData?.chainCount} />
+            <ChartCard
+              name="Chains"
+              value={dashBoardData?.chainCount}
+              color="#ffc658"
+            />
           </Link>
-        </Grid>{" "}
-        <Grid item xs={12} sm={6}>
+        </Grid>
+        <Grid item xs={12} sm={6} lg={3}>
           <Link to="/admin/task" style={LinkStyle}>
-            <AdminCard name="Tasks" value={dashBoardData?.taskCount} />
+            <ChartCard
+              name="Tasks"
+              value={dashBoardData?.taskCount}
+              color="#d0ed57"
+            />
           </Link>
         </Grid>
         <Grid mt={2} item xs={12} sm={6} md={6}>

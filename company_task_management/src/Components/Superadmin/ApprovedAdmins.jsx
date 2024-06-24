@@ -32,7 +32,7 @@ function ApprovedAdmins() {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/admin/EmployeeCard/${params.row.employeeId}`}
+          to={`/superadmin/EmployeeProfile/${params.row.employeeId}`}
         >
           <VisibilityIcon />
         </Link>

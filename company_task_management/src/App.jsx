@@ -12,7 +12,7 @@ import DashBord from "./Components/Admin/DashBord"
 import BucketTest from "./Components/Admin/BucketTest"
 import { Dashboard } from "@mui/icons-material"
 import CheckSuperViser from "./Components/Superviser/CheckSuperViser"
-import Register from "./Components/Register"
+// import Register from "./Components/Register"
 import Superadmin from "./Components/Superadmin/Superadmin"
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined"
@@ -46,6 +46,8 @@ import { ToastContainer } from "react-toastify"
 import TestEmployeeFrom from "./Components/Admin/Pages/Employee/TestEmployeeFrom"
 import Changepassword from "./Components/Password/Changepassword"
 import Profile from "./Components/Employee/Profile"
+import StepperForm from "./Components/Register/StepperForm"
+import EmployeeProfile from "./Components/Superadmin/EmployeeProfile"
 
 function App() {
   const iconSiderbar = {
@@ -137,6 +139,10 @@ function App() {
               path: "TestEmployeeFrom",
               element: <TestEmployeeFrom />,
             },
+            {
+              path: "profile",
+              element: <Profile />,
+            },
           ],
         },
         {
@@ -182,6 +188,10 @@ function App() {
             {
               path: "CheckerTaskIsActiveDeatils/:taskId",
               element: <CheckerTaskIsActiveDeatils />,
+            },
+            {
+              path: "profile",
+              element: <Profile />,
             },
           ],
         },
@@ -247,7 +257,8 @@ function App() {
     // ------- path like employee/Register have to change
     {
       path: "Register",
-      element: <Register />,
+      // element: <Register />,
+      element: <StepperForm />,
     },
     {
       path: "Changepassword",
@@ -309,6 +320,14 @@ function App() {
               path: "disapproved",
               element: <DisapprovedAdmins />,
             },
+            {
+              path: "EmployeeProfile/:employeeId",
+              element: <EmployeeProfile />,
+            },
+            {
+              path: "profile",
+              element: <Profile />,
+            },
           ],
         },
       ],
@@ -329,6 +348,7 @@ function App() {
   ])
   return (
     <>
+      {/* <GlobalStyle /> */}
       <ToastContainer />
       {/* <ProtectedRoute> */}
       <RouterProvider router={router} />

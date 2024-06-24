@@ -2,9 +2,9 @@ import { Box, Container, Grid, Paper, Typography, Button } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { fetchEmpById } from "../../../../Slices/EmployeeSlice"
+import { fetchEmpById } from "../../Slices/EmployeeSlice"
 
-function EmployeeCard() {
+function EmployeeProfile() {
   const employee = useSelector((state) => state.Employee.employee)
   const { employeeId } = useParams()
   const dispatch = useDispatch()
@@ -234,5 +234,4 @@ function EmployeeCard() {
     </Box>
   )
 }
-
-export default EmployeeCard
+export default EmployeeProfile
