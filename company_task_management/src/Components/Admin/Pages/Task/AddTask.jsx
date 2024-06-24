@@ -170,7 +170,7 @@ const AddTask = ({ handleCloseForm }) => {
         }}
       >
         {error ? (
-          <Alert severity="error" variant="filled" sx={{ width: "auto" }}>
+          <Alert severity="error" sx={{ width: "auto" }}>
             {error}
           </Alert>
         ) : null}

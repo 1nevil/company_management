@@ -247,9 +247,7 @@ function AdminTaskDeatil(params) {
   return (
     <div>
       {error !== null ? (
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
+        <Alert severity="error">{error}</Alert>
       ) : pending ? (
         <Skeleton variant="rectangular" animation="wave" height={200} />
       ) : (

@@ -8,9 +8,19 @@ import { IconButton } from "@mui/material"
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
 import { addAssignTask, getPositionWiseTask } from "../../Slices/TaskSlice"
 import Alert from "@mui/material/Alert"
+import AdminCard from "../Layout/AdminCard"
+import { Grid } from "@mui/material"
+import { getemployeeDashBoardDatas } from "../../Slices/DashboardSlice.js"
+
+const LinkStyle = {
+  textDecoration: "none",
+}
 
 function EmployeeDashboard() {
   const { pending, tasks, error } = useSelector((state) => state.Tasks)
+  const { activeTask, notCheckedTask, disapprovedTask, approvedTaskCount } =
+    useSelector((state) => state.DashBord.employeeDashBoard)
+
   const { id: empId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
   )
@@ -19,7 +29,8 @@ function EmployeeDashboard() {
 
   useEffect(() => {
     dispatch(getPositionWiseTask(positionId))
-  }, [dispatch, positionId])
+    dispatch(getemployeeDashBoardDatas(empId))
+  }, [dispatch, empId, positionId])
 
   const handleClick = (id) => {
     const insertData = {
@@ -77,10 +88,41 @@ function EmployeeDashboard() {
       ) : (
         <>
           {error !== null && <Alert severity="error">{error}</Alert>}
+          <Grid container columnSpacing={2} rowSpacing={2} mt={1} mb={2}>
+            <Grid item xs={12} sm={6}>
+              <Link to="/employee/TaskIsActive" style={LinkStyle}>
+                <AdminCard
+                  name="Active Tasks"
+                  value={activeTask}
+                  textColor="green"
+                />
+              </Link>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Link to="/employee/TaskHistory" style={LinkStyle}>
+                <AdminCard name="Approved Tasks" value={approvedTaskCount} />
+              </Link>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Link to="/employee/TaskHistory" style={LinkStyle}>
+                <AdminCard
+                  name="Disapproved Tasks"
+                  value={disapprovedTask}
+                  textColor="red"
+                />
+              </Link>
+            </Grid>{" "}
+            <Grid item xs={12} sm={6}>
+              <Link to="/employee/notChecked" style={LinkStyle}>
+                <AdminCard name="Not checked Task" value={notCheckedTask} />
+              </Link>
+            </Grid>{" "}
+          </Grid>
           <DataGrid
             slots={{ toolbar: GridToolbar }}
             // rows={filteredTasksByPosition}
             rows={tasks}
+            loading={pending}
             columns={columns}
             getRowId={(row) => row.taskId}
             initialState={{

@@ -95,7 +95,13 @@ const Drawer = styled(MuiDrawer, {
   }),
 }))
 
-const settings = ["Profile", "Account", "Dashboard", "Logout", "Changepassword"]
+const settings = [
+  { link: "Profile", text: "Profile" },
+  { link: "Account", text: "Account" },
+  { link: "Dashboard", text: "DashBoard" },
+  { link: "Changepassword", text: "Change Password" },
+  { link: "Logout", text: "Logout" },
+]
 
 const loginLink = {
   color: "#575656",
@@ -157,7 +163,6 @@ function Header({ link, icons, sidebarNames }) {
   const handleDrawerClose = () => {
     setOpen(false)
   }
-  console.log("Employee:", employee)
   console.log(
     "Employee Image URL:",
     `http://localhost:5036/Images/${employee?.employeeImage}`
@@ -214,10 +219,10 @@ function Header({ link, icons, sidebarNames }) {
                 >
                   {settings.map((setting) => (
                     <MenuItem
-                      key={setting}
-                      onClick={() => handleCloseUserMenu(setting)}
+                      key={setting.link}
+                      onClick={() => handleCloseUserMenu(setting.link)}
                     >
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Typography textAlign="center">{setting.text}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>
@@ -242,11 +247,15 @@ function Header({ link, icons, sidebarNames }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {sidebarNames?.map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {sidebarNames?.map(({ name, url }, index) => (
+            <ListItem
+              key={URLSearchParams}
+              disablePadding
+              sx={{ display: "block" }}
+            >
               <ListItemButton
                 component={Link}
-                to={`/${link}/${text}`}
+                to={`/${link}/${url}`}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -262,7 +271,7 @@ function Header({ link, icons, sidebarNames }) {
                 >
                   {React.createElement(icons[index % icons.length])}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}

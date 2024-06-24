@@ -71,9 +71,7 @@ function EmpTaskDetail() {
   return (
     <div>
       {error !== null ? (
-        <Alert variant="filled" severity="error">
-          {error}
-        </Alert>
+        <Alert severity="error">{error}</Alert>
       ) : (
         <div>
           <Box mb={2}>
@@ -82,7 +80,7 @@ function EmpTaskDetail() {
             ) : (
               <>
                 {empTaskHistory?.isApprove === "0" ? (
-                  <Alert variant="filled" severity="error">
+                  <Alert severity="error">
                     {messages.map((message, index) => (
                       <Typography key={index} variant="body2">
                         {message}
@@ -90,9 +88,7 @@ function EmpTaskDetail() {
                     ))}
                   </Alert>
                 ) : (
-                  <Alert variant="filled" severity="success">
-                    Approved
-                  </Alert>
+                  <Alert severity="success">Approved</Alert>
                 )}
               </>
             )}

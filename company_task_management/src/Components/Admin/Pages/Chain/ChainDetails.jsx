@@ -176,7 +176,7 @@ function ChainDetails() {
   if (chainError) {
     return (
       <>
-        <Alert variant="filled" severity="error">
+        <Alert  severity="error">
           {chainError}
         </Alert>
         <Box mt={2}>
