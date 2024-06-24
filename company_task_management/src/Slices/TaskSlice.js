@@ -59,7 +59,7 @@ export const insertTask = createAsyncThunk(
 )
 
 export const deleteTask = createAsyncThunk(
-  "task/insertTask",
+  "task/deleteTask",
   async (taskId, { rejectWithValue }) => {
     try {
       const response = await deleteTaskByTaskId(taskId)

@@ -11,11 +11,17 @@ import { deleteEmp, fetchEmp } from "../../../../Slices/EmployeeSlice"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import VisibilityIcon from "@mui/icons-material/Visibility"
+import useAlert from "../../../../Hooks/useAlert"
 
 function Employee() {
   const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = useState("") // State to store search term
   const employeess = useSelector((state) => state.Employee.employees) || []
+
+  const deleteEmployeeAlert = useAlert(
+    deleteEmp,
+    "Employee deleted Successfully..."
+  )
 
   useEffect(() => {
     dispatch(fetchEmp())
@@ -118,9 +124,7 @@ function Employee() {
       renderCell: (params) => (
         <>
           <IconButton
-            onClick={() =>
-              handleDelete(params.row.employeeId, params.row.employeeName)
-            }
+            onClick={() => deleteEmployeeAlert(params.row.employeeId)}
             title="Delete"
           >
             <Delete sx={{ color: "red" }} />
