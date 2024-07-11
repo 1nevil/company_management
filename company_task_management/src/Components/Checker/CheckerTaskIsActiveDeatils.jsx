@@ -155,11 +155,13 @@ function CheckerTaskIsActiveDeatils() {
           <>
             {empTaskHistory?.isApprove === "0" ? (
               <Alert severity="error">
-                {messages.map((message, index) => (
-                  <Typography key={index} variant="body2">
-                    {message}
-                  </Typography>
-                ))}
+                {!messages
+                  ? messages.map((message, index) => (
+                      <Typography key={index} variant="body2">
+                        {message}
+                      </Typography>
+                    ))
+                  : "Checker Disapproved Task - No reson added"}
               </Alert>
             ) : (
               <Alert severity="success">Approved</Alert>

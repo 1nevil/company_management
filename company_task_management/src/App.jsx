@@ -65,10 +65,10 @@ function App() {
       ],
     },
     checker: {
-      icons: [AddTask, RunningWithErrorsIcon],
+      icons: [AddTask, ManageHistoryIcon],
       sidebar: [
         { name: "Task List ", url: "CheckTaskList" },
-        { name: "Active Task List ", url: "CheckerTaskIsActive" },
+        { name: "Active Task List ", url: "checkerhistory" },
       ],
     },
     employee: {
@@ -194,11 +194,11 @@ function App() {
               element: <CheckerTaskDetails />,
             },
             {
-              path: "CheckerTaskIsActive",
+              path: "checkerhistory",
               element: <CheckerTaskIsActive />,
             },
             {
-              path: "CheckerTaskIsActiveDeatils/:taskId",
+              path: "checkerhistory/:taskId",
               element: <CheckerTaskIsActiveDeatils />,
             },
             {

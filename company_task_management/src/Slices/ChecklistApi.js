@@ -2,22 +2,38 @@ import axios from "axios"
 
 const axiosInstance = axios.create({ baseURL: "http://localhost:5036/" })
 
+let config
+
+function setConfig() {
+  const token = localStorage.getItem("token")
+
+  config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+}
+
 export const getChecklistByTaskId = (taskId) => {
-  return axiosInstance.get(`api/ChecklistMasters/getbytask/${taskId}`)
+  setConfig()
+  return axiosInstance.get(`api/ChecklistMasters/getbytask/${taskId}`, config)
 }
 
 export const deleteChecklistById = (checklistId) => {
-  return axiosInstance.delete(`api/ChecklistMasters/${checklistId}`)
+  setConfig()
+  return axiosInstance.delete(`api/ChecklistMasters/${checklistId}`, config)
 }
 
 export const insertChecklist = (checklist) => {
-  return axiosInstance.post(`api/ChecklistMasters`, checklist)
+  setConfig()
+  return axiosInstance.post(`api/ChecklistMasters`, checklist, config)
 }
 
 export const updateChecklist = (checklist) => {
-  console.log(checklist)
+  setConfig()
   return axiosInstance.put(
     `api/ChecklistMasters/${checklist.ChecklistId}`,
-    checklist
+    checklist,
+    config
   )
 }

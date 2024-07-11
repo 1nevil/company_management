@@ -2,27 +2,49 @@ import axios from "axios"
 
 const axiosInstance = axios.create({ baseURL: "http://localhost:5036/" })
 
+let config
+let token
+
+function setConfig() {
+  token = localStorage.getItem("token")
+
+  config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+}
+
 export function fetchEmployeeData() {
-  return axiosInstance.get("api/Employees")
+  setConfig()
+  return axiosInstance.get("api/Employees", config)
 }
 
 export function deleteEmpById(id) {
-  return axiosInstance.delete(`api/Employees/${id}`)
+  setConfig()
+  return axiosInstance.delete(`api/Employees/${id}`, config)
 }
 
 export function updateEmployeeData(id) {
-  return axiosInstance.put(`api/Employees/${id}`)
+  setConfig()
+  return axiosInstance.put(`api/Employees/${id}`, config)
 }
 
 export function resetPassword(employeeForm) {
-  return axiosInstance.put(
-    `api/Employees/updatePassword/${employeeForm.empId}/${employeeForm.oldPassword}/${employeeForm.newPassword}`
+  setConfig()
+  return (
+    axiosInstance.put(
+      `api/Employees/updatePassword/${employeeForm.empId}/${employeeForm.oldPassword}/${employeeForm.newPassword}`
+    ),
+    config
   )
 }
 
 export function createEmp(formData) {
+  setConfig()
   return axiosInstance.post(`api/Employees`, formData, {
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data", // Important for FormData
     },
   })
@@ -30,22 +52,27 @@ export function createEmp(formData) {
 
 //localhost:5036/api/Employees/approveDisapprove
 export function approveNotApprove(id) {
-  return axiosInstance.patch(`api/Employees/approveDisapprove/${id}`)
+  setConfig()
+  return axiosInstance.patch(`api/Employees/approveDisapprove/${id}`, config)
 }
 
 export function approvedEmps() {
-  return axiosInstance.get(`api/Employees/approvedEmps/`)
+  setConfig()
+  return axiosInstance.get(`api/Employees/approvedEmps/`, config)
 }
 
 export function disapprovedEmps() {
-  return axiosInstance.get(`api/Employees/notApprovedEmps/`)
+  setConfig()
+  return axiosInstance.get(`api/Employees/notApprovedEmps/`, config)
 }
 
 export function checkersEmps() {
-  return axiosInstance.get(`api/Employees/getCheckers`)
+  setConfig()
+  return axiosInstance.get(`api/Employees/getCheckers`, config)
 }
 
 export function fetchEmployeeDataById(empid) {
+  setConfig()
   console.log(empid)
-  return axiosInstance.get(`api/Employees/${empid}`)
+  return axiosInstance.get(`api/Employees/${empid}`, config)
 }

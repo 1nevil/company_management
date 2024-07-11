@@ -2,49 +2,79 @@ import axios from "axios"
 
 const axiosInstance = axios.create({ baseURL: "http://localhost:5036/" })
 
+let config
+
+function setConfig() {
+  const token = localStorage.getItem("token")
+
+  config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+}
+
 export const fetchPositionData = () => {
-  return axiosInstance.get("api/PositionMasters")
+  setConfig()
+  return axiosInstance.get("api/PositionMasters", config)
 }
 
 export const getPositionGuidlinesById = (positionId) => {
+  setConfig()
   return axiosInstance.get(
-    `api/PositionGuidelines/getbypositionid/${positionId}`
+    `api/PositionGuidelines/getbypositionid/${positionId}`,
+    config
   )
 }
 
 export const getGuidlineByGuidlineId = (positionId) => {
-  return axiosInstance.get(`api/PositionGuidelines/${positionId}`)
+  setConfig()
+  return axiosInstance.get(`api/PositionGuidelines/${positionId}`, config)
 }
 
 export const deleteGuidlineByGuidlineId = (guidlineId) => {
-  return axiosInstance.delete(`api/PositionGuidelines/${guidlineId}`)
+  setConfig()
+  return axiosInstance.delete(`api/PositionGuidelines/${guidlineId}`, config)
 }
 
 export const insertpositionGuidline = (guidline) => {
-  return axiosInstance.post(`api/PositionGuidelines/ `, guidline)
+  setConfig()
+  return axiosInstance.post(`api/PositionGuidelines/`, guidline, config)
 }
 
 export const updateGuidline = (guidlineId, name) => {
-  console.log(name)
-  return axiosInstance.patch(`api/PositionGuidelines/${guidlineId}/${name}`)
+  setConfig()
+  return axiosInstance.patch(
+    `api/PositionGuidelines/${guidlineId}/${name}`,
+    config
+  )
 }
 
 export const deletePositionData = (id) => {
-  return axiosInstance.delete(`api/PositionMasters/${id}`)
+  setConfig()
+  return axiosInstance.delete(`api/PositionMasters/${id}`, config)
 }
 
 export const updatePositionData = (id) => {
-  return axiosInstance.put(`api/PositionMasters/${id}`)
+  setConfig()
+  return axiosInstance.put(`api/PositionMasters/${id}`, config)
 }
 
 export const insertPositionData = (positionWithGuidlines) => {
-  return axiosInstance.post(`api/PositionMasters`, positionWithGuidlines)
+  setConfig()
+  return axiosInstance.post(
+    `api/PositionMasters`,
+    positionWithGuidlines,
+    config
+  )
 }
 
 export const fetchPositionById = (id) => {
-  return axiosInstance.get(`api/PositionMasters/${id}`)
+  setConfig()
+  return axiosInstance.get(`api/PositionMasters/${id}`, config)
 }
 
 export const getChainPostionByIds = (ids) => {
-  return axiosInstance.get(`api/PositionMasters/postionChain/${ids}`)
+  setConfig()
+  return axiosInstance.get(`api/PositionMasters/postionChain/${ids}`, config)
 }

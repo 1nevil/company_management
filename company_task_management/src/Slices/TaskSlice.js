@@ -251,8 +251,10 @@ const TaskSlice = createSlice({
       })
       .addCase(addAssignTask.fulfilled, (state, action) => {
         state.pending = false
+        console.log(action.payload)
+        console.log(state.tasks)
         state.tasks = state.tasks.filter(
-          (t) => t.taskId !== action.payload.empTaskId
+          (t) => t.taskId !== action.payload.taskId
         )
       })
       .addCase(addAssignTask.rejected, (state, action) => {
@@ -360,6 +362,7 @@ const TaskSlice = createSlice({
       .addCase(getHistoryDetails.fulfilled, (state, action) => {
         state.pending = false
         const payload = action.payload
+        console.log(payload)
 
         state.getHistoryDetail.checker = payload.checker
         state.getHistoryDetail.taskDetails = payload.task

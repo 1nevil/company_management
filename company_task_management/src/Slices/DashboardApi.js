@@ -2,18 +2,37 @@ import axios from "axios"
 
 const axiosInstance = axios.create({ baseURL: "http://localhost:5036/" })
 
+let config
+
+function setConfig() {
+  const token = localStorage.getItem("token")
+
+  config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+}
+
 export const getDashBoardData = () => {
-  return axiosInstance.get("api/DashBoard/dashBoardDatas")
+  setConfig()
+  return axiosInstance.get("api/DashBoard/dashBoardDatas", config)
 }
 
 export const getEmployeeDashBoardData = (empId) => {
-  return axiosInstance.get(`api/DashBoard/employeeDashboard/${empId}`)
+  setConfig()
+  return axiosInstance.get(`api/DashBoard/employeeDashboard/${empId}`, config)
 }
 
 export const getCheckerDashBoardData = (checkerId) => {
-  return axiosInstance.get(`api/DashBoard/checkerDashboard/${checkerId}`)
+  setConfig()
+  return axiosInstance.get(
+    `api/DashBoard/checkerDashboard/${checkerId}`,
+    config
+  )
 }
 
 export const getSuperAdminDashBoardData = () => {
-  return axiosInstance.get(`api/DashBoard/superAdminDashBoard`)
+  setConfig()
+  return axiosInstance.get(`api/DashBoard/superAdminDashBoard`, config)
 }

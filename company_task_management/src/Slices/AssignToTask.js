@@ -33,9 +33,18 @@ const initialState = {
 
 export const updateTaskWithCompletedDate = createAsyncThunk(
   "tasks/updateTaskSubmission",
-  async (updatedAssign) => {
-    const response = await updateTaskSubmission(updatedAssign)
-    return response.data
+  async ({ formData, setProgress }, { rejectWithValue }) => {
+    try {
+      const response = await updateTaskSubmission(formData, setProgress)
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
   }
 )
 
