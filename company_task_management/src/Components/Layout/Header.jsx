@@ -97,8 +97,7 @@ const Drawer = styled(MuiDrawer, {
 
 const settings = [
   { link: "Profile", text: "Profile" },
-  { link: "Account", text: "Account" },
-  { link: "Dashboard", text: "DashBoard" },
+  { link: "ForgotPassword", text: "Forgot Password" },
   { link: "Changepassword", text: "Change Password" },
   { link: "Logout", text: "Logout" },
 ]
@@ -151,6 +150,8 @@ function Header({ link, icons, sidebarNames }) {
       dispatch(clearUserToken())
     } else if (settingName === "Changepassword") {
       navigate("/Changepassword")
+    } else if (settingName === "ForgotPassword") {
+      navigate("/ForgotPassword")
     } else if (settingName === "Profile") {
       navigate("profile")
     }
@@ -163,10 +164,6 @@ function Header({ link, icons, sidebarNames }) {
   const handleDrawerClose = () => {
     setOpen(false)
   }
-  console.log(
-    "Employee Image URL:",
-    `http://localhost:5036/Images/${employee?.employeeImage}`
-  )
 
   return (
     <Box sx={{ display: "flex" }}>

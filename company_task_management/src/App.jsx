@@ -50,18 +50,29 @@ import PositionGuidline from "./Components/Admin/Pages/Position/PositionGuidline
 import ChecklistBoard from "./Components/Admin/Pages/Task/ChecklistBoard"
 import StepperForm from "./Components/Register/StepperForm"
 import EmployeeProfile from "./Components/Superadmin/EmployeeProfile"
+import ForgotPassword from "./Components/Register/ForgotPassword"
+import TimeExtenstion from "./Components/Admin/Pages/TimeExtenstion/TimeExtenstion"
+import MoreTimeIcon from "@mui/icons-material/MoreTime"
 
 function App() {
   const iconSiderbar = {
     // admin started
     admin: {
-      icons: [Dashboard, AddTask, LinkIcon, StreetviewIcon, PeopleIcon],
+      icons: [
+        Dashboard,
+        AddTask,
+        LinkIcon,
+        StreetviewIcon,
+        PeopleIcon,
+        MoreTimeIcon,
+      ],
       sidebar: [
         { name: "Dashboard ", url: "dashbord" },
         { name: "Task", url: "Task" },
         { name: "Chains", url: "chain" },
         { name: "Positions", url: "Position" },
         { name: "Employee", url: "employee" },
+        { name: "TimeExtenstion", url: "TimeExtenstion" },
       ],
     },
     checker: {
@@ -158,6 +169,10 @@ function App() {
             {
               path: "profile",
               element: <Profile />,
+            },
+            {
+              path: "TimeExtenstion",
+              element: <TimeExtenstion />,
             },
           ],
         },
@@ -263,6 +278,10 @@ function App() {
       path: "Register",
       // element: <Register />,
       element: <StepperForm />,
+    },
+    {
+      path: "ForgotPassword",
+      element: <ForgotPassword />,
     },
     {
       path: "Changepassword",

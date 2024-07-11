@@ -4,8 +4,9 @@ import { Link } from "react-router-dom"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
-import {
+import AssignToTask, {
   getTaskFromHistoryUsingEmpId,
+  setEmpTaskAssignId,
   // updateTaskWithCompeletedate,
 } from "../../Slices/AssignToTask"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
@@ -32,6 +33,11 @@ function TaskIsActive(params) {
       width: 160,
       renderCell: (params) => (
         <Link
+          onClick={() =>
+            dispatch(
+              setEmpTaskAssignId(params.row.empTaskAssignments[0].empTaskId)
+            )
+          }
           style={{ color: "gray" }}
           to={`/employee/TaskIsActiveDeatils/${params.row.taskId}`}
         >

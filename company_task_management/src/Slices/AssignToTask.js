@@ -29,6 +29,7 @@ const initialState = {
     checklist: null,
     empTaskHistory: null,
   },
+  empTaskAssignId: null,
 }
 
 export const updateTaskWithCompletedDate = createAsyncThunk(
@@ -177,7 +178,12 @@ export const approveDisapprove = createAsyncThunk(
 export const AssignToTaskSlice = createSlice({
   name: "AssignToTaskSlice",
   initialState,
-
+  reducers: {
+    setEmpTaskAssignId: (state, action) => {
+      state.EmpTaskAss = action.payload
+      console.log(action.payload)
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(updateTaskWithCompletedDate.pending, (state) => {
@@ -340,3 +346,4 @@ export const AssignToTaskSlice = createSlice({
 })
 
 export default AssignToTaskSlice.reducer
+export const { setEmpTaskAssignId } = AssignToTaskSlice.actions
