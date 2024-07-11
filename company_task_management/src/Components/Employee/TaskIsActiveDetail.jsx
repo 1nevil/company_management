@@ -119,15 +119,26 @@ function TaskIsActiveDeatils() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleOpentimeincrese = () => setOpentimeinc(true)
-  const handleClosetimeincrese = () => setOpentimeinc(false)
+  const handleClosetimeincrese = (reason, event) => {
+    if (event === "backdropClick") {
+      setOpentimeinc(true)
+    } else {
+      setOpentimeinc(false)
+    }
+  }
 
-  const { task, guidelines, checklist, lastItemFromList ,taskExtensionRequests} = getActiveTaskDetail
+  const {
+    task,
+    guidelines,
+    checklist,
+    lastItemFromList,
+    taskExtensionRequests,
+  } = getActiveTaskDetail
   const {
     pendding,
     tasks: TaskAssign,
     EmpTaskAss,
   } = useSelector((state) => state.AssignToTask)
-
 
   const [completedGuidelines, setCompletedGuidelines] = useState([])
   const [incompleteGuidelines, setIncompleteGuidelines] = useState([])
@@ -245,7 +256,6 @@ function TaskIsActiveDeatils() {
         notifySubmit()
       }
     })
-    console.log("hello")
   }
 
   return (
