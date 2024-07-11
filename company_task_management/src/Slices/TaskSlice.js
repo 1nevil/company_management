@@ -10,6 +10,7 @@ import {
   getTaskByTaskPositionId,
   insertTaskData,
   getHistoryDetailsById,
+  getallextestionrequest,
 } from "./TaskApi"
 
 const initialState = {
@@ -36,6 +37,7 @@ const initialState = {
     empTaskHistory: null,
     employee: null,
   },
+  taskextenstionreqest: [],
 }
 
 export const insertTask = createAsyncThunk(
@@ -80,6 +82,13 @@ export const getAllTasks = createAsyncThunk("task/getAllTasks", async () => {
   const response = await getAllTask()
   return response.data
 })
+export const getallextestionrequestForTime = createAsyncThunk(
+  "task/getallextestionrequestForTime",
+  async () => {
+    const response = await getallextestionrequest()
+    return response.data
+  }
+)
 // addAssignTask
 export const addAssignTask = createAsyncThunk(
   "task/addAssignTask",
@@ -354,6 +363,18 @@ const TaskSlice = createSlice({
         state.getHistoryDetail.employee = payload.employee
       })
       .addCase(getHistoryDetails.rejected, (state, action) => {
+        state.pending = false
+        state.error = action.payload
+      })
+      .addCase(getallextestionrequestForTime.pending, (state) => {
+        state.error = null
+        state.pending = true
+      })
+      .addCase(getallextestionrequestForTime.fulfilled, (state, action) => {
+        state.pending = false
+        state.taskextenstionreqest = action.payload
+      })
+      .addCase(getallextestionrequestForTime.rejected, (state, action) => {
         state.pending = false
         state.error = action.payload
       })

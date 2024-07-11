@@ -8,7 +8,7 @@ import ChartCard from "./ChartCard"
 
 const columnsEmployee = [
   {
-    field: "positionName",  
+    field: "positionName",
     headerName: "Position Name",
     width: 250,
   },

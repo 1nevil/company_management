@@ -43,3 +43,7 @@ export const getHistoryDetailsById = (historyId) => {
     `api/EmpTaskHistories/getTaskHistoryDetailsById/${historyId}`
   )
 }
+
+export const getallextestionrequest = () => {
+  return axiosInstance.get("api/TaskExtensionRequests/getallextestionrequest")
+}

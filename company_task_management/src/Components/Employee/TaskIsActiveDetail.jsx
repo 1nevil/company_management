@@ -19,6 +19,7 @@ import {
   Grid,
   InputLabel,
   Skeleton,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material"
@@ -30,9 +31,13 @@ import { useEffect, useState } from "react"
 import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice"
 import { styled } from "@mui/material/styles"
 import Button from "@mui/material/Button"
-import { updateTaskWithCompletedDate } from "../../Slices/AssignToTask"
+import {
+  getTaskFromHistoryUsingEmpId,
+  updateTaskWithCompletedDate,
+} from "../../Slices/AssignToTask"
 import Modal from "@mui/material/Modal"
 import { toast } from "react-toastify"
+import { addTimeincrease } from "../../Slices/TimeExtensionSlice"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -52,10 +57,19 @@ function TaskIsActiveDeatils() {
   )
 
   const [open, setOpen] = useState(false)
+  const [opentimeinc, setOpentimeinc] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+  const handleOpentimeincrese = () => setOpentimeinc(true)
+  const handleClosetimeincrese = () => setOpentimeinc(false)
 
-  const { task, guidelines, checklist } = getActiveTaskDetail
+  const { task, guidelines, checklist, taskExtensionRequests } =
+    getActiveTaskDetail
+  const {
+    pendding,
+    tasks: TaskAssign,
+    EmpTaskAss,
+  } = useSelector((state) => state.AssignToTask)
 
   const [completedGuidelines, setCompletedGuidelines] = useState([])
   const [incompleteGuidelines, setIncompleteGuidelines] = useState([])
@@ -63,6 +77,11 @@ function TaskIsActiveDeatils() {
   const [showMoreChecklist, setShowMoreChecklist] = useState(false)
   const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [hrWantToExtend, setHrWantToExtend] = useState("")
+  const [EmpTask, setEmpTask] = useState("")
+  const [Employee, setEmployee] = useState("")
+  const [message, setMessage] = useState("")
+
   console.log("🚀 ~ TaskIsActiveDeatils ~ error:", error)
 
   const dispatch = useDispatch()
@@ -90,6 +109,7 @@ function TaskIsActiveDeatils() {
     //1 is postion id for validation
     //task ID : for getting task
     dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }))
+    dispatch(getTaskFromHistoryUsingEmpId(empId))
   }, [dispatch, taskId, positionId])
 
   useEffect(() => {
@@ -128,22 +148,182 @@ function TaskIsActiveDeatils() {
     )
   }, [completedGuidelines, incompleteGuidelines, taskId])
 
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "white",
+    border: "1px solid #000",
+    borderRadius: "10px",
+    boxShadow: 24,
+    p: 4,
+  }
+
+  const notifySubmit = () => toast.success("Request Is Send To Admin")
+  const handleClickToIncreaseTime = () => {
+    const TaskExtenstion = {
+      EmployeeId: empId,
+      EmpTaskId: EmpTaskAss,
+      HrWantToExtend: hrWantToExtend,
+      Message: message,
+    }
+
+    dispatch(addTimeincrease(TaskExtenstion)).then((action) => {
+      if (action.meta.requestStatus === "fulfilled") {
+        handleClose()
+        notifySubmit()
+      }
+    })
+    console.log("hello")
+  }
+
   return (
     <div>
       {error !== null ? (
         <Alert severity="error">{error}</Alert>
       ) : (
         <>
-          <Grid container>
-            <Grid item xs={4}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "end",
+            }}
+            textAlign="center"
+            mb={2}
+          >
+            {taskExtensionRequests?.status === "pendding" ? (
+              <Box sx={{ width: "100%" }}>
+                <Alert severity="warning" sx={{ display: "flex" }}>
+                  <div style={{ display: "flex", gap: "30px" }}>
+                    <Typography variant="body1">
+                      Message: {taskExtensionRequests?.message}
+                    </Typography>
+                    <Typography variant="body1">
+                      Requested At: {taskExtensionRequests?.requestedAt}
+                    </Typography>
+                    <Typography variant="body1">
+                      Status: {taskExtensionRequests?.status}
+                    </Typography>
+                  </div>
+                </Alert>
+              </Box>
+            ) : taskExtensionRequests?.status === "Disapproved" ? (
+              <Box sx={{ width: "100%" }}>
+                <Alert severity="error">
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "80px",
+                    }}
+                  >
+                    <Typography variant="body1">
+                      Message: {taskExtensionRequests?.message}
+                    </Typography>
+                    <Typography variant="body1">
+                      Requested At: {taskExtensionRequests?.requestedAt}
+                    </Typography>
+                    <Typography variant="body1">
+                      Status: {taskExtensionRequests?.status}
+                    </Typography>
+                    <Button
+                      mt={2}
+                      sx={{ marginLeft: "auto" }}
+                      taskId={EmpTask}
+                      empId={Employee}
+                      // open={opentimeinc}
+                      // fullWidth
+                      variant="contained"
+                      onClick={handleOpentimeincrese}
+                    >
+                      Increase Time
+                    </Button>
+                  </div>
+                </Alert>
+              </Box>
+            ) : taskExtensionRequests?.status === "Approved" ? (
+              <Box sx={{ width: "100%" }}>
+                <Alert severity="success" sx={{ display: "flex" }}>
+                  <div style={{ display: "flex", gap: "30px" }}>
+                    <Typography variant="body1">
+                      Message: {taskExtensionRequests?.message}
+                    </Typography>
+                    <Typography variant="body1">
+                      Requested At: {taskExtensionRequests?.requestedAt}
+                    </Typography>
+                    <Typography variant="body1">
+                      Status: {taskExtensionRequests?.status}
+                    </Typography>
+                  </div>
+                </Alert>
+              </Box>
+            ) : (
+              <Button
+                taskId={EmpTask}
+                empId={Employee}
+                // open={opentimeinc}
+                fullWidth
+                variant="contained"
+                onClick={handleOpentimeincrese}
+              >
+                Increase Time
+              </Button>
+            )}
+            <Modal
+              open={opentimeinc}
+              onClose={handleClosetimeincrese}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Box mt={1}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="Enter Time In Hours"
+                    name="hrWantToExtend"
+                    value={hrWantToExtend}
+                    required
+                    onChange={(e) => setHrWantToExtend(e.target.value)}
+                  />
+                </Box>
+                <Box mt={1}>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    label="Enter Message"
+                    name="message"
+                    multiline
+                    rows={3}
+                    required
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                </Box>
+                <Box mt={2}>
+                  <Button
+                    taskId={EmpTask}
+                    empId={Employee}
+                    onClick={handleClickToIncreaseTime}
+                    fullWidth
+                    variant="contained"
+                  >
+                    Increase Time
+                  </Button>
+                </Box>
+              </Box>
+            </Modal>
+          </Box>
+          <Grid container spacing={2} pt={1}>
+            <Grid item xs={12} md={4}>
               <Box
                 p={2}
                 pt={0}
                 sx={{
                   border: "2px solid gray",
                   borderRadius: "10px",
-                  mr: "50px",
-                  pl: 5,
+                  mb: 2,
                 }}
               >
                 <Typography variant="h5" sx={{ textAlign: "center", p: 1 }}>
@@ -188,7 +368,7 @@ function TaskIsActiveDeatils() {
                     />
                   </Box>
                 ))}
-                {checklist?.length > 3 && (
+                {checklist?.length >= 3 && (
                   <Typography
                     variant="body2"
                     color="primary"
@@ -205,8 +385,6 @@ function TaskIsActiveDeatils() {
                 sx={{
                   border: "2px solid gray",
                   borderRadius: "10px",
-                  mr: "50px",
-                  mt: 3,
                 }}
               >
                 <Typography
@@ -238,7 +416,7 @@ function TaskIsActiveDeatils() {
                       </Typography>
                     </Box>
                   ))}
-                  {guidelines?.length > 3 && (
+                  {guidelines?.length >= 3 && (
                     <Typography
                       variant="body2"
                       color="primary"
@@ -251,94 +429,90 @@ function TaskIsActiveDeatils() {
                 </FormGroup>
               </Box>
             </Grid>
-            <Divider orientation="vertical" flexItem />
-            <Grid item xs={7} sx={{ textAlign: "center", margin: "auto" }}>
-              <Grid xs={12}>
+            <Divider
+              orientation="vertical"
+              sx={{
+                padding: "10px",
+                display: { lg: "block", md: "block", xs: "none" },
+                mr: "10px",
+              }}
+              flexItem
+            />
+            <Grid item xs={12} md={7}>
+              <Box textAlign="center" mb={2}>
                 <Typography variant="h5">Task Detail</Typography>
-                <Box
-                  mt={5}
-                  p={4}
-                  sx={{
-                    border: "2px solid gray",
-                    boxShadow: "2px 2px 10px 1px black",
-                  }}
-                >
-                  {task ? (
-                    <>
-                      <Card
-                        sx={{
-                          border: "2px solid gray",
-                          boxShadow: "2px 2px 10px black",
-                        }}
-                      >
-                        <CardHeader
-                          title={`Task Name: ${task.taskName}`}
-                          subheader={
-                            <>
-                              {task.startDate && task.endDate ? (
-                                <>
-                                  <Typography component="span" variant="body2">
-                                    Start Date: {task.startDate}
-                                  </Typography>
-                                  <br />
-                                  <Typography component="span" variant="body2">
-                                    End Date: {task.endDate}
-                                  </Typography>
-                                </>
-                              ) : (
-                                <>
-                                  <Typography component="span" variant="body2">
-                                    Duration: {task.durationNum}{" "}
-                                    {task.durationType}
-                                  </Typography>
-                                </>
-                              )}
-                            </>
-                          }
-                        />
-                        <CardActionArea>
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              Instructions: {task.instructions}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Description: {task.description}
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </>
-                  ) : (
-                    <Typography variant="h5" gutterBottom>
-                      Loading...
-                      <Skeleton animation="wave" />
-                    </Typography>
-                  )}
-                </Box>
-                {/* <Box p={2}>
-                
-                </Box> */}
-                <UploadFileTaskDetails
-                  taskId={taskId}
-                  empId={empId}
-                  open={open}
-                  handleClose={handleClose}
-                />
-                <Box p={2}>
-                  <Button
-                    // onClick={handleUploadWork}
-                    onClick={handleOpen}
-                    fullWidth
-                    variant="contained"
-                  >
-                    Upload Your Work
-                  </Button>
-                </Box>
-              </Grid>
+              </Box>
+              <Box
+                mt={5}
+                p={4}
+                sx={{
+                  border: "2px solid gray",
+                  boxShadow: "2px 2px 10px 1px black",
+                }}
+              >
+                {task ? (
+                  <>
+                    <Card
+                      sx={{
+                        border: "2px solid gray",
+                        boxShadow: "2px 2px 10px black",
+                      }}
+                    >
+                      <CardHeader
+                        title={`Task Name: ${task.taskName}`}
+                        subheader={
+                          <>
+                            {task.startDate && task.endDate ? (
+                              <>
+                                <Typography component="span" variant="body2">
+                                  Start Date: {task.startDate}
+                                </Typography>
+                                <br />
+                                <Typography component="span" variant="body2">
+                                  End Date: {task.endDate}
+                                </Typography>
+                              </>
+                            ) : (
+                              <>
+                                <Typography component="span" variant="body2">
+                                  Duration: {task.durationNum}{" "}
+                                  {task.durationType}
+                                </Typography>
+                              </>
+                            )}
+                          </>
+                        }
+                      />
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            Instructions: {task.instructions}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Description: {task.description}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </>
+                ) : (
+                  <Typography variant="h5" gutterBottom>
+                    Loading...
+                    <Skeleton animation="wave" />
+                  </Typography>
+                )}
+              </Box>
+              <UploadFileTaskDetails
+                taskId={taskId}
+                empId={empId}
+                open={open}
+                handleClose={handleClose}
+              />
+              <Box p={2}>
+                <Button onClick={handleOpen} fullWidth variant="contained">
+                  Upload Your Work
+                </Button>
+              </Box>
             </Grid>
           </Grid>
           <Dialog open={openModal} onClose={handleCloseModal}>
@@ -417,7 +591,8 @@ const UploadFileTaskDetails = ({ taskId, empId, open, handleClose }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 600,
+    width: "90%",
+    maxWidth: 600,
     bgcolor: "white",
     border: "2px solid #000",
     boxShadow: 24,
@@ -480,7 +655,6 @@ const UploadFileTaskDetails = ({ taskId, empId, open, handleClose }) => {
                 value={rate}
                 required
                 onChange={(e) => setRate(e.target.value)}
-                // onBlur={handleBlur}
               />
             </Box>
             <Box mt={1}>
@@ -492,7 +666,6 @@ const UploadFileTaskDetails = ({ taskId, empId, open, handleClose }) => {
                 required
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                // onBlur={handleBlur}
               />
             </Box>
             <Box mt={1}>
@@ -503,7 +676,6 @@ const UploadFileTaskDetails = ({ taskId, empId, open, handleClose }) => {
                 required
                 value={quantityName}
                 onChange={(e) => setQuantityName(e.target.value)}
-                // onBlur={handleBlur}
               />
             </Box>
             <Box mt={1}>

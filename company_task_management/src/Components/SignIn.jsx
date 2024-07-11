@@ -251,7 +251,11 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs={12}>
-                <Link style={{ textDecoration: "none" }} to="#" variant="body2">
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to="forgotPassword"
+                  variant="body2"
+                >
                   Forgot password?
                 </Link>
               </Grid>
