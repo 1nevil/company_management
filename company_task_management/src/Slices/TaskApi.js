@@ -26,6 +26,10 @@ export const getTaskByTaskId = (taskId) => {
   return axiosInstance.get(`api/TaskMasters/${taskId}`)
 }
 
+export const deleteTaskByTaskId = (taskId) => {
+  return axiosInstance.delete(`api/TaskMasters/${taskId}`)
+}
+
 export const getTaskByTaskPositionId = (positionId, taskId) => {
   return axiosInstance.get(`api/TaskMasters/getTask/${positionId}/${taskId}`)
 }

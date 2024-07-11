@@ -13,10 +13,16 @@ import VisibilityIcon from "@mui/icons-material/Visibility"
 import { Link } from "react-router-dom"
 
 import { useDispatch, useSelector } from "react-redux"
-import { getAllTasks } from "../../../../Slices/TaskSlice"
-import { Button } from "@mui/material"
+import { deleteTask, getAllTasks } from "../../../../Slices/TaskSlice"
+import { Button, IconButton } from "@mui/material"
+import useAlert from "../../../../Hooks/useAlert"
+import { Delete } from "@mui/icons-material"
 
 function Task() {
+  const deleteTaskAlert = useAlert(
+    deleteTask,
+    "task deleted Successfully..."
+  )
   const [open, setOpen] = React.useState(false)
   const [scroll, setScroll] = React.useState("paper")
   const dispatch = useDispatch()
@@ -50,27 +56,6 @@ function Task() {
   }, [open])
 
   const columns = [
-    // {
-    //   field: "Action",
-    //   headerName: "Action",
-    //   description: "This column has a value getter and is not sortable.",
-    //   sortable: false,
-    //   width: 160,
-    //   renderCell: (params) => (
-    //     <>
-    //       <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
-    //         <Edit />
-    //       </IconButton>
-    //       <IconButton
-    //         onClick={() => handleDelete(params.row.id)}
-    //         title="Delete"
-    //       >
-    //         <Delete sx={{ color: "red" }} />
-    //       </IconButton>
-    //     </>
-    //   ),
-    // },
-
     {
       field: "taskName",
       headerName: "Task Name",
@@ -106,6 +91,26 @@ function Task() {
         <Link to={`/admin/checklists/${params.row.taskId}`}>
           <VisibilityIcon></VisibilityIcon>
         </Link>
+      ),
+    },
+    {
+      field: "Action",
+      headerName: "Action",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      renderCell: (params) => (
+        <>
+          {/* <IconButton onClick={() => handleEdit(params.row.id)} title="Edit">
+            <Edit />
+          </IconButton> */}
+          <IconButton
+            onClick={() => deleteTaskAlert(params.row.taskId)}
+            title="Delete"
+          >
+            <Delete sx={{ color: "red" }} />
+          </IconButton>
+        </>
       ),
     },
   ]

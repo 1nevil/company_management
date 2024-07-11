@@ -11,6 +11,7 @@ import {
   insertTaskData,
   getHistoryDetailsById,
   getallextestionrequest,
+  deleteTaskByTaskId,
 } from "./TaskApi"
 
 const initialState = {
@@ -45,6 +46,25 @@ export const insertTask = createAsyncThunk(
   async (task, { rejectWithValue }) => {
     try {
       const response = await insertTaskData(task)
+      return response.data // Assuming your backend returns the data directly
+    } catch (error) {
+      console.log(error.response.data)
+      if (error.response) {
+        // Extract custom message from backend response
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
+  }
+)
+
+export const deleteTask = createAsyncThunk(
+  "task/deleteTask",
+  async (taskId, { rejectWithValue }) => {
+    try {
+      const response = await deleteTaskByTaskId(taskId)
       return response.data // Assuming your backend returns the data directly
     } catch (error) {
       console.log(error.response.data)
@@ -239,10 +259,9 @@ const TaskSlice = createSlice({
         state.pending = true
       })
       .addCase(addAssignTask.fulfilled, (state, action) => {
-        state.error = null
         state.pending = false
         state.tasks = state.tasks.filter(
-          (t) => t.taskId !== action.payload.taskId
+          (t) => t.taskId !== action.payload.empTaskId
         )
       })
       .addCase(addAssignTask.rejected, (state, action) => {
@@ -375,6 +394,20 @@ const TaskSlice = createSlice({
         state.taskextenstionreqest = action.payload
       })
       .addCase(getallextestionrequestForTime.rejected, (state, action) => {
+        state.pending = false
+        state.error = action.payload
+      })
+      .addCase(deleteTask.pending, (state) => {
+        state.error = null
+        state.pending = true
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.pending = false
+        state.tasks = state.tasks.filter(
+          (task) => task.taskId !== action.payload
+        )
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
         state.pending = false
         state.error = action.payload
       })

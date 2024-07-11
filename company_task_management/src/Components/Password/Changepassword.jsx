@@ -1,25 +1,46 @@
-import * as React from "react"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import CssBaseline from "@mui/material/CssBaseline"
-import Link from "@mui/material/Link"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
+import React, { useEffect } from "react"
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  InputAdornment,
+  InputLabel,
+  FormControl,
+  OutlinedInput,
+  IconButton,
+  Alert,
+  Snackbar,
+} from "@mui/material"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
-import Typography from "@mui/material/Typography"
-import Container from "@mui/material/Container"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import InputAdornment from "@mui/material/InputAdornment"
-import InputLabel from "@mui/material/InputLabel"
-import FormControl from "@mui/material/FormControl"
-import OutlinedInput from "@mui/material/OutlinedInput"
-import IconButton from "@mui/material/IconButton"
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { useFormik } from "formik"
 import { useSelector, useDispatch } from "react-redux"
 import * as Yup from "yup"
 import { resetPasswordEmp } from "../../Slices/EmployeeSlice"
+import { clearUserToken, setUserToken } from "../../Slices/AuthenticationSlice"
+import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom"
+
+const theme = createTheme()
+
+const validationSchema = Yup.object({
+  oldPassword: Yup.string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Old Password is required"),
+  newPassword: Yup.string()
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("New Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+})
 
 function Copyright(props) {
   return (
@@ -39,50 +60,84 @@ function Copyright(props) {
   )
 }
 
-const theme = createTheme()
-
-const validationSchema = Yup.object({
-  newPassword: Yup.string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("New Password is required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
-    .required("Confirm Password is required"),
-})
-
 export default function ChangePassword() {
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [showOldPassword, setShowOldPassword] = React.useState(false)
+  const [showNewPassword, setShowNewPassword] = React.useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
+  const [open, setOpen] = React.useState(true)
+  const navigate = useNavigate()
+
   const { authicatedUser } = useSelector((state) => state.Auth)
-  const handleClickShowPassword = () => setShowPassword(!showPassword)
+  const { pendding, error } = useSelector((state) => state.Employee)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setUserToken())
+  }, [dispatch])
+
+  const handleClickShowOldPassword = () => setShowOldPassword(!showOldPassword)
+  const handleClickShowNewPassword = () => setShowNewPassword(!showNewPassword)
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword)
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
 
-  const dispatch = useDispatch()
+  const notifySubmit = () => toast.success("Password updated successfully")
 
   const formik = useFormik({
     initialValues: {
+      oldPassword: "",
       newPassword: "",
       confirmPassword: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(authicatedUser.id)
-      console.log("Password reset:", values)
       dispatch(
         resetPasswordEmp({
           empId: authicatedUser.id,
           newPassword: values.newPassword,
           oldPassword: values.oldPassword,
         })
-      )
-      console.log(formik.errors)
-      // Add your password reset logic here
+      ).then((action) => {
+        if (action.meta.requestStatus === "fulfilled") {
+          notifySubmit()
+          handleClose()
+          dispatch(clearUserToken())
+          localStorage.removeItem("token")
+          navigate("/")
+        }
+      })
     },
   })
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return
+    }
+    setOpen(false)
+  }
+
   return (
     <ThemeProvider theme={theme}>
+      {error !== null && (
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: "30rem" }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
+      )}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -110,11 +165,11 @@ export default function ChangePassword() {
             sx={{ mt: 1 }}
           >
             <FormControl fullWidth variant="outlined" margin="normal">
-              <InputLabel htmlFor="newPassword">Old Password</InputLabel>
+              <InputLabel htmlFor="oldPassword">Old Password</InputLabel>
               <OutlinedInput
                 id="oldPassword"
                 name="oldPassword"
-                type={showPassword ? "text" : "password"}
+                type={showOldPassword ? "text" : "password"}
                 value={formik.values.oldPassword}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -122,19 +177,19 @@ export default function ChangePassword() {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
+                      onClick={handleClickShowOldPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showOldPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
                 label="Old Password"
               />
-              {formik.touched.newPassword && formik.errors.newPassword ? (
+              {formik.touched.oldPassword && formik.errors.oldPassword ? (
                 <Typography variant="body2" color="error">
-                  {formik.errors.newPassword}
+                  {formik.errors.oldPassword}
                 </Typography>
               ) : null}
             </FormControl>
@@ -143,7 +198,7 @@ export default function ChangePassword() {
               <OutlinedInput
                 id="newPassword"
                 name="newPassword"
-                type={showPassword ? "text" : "password"}
+                type={showNewPassword ? "text" : "password"}
                 value={formik.values.newPassword}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -151,11 +206,11 @@ export default function ChangePassword() {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
+                      onClick={handleClickShowNewPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showNewPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -174,7 +229,7 @@ export default function ChangePassword() {
               <OutlinedInput
                 id="confirmPassword"
                 name="confirmPassword"
-                type={showPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -182,11 +237,11 @@ export default function ChangePassword() {
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
+                      onClick={handleClickShowConfirmPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -200,6 +255,7 @@ export default function ChangePassword() {
               ) : null}
             </FormControl>
             <Button
+              disabled={pendding}
               type="submit"
               fullWidth
               variant="contained"
