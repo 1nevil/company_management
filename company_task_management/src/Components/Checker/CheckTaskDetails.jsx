@@ -19,6 +19,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
+import LinearProgress from "@mui/material/LinearProgress"
 import ClearIcon from "@mui/icons-material/Clear"
 import CheckIcon from "@mui/icons-material/Check"
 import { Box, Stack } from "@mui/system"
@@ -27,18 +28,44 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 // import { approveDisapproveTask } from "../../Slices/TaskSlice"
+import PropTypes from "prop-types"
+
 import {
   getTaskAssignDataForChecker,
   // updateTaskWithCompeletedate,
   approveDisapprove,
   getCompletedTaskDataForChecker,
 } from "../../Slices/AssignToTask"
+import axios from "axios"
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ width: "100%", mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  )
+}
+
+LinearProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate and buffer variants.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+}
 
 function CheckerTaskDetails() {
   const { task, guidelines, empTaskAssignment, emp, checklist } = useSelector(
     (state) => state.AssignToTask.taskGuidlinesChecker
   )
-
+  console.log(empTaskAssignment)
   const { id: employeeId, Position: positionId } = useSelector(
     (state) => state.Auth.authicatedUser
   )
@@ -61,6 +88,7 @@ function CheckerTaskDetails() {
 
   const [showMoreChecklist, setShowMoreChecklist] = useState(false)
   const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
+  const [progress, setProgress] = useState(0)
   const [openModal, setOpenModal] = useState(false)
   const handleOpenModal = () => {
     setOpenModal(true)
@@ -128,6 +156,34 @@ function CheckerTaskDetails() {
     // dispatch(updateTaskWithCompeletedate(updatedAssign))
   }
 
+  const downloadFile = async (url) => {
+    try {
+      const response = await axios.get(url, {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          )
+          console.log(progress)
+          setProgress(progress) // Assuming setProgress is a state update function
+        },
+      })
+
+      const blob = new Blob([response.data])
+      const fileName = url.split("/").pop()
+
+      const link = document.createElement("a")
+      link.href = URL.createObjectURL(blob)
+      link.download = fileName
+      link.click()
+
+      // Clean up
+      URL.revokeObjectURL(link.href)
+    } catch (error) {
+      console.error("Error downloading the file", error)
+    }
+  }
+
   const handleCheckboxChange = (id, isChecked, type) => {
     if (type === "checklist") {
       if (isChecked) {
@@ -165,7 +221,7 @@ function CheckerTaskDetails() {
       })
     )
     dispatch(getCompletedTaskDataForChecker(positionId))
-    navigate("CheckTaskList")
+    navigate("/checker/CheckTaskList")
   }
 
   useEffect(() => {
@@ -180,7 +236,6 @@ function CheckerTaskDetails() {
   }, [completedGuidelines, incompleteGuidelines, taskId])
 
   const handleSubmitModel = () => {
-    alert("Disapprove")
     dispatch(
       approveDisapprove({
         TaskAssId: taskId,
@@ -462,11 +517,16 @@ function CheckerTaskDetails() {
               )}
             </Box>
             <Box p={2}>
+              <Box mt={1} mb={2} sx={{ width: "100%" }}>
+                {progress > 0 && <LinearProgressWithLabel value={progress} />}
+              </Box>
+
               <Button
-                variant="outlined"
-                color="primary"
-                fullWidth
-                onClick={() => alert("Task file Download .....")}
+                variant="contained"
+                onClick={() => {
+                  const fileUrl = empTaskAssignment?.fileUpload
+                  downloadFile(fileUrl)
+                }}
               >
                 Download File
               </Button>

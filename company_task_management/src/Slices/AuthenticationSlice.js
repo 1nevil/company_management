@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { loginAuthUser } from "./AuthenticationApi"
+import { Forgetpassword, MetchOtp, loginAuthUser } from "./AuthenticationApi"
 import { jwtDecode } from "jwt-decode"
 
 const initialState = {
@@ -9,6 +9,8 @@ const initialState = {
   error: null,
   authicatedUser: null,
   isAuthenticate: false,
+  message: null,
+  loading: false,
 }
 
 export const loginUser = createAsyncThunk(
@@ -28,6 +30,35 @@ export const loginUser = createAsyncThunk(
   }
 )
 
+export const ForgetpasswordWithEmail = createAsyncThunk(
+  "emp/ForgetpasswordWithEmail",
+  async (email, { rejectWithValue }) => {
+    try {
+      console.log(email)
+      const response = await Forgetpassword(email)
+      console.log("🚀 ~ response:", response)
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data
+        return rejectWithValue(errorMessage)
+      } else {
+        return rejectWithValue("An unexpected error occurred")
+      }
+    }
+  }
+)
+export const verifyAndSetNewPassword = createAsyncThunk(
+  "emp/verifyAndSetNewPassword",
+  async ({ email, otp, password }, { rejectWithValue }) => {
+    try {
+      const response = await MetchOtp({ email, otp, password })
+      return response
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
+)
 export const AuthenticationSlice = createSlice({
   name: "AuthenticationSlice",
   initialState,
@@ -56,6 +87,9 @@ export const AuthenticationSlice = createSlice({
     clearUserToken: (state) => {
       state.isAuthenticate = false
       state.authicatedUser = null
+    },
+    clearErrorMessage: (state) => {
+      state.error = null
     },
   },
   extraReducers: (builder) => {
@@ -89,8 +123,34 @@ export const AuthenticationSlice = createSlice({
         state.pending = false
         state.error = action.payload
       })
+      .addCase(ForgetpasswordWithEmail.pending, (state) => {
+        state.loading = true
+        state.error = null
+        state.message = null
+      })
+      .addCase(ForgetpasswordWithEmail.fulfilled, (state, action) => {
+        state.loading = false
+        state.message = action.payload
+      })
+      .addCase(ForgetpasswordWithEmail.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+      .addCase(verifyAndSetNewPassword.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(verifyAndSetNewPassword.fulfilled, (state, action) => {
+        state.loading = false
+        state.message = action.payload.message // Adjust as per your API response structure
+      })
+      .addCase(verifyAndSetNewPassword.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
   },
 })
 
-export const { setUserToken, clearUserToken } = AuthenticationSlice.actions
+export const { setUserToken, clearUserToken, clearErrorMessage, clearMessage } =
+  AuthenticationSlice.actions
 export default AuthenticationSlice.reducer

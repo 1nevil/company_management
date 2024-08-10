@@ -25,6 +25,32 @@ import { useDispatch, useSelector } from "react-redux"
 import { json, useParams } from "react-router-dom"
 import { getTaskUsingTaskIdAndPostionId } from "../../Slices/TaskSlice"
 import { getFileFromHistoryToSendNextEmployee } from "../../Slices/AssignToTask"
+import PropTypes from "prop-types"
+import LinearProgress from "@mui/material/LinearProgress"
+import axios from "axios"
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ width: "100%", mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  )
+}
+
+LinearProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate and buffer variants.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+}
 
 function EmpTaskDetail() {
   const { pending, getActiveTaskDetail, error } = useSelector(
@@ -52,6 +78,7 @@ function EmpTaskDetail() {
   const [showMoreChecklist, setShowMoreChecklist] = useState(false)
   const [showMoreGuidelines, setShowMoreGuidelines] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     dispatch(getTaskUsingTaskIdAndPostionId({ positionId, taskId }))
@@ -74,6 +101,33 @@ function EmpTaskDetail() {
   const displayedGuidelines = showMoreGuidelines
     ? guidelines
     : guidelines?.slice(0, 3)
+
+  const downloadFile = async (url) => {
+    try {
+      const response = await axios.get(url, {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          )
+          setProgress(progress) // Assuming setProgress is a state update function
+        },
+      })
+
+      const blob = new Blob([response.data])
+      const fileName = url.split("/").pop()
+
+      const link = document.createElement("a")
+      link.href = URL.createObjectURL(blob)
+      link.download = fileName
+      link.click()
+
+      // Clean up
+      URL.revokeObjectURL(link.href)
+    } catch (error) {
+      console.error("Error downloading the file", error)
+    }
+  }
 
   return (
     <div>
@@ -268,6 +322,9 @@ function EmpTaskDetail() {
                   )}
                 </Box>
               </Grid>
+              <Box mt={2} mb={2} p={1}>
+                {progress > 0 && <LinearProgressWithLabel value={progress} />}
+              </Box>
               <Box
                 sx={{
                   display: "flex",
@@ -283,8 +340,12 @@ function EmpTaskDetail() {
                       fullWidth
                       variant="outlined"
                       startIcon={<DownloadingIcon />}
+                      onClick={() => {
+                        let url = lastFileDetailHistory?.fileUpload
+                        downloadFile(url)
+                      }}
                     >
-                      File <b>{lastFileDetailHistory?.fileUpload}</b>
+                      File
                     </Button>
                   </Box>
                 )}

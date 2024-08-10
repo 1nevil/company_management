@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import Box from "@mui/material/Box"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import { useSelector, useDispatch } from "react-redux"
 import { IconButton } from "@mui/material"
@@ -30,6 +30,7 @@ function EmployeeDashboard() {
   )
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getPositionWiseTask(positionId))
@@ -48,6 +49,7 @@ function EmployeeDashboard() {
       if (action.meta.requestStatus === "fulfilled") {
         dispatch(incrementNotApproveTaskEmployee())
         successfullyPickTask()
+        navigate("/employee/TaskIsActive")
       }
     })
   }
@@ -90,6 +92,36 @@ function EmployeeDashboard() {
 
   return (
     <Box>
+      <Grid container columnSpacing={2} rowSpacing={2} mt={1} mb={2}>
+        <Grid item xs={12} sm={6}>
+          <Link to="/employee/TaskIsActive" style={LinkStyle}>
+            <AdminCard
+              name="Active Tasks"
+              value={activeTask}
+              textColor="green"
+            />
+          </Link>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Link to="/employee/TaskHistory" style={LinkStyle}>
+            <AdminCard name="Approved Tasks" value={approvedTaskCount} />
+          </Link>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Link to="/employee/TaskHistory" style={LinkStyle}>
+            <AdminCard
+              name="Disapproved Tasks"
+              value={disapprovedTask}
+              textColor="red"
+            />
+          </Link>
+        </Grid>{" "}
+        <Grid item xs={12} sm={6}>
+          <Link to="/employee/notChecked" style={LinkStyle}>
+            <AdminCard name="Not checked Task" value={notCheckedTask} />
+          </Link>
+        </Grid>{" "}
+      </Grid>
       {error === "Their is not task for Your Position!!!" ? (
         <Box mb={1}>
           {" "}
@@ -98,36 +130,7 @@ function EmployeeDashboard() {
       ) : (
         <>
           {error !== null && <Alert severity="error">{error}</Alert>}
-          <Grid container columnSpacing={2} rowSpacing={2} mt={1} mb={2}>
-            <Grid item xs={12} sm={6}>
-              <Link to="/employee/TaskIsActive" style={LinkStyle}>
-                <AdminCard
-                  name="Active Tasks"
-                  value={activeTask}
-                  textColor="green"
-                />
-              </Link>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Link to="/employee/TaskHistory" style={LinkStyle}>
-                <AdminCard name="Approved Tasks" value={approvedTaskCount} />
-              </Link>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Link to="/employee/TaskHistory" style={LinkStyle}>
-                <AdminCard
-                  name="Disapproved Tasks"
-                  value={disapprovedTask}
-                  textColor="red"
-                />
-              </Link>
-            </Grid>{" "}
-            <Grid item xs={12} sm={6}>
-              <Link to="/employee/notChecked" style={LinkStyle}>
-                <AdminCard name="Not checked Task" value={notCheckedTask} />
-              </Link>
-            </Grid>{" "}
-          </Grid>
+
           <DataGrid
             slots={{ toolbar: GridToolbar }}
             // rows={filteredTasksByPosition}

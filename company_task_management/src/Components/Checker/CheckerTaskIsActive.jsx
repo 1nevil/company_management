@@ -83,7 +83,7 @@ function CheckerTaskIsActive() {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/Checker/CheckerTaskIsActiveDeatils/${params.row.empTaskHistoryId}`}
+          to={`/Checker/checkerhistory/${params.row.empTaskHistoryId}`}
         >
           <VisibilityIcon />
         </Link>
@@ -141,7 +141,8 @@ function CheckerTaskIsActive() {
                 Disapproval Message
               </Typography>
               <Typography id="modal-description" sx={{ mt: 2 }}>
-                {disapprovalMessage}
+                {disapprovalMessage ||
+                  "Checker Dissapproved Task - No reson added"}
               </Typography>
               <Button onClick={handleClose} sx={{ mt: 2 }}>
                 Close

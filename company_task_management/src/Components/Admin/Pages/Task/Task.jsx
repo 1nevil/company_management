@@ -19,10 +19,7 @@ import useAlert from "../../../../Hooks/useAlert"
 import { Delete } from "@mui/icons-material"
 
 function Task() {
-  const deleteTaskAlert = useAlert(
-    deleteTask,
-    "task deleted Successfully..."
-  )
+  const deleteTaskAlert = useAlert(deleteTask, "task deleted Successfully...")
   const [open, setOpen] = React.useState(false)
   const [scroll, setScroll] = React.useState("paper")
   const dispatch = useDispatch()
@@ -75,7 +72,10 @@ function Task() {
       sortable: false,
       width: 160,
       renderCell: (params) => (
-        <Link to={`/admin/AdminTaskDeatil/${params.row.taskId}`}>
+        <Link
+          to={`/admin/AdminTaskDeatil/${params.row.taskId}`}
+          style={{ color: "gray" }}
+        >
           {/* <IconButton onClick={handleopenchecklist} title="AdminTask Deatil"> */}
           <VisibilityIcon></VisibilityIcon>
           {/* </IconButton> */}

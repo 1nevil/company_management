@@ -109,7 +109,7 @@ function CheckTaskList() {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/Checker/CheckerTaskDetails/${params.row.empTaskId}`}
+          to={`/Checker/checkerhistory/${params.row.empTaskId}`}
         >
           <VisibilityIcon />
         </Link>

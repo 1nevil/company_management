@@ -152,7 +152,9 @@ function ChainDetails() {
 
   useEffect(() => {
     dispatch(getChainDetailsByChainId(chainid))
-    dispatch(getPositionsByIds(chainFlow))
+    if (chainFlow) {
+      dispatch(getPositionsByIds(chainFlow))
+    }
   }, [chainid, dispatch, chainFlow])
 
   // Function to chunk the array into smaller arrays for each row of steps
@@ -176,9 +178,7 @@ function ChainDetails() {
   if (chainError) {
     return (
       <>
-        <Alert  severity="error">
-          {chainError}
-        </Alert>
+        <Alert severity="error">{chainError}</Alert>
         <Box mt={2}>
           <Link
             style={{ color: "blue", textDecoration: "none" }}

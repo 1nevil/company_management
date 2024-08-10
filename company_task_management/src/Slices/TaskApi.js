@@ -2,48 +2,92 @@ import axios from "axios"
 
 const axiosInstance = axios.create({ baseURL: "http://localhost:5036/" })
 
+let config
+
+function setConfig() {
+  const token = localStorage.getItem("token")
+
+  config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+}
+
 export const insertTaskData = (task) => {
-  return axiosInstance.post("api/TaskMasters", task)
+  setConfig()
+  return axiosInstance.post("api/TaskMasters", task, config)
 }
 
 export const getAllTask = () => {
-  return axiosInstance.get("api/TaskMasters")
+  setConfig()
+  return axiosInstance.get("api/TaskMasters", config)
 }
 
 export const getTaskByPostionId = (positionId) => {
-  return axiosInstance.get(`api/TaskMasters/getTaskByPostionId/${positionId}`)
+  setConfig()
+  return axiosInstance.get(
+    `api/TaskMasters/getTaskByPostionId/${positionId}`,
+    config
+  )
 }
 
 export const addTaskToAssignById = (Assigntask) => {
-  return axiosInstance.post("api/EmpTaskAssignments/pickTask", Assigntask)
+  setConfig()
+  return axiosInstance.post(
+    "api/EmpTaskAssignments/pickTask",
+    Assigntask,
+    config
+  )
 }
 
 export const GetTaskFromAssignTaskByEmpId = (empID) => {
-  return axiosInstance.get(`api/EmpTaskAssignments/task/${empID}`)
+  setConfig()
+  return axiosInstance.get(`api/EmpTaskAssignments/task/${empID}`, config)
 }
 
 export const getTaskByTaskId = (taskId) => {
-  return axiosInstance.get(`api/TaskMasters/${taskId}`)
+  setConfig()
+  return axiosInstance.get(`api/TaskMasters/${taskId}`, config)
 }
 
 export const deleteTaskByTaskId = (taskId) => {
-  return axiosInstance.delete(`api/TaskMasters/${taskId}`)
+  setConfig()
+  return axiosInstance.delete(`api/TaskMasters/${taskId}`, config)
 }
 
 export const getTaskByTaskPositionId = (positionId, taskId) => {
-  return axiosInstance.get(`api/TaskMasters/getTask/${positionId}/${taskId}`)
+  setConfig()
+  return axiosInstance.get(
+    `api/TaskMasters/getTask/${positionId}/${taskId}`,
+    config
+  )
 }
 
 export const getTaskAndGuidlinesByTaskId = (taskId) => {
-  return axiosInstance.get(`api/TaskMasters/GetGuidlinesTaskDetails/${taskId}`)
+  setConfig()
+  return axiosInstance.get(
+    `api/TaskMasters/GetGuidlinesTaskDetails/${taskId}`,
+    config
+  )
 }
 
 export const approvedTask = (meptaskId) => {
-  return axiosInstance.put(`/api/EmpTaskAssignments/approveTask/${meptaskId}`)
+  setConfig()
+  return axiosInstance.put(
+    `/api/EmpTaskAssignments/approveTask/${meptaskId}`,
+    config
+  )
 }
 
 export const getHistoryDetailsById = (historyId) => {
+  setConfig()
   return axiosInstance.get(
-    `api/EmpTaskHistories/getTaskHistoryDetailsById/${historyId}`
+    `api/EmpTaskHistories/getTaskHistoryDetailsById/${historyId}`,
+    config
   )
+}
+
+export const getallextestionrequest = () => {
+  return axiosInstance.get("api/TaskExtensionRequests/getallextestionrequest")
 }

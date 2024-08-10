@@ -1,19 +1,19 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React from "react";
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
-import MessageIcon from "@mui/icons-material/Message";
-import ListAltIcon from "@mui/icons-material/ListAlt";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import React from "react"
+import Button from "@mui/material/Button"
+import { Link } from "react-router-dom"
+import MessageIcon from "@mui/icons-material/Message"
+import ListAltIcon from "@mui/icons-material/ListAlt"
 
 function TaskChecker() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
   const handleClickOpenModel = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
   const handleCloseModel = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -30,7 +30,7 @@ function TaskChecker() {
       renderCell: (params) => (
         <Link
           style={{ color: "gray" }}
-          to={`/Checker/CheckerTaskDetails/${params.row.id}`}
+          to={`/Checker/checkerhistory/${params.row.id}`}
         >
           <MessageIcon />
         </Link>
@@ -51,7 +51,7 @@ function TaskChecker() {
         </Link>
       ),
     },
-  ];
+  ]
 
   const teams = [
     {
@@ -75,7 +75,7 @@ function TaskChecker() {
       StartDate: "12-3-24",
       EndDate: "12-5-24",
     },
-  ];
+  ]
 
   return (
     <div>
@@ -94,7 +94,7 @@ function TaskChecker() {
         disableRowSelectionOnClick
       />
     </div>
-  );
+  )
 }
 
-export default TaskChecker;
+export default TaskChecker
